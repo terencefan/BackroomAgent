@@ -9,7 +9,7 @@ install:
 	$(PIP) install -r requirements.txt
 
 server:
-	$(PYTHON) backend/main.py
+	$(PYTHON) backroom_agent/server.py
 
 graph:
 	PYTHONPATH=. $(PYTHON) backroom_agent/utils/map_generator.py

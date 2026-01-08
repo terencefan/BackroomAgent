@@ -1,6 +1,5 @@
 import os
 
-from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import SystemMessage
 from langchain_core.runnables import RunnableConfig
 
@@ -14,9 +13,12 @@ model = get_llm()
 def _load_system_prompt() -> str:
     """Load the system prompt from the prompts directory."""
     try:
-        prompt_path = os.path.join(
-            os.path.dirname(__file__), "prompts", "dm_agent.prompt"
-        )
+        # Construct path relative to the current file (in nodes package)
+        # ../prompts/dm_agent.prompt
+        # Note: __file__ is inside backroom_agent/nodes/
+        # base is backroom_agent/
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        prompt_path = os.path.join(base_dir, "prompts", "dm_agent.prompt")
         return load_prompt(prompt_path)
     except FileNotFoundError:
         return "You are a helpful AI Dungeon Master for a Backrooms game."
@@ -25,15 +27,13 @@ def _load_system_prompt() -> str:
 SYSTEM_PROMPT = _load_system_prompt()
 
 
-def dm_agent(state: State, config: RunnableConfig) -> dict:
+def llm_node(state: State, config: RunnableConfig) -> dict:
     """
-    The main agent node that calls the LLM.
+    The main agent node that calls the LLM for general dialogue.
     """
     messages = state["messages"]
 
     # Prepend System Prompt to the messages sent to the LLM
-    # We do NOT add it to the state history to avoid duplication,
-    # we just use it for this inference call.
     messages_with_prompt = [SystemMessage(content=SYSTEM_PROMPT)] + messages
 
     response = model.invoke(messages_with_prompt, config=config)

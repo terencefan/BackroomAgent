@@ -16,6 +16,7 @@ The frontend sends the full game state along with the player's latest input. Thi
     "type": "init"                // "init", "action", or "message"
   },
   "player_input": "string",       // The text typed by the user (e.g., "Look around", "Use Key")
+  "session_id": "string",         // Optional. UUID for session tracking
   "current_state": {              // Optional for 'init', required for 'action'
     "level": "string",            // Current Level ID (e.g., "Level 1")
     "attributes": {

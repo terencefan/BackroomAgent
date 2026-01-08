@@ -54,6 +54,7 @@ class GameEvent(BaseModel):
 class ChatRequest(BaseModel):
     event: GameEvent
     player_input: str
+    session_id: Optional[str] = None
     current_state: Optional[GameState] = None
 
 
@@ -102,4 +103,3 @@ class ChatResponse(BaseModel):
     messages: List[BackendMessage]
     new_state: GameState
     dice_roll: Optional[DiceRoll] = None
-

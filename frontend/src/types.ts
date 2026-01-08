@@ -50,6 +50,7 @@ export interface GameEvent {
 export interface ChatRequest {
   event: GameEvent;
   player_input: string;
+  session_id?: string;
   current_state: GameState | null;
 }
 

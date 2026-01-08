@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import './App.css';
 import { AttributeBar } from './components/AttributeBar';
 import { ChatBox } from './components/ChatBox';
@@ -14,6 +14,15 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLevelTransition, setIsLevelTransition] = useState(false);
   const isInitialized = useRef(false);
+  
+  const sessionId = useMemo(() => {
+    let id = localStorage.getItem('session_id');
+    if (!id) {
+        id = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        localStorage.setItem('session_id', id);
+    }
+    return id;
+  }, []);
 
   // Fetch initial state on mount
   useEffect(() => {
@@ -31,6 +40,7 @@ function App() {
             body: JSON.stringify({
                 event: { type: EventType.INIT },
                 player_input: '',
+                session_id: sessionId,
                 current_state: null
             })
         });
@@ -90,6 +100,7 @@ function App() {
         body: JSON.stringify({
           event: { type: eventType, ...eventData },
           player_input: text,
+          session_id: sessionId,
           current_state: gameState
         }),
       });
