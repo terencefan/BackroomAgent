@@ -20,15 +20,9 @@ def get_project_root() -> str:
     
     return project_root
 
-def get_prompt_path(prompt_name: str) -> str:
-    """Returns the absolute path to a prompt file."""
-    root = get_project_root()
-    return os.path.join(root, "prompts", prompt_name)
-
-def load_prompt(prompt_name: str) -> str:
+def load_prompt(file_path: str) -> str:
     """Loads the content of a prompt file."""
-    path = get_prompt_path(prompt_name)
-    with open(path, "r", encoding="utf-8") as f:
+    with open(file_path, "r", encoding="utf-8") as f:
         return f.read()
 
 def get_llm() -> BaseChatModel:

@@ -1,0 +1,6 @@
+{
+  "name": "机械部件",
+  "description": "零散的机械零件，可能来自各种工业设备。",
+  "id": "mechanical_parts",
+  "category": "Resource"
+}

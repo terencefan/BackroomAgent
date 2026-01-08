@@ -6,9 +6,25 @@
     "description": "不安全，不稳定，实体横行，环境危险"
   },
   "atmosphere": {
-    "visuals": ["黑暗的曲折走廊", "布满灰尘的棕色砖墙", "灰色瓷砖地板", "金属天花板", "铜质管道和机器零件", "锈迹斑斑的监狱栅栏", "黑暗的电力房", "发电机光芒"],
-    "audio": ["轰鸣的机器噪音", "管道中流动的黑色粘稠液体声"],
-    "smell": ["灰尘味", "可能的金属和机油味", "有毒烟雾（危险）"],
+    "visuals": [
+      "黑暗的曲折走廊",
+      "布满灰尘的棕色砖墙",
+      "灰色瓷砖地板",
+      "金属天花板",
+      "铜质管道和机器零件",
+      "锈迹斑斑的监狱栅栏",
+      "黑暗的电力房",
+      "发电机光芒"
+    ],
+    "audio": [
+      "轰鸣的机器噪音",
+      "管道中流动的黑色粘稠液体声"
+    ],
+    "smell": [
+      "灰尘味",
+      "可能的金属和机油味",
+      "有毒烟雾（危险）"
+    ],
     "vibe": "幽闭恐惧，压抑，工业感，危险，被监视感"
   },
   "environmental_mechanics": [
@@ -207,5 +223,115 @@
         "next": "Level 69"
       }
     ]
-  }
+  },
+  "items": [
+    {
+      "name": "杏仁水",
+      "description": "一种装在瓶子里的甜味液体，具有多种用途。",
+      "id": "almond_water",
+      "category": "Food"
+    },
+    {
+      "name": "糖果",
+      "description": "一种甜味食物。",
+      "id": "candy",
+      "category": "Food"
+    },
+    {
+      "name": "苦痛汁液",
+      "description": "一种具有特殊性质的液体，可被用作弹药。",
+      "id": "liquid_pain",
+      "category": "Resource"
+    },
+    {
+      "name": "火盐",
+      "description": "一种具有可燃性的盐类物质。",
+      "id": "fire_salt",
+      "category": "Resource"
+    },
+    {
+      "name": "皇家口粮",
+      "description": "一种包装食品。",
+      "id": "royal_rations",
+      "category": "Food"
+    },
+    {
+      "name": "滋水枪",
+      "description": "一种玩具水枪。",
+      "id": "water_gun",
+      "category": "Tool"
+    },
+    {
+      "name": "瓶装闪电",
+      "description": "一种装在瓶子里的电能物质。",
+      "id": "bottled_lightning",
+      "category": "Resource"
+    },
+    {
+      "name": "刀子",
+      "description": "一种锋利的切割工具或武器。",
+      "id": "knife",
+      "category": "Weapon"
+    },
+    {
+      "name": "打火机",
+      "description": "一种便携式点火装置。",
+      "id": "lighter",
+      "category": "Tool"
+    },
+    {
+      "name": "断线钳",
+      "description": "一种用于切割金属线或链条的工具。",
+      "id": "bolt_cutter",
+      "category": "Tool"
+    },
+    {
+      "name": "手电筒",
+      "description": "一种便携式照明设备。",
+      "id": "flashlight",
+      "category": "Tool"
+    },
+    {
+      "name": "牙刷",
+      "description": "一种个人清洁工具。",
+      "id": "toothbrush",
+      "category": "Resource"
+    },
+    {
+      "name": "鞋带",
+      "description": "一种用于系紧鞋子的绳子。",
+      "id": "shoelace",
+      "category": "Resource"
+    },
+    {
+      "name": "塑料玩具马蹄铁",
+      "description": "一种塑料制成的玩具马蹄铁。",
+      "id": "plastic_toy_horseshoe",
+      "category": "Resource"
+    },
+    {
+      "name": "胶水瓶",
+      "description": "一个装有胶水的瓶子。",
+      "id": "glue_bottle",
+      "category": "Resource"
+    },
+    {
+      "name": "电线",
+      "description": "一段导电的金属线。",
+      "id": "wire",
+      "category": "Resource"
+    },
+    {
+      "name": "橡皮筋",
+      "description": "一种有弹性的橡胶圈。",
+      "id": "rubber_band",
+      "category": "Resource"
+    },
+    {
+      "name": "胶囊",
+      "description": "一种小型容器，可用于装载液体或粉末。",
+      "id": "capsule",
+      "category": "Resource"
+    }
+  ]
 }

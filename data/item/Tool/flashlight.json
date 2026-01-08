@@ -1,0 +1,6 @@
+{
+  "name": "手电筒",
+  "description": "一种便携式照明设备，通常需要电池供电。",
+  "id": "flashlight",
+  "category": "Tool"
+}

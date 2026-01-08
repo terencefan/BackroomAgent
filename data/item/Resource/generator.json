@@ -1,0 +1,6 @@
+{
+  "name": "发电机",
+  "description": "用于发电的小型设备。",
+  "id": "generator",
+  "category": "Resource"
+}

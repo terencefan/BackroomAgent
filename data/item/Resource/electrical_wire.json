@@ -1,0 +1,6 @@
+{
+  "name": "电线",
+  "description": "用于传输电力的绝缘导线，有时会出现在街道上。",
+  "id": "electrical_wire",
+  "category": "Resource"
+}

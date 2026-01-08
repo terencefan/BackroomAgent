@@ -11,7 +11,8 @@ model = get_llm()
 def _load_system_prompt() -> str:
     """Load the system prompt from the prompts directory."""
     try:
-        return load_prompt("dm_agent.md")
+        prompt_path = os.path.join(os.path.dirname(__file__), "prompts", "dm_agent.prompt")
+        return load_prompt(prompt_path)
     except FileNotFoundError:
         return "You are a helpful AI Dungeon Master for a Backrooms game."
 

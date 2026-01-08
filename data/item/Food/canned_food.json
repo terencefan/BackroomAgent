@@ -1,0 +1,6 @@
+{
+  "name": "罐装食物",
+  "description": "密封在金属罐中的预制食品。",
+  "id": "canned_food",
+  "category": "Food"
+}

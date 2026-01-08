@@ -17,6 +17,9 @@ graph:
 scripts-fetch:
 	PYTHONPATH=. $(PYTHON) scripts/batch_fetch_levels.py
 
+test:
+	PYTHONPATH=. $(PYTHON) -m pytest tests/ --cov=backroom_agent --cov-report=term-missing
+
 # frontend
 frontend-install:
 	cd frontend && npm install

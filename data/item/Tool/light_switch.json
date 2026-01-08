@@ -1,0 +1,6 @@
+{
+  "name": "电灯开关",
+  "description": "一个普通的电灯开关，据称位于该层级的一个特定走廊内。",
+  "id": "light_switch",
+  "category": "Tool"
+}

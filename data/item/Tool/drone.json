@@ -1,0 +1,6 @@
+{
+  "name": "无人机",
+  "description": "一种可远程操控的飞行器，用于侦察或记录。",
+  "id": "drone",
+  "category": "Tool"
+}

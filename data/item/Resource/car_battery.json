@@ -1,0 +1,6 @@
+{
+  "name": "汽车电池",
+  "description": "用于储存电力的汽车电池。",
+  "id": "car_battery",
+  "category": "Resource"
+}

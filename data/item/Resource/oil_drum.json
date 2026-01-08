@@ -1,0 +1,6 @@
+{
+  "name": "油桶",
+  "description": "装有油的金属桶。",
+  "id": "oil_drum",
+  "category": "Resource"
+}

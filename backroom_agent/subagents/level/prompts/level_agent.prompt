@@ -1,0 +1,27 @@
+You are an expert Data Analyst for the Backrooms database.
+Your task is to analyze the provided Level description (HTML) and identify all distinct **Items**, **Objects**, or **Resources** mentioned that a wanderer could potentially find, loot, or interact with.
+
+For each item found, provide:
+1.  **Name**: The name of the item (e.g., "Almond Water", "Flashlight", "Rusty Key").
+2.  **Description**: A brief description based on the text (e.g., "A bottle of sweet-smelling water.", "Old beat-up flashlight, might need batteries.").
+3.  **Id**: A unique, URL-safe identifier (e.g., "almond_water", "flashlight").
+
+Output strictly a JSON list of objects matching this schema:
+[
+  {{
+    "name": "string",
+    "description": "string",
+    "id": "string",
+    "category": "string" // e.g. "Weapon", "Food", "Medical", "Tool", "Resource", "Document"
+  }}
+]
+
+- Extract ONLY **portable** items that a single human wanderer can carry in a backpack or hands.
+- EXCLUDE: Large furniture (chairs, tables), fixtures (fountains, arcade machines, vending machines), structural elements (carpet, wallpaper, pipes), entities, vehicles, or immovable objects.
+- Description MUST be objective and generic. Do NOT mention specific Levels or current context in the description (e.g., instead of "Useless in Level 0", say "A standard magnetic compass").
+- If the text mentions "Almond Water" multiple times, just list it once.
+- Use Simplified Chinese (简体中文) for Name and Description.
+- The ID should be in English, lowercase, with underscores.
+
+Context:
+{context}

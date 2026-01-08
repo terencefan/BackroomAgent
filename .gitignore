@@ -34,3 +34,11 @@ build/
 .mypy_cache/
 .coverage
 htmlcov/
+
+# Temporary files
+tmp/
+*.png
+
+# Temporary files
+tmp/
+*.png

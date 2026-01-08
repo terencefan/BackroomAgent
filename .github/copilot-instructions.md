@@ -12,13 +12,28 @@ The communication contract is strictly defined in `PROTOCOL.md`.
 - **Rule**: Any change to the game state structure (e.g., adding a new stat) **MUST** be applied synchronously to `PROTOCOL.md`, `backend/protocol.py`, and `frontend/src/types.ts`.
 
 ## Agent Development (`backroom_agent/`)
-- **Structure**:
-    - `agent.py`: LLM node definition, system prompt loading.
+
+### Agent Architecture
+The agent system is modular, consisting of a main "DM Agent" and specialized "Subagents".
+- **Main Agent**: `backroom_agent/agent.py` (Orchestrator).
+- **Subagents**: Located in `backroom_agent/subagents/`.
+- **Standard Subagent Structure**:
+    - `state.py`: TypedDict definition for the subagent's internal state.
+    - `nodes.py`: Atomic logic functions (Nodes) that modify the state.
     - `graph.py`: StateGraph construction and compilation.
-    - `state.py`: TypedDict definition for graph state.
+    - `__init__.py`: Exports the compiled graph (e.g., `level_agent`).
+    - **Examples**: `backroom_agent/subagents/level/`, `backroom_agent/subagents/event/`.
+
+### Key Patterns
 - **Prompts**: DO NOT hardcode prompts in Python.
-    - Store prompts in `prompts/<role>_agent.md`.
-    - Load dynamically using `_load_system_prompt()` pattern (see `backroom_agent/agent.py`).
+    - Store prompts in `prompts/<name>.md`.
+    - Load dynamically using `_load_system_prompt()` or `load_prompt()` utils.
+- **Search & Wiki**:
+    - Use `backroom_agent/utils/search.py` for web searches (wraps `ddgs`).
+    - Use `backroom_agent/tools/wiki_tools.py` for fetching/parsing Wiki HTML.
+- **Vector Store**:
+    - Use `backroom_agent/utils/vector_store.py` for local semantic search (Items, Levels).
+    - **Note**: Uses a custom `numpy`/`pickle` implementation (avoid `chromadb` due to Python version conflicts).
 - **Configuration**:
     - Access config via `backroom_agent.constants`.
     - NEVER use `os.getenv` directly in business logic (except in `constants.py`).
@@ -33,6 +48,13 @@ The communication contract is strictly defined in `PROTOCOL.md`.
 - **Typing**: Always import types from `./types.ts`. Avoid `any`.
     - Example: `const data: ChatResponse = await response.json();`
 
-## Workflows
-- **Test Agent Logic**: `python scripts/test_agent.py` (Runs a single turn without starting the server).
+## Workflows & Environment
+- **Python Version**: **3.12** managed via `.venv`.
+- **Scripts**: Use `scripts/` to run/test individual agents without the full server.
+    - `python scripts/run_level_agent.py`: Test Level Agent (Fetching/Item Extraction).
+    - `python scripts/run_agent.py`: Test Main DM Agent flow.
+- **Testing**:
+    - **Do not** use `scripts/extract_items.py` or `scripts/run_event_generator.py` (Deprecated/Deleted).
+    - Prefer running the specific agent runner (e.g., `run_level_agent.py`) which invokes the graph.
 - **Build Frontend**: `cd frontend && npm run build` (Checks TS types and builds assets).
+

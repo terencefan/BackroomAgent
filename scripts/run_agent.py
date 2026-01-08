@@ -7,7 +7,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from backroom_agent.graph import run_once
 from textwrap import dedent
 
-def test_agent_simple_turn():
+def run_demo():
     print("--- Starting Agent Test ---")
     query = "Hello, Backrooms Entity! What is your name?"
     print(f"User: {query}")
@@ -23,4 +23,4 @@ def test_agent_simple_turn():
         traceback.print_exc()
 
 if __name__ == "__main__":
-    test_agent_simple_turn()
+    run_demo()

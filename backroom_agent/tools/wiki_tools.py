@@ -21,7 +21,8 @@ def convert_html_to_room_json(html_content: str, level_name: str) -> str:
     json_path = os.path.join(root_dir, "data/level", f"{level_name}.json")
     
     llm = get_llm()
-    system_prompt_text = load_prompt("convert_html_to_room_json.md")
+    prompt_path = os.path.join(os.path.dirname(__file__), "prompts", "convert_html_to_room_json.prompt")
+    system_prompt_text = load_prompt(prompt_path)
     
     messages = [
         SystemMessage(content=system_prompt_text),
@@ -57,7 +58,7 @@ def save_to_file(content: str, directory: str, filename: str):
         f.write(content)
     return filepath
 
-def fetch_wiki_content(url: str, save_files: bool = True) -> str:
+def fetch_wiki_content(url: str, save_files: bool = True) -> tuple[str | None, str | None]:
     """
     Fetches the content of a URL and cleans it, keeping only useful tags.
     Saves raw content to data/raw and cleaned content to data/level.
@@ -67,7 +68,7 @@ def fetch_wiki_content(url: str, save_files: bool = True) -> str:
         save_files (bool): Whether to save the raw and cleaned content to files.
         
     Returns:
-        str: The cleaned HTML content string.
+        tuple[str | None, str | None]: The cleaned HTML content string and the Level Name.
     """
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
@@ -78,7 +79,8 @@ def fetch_wiki_content(url: str, save_files: bool = True) -> str:
         response.raise_for_status()
         raw_content = response.text
     except requests.RequestException as e:
-        return f"Error fetching URL: {str(e)}"
+        print(f"Error fetching URL: {str(e)}")
+        return None, None
 
     level_name = get_level_name_from_url(url)
     
@@ -196,3 +198,5 @@ def fetch_wiki_content(url: str, save_files: bool = True) -> str:
         save_to_file(cleaned_content, os.path.join(root_dir, "data/level"), f"{level_name}.html")
 
     return cleaned_content, level_name
+
+

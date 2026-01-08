@@ -1,0 +1,6 @@
+{
+  "name": "宗教物品",
+  "description": "描绘耶稣或其他宗教实体的物品，例如雕像、画像或圣像。",
+  "id": "religious_item",
+  "category": "Resource"
+}

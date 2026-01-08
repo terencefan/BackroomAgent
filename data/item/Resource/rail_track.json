@@ -1,0 +1,6 @@
+{
+  "name": "铁轨",
+  "description": "用于铺设铁路的金属轨道。",
+  "id": "rail_track",
+  "category": "Resource"
+}

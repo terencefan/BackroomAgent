@@ -1,0 +1,6 @@
+{
+  "name": "居住补给",
+  "description": "维持日常生活所需的基本物资。",
+  "id": "living_supplies",
+  "category": "Resource"
+}
