@@ -3,10 +3,12 @@ from .state import LevelAgentState
 from .nodes import (
     resolve_url_node,
     fetch_content_node,
-    generate_json_node,
-    extract_items_node,
     filter_items_node,
     update_level_json_node
+)
+from .nodes_llm import (
+    generate_json_node,
+    extract_items_node
 )
 
 # Define the Graph

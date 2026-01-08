@@ -1,27 +1,35 @@
-You are an expert Data Analyst for the Backrooms database.
-Your task is to analyze the provided Level description (HTML) and identify all distinct **Items**, **Objects**, or **Resources** mentioned that a wanderer could potentially find, loot, or interact with.
+你是后室（Backrooms）数据库的专家级数据分析师。
+你的任务是分析提供的层级描述（HTML），并识别所有流浪者（Wanderer）可以**搜刮并放入背包带走**的**实用物品（Lootable Items）**。
 
-For each item found, provide:
-1.  **Name**: The name of the item (e.g., "Almond Water", "Flashlight", "Rusty Key").
-2.  **Description**: A brief description based on the text (e.g., "A bottle of sweet-smelling water.", "Old beat-up flashlight, might need batteries.").
-3.  **Id**: A unique, URL-safe identifier (e.g., "almond_water", "flashlight").
+对于发现的每个物品，请提供：
+1. **名称 (Name)**：物品的名称（例如，“杏仁水”、“手电筒”、“生锈的钥匙”）。
+2. **描述 (Description)**：基于文本的简要描述（例如，“一瓶散发着甜味的水。”，“旧的被摔坏的手电筒，可能需要电池。”）。
+3. **ID**：一个唯一的、URL 安全的标识符（例如，"almond_water", "flashlight"）。
 
-Output strictly a JSON list of objects matching this schema:
-[
-  {{
-    "name": "string",
-    "description": "string",
-    "id": "string",
-    "category": "string" // e.g. "Weapon", "Food", "Medical", "Tool", "Resource", "Document"
-  }}
-]
+请严格输出符合此 Schema 的 JSON 对象列表（包含 key `findable_items`）：
+{{
+  "findable_items": [
+    {{
+      "name": "string",
+      "description": "string",
+      "id": "string",
+      "category": "string" // 例如 "Weapon", "Food", "Medical", "Tool", "Resource", "Document"
+    }}
+  ]
+}}
 
-- Extract ONLY **portable** items that a single human wanderer can carry in a backpack or hands.
-- EXCLUDE: Large furniture (chairs, tables), fixtures (fountains, arcade machines, vending machines), structural elements (carpet, wallpaper, pipes), entities, vehicles, or immovable objects.
-- Description MUST be objective and generic. Do NOT mention specific Levels or current context in the description (e.g., instead of "Useless in Level 0", say "A standard magnetic compass").
-- If the text mentions "Almond Water" multiple times, just list it once.
-- Use Simplified Chinese (简体中文) for Name and Description.
-- The ID should be in English, lowercase, with underscores.
+- **只提取**：玩家可以直接捡起、放入背包并用于生存或后续冒险的物品（如食物、水、武器、工具、电池、医疗包、重要文件）。
+- **严格排除**：
+  - **仅仅是环境描述的一部分**：壁纸、地毯、天花板灯、插座、墙壁上的管道、霉菌、水坑。
+  - **大型固定设施**：家具（椅子桌子）、机器、发电机、车辆。
+  - **实体或生物**：任何活体或敌对生物。
+  - **抽象或背景信息**：不要把概念性的东西当作物品。
+  - **非在场物品**：如果文本只是在比较（例如“不像 Level 1 那样有杏仁水”），或作为传说/背景故事提到，但并未明确说明可以在**当前层级**找到或搜刮，则必须排除。
+- 描述必须是客观和通用的。不要在描述中提及具体的层级或当前的上下文。
+- 必须返回 JSON 对象，Root key 为 `findable_items`。
+- 如果文本多次提及“杏仁水”，只需列出一次。
+- **Name** 和 **Description** 必须使用 **简体中文**。
+- **ID** 必须是英文，小写，用下划线分隔。
 
-Context:
+上下文：
 {context}

@@ -2,10 +2,9 @@ import os
 import json
 import logging
 from typing import Dict, Any, List
-from langchain_core.messages import SystemMessage, HumanMessage
 from urllib.parse import urlparse
-from backroom_agent.utils.common import get_project_root, load_prompt, get_llm
-from backroom_agent.tools.wiki_tools import fetch_wiki_content, convert_html_to_room_json, get_level_name_from_url
+from backroom_agent.utils.common import get_project_root
+from backroom_agent.tools.wiki_tools import fetch_wiki_content, get_level_name_from_url
 from backroom_agent.utils.vector_store import search_similar_items
 from backroom_agent.utils.search import search_backrooms_wiki
 from .state import LevelAgentState
@@ -117,74 +116,9 @@ def fetch_content_node(state: LevelAgentState):
         "logs": logs
     }
 
-def generate_json_node(state: LevelAgentState):
-    """
-    Generates the Level JSON description from HTML.
-    """
-    html_content = state.get("html_content")
-    level_name = state.get("level_name")
-    logs = state.get("logs", [])
 
-    if not html_content:
-        return {"logs": logs + ["Skipping JSON generation: No HTML content."]}
 
-    # Check if JSON already exists
-    root = get_project_root()
-    json_path = os.path.join(root, "data/level", f"{level_name}.json")
-    
-    if os.path.exists(json_path) and not state.get("force_update"):
-        logs.append(f"JSON already exists at {json_path}. Skipping generation.")
-        return {"level_json_generated": True, "logs": logs}
 
-    logs.append("Generating Level JSON from HTML...")
-    try:
-        # This function saves the file internally
-        convert_html_to_room_json(html_content, level_name)
-        logs.append(f"Successfully generated and saved {json_path}")
-        return {"level_json_generated": True, "logs": logs}
-    except Exception as e:
-        logs.append(f"Error generating JSON: {str(e)}")
-        return {"level_json_generated": False, "logs": logs}
-
-def extract_items_node(state: LevelAgentState):
-    """
-    Extracts potential items from the HTML content using LLM.
-    """
-    html_content = state.get("html_content")
-    logs = state.get("logs", [])
-    
-    if not html_content:
-        return {"extracted_items_raw": [], "logs": logs}
-
-    logs.append("Extracting items from HTML...")
-    
-    llm = get_llm()
-    prompt_path = os.path.join(os.path.dirname(__file__), "prompts", "level_agent.prompt")
-    system_prompt = load_prompt(prompt_path)
-    
-    # We might want to truncate HTML if it's too long, but usually wiki pages are okay for recent models
-    messages = [
-        SystemMessage(content=system_prompt.format(context=html_content)),
-        HumanMessage(content="Extract the items now in JSON format.")
-    ]
-    
-    try:
-        response = llm.invoke(messages)
-        content = response.content
-        
-        # Parse JSON from Markdown block
-        if "```json" in content:
-            content = content.split("```json")[1].split("```")[0].strip()
-        elif "```" in content:
-            content = content.split("```")[1].strip()
-            
-        items = json.loads(content)
-        logs.append(f"Extracted {len(items)} raw items.")
-        return {"extracted_items_raw": items, "logs": logs}
-        
-    except Exception as e:
-        logs.append(f"Error extracting items: {e}")
-        return {"extracted_items_raw": [], "logs": logs}
 
 def filter_items_node(state: LevelAgentState):
     """
@@ -258,7 +192,10 @@ def update_level_json_node(state: LevelAgentState):
         with open(json_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
             
-        data["items"] = final_items
+        data["findable_items"] = final_items
+        # Remove old key if it exists to keep it clean
+        if "items" in data:
+            del data["items"]
         
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)

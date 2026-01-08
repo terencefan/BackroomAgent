@@ -21,7 +21,7 @@ def convert_html_to_room_json(html_content: str, level_name: str) -> str:
     json_path = os.path.join(root_dir, "data/level", f"{level_name}.json")
     
     llm = get_llm()
-    prompt_path = os.path.join(os.path.dirname(__file__), "prompts", "convert_html_to_room_json.prompt")
+    prompt_path = os.path.join(root_dir, "backroom_agent/subagents/level/prompts/generate_json.prompt")
     system_prompt_text = load_prompt(prompt_path)
     
     messages = [

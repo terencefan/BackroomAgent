@@ -6,45 +6,55 @@
     "description": "不安全，不稳定，中量实体"
   },
   "atmosphere": {
-    "visuals": ["脏污的水泥/砖墙", "粉尘质感", "巨大废弃机械与管线", "工业白/橙色荧光灯", "狭窄逼仄的隧道", "散落的工业杂物（平板车、箱子、工具）"],
-    "audio": ["机器内部近乎无声的运转噪音", "荧光灯嗡鸣", "管道泄露声（大停电后）"],
-    "smell": ["粉尘味", "工业油污味", "腐肉气味（大停电后管道泄露）"],
+    "visuals": [
+      "脏污的水泥/砖墙",
+      "粉尘覆盖的表面",
+      "工业白/橙色荧光灯",
+      "暴露的电线",
+      "散落的工业杂物（平板车、油桶、箱子）",
+      "狭窄逼仄的走廊"
+    ],
+    "audio": [
+      "机器发出的几近无声的运转噪音",
+      "荧光灯的嗡鸣声",
+      "管道内液体/气体的流动声（不稳定）"
+    ],
+    "smell": [
+      "粉尘味",
+      "工业油污味",
+      "潜在的腐肉气味（管道破裂时）"
+    ],
     "vibe": "工业废弃，幽闭恐惧，压抑，混乱"
   },
   "environmental_mechanics": [
     {
       "mechanic": "电路区域性失效",
-      "effect": "单个灯具或线路损坏会导致整个3x3至6x6灯具网格区域陷入黑暗",
-      "trigger_probability": "恒定（一旦损坏即触发）"
-    },
-    {
-      "mechanic": "非线性空间（隧道呈45°角扭曲）",
-      "effect": "易于迷路，方向感混乱",
-      "trigger_probability": "恒定"
+      "effect": "一个灯具或线路损坏，会导致其所在片区（约3x3至6x6灯具网格）的所有灯光熄灭，使该区域陷入黑暗。",
+      "trigger_probability": "因勘察、实体破坏或意外而触发（DC 12 感知检定以避免触碰）"
     },
     {
       "mechanic": "粉尘环境",
-      "effect": "触摸墙壁会留下粉迹，在狭窄处可能擦伤皮肤或弄脏衣物",
+      "effect": "触摸墙壁会留下粉迹，在狭窄处会弄脏衣物甚至造成皮肤擦伤。",
       "trigger_probability": "恒定"
     },
     {
       "mechanic": "大停电后遗症",
-      "effect": "大多数机器停止运作，仅发出损坏噪音；部分区域灯光不稳定或仅存应急紫光；管道可能泄露有害物质",
-      "trigger_probability": "恒定（当前状态）"
+      "effect": "大多数机器停止运作，仅发出损坏的噪音。部分区域灯光不稳定或仅由紫色应急灯照明。管道可能破裂泄露。",
+      "trigger_probability": "恒定（当前层级状态）"
     }
   ],
   "random_events": [
     {
       "event": "灯光闪烁或区域性熄灭",
-      "probability": "中频（因线路暴露易损）"
+      "probability": "中频（因电路脆弱，建议每小时进行1d20检定，结果为1-3时触发）"
     },
     {
-      "event": "发现未上锁的门（通向走廊、房间或虚空）",
-      "probability": "低频"
+      "event": "管道破裂或泄露",
+      "probability": "低频（大停电后风险增加，1d100 > 90）"
     },
     {
-      "event": "管道爆裂或泄露（大停电后）",
-      "probability": "低频"
+      "event": "发现虚空房间的门解锁",
+      "probability": "极罕见（大停电后概率略有增加，1d100 > 98）"
     }
   ],
   "entities": [
@@ -52,109 +62,212 @@
       "name": "猎犬",
       "behavior": "敌对",
       "rarity": "常见",
-      "description": "曾袭击过基地，是Level 2的常见威胁之一"
+      "description": "曾袭击过定居点，是本层级的主要威胁之一。"
     },
     {
       "name": "牧蛇",
       "behavior": "敌对",
       "rarity": "少见",
-      "description": "会从侧翼发动袭击，曾阻碍救援行动"
+      "description": "会从侧翼发动伏击，曾阻碍过救援行动。"
     },
     {
       "name": "悲尸",
       "behavior": "敌对",
       "rarity": "少见",
-      "description": "曾频繁袭击过“幸存者”基地"
+      "description": "曾频繁袭击过“幸存者”聚落。"
     },
     {
       "name": "机巧子民",
       "behavior": "中立",
-      "rarity": "极罕见（已灭绝/消失）",
-      "description": "古代实体，曾占据并改造本层级，现已消失"
+      "rarity": "绝迹",
+      "description": "古代实体，已消亡。其遗迹（废弃城市、工具部件）可能被发现。"
     }
   ],
   "key_locations": [
     {
       "name": "办公区EL3A",
-      "description": "B.N.T.G.的主要行动基地，可通过Level 2的门到达，是重要的贸易和交通枢纽",
-      "access_probability": "中等（通过特定门）"
+      "description": "B.N.T.G.的主要行动基地，可通过Level 2内的许多门到达。",
+      "access_probability": "中等（需找到正确的门）"
+    },
+    {
+      "name": "B.N.T.G.窄轨铁道系统",
+      "description": "贯穿部分区域的货运/客运轨道，现已因大停电而七零八落，存在脱轨和撞击风险。",
+      "access_probability": "常见（在主要走廊区域）"
     },
     {
       "name": "虚空房间",
-      "description": "门后是无限、无光、无声的虚空，极易迷失，大停电后部分此类门解锁",
-      "access_probability": "极低（通过特定解锁的门）"
-    },
-    {
-      "name": "B.N.T.G.窄轨铁道",
-      "description": "贯穿部分区域的货运/客运轨道系统，大停电后已变得七零八落",
-      "access_probability": "中等（在靠近EL3A的区域）"
-    },
-    {
-      "name": "协济迷失者/幸存者旧址",
-      "description": "曾用于收容和教育新流浪者的聚落，现已废弃",
-      "access_probability": "未知"
+      "description": "门后是无限、无光、无声的虚空，极易迷失。大停电后部分此类门可能解锁。",
+      "access_probability": "极罕见（找到特定门）"
     },
     {
       "name": "机巧子民废弃城市（疑似）",
-      "description": "位于Level 811出口附近的大型废弃城市，可能是机巧子民的主城",
-      "access_probability": "极低（需找到特定出口）"
+      "description": "位于Level 811出口附近，可能是该古代种族的主城遗迹。",
+      "access_probability": "极难发现（需找到通往Level 811的特定出口）"
+    },
+    {
+      "name": "协济迷失者/幸存者旧址",
+      "description": "废弃的教育和安置聚落，可能留有补给或记录。",
+      "access_probability": "未知（需探索发现）"
+    },
+    {
+      "name": "M.E.G.旧副基地",
+      "description": "已废弃，曾作为Alpha基地的副基地。",
+      "access_probability": "未知（需探索发现）"
     }
   ],
   "transitions": {
     "entrances": [
-      "从Level 1进入看起来比其他走廊更长的廊道",
+      "从Level 1进入看起来异常长的走廊",
       "从前厅直接切入",
-      "其他多种入口（文本提及但未详细列出）"
+      "通过其他多种入口（清单中提及但未详述）"
     ],
     "exits": [
       {
         "method": "通过未上锁的门",
         "condition": "找到墙上留有标记或刻印的门",
-        "success_chance": "高（今年尤甚）",
+        "success_chance": "高（出口常见）",
         "next": "Level 1"
       },
       {
         "method": "通过未上锁的门",
         "condition": "找到墙上留有标记或刻印的门",
-        "success_chance": "高（今年尤甚）",
+        "success_chance": "高（出口常见）",
         "next": "Level 3"
       },
       {
         "method": "通过未上锁的门",
         "condition": "找到墙上留有标记或刻印的门",
-        "success_chance": "高（今年尤甚）",
+        "success_chance": "高（出口常见）",
         "next": "Level 4"
       },
       {
         "method": "通过异常门径",
-        "condition": "找到并进入特定的异常门",
+        "condition": "找到特定的异常门",
         "success_chance": "可变（取决于具体门径）",
         "next": null
       },
       {
         "method": "其他离开途径",
-        "condition": "文本提及但未详细列出",
+        "condition": "根据清单中提及的其他方法",
         "success_chance": "未知",
         "next": null
       },
       {
-        "method": "前往办公区EL3A",
-        "condition": "通过Level 2内几乎所有的门",
-        "success_chance": "高",
-        "next": "办公区EL3A"
-      },
-      {
-        "method": "前往Level 126",
-        "condition": "需要一定的层级电量（大停电期间失效）",
-        "success_chance": "未知（依赖电力状态）",
+        "method": "找到通往Level 126的出口",
+        "condition": "需要层级电力生效（大停电后可能失效）",
+        "success_chance": "中（需电力恢复）",
         "next": "Level 126"
       },
       {
-        "method": "前往Level 811",
-        "condition": "需要一定的层级电量（大停电期间失效）",
-        "success_chance": "未知（依赖电力状态）",
+        "method": "找到通往Level 811的出口",
+        "condition": "需要层级电力生效（大停电后可能失效），附近可能有废弃城市",
+        "success_chance": "中（需电力恢复）",
         "next": "Level 811"
       }
     ]
-  }
+  },
+  "findable_items": [
+    {
+      "name": "工具箱",
+      "description": "装有各种手动工具的工具箱，可用于维修或拆卸。",
+      "id": "toolbox",
+      "category": "Tool"
+    },
+    {
+      "name": "木材垛",
+      "description": "一堆堆叠好的木材，可作为建筑材料或燃料。",
+      "id": "wood_stack",
+      "category": "Resource"
+    },
+    {
+      "name": "机器零件",
+      "description": "从机器上拆卸下来的各种金属零件，可用于维修或交易。",
+      "id": "machine_parts",
+      "category": "Resource"
+    },
+    {
+      "name": "生锈管道",
+      "description": "一段段生锈的金属管道，可能含有有用的金属材料。",
+      "id": "rusty_pipes",
+      "category": "Resource"
+    },
+    {
+      "name": "折叠梯",
+      "description": "可折叠的梯子，用于攀爬或到达高处。",
+      "id": "folding_ladder",
+      "category": "Tool"
+    },
+    {
+      "name": "伸缩电线",
+      "description": "大盘的伸缩电线，可用于连接电源或制作陷阱。",
+      "id": "retractable_wire",
+      "category": "Resource"
+    },
+    {
+      "name": "动力工具",
+      "description": "由电力驱动的工业工具，如电钻或角磨机。",
+      "id": "power_tools",
+      "category": "Tool"
+    },
+    {
+      "name": "折叠椅",
+      "description": "可折叠的椅子，便于携带和休息。",
+      "id": "folding_chair",
+      "category": "Tool"
+    },
+    {
+      "name": "油桶",
+      "description": "装有燃油或润滑油的金属桶。",
+      "id": "oil_drum",
+      "category": "Resource"
+    },
+    {
+      "name": "木箱",
+      "description": "装有各种可加工材料的木制箱子。",
+      "id": "wooden_crate",
+      "category": "Resource"
+    },
+    {
+      "name": "废纸",
+      "description": "散落在地上的旧纸张，可能包含有用信息或可作引火物。",
+      "id": "scrap_paper",
+      "category": "Resource"
+    },
+    {
+      "name": "旧工具",
+      "description": "磨损但可能仍可使用的旧手动工具。",
+      "id": "old_tools",
+      "category": "Tool"
+    },
+    {
+      "name": "碎玻璃",
+      "description": "来自老灯泡的碎玻璃片，锋利且危险。",
+      "id": "broken_glass",
+      "category": "Resource"
+    },
+    {
+      "name": "手电筒",
+      "description": "便携式照明工具，在黑暗区域至关重要。",
+      "id": "flashlight",
+      "category": "Tool"
+    },
+    {
+      "name": "汽车电池",
+      "description": "用于储存和提供电力的可充电电池。",
+      "id": "car_battery",
+      "category": "Resource"
+    },
+    {
+      "name": "发电机",
+      "description": "小型便携式发电机，可产生电力。",
+      "id": "generator",
+      "category": "Tool"
+    },
+    {
+      "name": "铁轨",
+      "description": "一段段金属轨道，可用于建造或作为金属原料。",
+      "id": "rail_track",
+      "category": "Resource"
+    }
+  ]
 }
