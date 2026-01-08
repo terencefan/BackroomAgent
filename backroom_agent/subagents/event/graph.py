@@ -1,6 +1,7 @@
-from langgraph.graph import StateGraph, START, END
-from .state import EventAgentState
+from langgraph.graph import END, START, StateGraph
+
 from .nodes import generate_event_node
+from .state import EventAgentState
 
 workflow = StateGraph(EventAgentState)
 workflow.add_node("generate_event", generate_event_node)

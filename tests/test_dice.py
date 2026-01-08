@@ -1,12 +1,13 @@
-import sys
 import os
-import unittest
 import random
+import sys
+import unittest
 
 # Add project root to sys.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from backroom_agent.utils.dice import Dice
+
 
 class TestDice(unittest.TestCase):
     def test_range(self):
@@ -23,7 +24,7 @@ class TestDice(unittest.TestCase):
         seed = "test_seed_reproducibility"
         d1 = Dice(seed)
         d2 = Dice(seed)
-        
+
         # They should produce identical sequences
         for i in range(20):
             val1 = d1.d20()
@@ -33,7 +34,7 @@ class TestDice(unittest.TestCase):
     def test_modifier_clamping(self):
         """Test that modifiers are applied and results are clamped."""
         d = Dice()
-        
+
         # Modifier that should push it over 20 (clamped to 20)
         # We roll many times to be sure we aren't just getting lucky with a low roll + huge mod
         for _ in range(10):
@@ -65,7 +66,11 @@ class TestDice(unittest.TestCase):
         # Test Advantage
         d_adv = Dice(seed=seed)
         res_adv = d_adv.d20(advantage=True)
-        self.assertEqual(res_adv, expected_adv, "Advantage should take the higher of the first two rolls")
+        self.assertEqual(
+            res_adv,
+            expected_adv,
+            "Advantage should take the higher of the first two rolls",
+        )
 
         # Test Disadvantage
         # Need to re-init rng locally to get same sequence
@@ -76,7 +81,11 @@ class TestDice(unittest.TestCase):
 
         d_dis = Dice(seed=seed)
         res_dis = d_dis.d20(disadvantage=True)
-        self.assertEqual(res_dis, expected_dis, "Disadvantage should take the lower of the first two rolls")
+        self.assertEqual(
+            res_dis,
+            expected_dis,
+            "Disadvantage should take the lower of the first two rolls",
+        )
 
     def test_advantage_disadvantage_cancel(self):
         """Test that advantage and disadvantage cancel each other out."""
@@ -87,7 +96,10 @@ class TestDice(unittest.TestCase):
         d = Dice(seed=seed)
         # Should behave like a normal single roll
         res = d.d20(advantage=True, disadvantage=True)
-        self.assertEqual(res, expected_val, "Advantage and Disadvantage should cancel out")
+        self.assertEqual(
+            res, expected_val, "Advantage and Disadvantage should cancel out"
+        )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

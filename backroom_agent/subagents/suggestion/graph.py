@@ -1,6 +1,7 @@
-from langgraph.graph import StateGraph, START, END
-from .state import SuggestionAgentState
+from langgraph.graph import END, START, StateGraph
+
 from .nodes import generate_suggestions_node
+from .state import SuggestionAgentState
 
 workflow = StateGraph(SuggestionAgentState)
 workflow.add_node("generate_suggestions", generate_suggestions_node)

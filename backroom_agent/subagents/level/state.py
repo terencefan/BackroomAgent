@@ -1,5 +1,6 @@
-from typing import TypedDict, List, Dict, Any, Optional, Annotated
 import operator
+from typing import Annotated, Any, Dict, List, Optional, TypedDict
+
 
 class LevelAgentState(TypedDict):
     url: Optional[str]

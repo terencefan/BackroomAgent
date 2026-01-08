@@ -1,18 +1,12 @@
-from langgraph.graph import StateGraph, START, END
+from langgraph.graph import END, START, StateGraph
+
+from .nodes import (check_completion_node, fetch_content_node,
+                    filter_entities_node, filter_items_node, resolve_url_node,
+                    update_level_json_node)
+from .nodes_llm import (extract_entities_node, extract_items_node,
+                        generate_json_node)
 from .state import LevelAgentState
-from .nodes import (
-    resolve_url_node,
-    fetch_content_node,
-    filter_items_node,
-    filter_entities_node,
-    update_level_json_node,
-    check_completion_node
-)
-from .nodes_llm import (
-    generate_json_node,
-    extract_items_node,
-    extract_entities_node
-)
+
 
 def completion_check(state: LevelAgentState):
     """
@@ -21,6 +15,7 @@ def completion_check(state: LevelAgentState):
     if state.get("items_extracted") and state.get("entities_extracted"):
         return "update_level_json"
     return END
+
 
 # Define the Graph
 workflow = StateGraph(LevelAgentState)
@@ -55,14 +50,10 @@ workflow.add_edge("filter_entities", "check_completion")
 workflow.add_conditional_edges(
     "check_completion",
     completion_check,
-    {
-        "update_level_json": "update_level_json",
-        END: END
-    }
+    {"update_level_json": "update_level_json", END: END},
 )
 
 workflow.add_edge("update_level_json", END)
-
 
 
 # Compile

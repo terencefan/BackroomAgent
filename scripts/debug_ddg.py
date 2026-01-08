@@ -1,4 +1,5 @@
 import traceback
+
 from ddgs import DDGS
 
 try:

@@ -1,5 +1,7 @@
+from typing import List, Literal, Optional
+
 from pydantic import BaseModel
-from typing import List, Optional, Literal
+
 
 class Attributes(BaseModel):
     STR: int
@@ -9,16 +11,19 @@ class Attributes(BaseModel):
     WIS: int
     CHA: int
 
+
 class Vitals(BaseModel):
     hp: int
     maxHp: int
     sanity: int
     maxSanity: int
 
+
 class Item(BaseModel):
     id: str
     name: str
     icon: Optional[str] = None
+
 
 class GameState(BaseModel):
     level: str
@@ -26,9 +31,11 @@ class GameState(BaseModel):
     vitals: Vitals
     inventory: List[Optional[Item]]
 
+
 class ChatRequest(BaseModel):
     player_input: str
     current_state: GameState
+
 
 class ChatResponse(BaseModel):
     message: str

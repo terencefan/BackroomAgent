@@ -1,6 +1,8 @@
 import operator
-from typing import Annotated, List, TypedDict, Optional
+from typing import Annotated, List, Optional, TypedDict
+
 from langchain_core.messages import BaseMessage
+
 
 class SuggestionAgentState(TypedDict):
     messages: Annotated[List[BaseMessage], operator.add]

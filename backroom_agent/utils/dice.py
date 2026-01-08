@@ -2,6 +2,7 @@ import random
 import time
 import uuid
 
+
 class Dice:
     """A utility class for rolling dice with reproducible seeds."""
 
@@ -11,12 +12,18 @@ class Dice:
             mac = uuid.getnode()
             timestamp = time.time_ns()
             seed = f"{mac}_{timestamp}"
-        
+
         self.seed = seed
         self._index = 0
         self._rng = random.Random(seed)
 
-    def roll(self, sides: int, modifier: int = 0, advantage: bool = False, disadvantage: bool = False) -> int:
+    def roll(
+        self,
+        sides: int,
+        modifier: int = 0,
+        advantage: bool = False,
+        disadvantage: bool = False,
+    ) -> int:
         """
         Roll a die with the specified number of sides.
         Supports:
@@ -38,7 +45,7 @@ class Dice:
             base_roll = min(r1, r2)
         else:
             base_roll = self._roll_once(sides)
-        
+
         total = base_roll + modifier
         # Clamp result between 1 and max sides
         return max(1, min(sides, total))
@@ -48,10 +55,18 @@ class Dice:
         self._index += 1
         return self._rng.randint(1, sides)
 
-    def d20(self, modifier: int = 0, advantage: bool = False, disadvantage: bool = False) -> int:
+    def d20(
+        self, modifier: int = 0, advantage: bool = False, disadvantage: bool = False
+    ) -> int:
         """Roll a 20-sided die."""
-        return self.roll(20, modifier=modifier, advantage=advantage, disadvantage=disadvantage)
+        return self.roll(
+            20, modifier=modifier, advantage=advantage, disadvantage=disadvantage
+        )
 
-    def d100(self, modifier: int = 0, advantage: bool = False, disadvantage: bool = False) -> int:
+    def d100(
+        self, modifier: int = 0, advantage: bool = False, disadvantage: bool = False
+    ) -> int:
         """Roll a 100-sided die."""
-        return self.roll(100, modifier=modifier, advantage=advantage, disadvantage=disadvantage)
+        return self.roll(
+            100, modifier=modifier, advantage=advantage, disadvantage=disadvantage
+        )

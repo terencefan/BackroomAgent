@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 setup(
     name="backroom-agent",
@@ -16,7 +16,7 @@ setup(
         "fastapi>=0.115.0",
         "uvicorn>=0.30.0",
         "pydantic>=2.0.0",
-        "graphviz>=0.20.1"
+        "graphviz>=0.20.1",
     ],
     entry_points={
         "console_scripts": [

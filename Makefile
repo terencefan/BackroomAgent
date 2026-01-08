@@ -1,4 +1,4 @@
-.PHONY: install server graph frontend-install frontend-dev frontend-build clean
+.PHONY: install server graph frontend-install frontend-dev frontend-build clean format
 
 PYTHON = .venv/bin/python
 PIP = .venv/bin/pip
@@ -19,6 +19,11 @@ scripts-fetch:
 
 test:
 	PYTHONPATH=. $(PYTHON) -m pytest tests/ --cov=backroom_agent --cov-report=term-missing
+
+format:
+	$(PYTHON) -m black .
+	$(PYTHON) -m isort .
+	cd frontend && npm run lint -- --fix
 
 # frontend
 frontend-install:

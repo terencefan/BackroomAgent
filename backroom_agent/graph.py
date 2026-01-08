@@ -1,7 +1,9 @@
-from langgraph.graph import END, START, StateGraph
 from langchain_core.messages import AIMessage, HumanMessage
-from backroom_agent.state import State
+from langgraph.graph import END, START, StateGraph
+
 from backroom_agent.agent import dm_agent
+from backroom_agent.state import State
+
 
 def build_graph():
     """Constructs the StateGraph for the agent."""
@@ -12,8 +14,10 @@ def build_graph():
 
     return workflow.compile()
 
+
 # Validated graph instance
 graph = build_graph()
+
 
 def run_once(user_text: str) -> AIMessage:
     """Convenience helper for a one-turn run."""
