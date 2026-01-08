@@ -1,0 +1,6 @@
+{
+  "name": "笑魇",
+  "description": "一种出现在Level 9的实体。",
+  "id": "smiler",
+  "behavior": "敌对"
+}

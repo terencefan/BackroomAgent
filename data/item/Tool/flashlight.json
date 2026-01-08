@@ -1,6 +1,6 @@
 {
   "name": "手电筒",
-  "description": "便携式照明设备，在黑暗区域至关重要。",
+  "description": "一个电池驱动的便携式光源，用于在黑暗中照明。",
   "id": "flashlight",
   "category": "Tool"
 }

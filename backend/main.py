@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.protocol import ChatRequest, ChatResponse
+from backend.protocol import ChatRequest, ChatResponse, BackendMessage, GameEvent, EventType, GameState, Vitals, Attributes
 
 app = FastAPI(title="Backroom Agent API")
 
@@ -16,6 +16,14 @@ app.add_middleware(
 
 # --- Routes ---
 
+# Mock initial state helper
+def get_initial_state() -> GameState:
+    return GameState(
+        level="Level 0",
+        attributes=Attributes(STR=10, DEX=10, CON=10, INT=10, WIS=10, CHA=10),
+        vitals=Vitals(hp=10, maxHp=10, sanity=100, maxSanity=100),
+        inventory=[]
+    )
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat_endpoint(request: ChatRequest):
@@ -23,6 +31,15 @@ async def chat_endpoint(request: ChatRequest):
     Process player input and current state, returning the DM's response and updated state.
     """
     user_input = request.player_input.lower()
+    
+    # Handle INIT event or missing state
+    if request.event.type == EventType.INIT or request.current_state is None:
+         state = get_initial_state()
+         return ChatResponse(
+             messages=[BackendMessage(text="Welcome to the Backrooms. You are in Level 0. The hum of lights is defining.", sender="dm")],
+             new_state=state
+         )
+
     state = request.current_state
 
     # Mock Logic for demonstration (In real version, this calls LangGraph)
@@ -46,7 +63,10 @@ async def chat_endpoint(request: ChatRequest):
     updated_state = state.copy()
     updated_state.vitals = new_vitals
 
-    return ChatResponse(message=response_text, sender="dm", new_state=updated_state)
+    return ChatResponse(
+        messages=[BackendMessage(text=response_text, sender="dm")],
+        new_state=updated_state
+    )
 
 
 @app.get("/health")

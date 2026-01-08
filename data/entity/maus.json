@@ -1,0 +1,6 @@
+{
+  "name": "尸鼠",
+  "description": "一种出现在Level 9的实体。",
+  "id": "maus",
+  "behavior": "敌对"
+}

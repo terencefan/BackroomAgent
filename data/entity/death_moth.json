@@ -1,0 +1,6 @@
+{
+  "name": "死亡飞蛾",
+  "description": "一种出现在Level 9的实体。",
+  "id": "death_moth",
+  "behavior": "敌对"
+}

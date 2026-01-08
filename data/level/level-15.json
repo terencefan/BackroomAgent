@@ -1,0 +1,61 @@
+{
+  "level_id": "Backrooms_Introduction",
+  "title": null,
+  "survival_difficulty": {
+    "class": "未知",
+    "description": "本文档为概念介绍，不描述具体层级的生存难度。"
+  },
+  "atmosphere": {
+    "visuals": [
+      "发黄的墙纸",
+      "潮湿的地毯",
+      "不规律的荧光灯"
+    ],
+    "audio": [
+      "变压器永无止境的嗡鸣声"
+    ],
+    "smell": [
+      "腐臭的潮湿地毯味"
+    ],
+    "vibe": "阈限空间，单调，令人发狂"
+  },
+  "environmental_mechanics": [
+    {
+      "mechanic": "切出现象 (Noclip)",
+      "effect": "从前厅（现实世界）意外进入后室的主要方式，也是在后室不同地点间穿梭的重要方法。",
+      "trigger_probability": "在‘错误的地方’有概率发生，具体概率未知。"
+    },
+    {
+      "mechanic": "无限层级",
+      "effect": "后室由无限延伸、各不相同的层级构成，探索无尽头。",
+      "trigger_probability": "恒定"
+    },
+    {
+      "mechanic": "物理法则异常",
+      "effect": "前厅的常见物理法则可能不适用于后室中的某些现象。",
+      "trigger_probability": "未知"
+    }
+  ],
+  "random_events": [
+    {
+      "event": "实体在附近徘徊",
+      "probability": "未知，但需时刻保持警惕"
+    }
+  ],
+  "key_locations": [],
+  "transitions": {
+    "entrances": [
+      "在‘错误的地方’从前厅（现实世界）切出 (Noclip)"
+    ],
+    "exits": [
+      {
+        "method": "返回前厅",
+        "condition": "几乎不可能",
+        "success_chance": "极低/几乎为零",
+        "next": null
+      }
+    ]
+  },
+  "findable_items": [],
+  "entities": []
+}

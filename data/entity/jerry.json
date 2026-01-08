@@ -1,0 +1,6 @@
+{
+  "name": "杰瑞",
+  "description": "一种出现在Level 9的实体。",
+  "id": "jerry",
+  "behavior": "被动"
+}

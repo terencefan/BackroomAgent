@@ -1,0 +1,6 @@
+{
+  "name": "背包",
+  "description": "用于携带个人物品和补给品的容器。",
+  "id": "backpack",
+  "category": "Tool"
+}

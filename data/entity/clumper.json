@@ -1,0 +1,6 @@
+{
+  "name": "传送者",
+  "description": "一种出现在Level 9的实体。",
+  "id": "clumper",
+  "behavior": "敌对"
+}

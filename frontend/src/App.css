@@ -1,13 +1,15 @@
 #root {
-  max-width: 100%;
+  width: min(100vw, 177.78vh);
+  height: min(100vh, 56.25vw);
   margin: 0;
   padding: 0;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   color: #c0c0c0;
   background-color: #121212;
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  box-shadow: 0 0 30px rgba(0,0,0,0.8);
+  border: 1px solid #333;
 }
 
 body {
@@ -21,7 +23,7 @@ body {
   overflow: hidden;
   padding: 10px;
   gap: 15px;
-  height: calc(100vh - 60px); /* Minus header */
+  height: 100%;
 }
 
 /* Header */
@@ -127,21 +129,49 @@ body {
   background-color: #facc15;
 }
 
+.input-area input:disabled,
+.input-area button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(100%);
+}
+
+.input-area button:disabled:hover {
+  background-color: #eab308; /* Reset hover color */
+}
+
 /* Sidebar Area */
 .sidebar-section {
   flex: 1;
   max-width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  overflow-y: auto;
+  gap: 10px;
+  overflow-y: hidden;
+  height: 100%;
 }
 
 .panel {
   background-color: #1e1e1e;
   border: 1px solid #333;
   border-radius: 4px;
-  padding: 15px;
+  padding: 10px;
+  flex-shrink: 0;
+}
+
+.attributes-panel {
+  flex-shrink: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.inventory-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  /* overflow: hidden; Removed to allow tooltip overflow */
 }
 
 .panel-header {
@@ -159,15 +189,16 @@ body {
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 5px;
 }
 
 .stat-item {
   display: flex;
   justify-content: space-between;
   background: #111;
-  padding: 8px;
+  padding: 5px;
   border: 1px solid #333;
+  font-size: 0.9rem;
 }
 
 .stat-label {
@@ -212,8 +243,12 @@ body {
 .inventory-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 5px;
-  aspect-ratio: 1;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 3px;
+  flex: 1;
+  min-height: 0;
+  aspect-ratio: 1/1;
+  margin: 0 auto;
 }
 
 .inventory-slot {
@@ -223,19 +258,318 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  aspect-ratio: 1;
   font-size: 0.8rem;
   color: #555;
   transition: all 0.2s;
+  position: relative; /* For absolute positioning of quantity and tooltip */
 }
 
 .inventory-slot:hover {
   border-color: #666;
   background-color: #1a1a1a;
+  z-index: 10; /* Bring above others on hover */
 }
 
 .inventory-slot.occupied {
   color: #e0e0e0;
   border-color: #555;
+}
+
+/* Category borders */
+.inventory-slot.category-resource {
+  border-color: #4299e1; /* Blue */
+  box-shadow: inset 0 0 5px rgba(66, 153, 225, 0.2);
+}
+
+.inventory-slot.category-weapon {
+  border-color: #f56565; /* Red */
+  box-shadow: inset 0 0 5px rgba(245, 101, 101, 0.2);
+}
+
+.inventory-slot.category-tool {
+  border-color: #ecc94b; /* Yellow */
+  box-shadow: inset 0 0 5px rgba(236, 201, 75, 0.2);
+}
+
+.inventory-slot.category-document {
+  border-color: #e2e8f0; /* Gray/White */
+  box-shadow: inset 0 0 5px rgba(226, 232, 240, 0.2);
+}
+
+.inventory-slot.category-medical {
+  border-color: #48bb78; /* Green */
+  box-shadow: inset 0 0 5px rgba(72, 187, 120, 0.2);
+}
+
+.inventory-slot.category-special {
+  border-color: #9f7aea; /* Purple */
+  box-shadow: inset 0 0 8px rgba(159, 122, 234, 0.3);
+}
+
+.item-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.item-quantity {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  font-size: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 1px 4px;
+  border-radius: 4px;
+  color: #fff;
+  pointer-events: none;
+  z-index: 2;
+  font-weight: bold;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.item-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 110%; /* Show above the slot */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1a1a1a;
+  border: 1px solid #eab308;
+  padding: 8px;
+  width: 150px;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* Increased z-index */
+  pointer-events: none;
+  text-align: left;
+}
+
+/* Adjust tooltip position for items on the left edge (Column 1) */
+.inventory-slot:nth-child(6n + 1) .item-tooltip {
+  left: 0;
+  transform: translateX(0);
+}
+
+/* Adjust tooltip position for items on the right edge (Column 6) */
+.inventory-slot:nth-child(6n) .item-tooltip {
+  left: auto;
+  right: 0;
+  transform: translateX(0);
+}
+
+/* Adjust tooltip position for items in the top row (Row 1) - Show below instead */
+.inventory-slot:nth-child(-n + 6) .item-tooltip {
+  bottom: auto;
+  top: 110%;
+}
+
+.inventory-slot:hover .item-tooltip {
+  display: block;
+}
+
+.tooltip-title {
+  font-weight: bold;
+  color: #eab308;
+  margin-bottom: 4px;
+  font-size: 0.9em;
+  border-bottom: 1px solid #333;
+  padding-bottom: 2px;
+  padding-right: 25px; /* Make space for quantity */
+}
+
+.tooltip-quantity {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 0.85em;
+  color: #a0aec0;
+  font-weight: normal;
+}
+
+.tooltip-desc {
+  font-size: 0.8em;
+  color: #ccc;
+  line-height: 1.3;
+}
+
+.chat-box-content { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+/* Handle tooltip position for top row items if needed, or simply let it overlap */
+/* For simplicity, simple CSS hover is used. A JS solution would be better for edge detection */
+
+.loading-indicator {
+    align-self: center;
+    color: #ffd700;
+    font-size: 1.5rem;
+    margin: 10px 0;
+    display: flex;
+    gap: 4px;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+.loading-indicator .dot {
+    animation: typing 1.4s infinite ease-in-out both;
+}
+
+.loading-indicator .dot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.loading-indicator .dot:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes typing {
+    0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* Message Container to hold Text + Options */
+.message-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+    gap: 8px;
+}
+
+.message-container.dm,
+.message-container.system {
+    align-self: flex-start;
+}
+
+.message-container.player {
+    align-self: flex-end;
+}
+
+/* Adjust original message style to fit inside container */
+.message {
+    max-width: 100%; /* Let container control width */
+}
+
+/* Options Styling */
+.message-options {
+    display: flex;
+    flex-direction: column; /* Stack vertically */
+    align-items: flex-end; /* Align right */
+    gap: 8px;
+    margin-top: 5px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.option-btn {
+    background-color: transparent;
+    border: 1px solid #eab308;
+    color: #eab308;
+    padding: 8px 16px; /* Slightly larger padding for easier clicking */
+    border-radius: 15px;
+    font-family: inherit;
+    font-size: 0.9rem; /* Slightly larger text */
+    text-align: right;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    max-width: 100%; /* Ensure it doesn't overflow container */
+}
+
+.option-btn:hover {
+    background-color: rgba(234, 179, 8, 0.1);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(234, 179, 8, 0.2);
+}
+
+.option-btn:active {
+    transform: translateY(0);
+}
+
+.option-btn:disabled {
+    border-color: #666;
+    color: #666;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* Inventory Context Menu */
+.context-menu {
+    position: fixed;
+    z-index: 1000;
+    background-color: rgba(17, 17, 17, 0.95);
+    border: 1px solid #33ff33;
+    box-shadow: 0 0 10px rgba(51, 255, 51, 0.2);
+    padding: 5px 0;
+    min-width: 120px;
+    backdrop-filter: blur(5px);
+    border-radius: 4px;
+}
+
+.context-menu-item {
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #33ff33;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.context-menu-item:hover {
+    background-color: rgba(51, 255, 51, 0.15);
+}
+
+.context-menu-divider {
+    height: 1px;
+    background-color: #333;
+    margin: 4px 0;
+}
+
+/* Submenu */
+.submenu-trigger::after {
+    content: '▶';
+    font-size: 0.7em;
+    margin-left: 10px;
+    align-self: center;
+}
+
+.submenu {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color: rgba(17, 17, 17, 0.95);
+    border: 1px solid #33ff33;
+    min-width: 100px;
+    display: none;
+    border-radius: 4px;
+}
+
+.context-menu-item:hover .submenu {
+    display: block;
+}
+
+/* Option Animation States Override */
+.option-btn.selected {
+    background-color: #22c55e !important;
+    color: #000 !important;
+    border-color: #22c55e !important;
+    cursor: default;
+    opacity: 1 !important;
+    transform: none !important;
+    box-shadow: none !important;
 }
 

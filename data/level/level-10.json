@@ -3,95 +3,139 @@
   "title": "丰裕",
   "survival_difficulty": {
     "class": "等级 1",
-    "description": "低环境风险，无敌对实体，但逃离略难"
+    "description": "低环境风险，无敌对实体，但略难逃离"
   },
   "atmosphere": {
-    "visuals": ["广阔的麦田", "铅灰色的天空", "被灌木丛和树木分割的田地", "散布的水体（湖泊）", "泥土小径", "各种木制建筑物（谷仓、小棚）"],
-    "audio": ["偶尔吹动庄稼的风声"],
-    "smell": ["麦粒香气", "泥土味（水体）"],
-    "vibe": "沉闷，一成不变，阈限空间，平静但令人迷失时间"
+    "visuals": [
+      "广阔的麦田",
+      "铅灰色的天空",
+      "成排的树木与灌木丛",
+      "广布的湖泊",
+      "泥土小径与轮胎碾痕",
+      "散布的木棚、谷仓等建筑"
+    ],
+    "audio": [
+      "偶尔吹动庄稼的风声",
+      "可能的短暂雨声"
+    ],
+    "smell": [
+      "麦粒的香气",
+      "泥土的味道（来自水体）"
+    ],
+    "vibe": "沉闷，一成不变，宁静但令人迷失时间感"
   },
   "environmental_mechanics": [
     {
-      "mechanic": "恒定气候与时间",
-      "effect": "永远是阴沉的白天，容易失去时间观念",
+      "mechanic": "恒定气候与光照",
+      "effect": "永远是阴沉的白天，无昼夜循环，容易失去时间观念",
       "trigger_probability": "恒定"
     },
     {
       "mechanic": "土壤疏水性",
-      "effect": "水体广布于低地，不会渗入地下",
+      "effect": "水体聚集于低地，无法渗入地下",
       "trigger_probability": "恒定"
     },
     {
-      "mechanic": "蠕虫涌出",
-      "effect": "挖掘超过一米深的土壤可能导致大量蠕虫涌出，造成滑倒、摔伤、衣物损坏或钻入皮肤的风险",
-      "trigger_probability": "挖掘超过一米时触发"
-    },
-    {
-      "mechanic": "小径抑制生长",
+      "mechanic": "小径植物抑制",
       "effect": "泥土小径上的植物不会重新生长，播种也无法发芽",
       "trigger_probability": "恒定"
+    },
+    {
+      "mechanic": "深层挖掘风险",
+      "effect": "挖掘超过一米深可能引发蠕虫涌出，导致滑倒、摔伤、衣物损坏甚至蠕虫钻入皮肤",
+      "trigger_probability": "挖掘超过一米时触发 (DC 15 敏捷豁免以避免负面效果)"
     }
   ],
   "random_events": [
     {
-      "event": "短暂的小雨或雾天",
-      "probability": "罕见"
+      "event": "短暂的小雨或起雾",
+      "probability": "罕见 (1d20 > 17)"
     },
     {
-      "event": "发现建筑物（谷仓、小棚等）",
-      "probability": "常见"
-    }
-  ],
-  "entities": [
-    {
-      "name": "类蠕虫实体",
-      "behavior": "被动/环境危害",
-      "rarity": "常见（但通常隐藏在地下）",
-      "description": "栖息于地表下土壤中，挖掘过深会大量涌出，可能造成物理伤害。"
+      "event": "发现有用的资源（木材、钉子）在空建筑内",
+      "probability": "常见 (调查空建筑时 1d6 > 2)"
     }
   ],
   "key_locations": [
     {
       "name": "湖泊",
-      "description": "水体清澈，可安全饮用（有泥土味），溶氧量高，是通往水域层级的潜在出口",
-      "access_probability": "常见（广布于低地）"
+      "description": "水体清澈，可安全饮用（有泥土味），溶氧量高，周围有未开垦的泥土和草地",
+      "access_probability": "常见 (在低地探索易发现)"
     },
     {
-      "name": "谷仓/木制建筑物",
+      "name": "各类建筑（木棚、外屋、谷仓、马厩）",
       "description": "内部大多空空如也，但可能存放木材、钉子等有用资源，可作为临时庇护所或定居点",
-      "access_probability": "常见"
+      "access_probability": "间或发现 (1d10 > 6)"
     },
     {
       "name": "泥土小径",
-      "description": "特征为两条轮胎碾痕，被草坪隔开，是通往 Level 11 的主要路径",
-      "access_probability": "常见"
+      "description": "特征为被草坪隔开的两条轮胎碾痕，推测有载具行驶但从未被目击，是通往 Level 11 的关键路径",
+      "access_probability": "经常出现 (沿麦田探索易发现)"
+    },
+    {
+      "name": "M.E.G. 临时工作场所",
+      "description": "非永久性前哨，利用自然建筑作为临时基地",
+      "access_probability": "未知/可能已废弃 (因收割活动停止)"
     }
   ],
   "transitions": {
     "entrances": [
       "从 Level 9 中通往草地的人行道切入",
-      "在 Level 11 的某些街道旁找到一条偏僻小道返回"
+      "从 Level 11 的某些街道旁找到偏僻小道返回"
     ],
     "exits": [
       {
         "method": "沿泥土小径长时间行走",
-        "condition": "找到一条小径并沿着它走很远",
-        "success_chance": "高（通常可以到达）",
+        "condition": "找到一条小径并坚持沿其行走很远",
+        "success_chance": "高 (但需长时间行走)",
         "next": "Level 11"
       },
       {
-        "method": "进入小麦中的芥花籽",
-        "condition": "在麦田中找到一片芥花籽并进入",
-        "success_chance": "未知/需探索发现",
+        "method": "在小麦中找到并进入一片芥花籽",
+        "condition": "在麦田中仔细搜索并找到特定的芥花籽",
+        "success_chance": "极低/稀有 (需通过高难度的感知检定)",
         "next": "Level 184"
       },
       {
         "method": "在湖中游泳",
-        "condition": "进入层级中的湖泊游泳",
-        "success_chance": "未知/目的地随机",
+        "condition": "进入层级中的湖泊并游泳",
+        "success_chance": "未知/可能随机 (调研中)",
         "next": null
       }
     ]
-  }
+  },
+  "findable_items": [
+    {
+      "name": "木材",
+      "description": "可用于建筑或作为燃料的木材资源。",
+      "id": "wood",
+      "category": "Resource"
+    },
+    {
+      "name": "钉子",
+      "description": "可用于建筑或修理的金属钉子。",
+      "id": "nails",
+      "category": "Resource"
+    },
+    {
+      "name": "小麦",
+      "description": "可以磨成面粉或直接食用的谷物，但营养价值存疑。",
+      "id": "wheat",
+      "category": "Food"
+    },
+    {
+      "name": "蠕虫",
+      "description": "从土壤中挖掘出的小型类蠕虫实体，可能具有未知用途。",
+      "id": "worms",
+      "category": "Resource"
+    }
+  ],
+  "entities": [
+    {
+      "name": "蠕虫",
+      "description": "栖息在Level 10地表下土壤中的小体型类蠕虫实体。它们大量存在于一米深的土壤之下，来源和向下延伸距离未知。当挖掘超过一米深时，它们可能迅速涌出，可能引发滑倒、摔伤或试图钻入皮肤造成伤害。",
+      "id": "worms",
+      "behavior": "被动"
+    }
+  ]
 }

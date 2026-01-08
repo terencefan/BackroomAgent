@@ -1,0 +1,6 @@
+{
+  "name": "碾压者",
+  "description": "Level 9独特的实体，与浓雾相关的生成机制。",
+  "id": "crusher",
+  "behavior": "伏击者"
+}

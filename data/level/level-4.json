@@ -2,25 +2,24 @@
   "level_id": "Level 4",
   "title": "废弃办公室",
   "survival_difficulty": {
-    "class": "等级 2",
-    "description": "安全，实体绝迹，资源丰富，是补给和会面的理想地点"
+    "class": "等级 1",
+    "description": "安全，实体极少，资源丰富，易于导航"
   },
   "atmosphere": {
     "visuals": [
-      "空置的办公室房间",
+      "空置的办公室空间",
       "大多数被涂黑的窗户",
-      "极少的家具",
-      "办公室风格的楼梯和电梯"
+      "少数未被涂黑的窗户",
+      "缺乏家具"
     ],
     "audio": [
-      "空旷环境的回音",
+      "空旷空间的回声",
       "可能的脚步声"
     ],
     "smell": [
-      "陈旧的空气",
-      "可能的水汽味（来自冷水器）"
+      "旧办公室的尘土味"
     ],
-    "vibe": "空旷，废弃，实用，相对安全"
+    "vibe": "空旷，废弃，社交中心"
   },
   "environmental_mechanics": [
     {
@@ -30,86 +29,67 @@
     },
     {
       "mechanic": "出口视野消失",
-      "effect": "一旦失去对出口（楼梯、电梯）的视野，它们可能会消失",
-      "trigger_probability": "高频/几乎总是 (DC 5 感知检定以记住位置)"
+      "effect": "一旦失去对出口（如楼梯、电梯）的视线，出口可能消失",
+      "trigger_probability": "失去视野时检定 (例如：1d20 > 15)"
     }
   ],
   "random_events": [
     {
-      "event": "发现未被涂黑的窗户",
-      "probability": "少见 (建议进行主动侦查检定 DC 15 以识别并避开)"
+      "event": "发现杏仁水补给（冷水器、自动售货机、喷水池）",
+      "probability": "高频 (易于找到)"
     },
     {
       "event": "遇到其他流浪者",
-      "probability": "常见 (因为该层级是主要补给和会面点)"
-    }
-  ],
-  "entities": [
-    {
-      "name": "猎犬 (Hounds)",
-      "behavior": "敌对",
-      "rarity": "极罕见",
-      "description": "唯二可被观测到的实体之一，威胁低但存在"
-    },
-    {
-      "name": "钝人 (Dullers)",
-      "behavior": "敌对",
-      "rarity": "极罕见",
-      "description": "唯二可被观测到的实体之一"
-    },
-    {
-      "name": "笑魇 (Smilers)",
-      "behavior": "敌对",
-      "rarity": "传闻/未证实 (基于单一目击报告)",
-      "description": "无证据支持其存在，但需保持警惕"
+      "probability": "高频 (常见社交中心)"
     }
   ],
   "key_locations": [
     {
       "name": "M.E.G. Omega 基地",
       "description": "M.E.G.的第二个主要基地，守备严密，靠近通往Level 5和Level 6的入口",
-      "access_probability": "已知位置/容易找到 (如果知道其存在)"
+      "access_probability": "已知位置，可寻找"
     },
     {
-      "name": "神爱之繁生 (Amor Incrementum) 营地",
-      "description": "崇拜农业的敌对异教徒团体，仅十人，种植菌类，可用宗教物品交易",
-      "access_probability": "少见/需要探索发现"
+      "name": "神爱之繁生（Amor Incrementum）营地",
+      "description": "崇拜农业的敌对异教徒团体，种植从Level 0和Level 1获得的菌类，仅对持有宗教物品者可能交易",
+      "access_probability": "稀有/隐蔽"
     },
     {
-      "name": "T.B.D. (“悬而未决”) 营地",
-      "description": "六人小团体，储存多种物品，无视未互动者，只售卖无实际用途的奇特物品",
-      "access_probability": "少见/需要探索发现"
-    },
-    {
-      "name": "杏仁水源点",
-      "description": "冷水器、自动售货机、储存杏仁水的喷水池",
-      "access_probability": "常见/探索中容易遇到"
+      "name": "T.B.D.（悬而未决）据点",
+      "description": "小团体，储存多种物品，被动，只售卖没有实际用途的奇特物品",
+      "access_probability": "稀有/隐蔽"
     }
   ],
   "transitions": {
     "entrances": [
-      "从枢纽 (The Hub) 的墙上跃进",
-      "通过 Level 3 的电梯",
-      "通过 Level 2 中未上锁的门",
-      "从 Level 283 的海洋球池中掉入，有几率传送穿过天花板"
+      "从枢纽（The Hub）的墙上跃进",
+      "通过Level 3的电梯",
+      "通过Level 2中未上锁的门",
+      "掉入Level 283的海洋球池有几率传送穿过天花板"
     ],
     "exits": [
       {
         "method": "找到办公室风格的楼梯",
-        "condition": "大多数出口以此形式出现，通向 Level 5 或 Level 6",
-        "success_chance": "常见/需要探索 (但出口可能消失)",
-        "next": "Level 5 或 Level 6"
+        "condition": "寻找并进入",
+        "success_chance": "偶尔出现 (需探索)",
+        "next": "Level 5"
+      },
+      {
+        "method": "找到办公室风格的楼梯",
+        "condition": "寻找并进入",
+        "success_chance": "偶尔出现 (需探索)",
+        "next": "Level 6"
       },
       {
         "method": "找到电梯",
-        "condition": "有时以电梯形象出现，通向 Level 3",
-        "success_chance": "少见/需要探索 (但出口可能消失)",
+        "condition": "寻找并进入",
+        "success_chance": "有时出现 (需探索)",
         "next": "Level 3"
       },
       {
         "method": "找到通往地下室的楼梯",
-        "condition": "很少情况下可以找到",
-        "success_chance": "稀有/极难发现 (d100 > 90)",
+        "condition": "寻找并进入",
+        "success_chance": "很少出现 (稀有)",
         "next": "Level 71"
       }
     ]
@@ -117,9 +97,23 @@
   "findable_items": [
     {
       "name": "杏仁水",
-      "description": "一种散发着甜味的水，在后室中是一种重要的资源。",
+      "description": "一种散发着甜味的水，是后室中重要的生存资源。",
       "id": "almond_water",
       "category": "Food"
+    }
+  ],
+  "entities": [
+    {
+      "name": "猎犬",
+      "description": "可以在该层级被观测到的实体之一，通常具有攻击性。",
+      "id": "hound",
+      "behavior": "敌对"
+    },
+    {
+      "name": "钝人",
+      "description": "可以在该层级被观测到的实体之一，行动缓慢但具有威胁性。",
+      "id": "duller",
+      "behavior": "敌对"
     }
   ]
 }

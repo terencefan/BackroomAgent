@@ -1,0 +1,6 @@
+{
+  "name": "磨损者",
+  "description": "有报告称从Level 8游荡至Level 9的实体。",
+  "id": "trimmed",
+  "behavior": "敌对"
+}

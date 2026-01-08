@@ -1,0 +1,6 @@
+{
+  "name": "木材",
+  "description": "可用于建筑或作为燃料的木材资源。",
+  "id": "wood",
+  "category": "Resource"
+}

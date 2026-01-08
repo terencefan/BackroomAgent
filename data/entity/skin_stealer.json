@@ -1,0 +1,6 @@
+{
+  "name": "窃皮者",
+  "description": "一种出现在Level 9的实体。",
+  "id": "skin_stealer",
+  "behavior": "敌对"
+}

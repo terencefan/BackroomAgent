@@ -1,0 +1,48 @@
+{
+  "level_id": "Backrooms_Introduction",
+  "title": null,
+  "survival_difficulty": {
+    "class": "未知",
+    "description": "本文档为概念介绍，不描述具体层级的生存难度。"
+  },
+  "atmosphere": {
+    "visuals": [],
+    "audio": [],
+    "smell": [],
+    "vibe": "信息性，指导性"
+  },
+  "environmental_mechanics": [
+    {
+      "mechanic": "概念：切出 (No-Clip)",
+      "effect": "从前厅进入后室的主要方式，也是层级间穿梭的重要方法。",
+      "trigger_probability": "未知（通常为意外事件）"
+    },
+    {
+      "mechanic": "后室的无限性与多样性",
+      "effect": "层级无限延伸，环境与特性差异巨大，探索无尽头。",
+      "trigger_probability": "恒定"
+    },
+    {
+      "mechanic": "单向连接性",
+      "effect": "从前厅可进入后室，但从后室返回前厅几乎不可能。",
+      "trigger_probability": "恒定"
+    }
+  ],
+  "random_events": [],
+  "key_locations": [],
+  "transitions": {
+    "entrances": [
+      "在前厅的‘错误的地方’意外切出 (No-Clip)"
+    ],
+    "exits": [
+      {
+        "method": "返回前厅",
+        "condition": "未明确提及具体方法，仅指出‘几乎不可能’",
+        "success_chance": "极低 (几乎不可能)",
+        "next": null
+      }
+    ]
+  },
+  "findable_items": [],
+  "entities": []
+}

@@ -1,0 +1,6 @@
+{
+  "name": "收音机",
+  "description": "一种可以接收无线电信号的设备。",
+  "id": "radio",
+  "category": "Tool"
+}

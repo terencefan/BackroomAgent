@@ -2,118 +2,181 @@
   "level_id": "Level 7",
   "title": "深海恐惧症",
   "survival_difficulty": {
-    "class": "等级 5",
-    "description": "极度危险，环境致命，存在两个顶级掠食者实体"
+    "class": "等级 ？ (极高危)",
+    "description": "极端危险，环境恶劣，存在两个强大且致命的实体，需要特殊准备才能生存。"
   },
   "atmosphere": {
-    "visuals": ["昏暗的自然光", "无边无际的黑暗海洋", "高悬的混凝土天花板", "荒凉的岩石岛屿", "漂浮的骸骨与废铁"],
-    "audio": ["水声", "气泡声（深渊带）"],
-    "smell": ["咸湿的海水味", "腐烂的有机物气味（暮色带及以下）"],
-    "vibe": "压抑，孤独，深邃恐惧，幽闭恐惧"
+    "visuals": [
+      "无限延伸的黑暗海洋",
+      "昏暗的自然光",
+      "高悬的混凝土天花板",
+      "荒凉的岩石岛屿",
+      "漂浮的骸骨与废铁",
+      "堆积成山的岩石与焦油",
+      "海底可能存在的黄色地毯"
+    ],
+    "audio": [
+      "水声",
+      "未知源头产生的稳定气泡声"
+    ],
+    "smell": [
+      "海水味",
+      "可能的腐烂气味（来自骸骨）"
+    ],
+    "vibe": "压抑，幽闭恐惧，深海恐惧，极度孤独，致命威胁"
   },
   "environmental_mechanics": [
     {
-      "mechanic": "重力方向突变",
-      "effect": "在入口房间门廊附近，重力方向会突然切换为朝向海洋，导致意外坠落",
+      "mechanic": "异常重力方向（入口房间）",
+      "effect": "进入门廊时重力方向强制改变，可能导致意外坠入海中",
       "trigger_probability": "恒定（靠近门廊即触发）"
     },
     {
-      "mechanic": "深海压力",
-      "effect": "随着深度增加，水压增大，对潜水者构成生理威胁（但不足以压碎骨骼）",
-      "trigger_probability": "恒定（深度相关）"
+      "mechanic": "深度分层（日光带/暮色带/午夜带/深渊带）",
+      "effect": "光照、温度、水压、发现物随深度变化",
+      "trigger_probability": "恒定"
     },
     {
       "mechanic": "特殊空气性质",
-      "effect": "吸入海洋上方的空气可大幅延长闭气时间至约30分钟或更久",
-      "trigger_probability": "恒定（吸入即生效）"
+      "effect": "吸入海洋上方的空气可大幅延长闭气时间（约30分钟以上）",
+      "trigger_probability": "恒定（在海洋区域呼吸时）"
     },
     {
       "mechanic": "极低水温",
-      "effect": "长时间暴露会导致体温过低和死亡",
-      "trigger_probability": "恒定（入水即生效）"
+      "effect": "长时间滞留会导致体温过低和死亡",
+      "trigger_probability": "恒定（在海水中）"
+    },
+    {
+      "mechanic": "危险水压（暮色带及以下）",
+      "effect": "虽不足以压碎骨骼，但极度危险，对潜水者构成持续威胁",
+      "trigger_probability": "恒定（在相应深度）"
     }
   ],
   "random_events": [
     {
-      "event": "发现未知骸骨（类人形或巨型鱼类）",
-      "probability": "常见（在暮色带及以下）"
+      "event": "发现漂浮的类人/鱼类骸骨或人造纤维碎屑",
+      "probability": "在暮色带及以下区域为常见"
     },
     {
-      "event": "遭遇人造纤维碎屑（暗示海底地毯）",
-      "probability": "少见（在午夜带及深渊带）"
-    }
-  ],
-  "entities": [
-    {
-      "name": "七层之物",
-      "behavior": "敌对",
-      "rarity": "稀有（但活动范围固定）",
-      "description": "顶级掠食者，栖息于午夜带与深渊带浅层。对光线极其敏感，力量与感知极强。避免直接对抗。"
-    },
-    {
-      "name": "小小",
-      "behavior": "敌对",
-      "rarity": "稀有（但活动范围固定）",
-      "description": "顶级掠食者，栖息于日光带与暮色带。听觉极其敏锐，受巨大噪音干扰。力量与感知极强。仅在绝对安全时（如入口房间或岛上）可尝试交流。"
+      "event": "遭遇实体“小小”或“七层之物”",
+      "probability": "在各自活动区域内为极高危（日光/暮色带 vs 午夜/深渊带），建议进行隐蔽/感知检定以避免遭遇"
     }
   ],
   "key_locations": [
     {
       "name": "入口房间",
-      "description": "Level 7 的切入点，有家具和荧光灯，地面有浅水。重力方向与海洋区域不同，是唯一安全的基地点。",
-      "access_probability": "100%（从 Level 6 楼梯进入）"
+      "description": "家具齐全的安全屋，通往海洋的门廊，重力异常点。是建立基地和探索的起点。",
+      "access_probability": "从 Level 6 楼梯进入即达"
     },
     {
       "name": "岩石岛屿",
-      "description": "散布在海洋中的荒凉岛屿，可作为临时避难所。",
-      "access_probability": "低（需在水面探索足够远）"
+      "description": "海洋中荒凉的陆地，可作为临时避难所。",
+      "access_probability": "在水面探索足够远后可能发现（中等难度）"
     },
     {
       "name": "臣服堡垒前哨站",
-      "description": "位于某个岛屿上的敌对前哨站，由家具和焦油搭建，居民崇拜七层之物。",
-      "access_probability": "极低（需找到特定岛屿）"
+      "description": "位于某岛屿上，由家具和焦油加固的庇护所。居民崇拜七层之物，充满敌意。",
+      "access_probability": "稀有（需找到特定岛屿）"
     },
     {
-      "name": "通往 Level 8 的海底山洞",
-      "description": "位于午夜带底部一座高耸海底山侧面的岩洞，据信是通往 Level 8 的笔直道路。",
-      "access_probability": "极低（需精准定位并深潜）"
+      "name": "通往 Level 8 的海底山岩洞",
+      "description": "位于午夜带底部，入口房间正下方的高耸海底山一侧。",
+      "access_probability": "极难发现（需深潜至午夜带并定位）"
     },
     {
       "name": "通往 Level 9 的水下结构",
-      "description": "入口房间西侧150米、水下150米处的圆形结构，由管道和石柱组成，中心有一扇镶嵌在石台上的木门。是小小的主要栖息地，极度危险。",
-      "access_probability": "低（已知位置但危险）"
+      "description": "入口房间西侧150米，水下150米处，由管道、石柱和中心木门组成的圆形结构。是小小的主要栖息地。",
+      "access_probability": "已知位置但极危险（小小栖息地）"
     }
   ],
   "transitions": {
     "entrances": [
-      "从 Level 6 的楼梯走下，进入入口房间。",
-      "传言：Level 8 地面上的一个水坑（未证实）。"
+      "从 Level 6 的楼梯走下即可到达入口房间",
+      "传言：Level 8 地面上的一个水坑（未证实）"
     ],
     "exits": [
       {
-        "method": "通过海底山洞",
-        "condition": "潜入午夜带底部，找到位于高耸海底山侧面的岩洞并进入。",
-        "success_chance": "极低（需克服深度、黑暗、压力及实体威胁）",
+        "method": "通过午夜带海底山的岩洞",
+        "condition": "深潜至午夜带底部，找到并进入特定海底山侧的岩洞",
+        "success_chance": "极低（需克服深度、黑暗、水压并避开七层之物）",
         "next": "Level 8"
       },
       {
-        "method": "通过水下木门",
-        "condition": "在入口房间西侧约150米、水下约150米处找到圆形石柱管道结构，打开中心的木门。",
-        "success_chance": "极低（该区域是小小的主要栖息地，极度危险）",
-        "next": "Level 9"
-      },
-      {
-        "method": "在深渊带昏迷",
-        "condition": "潜入深渊带（超过7000米深）并让自己失去意识。",
+        "method": "在深渊带陷入昏迷",
+        "condition": "潜入深渊带（超过7000米深）并让自己失去意识",
         "success_chance": "未知但极度危险（强烈不建议）",
         "next": "Level 83"
       },
       {
-        "method": "划船向西极远距离",
-        "condition": "从入口房间出发，在水面向西移动极远的距离。",
-        "success_chance": "极低且未证实",
+        "method": "通过水下圆形结构的木门",
+        "condition": "找到入口房间西侧150米处的水下结构（小小栖息地），打开中心的木门",
+        "success_chance": "极低（需在小小栖息地内安全操作）",
+        "next": "Level 9"
+      },
+      {
+        "method": "从入口房间向西划船极远距离",
+        "condition": "拥有船只，并向西持续航行极长的距离",
+        "success_chance": "极低/未证实（仅为理论推测）",
         "next": "Level 880"
       }
     ]
-  }
+  },
+  "findable_items": [
+    {
+      "name": "书籍",
+      "description": "几本来历不明的书籍，放置在书橱中。",
+      "id": "books",
+      "category": "Document"
+    },
+    {
+      "name": "骨片",
+      "description": "零散的骨头碎片，漂浮在暮色带水域中。",
+      "id": "bone_fragments",
+      "category": "Resource"
+    },
+    {
+      "name": "废铁",
+      "description": "生锈的金属碎片，漂浮在暮色带水域中。",
+      "id": "scrap_metal",
+      "category": "Resource"
+    },
+    {
+      "name": "骸骨",
+      "description": "完整的类人形或巨大鱼类的骨骼，可在暮色带和午夜带找到。",
+      "id": "skeleton",
+      "category": "Resource"
+    },
+    {
+      "name": "焦油",
+      "description": "一种粘稠的黑色物质，在深渊带与岩石堆积在一起，可用于加固结构。",
+      "id": "tar",
+      "category": "Resource"
+    },
+    {
+      "name": "绳索",
+      "description": "用于从入口房间的门廊悬挂至水面的工具，是安全返回的关键。",
+      "id": "rope",
+      "category": "Tool"
+    },
+    {
+      "name": "梯子",
+      "description": "用于从入口房间的门廊悬挂至水面的工具，是安全返回的另一种选择。",
+      "id": "ladder",
+      "category": "Tool"
+    }
+  ],
+  "entities": [
+    {
+      "name": "七层之物",
+      "description": "独自徘徊在Level 7冰冷海水中的凶猛实体，拥有强大的速度、力量和感知能力。长期生活在黑暗的午夜带与深渊带，对光线极其敏感。它似乎杀死了海洋中几乎所有其他生物。",
+      "id": "entity_7",
+      "behavior": "敌对"
+    },
+    {
+      "name": "小小",
+      "description": "自2019年4月18日起出现在Level 7的凶猛实体，拥有与七层之物不相上下的速度、力量和感知能力。其活动范围主要在日光带与暮色带，拥有难以置信的强大听觉，会受到巨大噪音的干扰。",
+      "id": "xiao_xiao",
+      "behavior": "敌对"
+    }
+  ]
 }

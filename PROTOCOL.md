@@ -12,8 +12,11 @@ The frontend sends the full game state along with the player's latest input. Thi
 
 ```json
 {
+  "event": {
+    "type": "init"                // "init", "action", or "message"
+  },
   "player_input": "string",       // The text typed by the user (e.g., "Look around", "Use Key")
-  "current_state": {
+  "current_state": {              // Optional for 'init', required for 'action'
     "level": "string",            // Current Level ID (e.g., "Level 1")
     "attributes": {
       "STR": "number",
@@ -33,7 +36,10 @@ The frontend sends the full game state along with the player's latest input. Thi
       {
         "id": "string",
         "name": "string",
-        "icon": "string"          // Optional emoji or icon key
+        "icon": "string",          // Optional emoji or icon key
+        "quantity": "number",      // Optional, default 1
+        "description": "string",   // Optional item description
+        "category": "string"       // Optional: "resource", "weapon", "tool", "document", "medical", "special"
       },
       // ... null for empty slots
     ]

@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import List, Literal, Optional
 
 from pydantic import BaseModel
@@ -23,6 +24,9 @@ class Item(BaseModel):
     id: str
     name: str
     icon: Optional[str] = None
+    quantity: int = 1
+    description: Optional[str] = None
+    category: Optional[str] = "resource"
 
 
 class GameState(BaseModel):
@@ -32,12 +36,32 @@ class GameState(BaseModel):
     inventory: List[Optional[Item]]
 
 
+class EventType(str, Enum):
+    INIT = "init"
+    ACTION = "action"
+    MESSAGE = "message"
+    USE = "use"
+    DROP = "drop"
+
+
+class GameEvent(BaseModel):
+    type: EventType
+    item_id: Optional[str] = None
+    quantity: Optional[int] = None
+
+
 class ChatRequest(BaseModel):
+    event: GameEvent
     player_input: str
-    current_state: GameState
+    current_state: Optional[GameState] = None
+
+
+class BackendMessage(BaseModel):
+    text: str
+    sender: Literal["dm", "system"]
+    options: Optional[List[str]] = None
 
 
 class ChatResponse(BaseModel):
-    message: str
-    sender: Literal["dm", "system"]
-    new_state: Optional[GameState] = None
+    messages: List[BackendMessage]
+    new_state: GameState

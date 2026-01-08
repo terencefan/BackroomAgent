@@ -6,159 +6,256 @@
     "description": "极难逃离，极端环境风险，极多敌意实体"
   },
   "atmosphere": {
-    "visuals": ["漆黑的地下空间", "杂乱的钟乳石与石笋", "崎岖延伸的隧道", "部分区域有辉光细菌/真菌"],
-    "audio": ["生物活动的悉索声", "异常响亮的回音", "遥远的人类尖叫", "水流声"],
-    "smell": ["沉浊的空气", "杏仁水味", "部分区域的有害气体（硫化氢、氯气、氨气）"],
-    "vibe": "幽闭恐惧，绝望，迷失，原始野蛮"
+    "visuals": [
+      "漆黑的洞穴",
+      "杂乱的钟乳石与石笋",
+      "崎岖延伸的隧道",
+      "杏仁水形成的水洼与溪流",
+      "部分区域有辉光细菌/真菌"
+    ],
+    "audio": [
+      "生物活动的悉索声",
+      "异常响亮的回音",
+      "遥远的人类尖叫",
+      "水流声",
+      "岩石碎裂声"
+    ],
+    "smell": [
+      "沉浊的空气",
+      "杏仁水味",
+      "可能的硫化氢、氯气、氨气等有害气体",
+      "焦油池的刺鼻气味"
+    ],
+    "vibe": "幽闭恐惧，压抑，绝望，原始野蛮"
   },
   "environmental_mechanics": [
     {
       "mechanic": "非欧几何空间",
-      "effect": "直线通道可能首尾相连，原路返回无法回到起点，极易迷路",
+      "effect": "直线行走可能返回起点或到达不同地点，原路返回无效，极易迷路",
       "trigger_probability": "恒定"
     },
     {
       "mechanic": "不稳定重力",
-      "effect": "重力强度与方向随机变化，导致方向感错乱和移动困难",
-      "trigger_probability": "高频/每小时检定"
+      "effect": "重力强度与方向随机变化，导致方向感丧失、攀爬困难、可能坠落",
+      "trigger_probability": "高频/区域变化"
     },
     {
       "mechanic": "异常熵变（时间流速加快）",
-      "effect": "食物/电池快速失效，生物加速衰老，路标/指示物快速分解",
+      "effect": "食物/电池快速腐败失效，人类加速衰老，路标等物体快速分解",
       "trigger_probability": "恒定，在未被观测区域加剧"
     },
     {
-      "mechanic": "空气问题",
-      "effect": "氧气有限，二氧化碳聚集，部分区域存在致命有毒气体，导致窒息",
-      "trigger_probability": "恒定，特定区域检定"
+      "mechanic": "光线抑制",
+      "effect": "手电筒等光源亮度大幅降低（约降至12%），视野受限",
+      "trigger_probability": "恒定"
     },
     {
-      "mechanic": "杏仁水泛滥与涨潮",
-      "effect": "洞穴可能被完全淹没，干燥区域可能突然被水灌满，导致溺亡",
-      "trigger_probability": "低频/每日检定，特定区域高频"
+      "mechanic": "空气问题",
+      "effect": "氧气有限，二氧化碳聚集，部分区域存在有毒气体（硫化氢、氯气、氨气、类似瑞撒毒气的化合物），导致窒息风险",
+      "trigger_probability": "区域依赖/恒定"
+    },
+    {
+      "mechanic": "水位突变",
+      "effect": "干燥洞穴可能在几秒内被杏仁水完全淹没，导致溺亡风险",
+      "trigger_probability": "随机/低频但致命"
     },
     {
       "mechanic": "极端温度",
-      "effect": "寒冷（10-15°C）或闷热（43°C以上），导致失温症或中暑",
-      "trigger_probability": "区域特性"
-    },
-    {
-      "mechanic": "光照衰减",
-      "effect": "手电筒等光源亮度大幅降低（100流明降至12流明）",
-      "trigger_probability": "恒定"
+      "effect": "区域温度在寒冷（10-15°C）与闷热（43°C以上）间波动，导致失温症或中暑",
+      "trigger_probability": "区域依赖"
     }
   ],
   "random_events": [
     {
-      "event": "遭遇蜘蛛群",
-      "probability": "常见/高频，尤其在蛛巢区域"
+      "event": "遭遇蜘蛛群或其他节肢动物侵扰",
+      "probability": "高频（尤其在非第九大道区域）"
     },
     {
-      "event": "听到牧蛇在岩层中移动",
-      "probability": "低频/每日检定"
+      "event": "听到牧蛇在岩层中穿行的震动",
+      "probability": "中频"
     },
     {
-      "event": "发现焦油之手水池",
-      "probability": "少见"
+      "event": "发现焦油之手水池并可能被攻击",
+      "probability": "中频"
     },
     {
-      "event": "遭遇微光向导",
-      "probability": "稀有，仅限多维之路等特定生态系统"
+      "event": "遭遇微光向导（可能提供帮助）",
+      "probability": "低频（特定生态系统内）"
     },
     {
-      "event": "洞穴结构因实体活动（如牧蛇）突然改变",
-      "probability": "极低/极罕见事件"
+      "event": "发现散落的尸体或遗骸",
+      "probability": "中频"
     },
     {
-      "event": "发现废弃的营地或尸体",
-      "probability": "常见"
-    }
-  ],
-  "entities": [
-    {
-      "name": "牧蛇",
-      "behavior": "敌对（捕食者）",
-      "rarity": "少见",
-      "description": "巨型蛇类实体，可钻穿岩壁，其活动会破坏洞穴结构，极度危险"
-    },
-    {
-      "name": "蛛形纲生物（蜘蛛、蝎子等）",
-      "behavior": "敌对/领地意识强",
-      "rarity": "极常见",
-      "description": "数量极多，部分有毒，会成群攻击入侵者。部分受神秘学影响具有异常能力"
-    },
-    {
-      "name": "焦油之手",
-      "behavior": "伏击者",
-      "rarity": "少见",
-      "description": "潜伏在焦油池中，会将靠近者拉入沸腾液体中溺毙"
-    },
-    {
-      "name": "微光向导",
-      "behavior": "中立",
-      "rarity": "稀有",
-      "description": "发光的友善实体，会引导流浪者穿过特定复杂通道（如多维之路）"
+      "event": "岩洞结构因实体活动（如牧蛇）突然改变或坍塌",
+      "probability": "低频但致命"
     }
   ],
   "key_locations": [
     {
       "name": "第九大道",
-      "description": "由M.E.G.标记和维护的主要安全通道，连接Level 6入口与Level 9出口，沿途有稳定孤岛和聚居点",
-      "access_probability": "从Level 6入口水池出发必达起点，但偏离道路极易迷失"
+      "description": "由M.E.G.标记和维护的主要逃生路线，沿途有稳定孤岛（空间/重力相对连续）和道标，连接多个友善聚居点",
+      "access_probability": "从Level 6入口水池出发必达起点，沿路跟随道标可保持"
     },
     {
-      "name": "M.E.G. 前哨站（第九大道沿途）",
-      "description": "提供庇护、食物、衣物（岩洞工作服）和向导服务的友善聚居点",
-      "access_probability": "沿第九大道行走大概率发现"
+      "name": "M.E.G. 前哨站（距入口约14公里）",
+      "description": "提供庇护、食物、向导服务的友善聚居点",
+      "access_probability": "沿第九大道行走可到达"
     },
     {
-      "name": "B.N.T.G. / 哈莫兹社群营地",
-      "description": "提供贸易、补给和研究的友善社区",
-      "access_probability": "沿第九大道行走大概率发现"
+      "name": "哈莫兹洞穴社群营地",
+      "description": "提供岩洞工作服、补给和研究的友善社群",
+      "access_probability": "沿第九大道可到达"
     },
     {
-      "name": "过载贫瘠区（流放者飞地）",
-      "description": "犯罪率高、环境恶劣的堕落社群，建议避开",
-      "access_probability": "第九大道中段区域可能遭遇"
+      "name": "B.N.T.G. 贸易点",
+      "description": "提供补给和贸易的友善前哨",
+      "access_probability": "沿第九大道可到达"
     },
     {
       "name": "多维之路",
-      "description": "拥有辉光细菌、普通溪流和微光向导的独特生态系统",
-      "access_probability": "稀有/需特定路径发现"
+      "description": "拥有辉光细菌、真菌、微光向导和非杏仁水溪流的独特生态系统",
+      "access_probability": "需偏离第九大道探索/低频发现"
     },
     {
-      "name": "蛛巢洞穴",
-      "description": "被海量蜘蛛完全占领的危险区域，可能画有神秘学符号",
-      "access_probability": "偏离第九大道后常见"
+      "name": "流放者/过载贫瘠区",
+      "description": "犯罪率高、环境恶劣的堕落社群区域，建议避开",
+      "access_probability": "第九大道中段附近/中频"
+    },
+    {
+      "name": "蛛巢洞穴（带有发光符号）",
+      "description": "被大量攻击性蜘蛛占据的危险区域，带有神秘学象形符号，禁止进入",
+      "access_probability": "偏离第九大道/中频"
     }
   ],
   "transitions": {
     "entrances": [
-      "从 Level 6 的水池中切出（最常见入口）",
-      "从 Level 7 的特定水下区域切出",
+      "从 Level 6 的水池中切出（主要入口）",
+      "从 Level 7 的特定水下通道切出",
       "从 Level 34 的下水道切出",
       "从 Level 181 的矿道切出",
-      "从 Level 499 的墓穴切出"
+      "从 Level 499 的墓穴切出",
+      "在 Level 2、Level 7 或 Level 41 接触焦油状物质后昏迷"
     ],
     "exits": [
       {
-        "method": "沿着第九大道一直走",
-        "condition": "跟随M.E.G.道标，克服沿途危险，最终道路会变为沥青路并出现光晕",
-        "success_chance": "低/需通过多次生存与导航检定，但为最可靠方法",
+        "method": "沿第九大道一直走到尽头",
+        "condition": "跟随M.E.G.道标，克服沿途所有危险，坚持走到道路终点",
+        "success_chance": "极低（需通过一系列生存、导航和遭遇检定）",
         "next": "Level 9"
       },
       {
         "method": "被焦油之手拉入池中并失去意识",
-        "condition": "靠近焦油池并被其触手抓住",
-        "success_chance": "极低/通常致命，少数幸存者报告",
+        "condition": "靠近焦油池并被其触手抓住拖入",
+        "success_chance": "极低（通常致命，少数幸存）",
         "next": null
       },
       {
-        "method": "找到其他未明确提及的切出点",
-        "condition": "未知",
-        "success_chance": "未知/极低",
+        "method": "找到并进入特定的、未明确描述的“其他出口”",
+        "condition": "文本提及但未展开，需探索发现",
+        "success_chance": "未知",
         "next": null
       }
     ]
-  }
+  },
+  "findable_items": [
+    {
+      "name": "杏仁水",
+      "description": "一种散发着杏仁气味的水，可以饮用以缓解口渴。",
+      "id": "almond_water",
+      "category": "Food"
+    },
+    {
+      "name": "手电筒",
+      "description": "一个电池驱动的便携式光源，用于在黑暗中照明。",
+      "id": "flashlight",
+      "category": "Tool"
+    },
+    {
+      "name": "电池",
+      "description": "为电子设备（如手电筒）提供电力的能源。",
+      "id": "battery",
+      "category": "Resource"
+    },
+    {
+      "name": "发热器",
+      "description": "一个电池驱动的便携式设备，用于产生热量以保暖。",
+      "id": "heater",
+      "category": "Tool"
+    },
+    {
+      "name": "岩洞工作服",
+      "description": "一种厚实、防水且带有保暖织绒的服装，适合在寒冷潮湿的洞穴环境中穿着。",
+      "id": "caving_suit",
+      "category": "Resource"
+    },
+    {
+      "name": "背包",
+      "description": "用于携带个人物品和补给品的容器。",
+      "id": "backpack",
+      "category": "Tool"
+    },
+    {
+      "name": "氙弹珠",
+      "description": "一种发光的弹珠状物体，有时能在溪流底部找到。",
+      "id": "xen_marble",
+      "category": "Resource"
+    },
+    {
+      "name": "卡祖笛",
+      "description": "一种简单的乐器，通过哼唱产生声音。",
+      "id": "kazoo",
+      "category": "Resource"
+    },
+    {
+      "name": "杀虫剂",
+      "description": "用于驱除或杀死昆虫（如蜘蛛）的化学喷雾。",
+      "id": "insecticide",
+      "category": "Tool"
+    },
+    {
+      "name": "燃油",
+      "description": "一种可燃液体，可用于燃烧或作为某些设备的燃料。",
+      "id": "fuel",
+      "category": "Resource"
+    },
+    {
+      "name": "风干水果",
+      "description": "脱水处理过的水果，用于补充维生素C。",
+      "id": "dried_fruit",
+      "category": "Food"
+    },
+    {
+      "name": "维生素药片",
+      "description": "人工合成的营养补充剂，用于补充维生素D等。",
+      "id": "vitamin_pills",
+      "category": "Medical"
+    }
+  ],
+  "entities": [
+    {
+      "name": "微光向导",
+      "description": "一种发出柔和蓝绿色光芒的球状生物，会引导流浪者穿过特定的洞穴通道。",
+      "id": "glow_guide",
+      "behavior": "中立"
+    },
+    {
+      "name": "牧蛇",
+      "description": "一种体型极其巨大的蛇类捕食者，皮肤黏滑呈灰色，拥有类人的头颅和发光的白色眼睛。雄性面部带有人类般的诡异笑容，雌性面部则类似节肢动物。它们能钻穿岩层进行捕猎，其活动会严重破坏洞穴结构。",
+      "id": "herdsnake",
+      "behavior": "敌对"
+    },
+    {
+      "name": "蛛形纲生物",
+      "description": "包括多种蜘蛛、蝎子、蜱虫和螨虫，其中蜘蛛数量尤为庞大。部分品种极具攻击性和领地意识，许多带有毒性。一些蜘蛛群系可能受到外来魔法影响，行为异常。",
+      "id": "arachnids",
+      "behavior": "敌对"
+    },
+    {
+      "name": "焦油之手",
+      "description": "一种存在于高温焦油池中的实体。当受害者靠近时，会从池中伸出焦油状的人手组织，将受害者拖入沸腾的液体中使其窒息。",
+      "id": "tar_hands",
+      "behavior": "伏击者"
+    }
+  ]
 }

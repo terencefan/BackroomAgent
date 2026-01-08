@@ -1,64 +1,81 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { AttributeBar } from './components/AttributeBar';
 import { ChatBox } from './components/ChatBox';
 import { InventoryGrid } from './components/InventoryGrid';
-import type { Attributes, ChatResponse, Item, Vitals } from './types';
-
-interface Message {
-  id: number;
-  sender: 'dm' | 'player' | 'system';
-  text: string;
-}
+// import { INITIAL_GAME_STATE, INITIAL_MESSAGES } from './mockData';
+import type { ChatResponse, GameState, Item, Message } from './types';
+import { EventType } from './types';
 
 function App() {
-  // Mock State
-  const [messages, setMessages] = useState<Message[]>([
-    { id: 1, sender: 'system' as const, text: 'System Initialized. Connection to Backrooms established.' },
-    { id: 2, sender: 'dm' as const, text: 'You wake up in a damp, yellow room. The hum of fluorescent lights is deafening. You see exits to the North and East.' }
-  ]);
+  // State
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [gameState, setGameState] = useState<GameState | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const isInitialized = useRef(false);
 
-  const [attributes, setAttributes] = useState<Attributes>({
-    STR: 12,
-    DEX: 14,
-    CON: 13,
-    INT: 16,
-    WIS: 10,
-    CHA: 8
-  });
+  // Fetch initial state on mount
+  useEffect(() => {
+    if (isInitialized.current) return;
+    isInitialized.current = true;
 
-  const [vitals, setVitals] = useState<Vitals>({
-    hp: 18,
-    maxHp: 20,
-    sanity: 85,
-    maxSanity: 100
-  });
+    const fetchInitialState = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/chat', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                event: { type: EventType.INIT },
+                player_input: '',
+                current_state: null
+            })
+        });
+        if (response.ok) {
+          const data: ChatResponse = await response.json();
+          setGameState(data.new_state);
+          
+          if (data.messages && data.messages.length > 0) {
+            const newMessages = data.messages.map((msg, index) => ({
+                id: Date.now() + index,
+                sender: msg.sender,
+                text: msg.text,
+                options: msg.options
+            }));
+            setMessages(prev => [...prev, ...newMessages]);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch initial state:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const [inventory, setInventory] = useState<(Item | null)[]>([
-    { id: '1', name: 'Almond Water', icon: '💧' },
-    { id: '2', name: 'Flashlight', icon: '🔦' },
-    null, null, null, null
-  ]);
+    fetchInitialState();
+  },[]);
 
-  const handleSendMessage = async (text: string) => {
+  const processGameEvent = async (text: string, eventType: EventType, eventData?: { item_id?: string, quantity?: number }) => {
     // Add player message immediately
     const playerMsg = { id: Date.now(), sender: 'player' as const, text };
     setMessages(prev => [...prev, playerMsg]);
+    
+    // Guard clause if state isn't loaded yet (though UI should prevent this)
+    if (!gameState) return;
 
     try {
-      const response = await fetch('http://localhost:8000/api/chat', {
+      setIsLoading(true);
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          event: { type: eventType, ...eventData },
           player_input: text,
-          current_state: {
-            level: "Level 1", // Hardcoded for now, should be state
-            attributes,
-            vitals,
-            inventory
-          }
+          current_state: gameState
         }),
       });
 
@@ -66,18 +83,18 @@ function App() {
 
       const data: ChatResponse = await response.json();
 
-      // Add DM response
-      setMessages(prev => [...prev, {
-        id: Date.now() + 1,
-        sender: data.sender,
-        text: data.message
-      }]);
+      // Update State (Required by protocol)
+      setGameState(data.new_state);
 
-      // Update State if provided
-      if (data.new_state) {
-        if (data.new_state.vitals) setVitals(data.new_state.vitals);
-        if (data.new_state.attributes) setAttributes(data.new_state.attributes);
-        if (data.new_state.inventory) setInventory(data.new_state.inventory);
+      // Add DM/System responses
+      if (data.messages && data.messages.length > 0) {
+        const newMessages = data.messages.map((msg, index) => ({
+            id: Date.now() + 1 + index,
+            sender: msg.sender,
+            text: msg.text,
+            options: msg.options
+        }));
+        setMessages(prev => [...prev, ...newMessages]);
       }
 
     } catch (error) {
@@ -85,36 +102,80 @@ function App() {
       setMessages(prev => [...prev, {
         id: Date.now() + 1,
         sender: 'system',
-        text: "Error: Connection to backend lost."
+        text: "错误：与后端的连接已丢失。"
       }]);
+    } finally {
+        setIsLoading(false);
     }
   };
+
+  const handleSendMessage = (text: string) => {
+    processGameEvent(text, EventType.MESSAGE);
+  };
+
+  const handleUseItem = (item: Item) => {
+    processGameEvent(`使用 ${item.name}`, EventType.USE, { item_id: item.id, quantity: 1 });
+  };
+
+  const handleDropItem = (item: Item, mode: 'one' | 'half' | 'all') => {
+    let quantity = 1;
+    const currentQty = item.quantity || 1;
+    
+    if (mode === 'half') {
+      quantity = Math.ceil(currentQty / 2);
+    } else if (mode === 'all') {
+      quantity = currentQty;
+    }
+    
+    processGameEvent(`丢弃 ${quantity} 个 ${item.name}`, EventType.DROP, { item_id: item.id, quantity });
+  };
+
+  if (!gameState) {
+    return <div className="loading-screen" style={{
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh', 
+        color: '#0f0', 
+        backgroundColor: '#111',
+        fontFamily: 'monospace'
+    }}>连接后室中... Connecting to The Backrooms...</div>;
+  }
 
   return (
     <div className="game-container">
       {/* Left functionality - Chat */}
       <div className="chat-section">
         <div className="header">
-          <h1>BACKROOMS TERMINAL</h1>
+          <h1>后室终端</h1>
           <div className="status-indicator">
-            <span>LEVEL: 1</span>
-            <span>STATUS: ONLINE</span>
+            <span>层级: {gameState.level.replace("Level ", "")}</span>
+            <span>状态: 在线</span>
           </div>
         </div>
-        <ChatBox messages={messages} onSendMessage={handleSendMessage} />
+        <ChatBox 
+            messages={messages} 
+            onSendMessage={handleSendMessage} 
+            isLoading={isLoading}
+        />
       </div>
 
       {/* Right functionality - Sidebar */}
       <div className="sidebar-section">
-        <AttributeBar attributes={attributes} vitals={vitals} />
-        <InventoryGrid items={inventory} />
+        <AttributeBar attributes={gameState.attributes} vitals={gameState.vitals} />
+        <InventoryGrid 
+            items={gameState.inventory} 
+            onUseItem={handleUseItem}
+            onDropItem={handleDropItem}
+            isLoading={isLoading}
+        />
         
         <div className="panel">
-          <h3 className="panel-header">Location Info</h3>
+          <h3 className="panel-header">位置信息</h3>
           <p style={{ color: '#888', fontSize: '0.9rem' }}>
-            Current Zone: <strong>Habitable Zone</strong><br/>
-            Temperature: 22°C<br/>
-            Light Level: Moderate
+            当前区域: <strong>宜居带</strong><br/>
+            温度: 22°C<br/>
+            光照等级: 中等
           </p>
         </div>
       </div>

@@ -1,6 +1,6 @@
 {
   "name": "猎犬",
-  "description": "一种实体，曾大规模袭击并摧毁了Level 2中的“协济迷失者”基地。",
+  "description": "一种常见于Level 11的实体，受“第11效应”影响，行为类似正常的狗。",
   "id": "hounds",
-  "behavior": "敌对"
+  "behavior": "中立"
 }

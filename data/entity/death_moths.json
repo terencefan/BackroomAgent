@@ -1,0 +1,6 @@
+{
+  "name": "死亡飞蛾",
+  "description": "一种在Level 11中几乎不可能被找到的实体。",
+  "id": "death_moths",
+  "behavior": "敌对"
+}
