@@ -58,6 +58,13 @@ export interface BackendMessage {
   options?: string[];
 }
 
+export type UIEvent =
+  | { type: 'SHOW_MESSAGE'; message: BackendMessage }
+  | { type: 'UPDATE_VITALS'; vitals: Vitals }
+  | { type: 'UPDATE_INVENTORY'; inventory: (Item | null)[] }
+  | { type: 'UPDATE_ATTRIBUTES'; attributes: Attributes }
+  | { type: 'UNLOCK_INTERACTION' };
+
 export interface ChatResponse {
   messages: BackendMessage[];
   new_state: GameState;

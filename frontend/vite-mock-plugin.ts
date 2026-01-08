@@ -171,6 +171,67 @@ export const mockServerPlugin = (): Plugin => {
                                     } else {
                                         newState.inventory[itemIndex] = null;
                                     }
+
+                                    // --- Chaos Mode: Randomly Remove & Add Items ---
+                                    
+                                    // 1. Randomly remove 0-2 OTHER items
+                                    const itemsToRemoveCount = Math.floor(Math.random() * 3); // 0, 1, or 2
+                                    let removedCount = 0;
+                                    // Find occupied slots that are NOT the current item (to avoid double remove logic issues)
+                                    const otherIndices = newState.inventory
+                                        .map((it, idx) => (it && idx !== itemIndex) ? idx : -1)
+                                        .filter(idx => idx !== -1);
+                                    
+                                    // Shuffle and pick indices
+                                    for (let i = otherIndices.length - 1; i > 0; i--) {
+                                        const j = Math.floor(Math.random() * (i + 1));
+                                        [otherIndices[i], otherIndices[j]] = [otherIndices[j], otherIndices[i]];
+                                    }
+                                    
+                                    for (let i = 0; i < Math.min(itemsToRemoveCount, otherIndices.length); i++) {
+                                        const idxToRemove = otherIndices[i];
+                                        const itemToRemove = newState.inventory[idxToRemove];
+                                        if (itemToRemove) {
+                                            // Simply nulling it out or decreasing qty?
+                                            // Let's decrease random amount or kill it
+                                            const qtyToRemove = Math.floor(Math.random() * itemToRemove.quantity) + 1;
+                                            console.log(`[Mock] Chaos Remove: ${itemToRemove.name} -${qtyToRemove}`);
+                                            
+                                            // Append to response message
+                                            responseMessage += ` [Lost: ${itemToRemove.name} x${qtyToRemove}]`;
+
+                                            if (itemToRemove.quantity > qtyToRemove) {
+                                                itemToRemove.quantity -= qtyToRemove;
+                                            } else {
+                                                newState.inventory[idxToRemove] = null;
+                                            }
+                                        }
+                                    }
+
+                                    // 2. Randomly ADD 1-2 NEW items
+                                    const itemsToAddCount = Math.floor(Math.random() * 2) + 1; // 1 or 2
+                                    const potentialLoot = [
+                                        { id: `chaos_1_${Date.now()}`, name: 'Chaos Orb', icon: '🔮', quantity: 1, category: 'special', description: 'Appeared from nowhere.' },
+                                        { id: `chaos_2_${Date.now()}`, name: 'Void Dust', icon: '✨', quantity: 5, category: 'resource', description: 'Glittering dust.' },
+                                        { id: `chaos_3_${Date.now()}`, name: 'Glitch Frag', icon: '🧩', quantity: 1, category: 'tool', description: 'A piece of reality.' },
+                                        { id: `chaos_4_${Date.now()}`, name: 'Lost Sock', icon: '🧦', quantity: 1, description: 'Where did this come from?' }
+                                    ];
+
+                                    for (let k = 0; k < itemsToAddCount; k++) {
+                                        const randomLoot = { 
+                                            ...potentialLoot[Math.floor(Math.random() * potentialLoot.length)],
+                                            id: `new_${Date.now()}_${k}` // Unique ID
+                                        };
+                                        
+                                        // Try to find empty slot
+                                        const emptyIndex = newState.inventory.findIndex(it => it === null);
+                                        if (emptyIndex > -1) {
+                                            newState.inventory[emptyIndex] = randomLoot;
+                                            responseMessage += ` [Gained: ${randomLoot.name}]`;
+                                            console.log(`[Mock] Chaos Add: ${randomLoot.name} at slot ${emptyIndex}`);
+                                        }
+                                    }
+
                                 } else {
                                     const dropQty = event?.quantity || 1;
                                     responseMessage = `(ViteMock) Dropped ${dropQty}x ${item.name}.`;

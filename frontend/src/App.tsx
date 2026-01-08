@@ -4,7 +4,7 @@ import { AttributeBar } from './components/AttributeBar';
 import { ChatBox } from './components/ChatBox';
 import { InventoryGrid } from './components/InventoryGrid';
 // import { INITIAL_GAME_STATE, INITIAL_MESSAGES } from './mockData';
-import type { ChatResponse, GameState, Item, Message } from './types';
+import type { ChatResponse, GameState, Item, Message, UIEvent } from './types';
 import { EventType } from './types';
 
 function App() {
@@ -57,6 +57,41 @@ function App() {
     fetchInitialState();
   },[]);
 
+const processUIEvents = async (events: UIEvent[]) => {
+    for (const event of events) {
+        switch (event.type) {
+            case 'SHOW_MESSAGE':
+                setMessages(prev => [...prev, {
+                    id: Date.now() + Math.random(),
+                    sender: event.message.sender,
+                    text: event.message.text,
+                    options: event.message.options
+                }]);
+                // Basic reading delay calculation: 50ms per char, min 1s, max 3s
+                // But since we have a Typewriter effect in the component, if we add messages too fast, they might overlap visually or scrolling might get weird.
+                // However, the Typewriter component handles its own timing.
+                // A small delay here ensures distinct "arrival" of events.
+                await new Promise(r => setTimeout(r, 500));
+                break;
+            case 'UPDATE_VITALS':
+                setGameState(prev => prev ? ({ ...prev, vitals: event.vitals }) : prev);
+                await new Promise(r => setTimeout(r, 300));
+                break;
+            case 'UPDATE_INVENTORY':
+                setGameState(prev => prev ? ({ ...prev, inventory: event.inventory }) : prev);
+                await new Promise(r => setTimeout(r, 300));
+                break;
+             case 'UPDATE_ATTRIBUTES':
+                setGameState(prev => prev ? ({ ...prev, attributes: event.attributes }) : prev);
+                await new Promise(r => setTimeout(r, 300));
+                break;
+            case 'UNLOCK_INTERACTION':
+                setIsLoading(false);
+                break;
+        }
+    }
+  };
+
   const processGameEvent = async (text: string, eventType: EventType, eventData?: { item_id?: string, quantity?: number }) => {
     // Add player message immediately
     const playerMsg = { id: Date.now(), sender: 'player' as const, text };
@@ -83,19 +118,30 @@ function App() {
 
       const data: ChatResponse = await response.json();
 
-      // Update State (Required by protocol)
-      setGameState(data.new_state);
-
-      // Add DM/System responses
-      if (data.messages && data.messages.length > 0) {
-        const newMessages = data.messages.map((msg, index) => ({
-            id: Date.now() + 1 + index,
-            sender: msg.sender,
-            text: msg.text,
-            options: msg.options
-        }));
-        setMessages(prev => [...prev, ...newMessages]);
+      // Generate UI Events
+      const events: UIEvent[] = [];
+      
+      if (data.messages) {
+        data.messages.forEach(msg => events.push({ type: 'SHOW_MESSAGE', message: msg }));
       }
+      
+      if (data.new_state) {
+        // We could optimize this by comparing with 'gameState', but simplest is to just push events.
+        // Or blindly push them.
+        events.push({ type: 'UPDATE_VITALS', vitals: data.new_state.vitals });
+        events.push({ type: 'UPDATE_INVENTORY', inventory: data.new_state.inventory });
+        events.push({ type: 'UPDATE_ATTRIBUTES', attributes: data.new_state.attributes });
+      }
+      
+      events.push({ type: 'UNLOCK_INTERACTION' });
+
+      // Process Event Queue
+      // Note: We do NOT await processUIEvents here if we want to return from the click handler immediately? 
+      // Actually we are in async function, so awaiting is fine. It keeps "isLoading" true until done.
+      // But we shouldn't set isLoading(false) in finally if we do it via event.
+      // So we will manage isLoading inside the event queue processing.
+      
+      await processUIEvents(events);
 
     } catch (error) {
       console.error("Error communicating with backend:", error);
@@ -104,9 +150,8 @@ function App() {
         sender: 'system',
         text: "错误：与后端的连接已丢失。"
       }]);
-    } finally {
-        setIsLoading(false);
-    }
+      setIsLoading(false);
+    } 
   };
 
   const handleSendMessage = (text: string) => {
