@@ -1,0 +1,241 @@
+{
+  "level_id": "Level 5",
+  "title": "恐怖旅馆",
+  "survival_difficulty": {
+    "class": "等级 2",
+    "description": "不安全，不稳定，中量实体"
+  },
+  "atmosphere": {
+    "visuals": ["华丽的红木色与金色墙纸", "黑胡桃木/白色大理石地板", "红金色地毯", "古董家具", "烛台状电灯", "巨大的吊灯", "工业管道与锅炉"],
+    "audio": ["老式爵士乐", "扬声器系统", "类似Level 0的荧光灯嗡鸣声", "机器运转声", "管道漏水声", "墙后的聚会闲聊声", "漫无条理的耳语声", "熔炉中的低语"],
+    "smell": ["干净/无尘（自我清洁）", "锅炉房的蒸汽与金属味"],
+    "vibe": "豪华但诡异，不自然，被监视感，幽闭恐惧（锅炉房）"
+  },
+  "environmental_mechanics": [
+    {
+      "mechanic": "环境自我清洁",
+      "effect": "污渍在几分钟内自动消失",
+      "trigger_probability": "恒定"
+    },
+    {
+      "mechanic": "门随机开关/解锁",
+      "effect": "门的状态随时间随机变化，可能提供新路径或封锁旧路",
+      "trigger_probability": "低频/每小时检定"
+    },
+    {
+      "mechanic": "心理干扰（幻听/被监视感）",
+      "effect": "听到奇怪声音、感觉被拍肩、感觉画像在注视，可能导致理智值下降",
+      "trigger_probability": "高频/建议进行感知或理智检定"
+    },
+    {
+      "mechanic": "麻将桌的排斥力",
+      "effect": "尝试完成贝弗莉室的麻将局会感到被迫远离，无法完成",
+      "trigger_probability": "恒定（当尝试互动时）"
+    },
+    {
+      "mechanic": "电梯死亡楼层",
+      "effect": "按下13楼或更高按钮会导致乘坐者死亡或失踪",
+      "trigger_probability": "100%（若触发条件满足）"
+    },
+    {
+      "mechanic": "“大堂房间”记忆抹除",
+      "effect": "进入该异常区域的人会在几周内失去相关记忆，无法回忆进入方法",
+      "trigger_probability": "100%（若进入）"
+    }
+  ],
+  "random_events": [
+    {
+      "event": "墙纸浮现人脸并凝视",
+      "probability": "罕见/报告真实性存疑 (d20 > 18)"
+    },
+    {
+      "event": "灯光同时闪烁并出现木门（通向Level 427）",
+      "probability": "极低/特殊事件触发"
+    },
+    {
+      "event": "死亡飞蛾群从黑暗房间涌出",
+      "probability": "低频/当接近其巢穴时"
+    }
+  ],
+  "entities": [
+    {
+      "name": "死亡飞蛾",
+      "behavior": "敌对（雌性在巢穴内更危险）",
+      "rarity": "常见（核心巢穴之一）",
+      "description": "大量筑巢，雌性通常不离巢但更常见。从黑暗房间飞出占据大厅。"
+    },
+    {
+      "name": "猎犬",
+      "behavior": "敌对",
+      "rarity": "少见"
+    },
+    {
+      "name": "木灵",
+      "behavior": "未知",
+      "rarity": "少见"
+    },
+    {
+      "name": "窃皮者",
+      "behavior": "敌对",
+      "rarity": "少见"
+    },
+    {
+      "name": "观察者",
+      "behavior": "未知",
+      "rarity": "少见"
+    },
+    {
+      "name": "Nguithr'xurh",
+      "behavior": "未知",
+      "rarity": "少见"
+    },
+    {
+      "name": "咆哮者",
+      "behavior": "敌对",
+      "rarity": "少见"
+    },
+    {
+      "name": "尸鼠",
+      "behavior": "敌对",
+      "rarity": "少见"
+    },
+    {
+      "name": "Entity 89 (蚂蚁)",
+      "behavior": "未知",
+      "rarity": "有报告/稀有"
+    },
+    {
+      "name": "牧蛇",
+      "behavior": "未知",
+      "rarity": "有报告（锅炉房）/稀有"
+    },
+    {
+      "name": "Entity 26 (萨曼莎)",
+      "behavior": "中立（需用肉接近）",
+      "rarity": "偶尔游荡/稀有"
+    }
+  ],
+  "key_locations": [
+    {
+      "name": "酒店主厅",
+      "description": "主要区域，豪华装修，有许多带随机房号的门和电梯。",
+      "access_probability": "最常见/最容易发现"
+    },
+    {
+      "name": "贝弗莉室（永恒的舞厅）",
+      "description": "主要枢纽，空间宽敞，墙/地板/天花板有随机数量的门。中央有一张带饮料和未完成麻将局的小桌子。",
+      "access_probability": "可通过主厅或锅炉房门进入"
+    },
+    {
+      "name": "锅炉房",
+      "description": "空间大但杂乱，布满旧机器和工业管道，温度高，充满蒸汽。管道中流有杏仁水。",
+      "access_probability": "可通过贝弗莉室或其他门进入"
+    },
+    {
+      "name": "“大堂房间”",
+      "description": "异常区域，进入方法未知，进入者记忆会被抹除。",
+      "access_probability": "极难发现/方法未知"
+    },
+    {
+      "name": "M.E.G. 哨所 “家政服务”",
+      "description": "保护团体、研究层级、帮助流浪者离开锅炉房。",
+      "access_probability": "在主厅或相关区域可找到"
+    },
+    {
+      "name": "家常酒店",
+      "description": "提供酒店服务，位于主厅有独特标识，需申请入住，提供食物和安保。",
+      "access_probability": "在主厅寻找标识"
+    },
+    {
+      "name": "原住民（贝弗莉室）",
+      "description": "由1300-1940年间进入后室的历史人物组成（如阿梅莉亚·埃尔哈特），约31人，通常不与人交往但偶尔交易。",
+      "access_probability": "在贝弗莉室"
+    },
+    {
+      "name": "失落的大厅协会",
+      "description": "由未知实体创造，收集书籍/地图/知识，位于靠近图书馆的一侧，是宝贵的信息资源。",
+      "access_probability": "在靠近图书馆的区域"
+    }
+  ],
+  "transitions": {
+    "entrances": [
+      "在Level 4找到一个老旧的楼梯并进入",
+      "通过Level 3的电梯进入",
+      "在Level 19找到一扇损坏的门",
+      "在Level 126的“侵蚀状态”中存活",
+      "进入Level 54中一些未上锁的门",
+      "进入Level 10里一些可能通向此处的房子",
+      "极低概率通过Level 82“入口大厅”的一扇门",
+      "通过Level 92里的一些门，或在“事件3”中未离开公寓",
+      "通过Level 4.2中的某些门"
+    ],
+    "exits": [
+      {
+        "method": "转身回到进入时的楼梯",
+        "condition": "找到带你进来的那个楼梯",
+        "success_chance": "高（如果楼梯仍在）",
+        "next": "Level 4"
+      },
+      {
+        "method": "回到电梯",
+        "condition": "找到带你进来的电梯",
+        "success_chance": "高（如果电梯仍在）",
+        "next": "Level 3"
+      },
+      {
+        "method": "深入锅炉房",
+        "condition": "在锅炉房深处探索",
+        "success_chance": "高（但极度危险，需通过耐力/生存检定对抗高温）",
+        "next": "Level 6"
+      },
+      {
+        "method": "打开一扇深色木门",
+        "condition": "在主厅或相关区域找到深色木门",
+        "success_chance": "中",
+        "next": "Level 9"
+      },
+      {
+        "method": "找到显现森林景象的开门",
+        "condition": "在墙壁、地板或天花板上找到开着的、门后是森林景象的门",
+        "success_chance": "低/稀有发现",
+        "next": "Level 63"
+      },
+      {
+        "method": "进入主厅的金属门",
+        "condition": "在主厅找到金属门",
+        "success_chance": "中",
+        "next": "Level 98"
+      },
+      {
+        "method": "在灯光同时闪烁时出现的木门",
+        "condition": "周围灯光同时闪烁，一扇木制门出现",
+        "success_chance": "极低/特殊事件",
+        "next": "Level 427"
+      },
+      {
+        "method": "在锅炉房玩街机游戏机",
+        "condition": "找到并玩锅炉房里的街机游戏机",
+        "success_chance": "高（若找到）",
+        "next": "Level 40"
+      },
+      {
+        "method": "进入锅炉房类似于气闸门的大门",
+        "condition": "在锅炉房找到气闸门样式的大门",
+        "success_chance": "中",
+        "next": "Level 78"
+      },
+      {
+        "method": "进入贝弗莉室巨大的木制大门",
+        "condition": "在贝弗莉室有很低概率见到一个巨大的木制大门",
+        "success_chance": "极低/稀有发现 (d100 > 95)",
+        "next": "Level 84"
+      },
+      {
+        "method": "通过M.E.G.看护的一侧入口",
+        "condition": "找到酒店里被M.E.G.看护的区域",
+        "success_chance": "中（若被允许进入）",
+        "next": "Level 171"
+      }
+    ]
+  }
+}

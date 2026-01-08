@@ -1,0 +1,101 @@
+{
+  "level_id": "Level 0",
+  "title": "大厅",
+  "survival_difficulty": {
+    "class": "等级 1",
+    "description": "安全，稳定的环境，极少量实体"
+  },
+  "atmosphere": {
+    "visuals": ["泛黄的墙纸", "潮湿的地毯", "不一致安装的荧光灯", "闪烁的灯光", "红色墙纸房间（罕见）"],
+    "audio": ["荧光灯发出的刺耳、永无止境的嗡鸣声"],
+    "smell": ["腐臭的潮湿地毯味"],
+    "vibe": "阈限空间，单调，令人发狂，孤独，感官剥夺"
+  },
+  "environmental_mechanics": [
+    {
+      "mechanic": "非线性空间/几何异常",
+      "effect": "直线行走可能返回起点，折返会进入新房间。导航设备（指南针、GPS）失效，无线电失真。",
+      "trigger_probability": "恒定"
+    },
+    {
+      "mechanic": "小组分离",
+      "effect": "以小组形式进入本层将导致成员失散，直至离开本层。",
+      "trigger_probability": "100% (进入时触发)"
+    },
+    {
+      "mechanic": "CO₂水平上升",
+      "effect": "长期影响未知，可能造成生理或心理压力。",
+      "trigger_probability": "恒定"
+    }
+  ],
+  "random_events": [
+    {
+      "event": "幻觉：荧光灯噪音剧增后突然寂静",
+      "probability": "普遍/高频 (建议每30分钟进行一次感知/理智检定)"
+    },
+    {
+      "event": "幻觉：观察到门或楼梯的出现",
+      "probability": "普遍/高频"
+    },
+    {
+      "event": "幻觉：突发的既视感 (déjà vu)",
+      "probability": "普遍/高频"
+    },
+    {
+      "event": "幻觉：听见无法理解的类人语言",
+      "probability": "普遍/高频"
+    },
+    {
+      "event": "幻觉：余光看到墙纸下有昆虫爬动，直视则消失",
+      "probability": "普遍/高频"
+    },
+    {
+      "event": "幻觉：听见类似昆虫的吱吱声",
+      "probability": "普遍/高频"
+    },
+    {
+      "event": "遭遇红色墙纸房间",
+      "probability": "极罕见 (建议 d100 > 95)"
+    }
+  ],
+  "entities": [
+    {
+      "name": "无实体",
+      "behavior": "被动",
+      "rarity": "恒定",
+      "description": "本层内不存在任何实体。若感知到其他“流浪者”，实为幻觉或未知现象，应视为敌对威胁。"
+    }
+  ],
+  "key_locations": [
+    {
+      "name": "红色墙纸房间",
+      "description": "危险区域，拥有异样外观（红色墙纸，昏暗灯光），切勿靠近或进入。",
+      "access_probability": "极罕见 (d100 > 95)"
+    },
+    {
+      "name": "马尼拉房间",
+      "description": "流浪者集合室，一条死路，但流浪者可在此相遇。包含M.E.G.的生存指南文档（部分数据丢失）。",
+      "access_probability": "极低 (需朝任意方向跋涉极长距离后，通过检定发现)"
+    }
+  ],
+  "transitions": {
+    "entrances": [
+      "意外‘切出’（no-clipping）现实的界限",
+      "通过Level 283堡垒中极其少见的、散发霉味的木门"
+    ],
+    "exits": [
+      {
+        "method": "切出（noclipping）本层",
+        "condition": "保持对位置的认知并快速适应环境，找到‘切出’点",
+        "success_chance": "低至中等 (取决于流浪者的适应能力和运气)",
+        "next": "Level 1"
+      },
+      {
+        "method": "进入马尼拉房间",
+        "condition": "朝任意方向跋涉极长的距离",
+        "success_chance": "极低 (需通过耐力与导航检定)",
+        "next": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,241 @@
+#root {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #c0c0c0;
+  background-color: #121212;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+.game-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  padding: 10px;
+  gap: 15px;
+  height: calc(100vh - 60px); /* Minus header */
+}
+
+/* Header */
+.header {
+  height: 60px;
+  background-color: #1e1e1e;
+  border-bottom: 2px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  color: #eab308; /* Industrial Yellow */
+  text-shadow: 0 0 5px rgba(234, 179, 8, 0.3);
+  margin: 0;
+}
+
+.status-indicator {
+  display: flex;
+  gap: 15px;
+  font-size: 0.9rem;
+}
+
+/* Chat Area */
+.chat-section {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.messages-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.message {
+  max-width: 80%;
+  padding: 10px 15px;
+  border-radius: 4px;
+  line-height: 1.5;
+}
+
+.message.dm {
+  align-self: flex-start;
+  background-color: #262626;
+  border-left: 3px solid #eab308;
+}
+
+.message.player {
+  align-self: flex-end;
+  background-color: #2d3748;
+  border-right: 3px solid #4299e1;
+}
+
+.message.system {
+  align-self: center;
+  font-style: italic;
+  color: #718096;
+  font-size: 0.9em;
+}
+
+.input-area {
+  padding: 15px;
+  background-color: #1e1e1e;
+  border-top: 1px solid #333;
+  display: flex;
+  gap: 10px;
+}
+
+.input-area input {
+  flex: 1;
+  background-color: #000;
+  border: 1px solid #444;
+  color: #fff;
+  padding: 10px;
+  font-family: inherit;
+  border-radius: 2px;
+}
+
+.input-area button {
+  background-color: #eab308;
+  color: #000;
+  border: none;
+  padding: 0 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.input-area button:hover {
+  background-color: #facc15;
+}
+
+/* Sidebar Area */
+.sidebar-section {
+  flex: 1;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+}
+
+.panel {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 15px;
+}
+
+.panel-header {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  color: #a0aec0;
+  border-bottom: 1px dashed #444;
+  padding-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  background: #111;
+  padding: 8px;
+  border: 1px solid #333;
+}
+
+.stat-label {
+  color: #718096;
+}
+
+.stat-value {
+  color: #fff;
+  font-weight: bold;
+}
+
+.vitals {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.vital-bar {
+  flex: 1;
+  background: #111;
+  border: 1px solid #333;
+  padding: 5px;
+  text-align: center;
+}
+
+.vital-label {
+  font-size: 0.8em;
+  color: #718096;
+  display: block;
+}
+
+.vital-value {
+  color: #e53e3e; /* Red for HP */
+  font-weight: bold;
+}
+
+.vital-value.sanity {
+  color: #805ad5; /* Purple for Sanity */
+}
+
+/* Inventory */
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+  aspect-ratio: 1;
+}
+
+.inventory-slot {
+  background-color: #111;
+  border: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  aspect-ratio: 1;
+  font-size: 0.8rem;
+  color: #555;
+  transition: all 0.2s;
+}
+
+.inventory-slot:hover {
+  border-color: #666;
+  background-color: #1a1a1a;
+}
+
+.inventory-slot.occupied {
+  color: #e0e0e0;
+  border-color: #555;
+}
+

@@ -1,0 +1,164 @@
+{
+  "level_id": "Level 8",
+  "title": "岩洞系统",
+  "survival_difficulty": {
+    "class": "等级 4",
+    "description": "极难逃离，极端环境风险，极多敌意实体"
+  },
+  "atmosphere": {
+    "visuals": ["漆黑的地下空间", "杂乱的钟乳石与石笋", "崎岖延伸的隧道", "部分区域有辉光细菌/真菌"],
+    "audio": ["生物活动的悉索声", "异常响亮的回音", "遥远的人类尖叫", "水流声"],
+    "smell": ["沉浊的空气", "杏仁水味", "部分区域的有害气体（硫化氢、氯气、氨气）"],
+    "vibe": "幽闭恐惧，绝望，迷失，原始野蛮"
+  },
+  "environmental_mechanics": [
+    {
+      "mechanic": "非欧几何空间",
+      "effect": "直线通道可能首尾相连，原路返回无法回到起点，极易迷路",
+      "trigger_probability": "恒定"
+    },
+    {
+      "mechanic": "不稳定重力",
+      "effect": "重力强度与方向随机变化，导致方向感错乱和移动困难",
+      "trigger_probability": "高频/每小时检定"
+    },
+    {
+      "mechanic": "异常熵变（时间流速加快）",
+      "effect": "食物/电池快速失效，生物加速衰老，路标/指示物快速分解",
+      "trigger_probability": "恒定，在未被观测区域加剧"
+    },
+    {
+      "mechanic": "空气问题",
+      "effect": "氧气有限，二氧化碳聚集，部分区域存在致命有毒气体，导致窒息",
+      "trigger_probability": "恒定，特定区域检定"
+    },
+    {
+      "mechanic": "杏仁水泛滥与涨潮",
+      "effect": "洞穴可能被完全淹没，干燥区域可能突然被水灌满，导致溺亡",
+      "trigger_probability": "低频/每日检定，特定区域高频"
+    },
+    {
+      "mechanic": "极端温度",
+      "effect": "寒冷（10-15°C）或闷热（43°C以上），导致失温症或中暑",
+      "trigger_probability": "区域特性"
+    },
+    {
+      "mechanic": "光照衰减",
+      "effect": "手电筒等光源亮度大幅降低（100流明降至12流明）",
+      "trigger_probability": "恒定"
+    }
+  ],
+  "random_events": [
+    {
+      "event": "遭遇蜘蛛群",
+      "probability": "常见/高频，尤其在蛛巢区域"
+    },
+    {
+      "event": "听到牧蛇在岩层中移动",
+      "probability": "低频/每日检定"
+    },
+    {
+      "event": "发现焦油之手水池",
+      "probability": "少见"
+    },
+    {
+      "event": "遭遇微光向导",
+      "probability": "稀有，仅限多维之路等特定生态系统"
+    },
+    {
+      "event": "洞穴结构因实体活动（如牧蛇）突然改变",
+      "probability": "极低/极罕见事件"
+    },
+    {
+      "event": "发现废弃的营地或尸体",
+      "probability": "常见"
+    }
+  ],
+  "entities": [
+    {
+      "name": "牧蛇",
+      "behavior": "敌对（捕食者）",
+      "rarity": "少见",
+      "description": "巨型蛇类实体，可钻穿岩壁，其活动会破坏洞穴结构，极度危险"
+    },
+    {
+      "name": "蛛形纲生物（蜘蛛、蝎子等）",
+      "behavior": "敌对/领地意识强",
+      "rarity": "极常见",
+      "description": "数量极多，部分有毒，会成群攻击入侵者。部分受神秘学影响具有异常能力"
+    },
+    {
+      "name": "焦油之手",
+      "behavior": "伏击者",
+      "rarity": "少见",
+      "description": "潜伏在焦油池中，会将靠近者拉入沸腾液体中溺毙"
+    },
+    {
+      "name": "微光向导",
+      "behavior": "中立",
+      "rarity": "稀有",
+      "description": "发光的友善实体，会引导流浪者穿过特定复杂通道（如多维之路）"
+    }
+  ],
+  "key_locations": [
+    {
+      "name": "第九大道",
+      "description": "由M.E.G.标记和维护的主要安全通道，连接Level 6入口与Level 9出口，沿途有稳定孤岛和聚居点",
+      "access_probability": "从Level 6入口水池出发必达起点，但偏离道路极易迷失"
+    },
+    {
+      "name": "M.E.G. 前哨站（第九大道沿途）",
+      "description": "提供庇护、食物、衣物（岩洞工作服）和向导服务的友善聚居点",
+      "access_probability": "沿第九大道行走大概率发现"
+    },
+    {
+      "name": "B.N.T.G. / 哈莫兹社群营地",
+      "description": "提供贸易、补给和研究的友善社区",
+      "access_probability": "沿第九大道行走大概率发现"
+    },
+    {
+      "name": "过载贫瘠区（流放者飞地）",
+      "description": "犯罪率高、环境恶劣的堕落社群，建议避开",
+      "access_probability": "第九大道中段区域可能遭遇"
+    },
+    {
+      "name": "多维之路",
+      "description": "拥有辉光细菌、普通溪流和微光向导的独特生态系统",
+      "access_probability": "稀有/需特定路径发现"
+    },
+    {
+      "name": "蛛巢洞穴",
+      "description": "被海量蜘蛛完全占领的危险区域，可能画有神秘学符号",
+      "access_probability": "偏离第九大道后常见"
+    }
+  ],
+  "transitions": {
+    "entrances": [
+      "从 Level 6 的水池中切出（最常见入口）",
+      "从 Level 7 的特定水下区域切出",
+      "从 Level 34 的下水道切出",
+      "从 Level 181 的矿道切出",
+      "从 Level 499 的墓穴切出"
+    ],
+    "exits": [
+      {
+        "method": "沿着第九大道一直走",
+        "condition": "跟随M.E.G.道标，克服沿途危险，最终道路会变为沥青路并出现光晕",
+        "success_chance": "低/需通过多次生存与导航检定，但为最可靠方法",
+        "next": "Level 9"
+      },
+      {
+        "method": "被焦油之手拉入池中并失去意识",
+        "condition": "靠近焦油池并被其触手抓住",
+        "success_chance": "极低/通常致命，少数幸存者报告",
+        "next": null
+      },
+      {
+        "method": "找到其他未明确提及的切出点",
+        "condition": "未知",
+        "success_chance": "未知/极低",
+        "next": null
+      }
+    ]
+  }
+}

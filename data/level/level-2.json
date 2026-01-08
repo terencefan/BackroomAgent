@@ -1,0 +1,160 @@
+{
+  "level_id": "Level 2",
+  "title": "废弃公共带",
+  "survival_difficulty": {
+    "class": "等级 2",
+    "description": "不安全，不稳定，中量实体"
+  },
+  "atmosphere": {
+    "visuals": ["脏污的水泥/砖墙", "粉尘质感", "巨大废弃机械与管线", "工业白/橙色荧光灯", "狭窄逼仄的隧道", "散落的工业杂物（平板车、箱子、工具）"],
+    "audio": ["机器内部近乎无声的运转噪音", "荧光灯嗡鸣", "管道泄露声（大停电后）"],
+    "smell": ["粉尘味", "工业油污味", "腐肉气味（大停电后管道泄露）"],
+    "vibe": "工业废弃，幽闭恐惧，压抑，混乱"
+  },
+  "environmental_mechanics": [
+    {
+      "mechanic": "电路区域性失效",
+      "effect": "单个灯具或线路损坏会导致整个3x3至6x6灯具网格区域陷入黑暗",
+      "trigger_probability": "恒定（一旦损坏即触发）"
+    },
+    {
+      "mechanic": "非线性空间（隧道呈45°角扭曲）",
+      "effect": "易于迷路，方向感混乱",
+      "trigger_probability": "恒定"
+    },
+    {
+      "mechanic": "粉尘环境",
+      "effect": "触摸墙壁会留下粉迹，在狭窄处可能擦伤皮肤或弄脏衣物",
+      "trigger_probability": "恒定"
+    },
+    {
+      "mechanic": "大停电后遗症",
+      "effect": "大多数机器停止运作，仅发出损坏噪音；部分区域灯光不稳定或仅存应急紫光；管道可能泄露有害物质",
+      "trigger_probability": "恒定（当前状态）"
+    }
+  ],
+  "random_events": [
+    {
+      "event": "灯光闪烁或区域性熄灭",
+      "probability": "中频（因线路暴露易损）"
+    },
+    {
+      "event": "发现未上锁的门（通向走廊、房间或虚空）",
+      "probability": "低频"
+    },
+    {
+      "event": "管道爆裂或泄露（大停电后）",
+      "probability": "低频"
+    }
+  ],
+  "entities": [
+    {
+      "name": "猎犬",
+      "behavior": "敌对",
+      "rarity": "常见",
+      "description": "曾袭击过基地，是Level 2的常见威胁之一"
+    },
+    {
+      "name": "牧蛇",
+      "behavior": "敌对",
+      "rarity": "少见",
+      "description": "会从侧翼发动袭击，曾阻碍救援行动"
+    },
+    {
+      "name": "悲尸",
+      "behavior": "敌对",
+      "rarity": "少见",
+      "description": "曾频繁袭击过“幸存者”基地"
+    },
+    {
+      "name": "机巧子民",
+      "behavior": "中立",
+      "rarity": "极罕见（已灭绝/消失）",
+      "description": "古代实体，曾占据并改造本层级，现已消失"
+    }
+  ],
+  "key_locations": [
+    {
+      "name": "办公区EL3A",
+      "description": "B.N.T.G.的主要行动基地，可通过Level 2的门到达，是重要的贸易和交通枢纽",
+      "access_probability": "中等（通过特定门）"
+    },
+    {
+      "name": "虚空房间",
+      "description": "门后是无限、无光、无声的虚空，极易迷失，大停电后部分此类门解锁",
+      "access_probability": "极低（通过特定解锁的门）"
+    },
+    {
+      "name": "B.N.T.G.窄轨铁道",
+      "description": "贯穿部分区域的货运/客运轨道系统，大停电后已变得七零八落",
+      "access_probability": "中等（在靠近EL3A的区域）"
+    },
+    {
+      "name": "协济迷失者/幸存者旧址",
+      "description": "曾用于收容和教育新流浪者的聚落，现已废弃",
+      "access_probability": "未知"
+    },
+    {
+      "name": "机巧子民废弃城市（疑似）",
+      "description": "位于Level 811出口附近的大型废弃城市，可能是机巧子民的主城",
+      "access_probability": "极低（需找到特定出口）"
+    }
+  ],
+  "transitions": {
+    "entrances": [
+      "从Level 1进入看起来比其他走廊更长的廊道",
+      "从前厅直接切入",
+      "其他多种入口（文本提及但未详细列出）"
+    ],
+    "exits": [
+      {
+        "method": "通过未上锁的门",
+        "condition": "找到墙上留有标记或刻印的门",
+        "success_chance": "高（今年尤甚）",
+        "next": "Level 1"
+      },
+      {
+        "method": "通过未上锁的门",
+        "condition": "找到墙上留有标记或刻印的门",
+        "success_chance": "高（今年尤甚）",
+        "next": "Level 3"
+      },
+      {
+        "method": "通过未上锁的门",
+        "condition": "找到墙上留有标记或刻印的门",
+        "success_chance": "高（今年尤甚）",
+        "next": "Level 4"
+      },
+      {
+        "method": "通过异常门径",
+        "condition": "找到并进入特定的异常门",
+        "success_chance": "可变（取决于具体门径）",
+        "next": null
+      },
+      {
+        "method": "其他离开途径",
+        "condition": "文本提及但未详细列出",
+        "success_chance": "未知",
+        "next": null
+      },
+      {
+        "method": "前往办公区EL3A",
+        "condition": "通过Level 2内几乎所有的门",
+        "success_chance": "高",
+        "next": "办公区EL3A"
+      },
+      {
+        "method": "前往Level 126",
+        "condition": "需要一定的层级电量（大停电期间失效）",
+        "success_chance": "未知（依赖电力状态）",
+        "next": "Level 126"
+      },
+      {
+        "method": "前往Level 811",
+        "condition": "需要一定的层级电量（大停电期间失效）",
+        "success_chance": "未知（依赖电力状态）",
+        "next": "Level 811"
+      }
+    ]
+  }
+}

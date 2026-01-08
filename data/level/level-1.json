@@ -1,0 +1,242 @@
+{
+  "level_id": "Level 1",
+  "title": "宜居地带",
+  "survival_difficulty": {
+    "class": "等级 2",
+    "description": "不安全，不稳定，少量实体"
+  },
+  "atmosphere": {
+    "visuals": ["单调褪色的墙壁", "混凝土支柱", "灰色墙面与地坪", "天花板上的管道", "荧光灯", "应急绿灯", "散落的板条箱与残骸"],
+    "audio": ["零星的金属撞击声", "管道隆隆声", "脚步声", "电流脉冲声", "皮肤轻拍水泥地的声响（闪烁事件中）"],
+    "smell": ["塑料般的死水气息", "潮湿沉闷的空气", "发霉味"],
+    "vibe": "阈限空间，压抑，焦虑，迷宫般"
+  },
+  "environmental_mechanics": [
+    {
+      "mechanic": "非欧几何结构",
+      "effect": "感知距离与实际距离不符，直线行走可能返回原地或瞬间到达远处，导致迷路",
+      "trigger_probability": "恒定"
+    },
+    {
+      "mechanic": "闪烁事件",
+      "effect": "所有自然光源随机切断，陷入完全黑暗，敌对实体活跃度大幅增加",
+      "trigger_probability": "随机，不可预测"
+    },
+    {
+      "mechanic": "板条箱生成/消失",
+      "effect": "资源箱在视线外出现或消失，是获取生存物资的主要来源",
+      "trigger_probability": "高频（经常在背后出现或闪烁后出现）"
+    }
+  ],
+  "random_events": [
+    {
+      "event": "灯光闪烁或熄灭（闪烁事件前兆）",
+      "probability": "低频"
+    },
+    {
+      "event": "发现探险者总署（M.E.G.）或其他组织放置的补给地标（杏仁水、纸条）",
+      "probability": "常见（需主动寻找）"
+    }
+  ],
+  "entities": [
+    {
+      "name": "钝人",
+      "behavior": "敌对",
+      "rarity": "常见",
+      "description": "人形实体，在闪烁事件中活跃，会猎捕流浪者"
+    },
+    {
+      "name": "窃皮者",
+      "behavior": "伏击者",
+      "rarity": "少见",
+      "description": "伪装成受伤人类，皮肤松垮，利爪攻击，极具欺骗性"
+    },
+    {
+      "name": "猎犬",
+      "behavior": "敌对",
+      "rarity": "少见",
+      "description": "听觉敏锐，在黑暗中追踪猎物"
+    },
+    {
+      "name": "笑魇",
+      "behavior": "敌对",
+      "rarity": "稀有",
+      "description": "潜伏于黑暗，对光源敏感"
+    },
+    {
+      "name": "尸鼠",
+      "behavior": "被动",
+      "rarity": "常见",
+      "description": "腐食性，通常无害，但可能携带疾病"
+    },
+    {
+      "name": "疫疾",
+      "behavior": "被动",
+      "rarity": "未知",
+      "description": "通过接触传播的疾病实体，需注意卫生"
+    },
+    {
+      "name": "爬菌",
+      "behavior": "被动",
+      "rarity": "未知",
+      "description": "真菌类实体，可能通过接触传播"
+    },
+    {
+      "name": "瘟疫地精",
+      "behavior": "敌对",
+      "rarity": "少见",
+      "description": "小型实体，可被工具吓退"
+    }
+  ],
+  "key_locations": [
+    {
+      "name": "天鹰段",
+      "description": "灰色墙面地坪，巨型混凝土柱，类似停车场。M.E.G. Alpha 基地所在地，新人常见切入点。",
+      "access_probability": "常见（从 Level 0 切入大概率到达）"
+    },
+    {
+      "name": "跃金段",
+      "description": "B.N.T.G.（不结盟贸易集团）活跃区域。",
+      "access_probability": "未知（需在层级内探索发现）"
+    },
+    {
+      "name": "哥特段",
+      "description": "建筑风格独特的区段。",
+      "access_probability": "未知（需在层级内探索发现）"
+    },
+    {
+      "name": "衔尾段",
+      "description": "建筑风格独特的区段。",
+      "access_probability": "未知（需在层级内探索发现）"
+    },
+    {
+      "name": "花园段",
+      "description": "建筑风格独特的区段。",
+      "access_probability": "未知（需在层级内探索发现）"
+    },
+    {
+      "name": "传说段",
+      "description": "建筑风格独特的区段。",
+      "access_probability": "未知（需在层级内探索发现）"
+    },
+    {
+      "name": "小径",
+      "description": "狭窄、迷宫般的混凝土通道网络，连接着无数无特定用途的小房间。比过道安全，是闪烁事件中的理想避难所。",
+      "access_probability": "常见（通过过道中的单/双推门进入）"
+    },
+    {
+      "name": "M.E.G. Alpha 基地",
+      "description": "探险者总署最古老且第二大的定居点，位于天鹰段小径内，功能齐全如城镇，提供培训、食宿和勘探支持。",
+      "access_probability": "中等（可通过巡逻队或寻找地标指引到达）"
+    },
+    {
+      "name": "Tom 的餐馆",
+      "description": "位于某基地附近的小餐馆，提供食物和社交场所。",
+      "access_probability": "未知（需在层级内探索发现）"
+    },
+    {
+      "name": "B.N.T.G. 商人之地",
+      "description": "不结盟贸易集团的贸易前哨，位于跃金段，提供物资和保护（需支付费用）。",
+      "access_probability": "未知（需在层级内探索发现）"
+    },
+    {
+      "name": "阿丽亚娜集团前哨",
+      "description": "提供协助的组织前哨。",
+      "access_probability": "未知（需在层级内探索发现）"
+    },
+    {
+      "name": "琥珀营",
+      "description": "小型人类营地或社区。",
+      "access_probability": "未知（需在层级内探索发现）"
+    },
+    {
+      "name": "阿尔戈斯之眼",
+      "description": "小型人类营地或社区。",
+      "access_probability": "未知（需在层级内探索发现）"
+    }
+  ],
+  "transitions": {
+    "entrances": [
+      "从 Level 0 切出",
+      "从 Level 4.2 中的特定随机门进入",
+      "从 Level 11 中的某些建筑入口进入",
+      "从 Level 12 中特定操作导致出现的门进入",
+      "从 Level 40 中的生锈金属门进入",
+      "从 Level 46 中的砂岩门进入",
+      "从 Level 54 中的某些门进入",
+      "从 Level 162 中的办公室门进入",
+      "从 Level 215 中未提及建筑上的门进入",
+      "从 Level 330 中与某栋建筑相连的门进入",
+      "从 Level 409 中的纸板门进入",
+      "从 Level 726 中的任意一扇门进入"
+    ],
+    "exits": [
+      {
+        "method": "沿管道与仪表盘逐渐显现的方向行走足够远",
+        "condition": "找到并跟随管道和仪表盘",
+        "success_chance": "高（稳定阈界）",
+        "next": "Level 2"
+      },
+      {
+        "method": "通过玻璃门",
+        "condition": "找到并进入玻璃门",
+        "success_chance": "未知",
+        "next": "Level 22"
+      },
+      {
+        "method": "通过装有荧光灯的走廊尽头带独特符号的门",
+        "condition": "找到并进入该门",
+        "success_chance": "未知",
+        "next": "Level 154"
+      },
+      {
+        "method": "通过结冰金属门",
+        "condition": "找到并进入结冰金属门",
+        "success_chance": "未知",
+        "next": "Level 159"
+      },
+      {
+        "method": "通过掩体门",
+        "condition": "找到并进入掩体门",
+        "success_chance": "未知",
+        "next": "Level 218"
+      },
+      {
+        "method": "通过无厘头位置的木门",
+        "condition": "找到并进入该木门",
+        "success_chance": "未知",
+        "next": "Level 389"
+      },
+      {
+        "method": "通过感觉比四周墙面稍冷、位置捉摸不定的门",
+        "condition": "找到并进入该门",
+        "success_chance": "未知",
+        "next": "Level 740"
+      },
+      {
+        "method": "通过外观类似于电梯或升降机的双开铁门",
+        "condition": "找到并进入该门，通过其后的楼梯",
+        "success_chance": "未知",
+        "next": "Level 998"
+      },
+      {
+        "method": "通过纯白木门",
+        "condition": "找到并进入纯白木门",
+        "success_chance": "未知",
+        "next": "Level 998.2"
+      },
+      {
+        "method": "按特定顺序进入门与走廊",
+        "condition": "遵循特定路径",
+        "success_chance": "未知",
+        "next": "枢纽"
+      },
+      {
+        "method": "切出（No-clip）",
+        "condition": "寻找可切出的表面或墙壁",
+        "success_chance": "极低（目的地随机，不推荐）",
+        "next": null
+      }
+    ]
+  }
+}

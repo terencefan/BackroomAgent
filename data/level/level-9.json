@@ -1,0 +1,227 @@
+{
+  "level_id": "Level 9",
+  "title": "郊区",
+  "survival_difficulty": {
+    "class": "未知 (文本未明确提及)",
+    "description": "黑暗环境，存在多种实体，街道区域危险，房子相对安全但资源有限"
+  },
+  "atmosphere": {
+    "visuals": ["永恒的午夜", "各式各样的房屋", "湿润的沥青街道", "覆盖树叶的道路", "闪烁或熄灭的路灯", "浓雾"],
+    "audio": ["未知 (文本未明确提及)"],
+    "smell": ["潮湿的沥青味", "可能的雨后清新空气"],
+    "vibe": "阈限空间，诡异，压抑，被监视感"
+  },
+  "environmental_mechanics": [
+    {
+      "mechanic": "永恒黑暗与无电力",
+      "effect": "视野受限，依赖电力的物品无法使用",
+      "trigger_probability": "恒定"
+    },
+    {
+      "mechanic": "空间异常（房子卡入）",
+      "effect": "发现物理上不可能的结构，可能造成理智冲击",
+      "trigger_probability": "低频 (行走过远时可能遇到)"
+    },
+    {
+      "mechanic": "浓雾生成",
+      "effect": "视野进一步降低，并可能生成碾压者实体",
+      "trigger_probability": "随机/周期性 (需保持警惕)"
+    }
+  ],
+  "random_events": [
+    {
+      "event": "路灯闪烁或短暂通电",
+      "probability": "低频"
+    },
+    {
+      "event": "发现两栋完全相同的房子紧挨着",
+      "probability": "罕见 (有报告但非普遍)"
+    },
+    {
+      "event": "进入完全空无一物的房子",
+      "probability": "中频 (有些房子可能空着)"
+    }
+  ],
+  "entities": [
+    {
+      "name": "死亡飞蛾",
+      "behavior": "敌对",
+      "rarity": "未知",
+      "description": "常见敌对实体"
+    },
+    {
+      "name": "笑魇",
+      "behavior": "敌对",
+      "rarity": "未知",
+      "description": "常见敌对实体"
+    },
+    {
+      "name": "窃皮者",
+      "behavior": "敌对",
+      "rarity": "未知",
+      "description": "常见敌对实体"
+    },
+    {
+      "name": "杰瑞",
+      "behavior": "中立",
+      "rarity": "未知",
+      "description": "中立实体"
+    },
+    {
+      "name": "猎犬",
+      "behavior": "敌对",
+      "rarity": "未知",
+      "description": "常见敌对实体"
+    },
+    {
+      "name": "传送者",
+      "behavior": "敌对",
+      "rarity": "未知",
+      "description": "常见敌对实体"
+    },
+    {
+      "name": "尸鼠",
+      "behavior": "敌对",
+      "rarity": "未知",
+      "description": "常见敌对实体"
+    },
+    {
+      "name": "警告风筝",
+      "behavior": "被动",
+      "rarity": "未知",
+      "description": "被动实体"
+    },
+    {
+      "name": "悲尸",
+      "behavior": "敌对",
+      "rarity": "大量",
+      "description": "数量众多的敌对实体"
+    },
+    {
+      "name": "磨损者",
+      "behavior": "敌对",
+      "rarity": "极罕见/游荡",
+      "description": "据信是从 Level 8 游荡而来"
+    },
+    {
+      "name": "八层之蛛",
+      "behavior": "敌对",
+      "rarity": "极罕见/游荡",
+      "description": "据信是从 Level 8 游荡而来"
+    },
+    {
+      "name": "邻里守望",
+      "behavior": "未知",
+      "rarity": "未知",
+      "description": "Level 9 独特实体"
+    },
+    {
+      "name": "观察者",
+      "behavior": "未知",
+      "rarity": "未知",
+      "description": "Level 9 独特实体"
+    },
+    {
+      "name": "碾压者",
+      "behavior": "敌对",
+      "rarity": "未知",
+      "description": "Level 9 独特实体，在浓雾中生成"
+    }
+  ],
+  "key_locations": [
+    {
+      "name": "房屋内部",
+      "description": "有家具但无电力，可能找到有用物品，相对安全的探索点",
+      "access_probability": "普遍 (遍布整个层级)"
+    },
+    {
+      "name": "街道",
+      "description": "湿润的沥青路，覆盖树叶，比房屋区域更危险",
+      "access_probability": "普遍 (连接所有房屋)"
+    },
+    {
+      "name": "人行道",
+      "description": "石质，看似正常，通往草地或田地会触发传送",
+      "access_probability": "普遍 (沿街道分布)"
+    },
+    {
+      "name": "飞机场",
+      "description": "在跟随去往 Level 11 的标志时可能发现，可通往 Level 36",
+      "access_probability": "罕见 (需跟随特定标志)"
+    },
+    {
+      "name": "运动场",
+      "description": "内有发白光的管道，爬行可通往 Level 283",
+      "access_probability": "罕见"
+    }
+  ],
+  "transitions": {
+    "entrances": [
+      "从 Level 8 的地板随缘切入 (主要方法)",
+      "从 Level 34 的下水道格栅爬上来",
+      "通过 Level 92 的众多门中的一扇",
+      "通过 Level 40 中旋转的门",
+      "通过 Level 25 中的黄色拱廊橱柜",
+      "进入 Level 54 中的一扇门",
+      "在 Level 94 的动画屋中 (少见情况)",
+      "打破 Level 87 的窗户",
+      "通过 Level 104 的后院"
+    ],
+    "exits": [
+      {
+        "method": "跟随街道上的箭头标志行走100-200英里",
+        "condition": "必须跟着标志走",
+        "success_chance": "100% (如果条件满足)",
+        "next": "Level 11"
+      },
+      {
+        "method": "走上通往草地的人行道",
+        "condition": "无特定条件",
+        "success_chance": "100%",
+        "next": null
+      },
+      {
+        "method": "走上通往田地的人行道",
+        "condition": "无特定条件",
+        "success_chance": "100%",
+        "next": "Level 10"
+      },
+      {
+        "method": "切出街道地面",
+        "condition": "无特定条件",
+        "success_chance": "未知",
+        "next": "Level 60"
+      },
+      {
+        "method": "进入一栋房子",
+        "condition": "无特定条件，随机触发",
+        "success_chance": "有机会 (概率未知)",
+        "next": "Level 53"
+      },
+      {
+        "method": "跟着电线走",
+        "condition": "无特定条件",
+        "success_chance": "有机会 (概率未知)",
+        "next": "Level 113"
+      },
+      {
+        "method": "进入飞机场",
+        "condition": "发现飞机场并进入",
+        "success_chance": "100% (如果进入)",
+        "next": "Level 36"
+      },
+      {
+        "method": "在飞机场切出",
+        "condition": "在飞机场内切出",
+        "success_chance": "100% (如果切出)",
+        "next": null
+      },
+      {
+        "method": "在运动场的白色发光管道中爬行",
+        "condition": "找到运动场并爬入管道",
+        "success_chance": "通常 (高概率)",
+        "next": "Level 283"
+      }
+    ]
+  }
+}

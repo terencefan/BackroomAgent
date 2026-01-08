@@ -1,0 +1,211 @@
+{
+  "level_id": "Level 3",
+  "title": "发电站",
+  "survival_difficulty": {
+    "class": "等级 4",
+    "description": "不安全，不稳定，实体横行，环境危险"
+  },
+  "atmosphere": {
+    "visuals": ["黑暗的曲折走廊", "布满灰尘的棕色砖墙", "灰色瓷砖地板", "金属天花板", "铜质管道和机器零件", "锈迹斑斑的监狱栅栏", "黑暗的电力房", "发电机光芒"],
+    "audio": ["轰鸣的机器噪音", "管道中流动的黑色粘稠液体声"],
+    "smell": ["灰尘味", "可能的金属和机油味", "有毒烟雾（危险）"],
+    "vibe": "幽闭恐惧，压抑，工业感，危险，被监视感"
+  },
+  "environmental_mechanics": [
+    {
+      "mechanic": "狭窄/封闭的走廊",
+      "effect": "需要弯腰、俯身、爬行或侧身通过，降低移动速度，增加被伏击风险",
+      "trigger_probability": "常见"
+    },
+    {
+      "mechanic": "有毒烟雾（来自管道液体）",
+      "effect": "吸入损害神经系统，接触皮肤造成2-3度烧伤",
+      "trigger_probability": "接触或破坏管道时触发"
+    },
+    {
+      "mechanic": "高温区域",
+      "effect": "温度可达57°C，造成热伤害，难以进行长距离远征",
+      "trigger_probability": "区域特定，进入时检定"
+    },
+    {
+      "mechanic": "高湿度区域",
+      "effect": "空气厚重，难以呼吸，易传播疫疾",
+      "trigger_probability": "区域特定"
+    },
+    {
+      "mechanic": "机器不稳定",
+      "effect": "机器可能自燃或爆炸，对附近人员造成严重伤害",
+      "trigger_probability": "高频/定期维护时风险极高"
+    },
+    {
+      "mechanic": "监狱栅栏区域的恐惧感",
+      "effect": "在场人员产生强烈恐惧和不适感，可能产生被监视或看到人形生物的幻觉",
+      "trigger_probability": "进入该区域时恒定"
+    }
+  ],
+  "random_events": [
+    {
+      "event": "遭遇实体（猎犬、无面灵、悲尸等）",
+      "probability": "极高/几乎不可避免 (建议每移动一段距离进行遭遇检定)"
+    },
+    {
+      "event": "机器故障、自燃或爆炸",
+      "probability": "高频/定期发生"
+    },
+    {
+      "event": "温度突然升高至危险水平",
+      "probability": "区域特定，进入新区域时检定"
+    },
+    {
+      "event": "在监狱栅栏区域产生幻觉（被监视、看到人形）",
+      "probability": "进入该区域时普遍发生"
+    }
+  ],
+  "entities": [
+    {
+      "name": "猎犬",
+      "behavior": "敌对",
+      "rarity": "常见",
+      "description": "主动捕杀流浪者"
+    },
+    {
+      "name": "无面灵",
+      "behavior": "敌对",
+      "rarity": "常见",
+      "description": "主动捕杀流浪者"
+    },
+    {
+      "name": "悲尸",
+      "behavior": "敌对",
+      "rarity": "常见",
+      "description": "主动捕杀流浪者"
+    },
+    {
+      "name": "死亡飞蛾（雄/雌）",
+      "behavior": "敌对",
+      "rarity": "常见",
+      "description": "主动捕杀流浪者"
+    },
+    {
+      "name": "窃皮者",
+      "behavior": "敌对",
+      "rarity": "常见",
+      "description": "主动捕杀流浪者"
+    },
+    {
+      "name": "钝人",
+      "behavior": "敌对",
+      "rarity": "常见",
+      "description": "主动捕杀流浪者"
+    },
+    {
+      "name": "笑魇",
+      "behavior": "敌对",
+      "rarity": "常见",
+      "description": "主动捕杀流浪者"
+    },
+    {
+      "name": "肢团",
+      "behavior": "敌对",
+      "rarity": "常见",
+      "description": "主动捕杀流浪者"
+    },
+    {
+      "name": "爆酸者",
+      "behavior": "敌对",
+      "rarity": "常见",
+      "description": "主动捕杀流浪者"
+    },
+    {
+      "name": "爬菌",
+      "behavior": "被动",
+      "rarity": "常见",
+      "description": "在此生长，环境危害"
+    },
+    {
+      "name": "疫疾",
+      "behavior": "被动",
+      "rarity": "常见",
+      "description": "易在高湿度环境传播，需保持卫生"
+    },
+    {
+      "name": "蒙面女郎",
+      "behavior": "敌对",
+      "rarity": "未知",
+      "description": "传闻在此有基地，会攻击Gamma基地，应不惜一切代价避免"
+    }
+  ],
+  "key_locations": [
+    {
+      "name": "M.E.G. - Gamma基地",
+      "description": "第三重要的M.E.G.基地，约300名特工，武装实力最强，开放贸易，常受实体围攻",
+      "access_probability": "已知位置，但需穿越危险区域"
+    },
+    {
+      "name": "B.N.T.G. - 存储设施",
+      "description": "B.N.T.G.主要存储设施，开放贸易但价格高，约150名永久成员",
+      "access_probability": "已知位置，但需穿越危险区域"
+    },
+    {
+      "name": "杰瑞的信众 - “蓝色救赎”",
+      "description": "小型资源采集前哨，仅15名成员，对非信徒充满敌意，多次遭围攻濒临毁灭",
+      "access_probability": "未知/难以发现"
+    },
+    {
+      "name": "蒙面女郎 - 未知基地",
+      "description": "传闻中的基地，位置和详情未知，极度危险",
+      "access_probability": "极难发现/未知"
+    },
+    {
+      "name": "U.E.C. - 锡拉基地",
+      "description": "资源采集基地，成员数未知，不开放贸易，不应接近",
+      "access_probability": "未知/难以发现"
+    },
+    {
+      "name": "电力房",
+      "description": "黑暗房间，内有发电机、电器设备（断路器、电脑、电线、监视器、荧光灯等），部分装有锅炉异常炎热",
+      "access_probability": "常见于走廊中"
+    },
+    {
+      "name": "监狱栅栏区域",
+      "description": "无法拆除或打开的锈迹斑斑的监狱栅栏，阻碍通行，引发强烈恐惧和幻觉",
+      "access_probability": "区域特定，可能随机遇到"
+    }
+  ],
+  "transitions": {
+    "entrances": [
+      "通过Level 2未上锁的门",
+      "通过Level 4或Level 5的电梯",
+      "进入Level 10的地堡",
+      "进入Level 11外观像电力站的建筑",
+      "触摸Level 13中发现的生锈管道",
+      "借助地铁"
+    ],
+    "exits": [
+      {
+        "method": "搭乘电梯",
+        "condition": "找到电梯",
+        "success_chance": "电梯罕见，但找到后成功率100%",
+        "next": "Level 4"
+      },
+      {
+        "method": "搭乘电梯",
+        "condition": "找到电梯",
+        "success_chance": "电梯罕见，但找到后成功率100%",
+        "next": "Level 5"
+      },
+      {
+        "method": "通过木门",
+        "condition": "找到木门",
+        "success_chance": "未知",
+        "next": "Level 31"
+      },
+      {
+        "method": "坐在电力房中的汽车前座上",
+        "condition": "在电力房找到汽车并坐上驾驶座",
+        "success_chance": "未知/触发即成功",
+        "next": "Level 69"
+      }
+    ]
+  }
+}

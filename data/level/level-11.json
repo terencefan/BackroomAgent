@@ -1,0 +1,169 @@
+{
+  "level_id": "Level 11",
+  "title": "无垠城市",
+  "survival_difficulty": {
+    "class": "等级 2",
+    "description": "安全，稳定的环境，极少量实体"
+  },
+  "atmosphere": {
+    "visuals": ["无限延伸的现代城市建筑", "反常的建筑结构（错叠、漂浮）", "永远停滞的白天", "反常的路灯（部分亮/灭）", "黄色油漆的马路"],
+    "audio": ["城市环境音（推测）", "偶尔的车辆滑行声"],
+    "smell": ["温暖干燥的空气"],
+    "vibe": "阈限空间，超现实，熟悉又陌生"
+  },
+  "environmental_mechanics": [
+    {
+      "mechanic": "反常建筑结构",
+      "effect": "建筑内部结构随机、反常（死路楼梯、错位门），重力异常（建筑漂浮、错叠）",
+      "trigger_probability": "恒定/普遍"
+    },
+    {
+      "mechanic": "第11效应",
+      "effect": "使无面灵和猎犬行为正常化，表现为普通行人和狗，并可能尝试沟通",
+      "trigger_probability": "恒定（对特定实体生效）"
+    },
+    {
+      "mechanic": "核电站辐射",
+      "effect": "危险水平的辐射，导致电子设备失灵，对生物有害",
+      "trigger_probability": "恒定（在核电站附近区域）"
+    }
+  ],
+  "random_events": [
+    {
+      "event": "反常车辆滑行",
+      "probability": "偶尔（低频）"
+    },
+    {
+      "event": "滑行车辆内出现无面灵（1-4个）",
+      "probability": "稀有（车辆事件发生后的小概率事件）"
+    },
+    {
+      "event": "发现杏仁水（饮水机、售货机等）",
+      "probability": "常见"
+    }
+  ],
+  "entities": [
+    {
+      "name": "无面灵",
+      "behavior": "中立（受第11效应影响）",
+      "rarity": "常见",
+      "description": "行为像普通行人，可能尝试沟通"
+    },
+    {
+      "name": "猎犬",
+      "behavior": "中立（受第11效应影响）",
+      "rarity": "常见",
+      "description": "行为像普通的狗"
+    },
+    {
+      "name": "死亡飞蛾、爬菌、笑魇",
+      "behavior": "敌对",
+      "rarity": "几乎不可能找到（极罕见）",
+      "description": "理论上存在，但极难遭遇"
+    },
+    {
+      "name": "邻里守望、观察者、碾压者",
+      "behavior": "敌对",
+      "rarity": "少见（可能从Level 9游荡而来）",
+      "description": "Level 9的实体，非本层原生"
+    },
+    {
+      "name": "阿尔戈斯",
+      "behavior": "未知",
+      "rarity": "稀有",
+      "description": "居住在“总部”建筑的特殊实体"
+    },
+    {
+      "name": "拉尔夫（人类实体）",
+      "behavior": "未知",
+      "rarity": "稀有",
+      "description": "位于“后室电台工作室”的人类实体"
+    }
+  ],
+  "key_locations": [
+    {
+      "name": "M.E.G. Beta基地",
+      "description": "M.E.G.的第四个主要基地，位于中心发电厂附近的安全区，提供援助",
+      "access_probability": "中等（已知位置，有守卫）"
+    },
+    {
+      "name": "大型核电站",
+      "description": "关闭但释放危险辐射，彼此相距约800公里，无人机在此失灵",
+      "access_probability": "中等（巨大建筑，但建议远离）"
+    },
+    {
+      "name": "阿尔戈斯之眼（总部）",
+      "description": "阿尔戈斯之眼的主要基地，安全，可进行交易",
+      "access_probability": "未知（位于名为“总部”的建筑内）"
+    },
+    {
+      "name": "琥珀营Level 11前哨站",
+      "description": "游荡的帮助小组，无固定点，帮助新人了解后室",
+      "access_probability": "低频（随机遭遇游荡小组）"
+    },
+    {
+      "name": "叛乱07号站",
+      "description": "人口超800的自给自足社区，对贸易开放，禁止M.E.G.盟友进入，有武装巡逻",
+      "access_probability": "中等（有固定站点，但可能被拒）"
+    },
+    {
+      "name": "无人机监视小队！基地",
+      "description": "14人友好小组，用无人机记录证据，对交易开放（除无人机）",
+      "access_probability": "未知"
+    },
+    {
+      "name": "家常酒店",
+      "description": "运行酒店服务，对流浪者开放入住申请，提供食品和房间服务",
+      "access_probability": "中等（在酒店大楼内）"
+    },
+    {
+      "name": "杰瑞的追随者前哨站",
+      "description": "约40人的F.O.J.搜刮团队，友好除非侮辱杰瑞",
+      "access_probability": "未知"
+    },
+    {
+      "name": "U.B.D.S. “包裹侦察兵”前哨站",
+      "description": "约38人，提供邮政包裹运送服务",
+      "access_probability": "未知"
+    },
+    {
+      "name": "AEA（反实体机构）原址",
+      "description": "神秘组织（可能已瓦解）的原址，位于一个屋顶",
+      "access_probability": "稀有/极难发现"
+    },
+    {
+      "name": "激进电台临时前哨",
+      "description": "5名青少年组成的流动电台小组，在人口密集处设点",
+      "access_probability": "低频（随机遭遇其广播或临时站点）"
+    },
+    {
+      "name": "麦芽糖市场商店",
+      "description": "28人组织，在闲置商店中经营，24小时服务",
+      "access_probability": "常见（分布在多个闲置商店中）"
+    },
+    {
+      "name": "Level 11中心居民区",
+      "description": "约12,000名流浪者的居住区，补给稀少",
+      "access_probability": "常见（位于层级中心地带）"
+    },
+    {
+      "name": "永恒资料库011-Θ数据库",
+      "description": "位于翻新银行，居住至少300名成员，储备物资、武器，有卫兵",
+      "access_probability": "中等（位于西侧，有横幅标识）"
+    },
+    {
+      "name": "后室电台工作室",
+      "description": "人类实体“拉尔夫”所在地",
+      "access_probability": "未知"
+    },
+    {
+      "name": "前厅城市地标建筑",
+      "description": "模仿纽约、芝加哥等地的建筑，具有本层建筑的反常属性",
+      "access_probability": "常见"
+    }
+  ],
+  "transitions": {
+    "entrances": ["从Level 9跟随标志误入"],
+    "exits": []
+  }
+}
