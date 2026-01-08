@@ -53,21 +53,85 @@ The backend calculates the consequences of the action and returns the *diff* or 
 
 ```json
 {
-  "message": "string",            // The DM's narrative response to display in chat
-  "sender": "dm",                 // Usually "dm", but could be "system"
-  "new_state": {                  // The updated state key-values
-    "vitals": {                   // Only fields that changed need to be returned, or return full object
+  "messages": [
+    {
+      "text": "string",
+      "sender": "dm"
+    }
+  ],
+  "new_state": {                  // The updated state
+    "vitals": {
       "hp": 15,
       ...
     },
-    "inventory": [ ... ]          // Updated inventory if items were used/gained
+    // ...
+  },
+  "dice_roll": {                  // Optional: Dice result
+    "type": "d20",                // "d20" or "d100"
+    "result": 18,
+    "target": 12,                 // Optional target/DC
+    "reason": "Dexterity Check"   // Optional context
   }
 }
 ```
 
 ## Types
 
-### GameState
+### DiceRoll
+```typescript
+interface DiceRoll {
+  type: 'd20' | 'd100';
+  result: number;
+  reason?: string;
+}
+```
+
+## Streaming Response Protocol (NDJSON)
+
+The backend now streams the response as a sequence of JSON objects, each separated by a newline (`\n`). This allows for progressive UI updates (e.g., showing a dice roll before the final narrative).
+
+### Stream Chunks
+
+#### 1. Message Chunk
+Explains the context or provides narrative.
+```json
+{
+  "type": "message",
+  "text": "The door handles are rusted shut. You try to force them.",
+  "sender": "dm"
+}
+```
+
+#### 2. Dice Roll Chunk (Optional)
+Triggers the visual dice roll.
+```json
+{
+  "type": "dice_roll",
+  "dice": {
+    "type": "d20",
+    "result": 18,
+    "reason": "Strength Check"
+  }
+}
+```
+
+#### 3. State Update Chunk
+Updates the client-side game state.
+```json
+{
+  "type": "state",
+  "state": { ... } // Full GameState object
+}
+```
+
+#### 4. Suggestions Chunk (Optional)
+Provides clickable options for the user.
+```json
+{
+  "type": "suggestions",
+  "options": ["Enter the room", "Listen at the door"]
+}
+```
 ```typescript
 interface GameState {
   level: string;

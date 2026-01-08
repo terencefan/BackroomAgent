@@ -28,6 +28,7 @@ interface Item {
 
 interface GameState {
     level: string;
+    time: number;
     attributes: Attributes;
     vitals: Vitals;
     inventory: (Item | null)[];
@@ -45,20 +46,35 @@ interface ChatRequest {
     current_state: GameState | null;
 }
 
+
 interface BackendMessage {
     text: string;
     sender: 'dm' | 'system';
     options?: string[];
-  }
-  
-  interface ChatResponse {
-    messages: BackendMessage[];
-    new_state: GameState;
-  }
+}
+
+interface DiceRoll {
+    type: 'd20' | 'd100';
+    result: number;
+    target?: number;
+    reason?: string;
+}
+
+interface StreamChunk {
+    type: 'message' | 'dice_roll' | 'state' | 'suggestions';
+    text?: string;
+    sender?: 'dm' | 'system';
+    dice?: DiceRoll;
+    state?: GameState;
+    options?: string[];
+}
+
+
 
 
 const INITIAL_GAME_STATE: GameState = {
   level: "Level 1",
+  time: 480, // 8:00 AM
   attributes: {
     STR: 12,
     DEX: 14,
@@ -134,108 +150,52 @@ export const mockServerPlugin = (): Plugin => {
                     const { player_input, current_state, event } = body || {};
                     const eventType = event?.type || 'message';
 
-                    let response: ChatResponse;
+                    // --- Common State Initialization ---
+                    let newState = current_state ? { ...current_state } : { ...INITIAL_GAME_STATE };
+                    let responseMessage = "";
+                    let diceRoll: DiceRoll | undefined;
+                    let options: string[] = ['Look around', 'Check inventory', 'Wait'];
 
                     if (eventType === 'init') {
-                        response = {
-                            messages: [{
-                                text: '你在一个潮湿的黄色房间里醒来。荧光灯的嗡嗡声震耳欲聋。你看到北边和东边有出口。',
-                                sender: 'dm',
-                                options: [
-                                    '向北走深入这无尽的黄色走廊', 
-                                    '向东走寻找那个发出声音的角落', 
-                                    '仔细检查背包里的物资状况', 
-                                    '用尽全力大喊一声看看有无回应'
-                                ]
-                            }],
-                            new_state: INITIAL_GAME_STATE
-                        };
+                        newState = INITIAL_GAME_STATE;
+                        responseMessage = '你在一个潮湿的黄色房间里醒来。荧光灯的嗡嗡声震耳欲聋。你看到北边和东边有出口。';
+                        options = [
+                            '向北走深入这无尽的黄色走廊', 
+                            '向东走寻找那个发出声音的角落', 
+                            '仔细检查背包里的物资状况', 
+                            '尝试切出当前层级 (Debug Switch Level)'
+                        ];
                     } else if (eventType === 'use' || eventType === 'drop') {
                         // Handle Item events
                         console.log(`[Mock] Item Event: ${eventType} id=${event?.item_id} qty=${event?.quantity}`);
-                        
-                        let newState = current_state ? { ...current_state } : { ...INITIAL_GAME_STATE };
-                        let responseMessage = "";
+                        newState.time = (newState.time || 480) + 5;
                         
                         const itemIndex = newState.inventory.findIndex(i => i?.id === event?.item_id);
                         if (itemIndex > -1) {
                             const item = newState.inventory[itemIndex];
-                            if (!item) {
-                                responseMessage = "Error: Item somehow null despite index check.";
-                            } else {
+                            if (item) {
                                 if (eventType === 'use') {
                                     responseMessage = `(ViteMock) Used ${item.name}. Effects applied.`;
-                                    // Logic to consume item...
-                                    if (item.quantity > 1) {
+                                    if (item.quantity && item.quantity > 1) {
                                         item.quantity -= 1;
                                     } else {
                                         newState.inventory[itemIndex] = null;
                                     }
 
-                                    // --- Chaos Mode: Randomly Remove & Add Items ---
-                                    
-                                    // 1. Randomly remove 0-2 OTHER items
-                                    const itemsToRemoveCount = Math.floor(Math.random() * 3); // 0, 1, or 2
-                                    let removedCount = 0;
-                                    // Find occupied slots that are NOT the current item (to avoid double remove logic issues)
-                                    const otherIndices = newState.inventory
-                                        .map((it, idx) => (it && idx !== itemIndex) ? idx : -1)
-                                        .filter(idx => idx !== -1);
-                                    
-                                    // Shuffle and pick indices
-                                    for (let i = otherIndices.length - 1; i > 0; i--) {
-                                        const j = Math.floor(Math.random() * (i + 1));
-                                        [otherIndices[i], otherIndices[j]] = [otherIndices[j], otherIndices[i]];
-                                    }
-                                    
-                                    for (let i = 0; i < Math.min(itemsToRemoveCount, otherIndices.length); i++) {
-                                        const idxToRemove = otherIndices[i];
-                                        const itemToRemove = newState.inventory[idxToRemove];
-                                        if (itemToRemove) {
-                                            // Simply nulling it out or decreasing qty?
-                                            // Let's decrease random amount or kill it
-                                            const qtyToRemove = Math.floor(Math.random() * itemToRemove.quantity) + 1;
-                                            console.log(`[Mock] Chaos Remove: ${itemToRemove.name} -${qtyToRemove}`);
-                                            
-                                            // Append to response message
-                                            responseMessage += ` [Lost: ${itemToRemove.name} x${qtyToRemove}]`;
-
-                                            if (itemToRemove.quantity > qtyToRemove) {
-                                                itemToRemove.quantity -= qtyToRemove;
-                                            } else {
-                                                newState.inventory[idxToRemove] = null;
-                                            }
-                                        }
-                                    }
-
-                                    // 2. Randomly ADD 1-2 NEW items
-                                    const itemsToAddCount = Math.floor(Math.random() * 2) + 1; // 1 or 2
-                                    const potentialLoot = [
-                                        { id: `chaos_1_${Date.now()}`, name: 'Chaos Orb', icon: '🔮', quantity: 1, category: 'special', description: 'Appeared from nowhere.' },
-                                        { id: `chaos_2_${Date.now()}`, name: 'Void Dust', icon: '✨', quantity: 5, category: 'resource', description: 'Glittering dust.' },
-                                        { id: `chaos_3_${Date.now()}`, name: 'Glitch Frag', icon: '🧩', quantity: 1, category: 'tool', description: 'A piece of reality.' },
-                                        { id: `chaos_4_${Date.now()}`, name: 'Lost Sock', icon: '🧦', quantity: 1, description: 'Where did this come from?' }
-                                    ];
-
-                                    for (let k = 0; k < itemsToAddCount; k++) {
-                                        const randomLoot = { 
-                                            ...potentialLoot[Math.floor(Math.random() * potentialLoot.length)],
-                                            id: `new_${Date.now()}_${k}` // Unique ID
-                                        };
-                                        
-                                        // Try to find empty slot
+                                    // Chaos Mode: Randomly Add Items
+                                    if (Math.random() < 0.3) {
+                                        const chaosLoot = { id: `chaos_${Date.now()}`, name: 'Chaos Orb', icon: '🔮', quantity: 1, category: 'special', description: 'Appeared.' } as Item;
                                         const emptyIndex = newState.inventory.findIndex(it => it === null);
                                         if (emptyIndex > -1) {
-                                            newState.inventory[emptyIndex] = randomLoot;
-                                            responseMessage += ` [Gained: ${randomLoot.name}]`;
-                                            console.log(`[Mock] Chaos Add: ${randomLoot.name} at slot ${emptyIndex}`);
+                                            newState.inventory[emptyIndex] = chaosLoot;
+                                            responseMessage += ` [Chaos: Found ${chaosLoot.name}]`;
                                         }
                                     }
 
                                 } else {
                                     const dropQty = event?.quantity || 1;
                                     responseMessage = `(ViteMock) Dropped ${dropQty}x ${item.name}.`;
-                                    if (item.quantity > dropQty) {
+                                    if (item.quantity && item.quantity > dropQty) {
                                         item.quantity -= dropQty;
                                     } else {
                                         newState.inventory[itemIndex] = null;
@@ -246,46 +206,89 @@ export const mockServerPlugin = (): Plugin => {
                             responseMessage = "(ViteMock) Item not found in inventory.";
                         }
 
-                         response = {
-                            messages: [{
-                                text: responseMessage,
-                                sender: 'dm'
-                            }],
-                            new_state: newState
-                        };
-
                     } else {
                         // Action / Message handling
                         console.log(`[Mock] User says: ${player_input}`);
+                        responseMessage = `(ViteMock) You said: "${player_input}". The void listens carefully.`;
+                        newState.time = (newState.time || 480) + 15;
 
-                        let responseMessage = `(ViteMock) You said: "${player_input}". The void listens carefully.`;
-                        let newState = current_state ? { ...current_state } : { ...INITIAL_GAME_STATE };
-
-                        if (newState) {
-                            if (player_input && player_input.toLowerCase().includes('hit')) {
-                                responseMessage = "(ViteMock) Ouch! You took some damage from imaginary spikes.";
-                                newState.vitals.hp = Math.max(0, newState.vitals.hp - 5);
-                            } else if (player_input && player_input.toLowerCase().includes('heal')) {
-                                responseMessage = "(ViteMock) You feel refreshed.";
-                                newState.vitals.hp = Math.min(newState.vitals.maxHp, newState.vitals.hp + 10);
-                            }
+                        if (player_input && player_input.toLowerCase().includes('hit')) {
+                            responseMessage = "(ViteMock) Ouch! You took some damage from imaginary spikes.";
+                            newState.vitals.hp = Math.max(0, newState.vitals.hp - 5);
+                        } else if (player_input && player_input.toLowerCase().includes('heal')) {
+                            responseMessage = "(ViteMock) You feel refreshed.";
+                            newState.vitals.hp = Math.min(newState.vitals.maxHp, newState.vitals.hp + 10);
+                        } else if (player_input && (player_input.includes('切出当前层级') || player_input.includes('Level'))) {
+                            const currentLevelNum = parseInt(newState.level.replace('Level ', '')) || 1;
+                            const nextLevelNum = currentLevelNum + 1;
+                            newState.level = `Level ${nextLevelNum}`;
+                            responseMessage = `(ViteMock) Reality shifts... You have no-clipped to ${newState.level}.`;
+                        } else {
+                            options = ['Look around', 'Check inventory', 'Wait', '尝试切出当前层级 (Debug Switch Level)'];
                         }
-
-                        response = {
-                            messages: [{
-                                text: responseMessage,
-                                sender: 'dm'
-                            }],
-                            new_state: newState
-                        };
                     }
 
-                    res.setHeader('Content-Type', 'application/json');
-                    
-                    // Simulate random latency between 1000ms and 3000ms
-                    setTimeout(() => {
-                        res.end(JSON.stringify(response));
-                    }, Math.random() * 2000 + 1000);
+                    // --- Global Dice Logic ---
+                    if (eventType !== 'init' && Math.random() < 0.3) {
+                        if (Math.random() < 0.5) {
+                            diceRoll = {
+                                type: 'd20',
+                                result: Math.floor(Math.random() * 20) + 1,
+                                reason: "Luck Check"
+                            };
+                        } else {
+                            diceRoll = {
+                                type: 'd100',
+                                result: Math.floor(Math.random() * 100) + 1,
+                                reason: "Sanity Check"
+                            };
+                        }
+                    }
+
+                    // --- Start Streaming Response ---
+                    res.setHeader('Content-Type', 'text/plain');
+                    res.setHeader('Transfer-Encoding', 'chunked');
+
+                    const chunks: StreamChunk[] = [];
+
+                    // 1. Dice / Context (if any)
+                    if (diceRoll) {
+                         chunks.push({ 
+                            type: 'message', 
+                            text: `(ViteMock) Rolling for ${diceRoll.reason} (${diceRoll.type})...`, 
+                            sender: 'dm' 
+                        });
+                        chunks.push({ type: 'dice_roll', dice: diceRoll });
+                        
+                        // Internal check logic (simulating backend logic)
+                        const target = diceRoll.type === 'd100' ? 50 : 10;
+                        const outcome = diceRoll.result <= target ? "Success" : "Failure"; // Lower is better for d100 usually, Higher for d20? Let's just say simplify.
+                        // Actually in D&D d20 high is good, CoC d100 low is good.
+                        // Let's just simplify for mock: > 10 is Good.
+                        const isGood = diceRoll.result > (diceRoll.type === 'd20' ? 10 : 50);
+                        
+                        responseMessage += ` [Result: ${diceRoll.result} - ${isGood ? 'pass' : 'fail'}]`;
+                    }
+
+                    // 2. Main Narrative
+                    chunks.push({ type: 'message', text: responseMessage, sender: 'dm' });
+
+                    // 3. State Update
+                    chunks.push({ type: 'state', state: newState });
+
+                    // 4. Suggestions
+                    chunks.push({ type: 'suggestions', options: options });
+
+                    // Send chunks with delay
+                    const sendChunks = async () => {
+                        for (const chunk of chunks) {
+                            await new Promise(resolve => setTimeout(resolve, 800)); // 800ms delay between chunks
+                            res.write(JSON.stringify(chunk) + '\n');
+                        }
+                        res.end();
+                    };
+
+                    sendChunks();
                 } else {
                     // Not a POST request
                     res.statusCode = 405;
@@ -295,3 +298,4 @@ export const mockServerPlugin = (): Plugin => {
         },
     };
 };
+

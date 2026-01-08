@@ -25,6 +25,7 @@ export interface Item {
 
 export interface GameState {
   level: string;
+  time: number;
   attributes: Attributes;
   vitals: Vitals;
   inventory: (Item | null)[];
@@ -65,13 +66,60 @@ export type UIEvent =
   | { type: 'UPDATE_ATTRIBUTES'; attributes: Attributes }
   | { type: 'UNLOCK_INTERACTION' };
 
+
+export interface DiceRoll {
+  type: 'd20' | 'd100';
+  result: number;
+  reason?: string;
+}
+
+export const StreamChunkType = {
+  MESSAGE: 'message',
+  DICE_ROLL: 'dice_roll',
+  STATE: 'state',
+  SUGGESTIONS: 'suggestions'
+} as const;
+
+export type StreamChunkType = typeof StreamChunkType[keyof typeof StreamChunkType];
+
+export interface StreamChunkMessage {
+  type: typeof StreamChunkType.MESSAGE;
+  text: string;
+  sender: 'dm' | 'system';
+}
+
+export interface StreamChunkDice {
+  type: typeof StreamChunkType.DICE_ROLL;
+  dice: DiceRoll;
+}
+
+export interface StreamChunkState {
+  type: typeof StreamChunkType.STATE;
+  state: GameState;
+}
+
+export interface StreamChunkSuggestions {
+  type: typeof StreamChunkType.SUGGESTIONS;
+  options: string[];
+}
+
+
+export type StreamChunk = 
+  | StreamChunkMessage 
+  | StreamChunkDice 
+  | StreamChunkState 
+  | StreamChunkSuggestions;
+
 export interface ChatResponse {
   messages: BackendMessage[];
   new_state: GameState;
+  dice_roll?: DiceRoll;
 }
+
 
 export interface Message {
   id: number;
   sender: 'dm' | 'player' | 'system';
   text: string;
+  options?: string[];
 }

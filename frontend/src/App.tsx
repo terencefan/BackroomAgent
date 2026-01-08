@@ -4,14 +4,15 @@ import { AttributeBar } from './components/AttributeBar';
 import { ChatBox } from './components/ChatBox';
 import { InventoryGrid } from './components/InventoryGrid';
 // import { INITIAL_GAME_STATE, INITIAL_MESSAGES } from './mockData';
-import type { ChatResponse, GameState, Item, Message, UIEvent } from './types';
-import { EventType } from './types';
+import type { GameState, Item, Message, StreamChunk } from './types';
+import { EventType, StreamChunkType } from './types';
 
 function App() {
   // State
   const [messages, setMessages] = useState<Message[]>([]);
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLevelTransition, setIsLevelTransition] = useState(false);
   const isInitialized = useRef(false);
 
   // Fetch initial state on mount
@@ -33,64 +34,43 @@ function App() {
                 current_state: null
             })
         });
-        if (response.ok) {
-          const data: ChatResponse = await response.json();
-          setGameState(data.new_state);
-          
-          if (data.messages && data.messages.length > 0) {
-            const newMessages = data.messages.map((msg, index) => ({
-                id: Date.now() + index,
-                sender: msg.sender,
-                text: msg.text,
-                options: msg.options
-            }));
-            setMessages(prev => [...prev, ...newMessages]);
-          }
+        
+        if (!response.ok) throw new Error('Network response was not ok');
+
+        const reader = response.body?.getReader();
+        if (!reader) throw new Error('Response body is not readable');
+
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || '';
+
+            for (const line of lines) {
+                if (!line.trim()) continue;
+                try {
+                    const chunk = JSON.parse(line);
+                    await processStreamChunk(chunk);
+                } catch (e) {
+                    console.error('Error parsing JSON chunk', e);
+                }
+            }
         }
+        setIsLoading(false);
+
       } catch (error) {
         console.error("Failed to fetch initial state:", error);
-      } finally {
         setIsLoading(false);
       }
     };
 
     fetchInitialState();
   },[]);
-
-const processUIEvents = async (events: UIEvent[]) => {
-    for (const event of events) {
-        switch (event.type) {
-            case 'SHOW_MESSAGE':
-                setMessages(prev => [...prev, {
-                    id: Date.now() + Math.random(),
-                    sender: event.message.sender,
-                    text: event.message.text,
-                    options: event.message.options
-                }]);
-                // Basic reading delay calculation: 50ms per char, min 1s, max 3s
-                // But since we have a Typewriter effect in the component, if we add messages too fast, they might overlap visually or scrolling might get weird.
-                // However, the Typewriter component handles its own timing.
-                // A small delay here ensures distinct "arrival" of events.
-                await new Promise(r => setTimeout(r, 500));
-                break;
-            case 'UPDATE_VITALS':
-                setGameState(prev => prev ? ({ ...prev, vitals: event.vitals }) : prev);
-                await new Promise(r => setTimeout(r, 300));
-                break;
-            case 'UPDATE_INVENTORY':
-                setGameState(prev => prev ? ({ ...prev, inventory: event.inventory }) : prev);
-                await new Promise(r => setTimeout(r, 300));
-                break;
-             case 'UPDATE_ATTRIBUTES':
-                setGameState(prev => prev ? ({ ...prev, attributes: event.attributes }) : prev);
-                await new Promise(r => setTimeout(r, 300));
-                break;
-            case 'UNLOCK_INTERACTION':
-                setIsLoading(false);
-                break;
-        }
-    }
-  };
 
   const processGameEvent = async (text: string, eventType: EventType, eventData?: { item_id?: string, quantity?: number }) => {
     // Add player message immediately
@@ -116,32 +96,33 @@ const processUIEvents = async (events: UIEvent[]) => {
 
       if (!response.ok) throw new Error('Network response was not ok');
 
-      const data: ChatResponse = await response.json();
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error('Response body is not readable');
 
-      // Generate UI Events
-      const events: UIEvent[] = [];
-      
-      if (data.messages) {
-        data.messages.forEach(msg => events.push({ type: 'SHOW_MESSAGE', message: msg }));
-      }
-      
-      if (data.new_state) {
-        // We could optimize this by comparing with 'gameState', but simplest is to just push events.
-        // Or blindly push them.
-        events.push({ type: 'UPDATE_VITALS', vitals: data.new_state.vitals });
-        events.push({ type: 'UPDATE_INVENTORY', inventory: data.new_state.inventory });
-        events.push({ type: 'UPDATE_ATTRIBUTES', attributes: data.new_state.attributes });
-      }
-      
-      events.push({ type: 'UNLOCK_INTERACTION' });
+      const decoder = new TextDecoder();
+      let buffer = '';
 
-      // Process Event Queue
-      // Note: We do NOT await processUIEvents here if we want to return from the click handler immediately? 
-      // Actually we are in async function, so awaiting is fine. It keeps "isLoading" true until done.
-      // But we shouldn't set isLoading(false) in finally if we do it via event.
-      // So we will manage isLoading inside the event queue processing.
-      
-      await processUIEvents(events);
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        
+        // Keep the last partial line in the buffer
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          try {
+            const chunk = JSON.parse(line);
+            await processStreamChunk(chunk);
+          } catch (e) {
+            console.error('Error parsing JSON chunk', e);
+          }
+        }
+      }
+      setIsLoading(false);
 
     } catch (error) {
       console.error("Error communicating with backend:", error);
@@ -152,6 +133,63 @@ const processUIEvents = async (events: UIEvent[]) => {
       }]);
       setIsLoading(false);
     } 
+  };
+
+  const processStreamChunk = async (chunk: StreamChunk) => {
+    switch (chunk.type) {
+      case StreamChunkType.MESSAGE:
+        setMessages(prev => [...prev, {
+          id: Date.now(),
+          sender: chunk.sender || 'dm',
+          text: chunk.text || ''
+        }]);
+        break;
+      
+      case StreamChunkType.DICE_ROLL:
+        // Handle Dice Roll Visualization
+        // For now, let's just show it as a system message
+        setMessages(prev => [...prev, {
+            id: Date.now() + 1,
+            sender: 'system',
+            text: `🎲 [${chunk.dice.type}] ${chunk.dice.reason || 'Check'}: ${chunk.dice.result}`
+        }]);
+        break;
+
+      case StreamChunkType.STATE:
+        // Update Game State
+        if (chunk.state) {
+            // Check for level change to trigger potential animation
+            if (gameState && chunk.state.level !== gameState.level) {
+                // Trigger Fade Out
+                setIsLevelTransition(true);
+                // Wait for fade out animation
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                // Update State (while invisible)
+                setGameState(chunk.state);
+                
+                // Small delay to ensure render phase completes before fade in starts (optional but safer)
+                await new Promise(resolve => setTimeout(resolve, 50));
+                
+                // Trigger Fade In
+                setIsLevelTransition(false);
+            } else {
+                setGameState(chunk.state);
+            }
+        }
+        break;
+
+      case StreamChunkType.SUGGESTIONS:
+        // Append suggestions to the LAST message if possible
+        setMessages(prev => {
+            if (prev.length === 0) return prev;
+            const lastMsg = { ...prev[prev.length - 1] };
+            // Overwrite options
+            lastMsg.options = chunk.options;
+            return [...prev.slice(0, -1), lastMsg];
+        });
+        break;
+    }
   };
 
   const handleSendMessage = (text: string) => {
@@ -175,6 +213,12 @@ const processUIEvents = async (events: UIEvent[]) => {
     processGameEvent(`丢弃 ${quantity} 个 ${item.name}`, EventType.DROP, { item_id: item.id, quantity });
   };
 
+  const formatTime = (totalMinutes: number) => {
+    const hours = Math.floor(totalMinutes / 60) % 24;
+    const minutes = totalMinutes % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  };
+
   if (!gameState) {
     return <div className="loading-screen" style={{
         display: 'flex', 
@@ -188,14 +232,13 @@ const processUIEvents = async (events: UIEvent[]) => {
   }
 
   return (
-    <div className="game-container">
+    <div className={`game-container ${isLevelTransition ? 'fade-out' : 'fade-in'}`}>
       {/* Left functionality - Chat */}
       <div className="chat-section">
         <div className="header">
           <h1>后室终端</h1>
           <div className="status-indicator">
-            <span>层级: {gameState.level.replace("Level ", "")}</span>
-            <span>状态: 在线</span>
+            <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>⏱ {formatTime(gameState.time || 480)}</span>
           </div>
         </div>
         <ChatBox 
@@ -217,7 +260,8 @@ const processUIEvents = async (events: UIEvent[]) => {
         
         <div className="panel">
           <h3 className="panel-header">位置信息</h3>
-          <p style={{ color: '#888', fontSize: '0.9rem' }}>
+          <p style={{ color: '#888', fontSize: '0.9rem', lineHeight: '1.6' }}>
+            层级: <strong style={{ color: '#4ade80', fontSize: '1.1em' }}>{gameState.level}</strong><br/>
             当前区域: <strong>宜居带</strong><br/>
             温度: 22°C<br/>
             光照等级: 中等
