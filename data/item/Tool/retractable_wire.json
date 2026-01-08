@@ -1,0 +1,6 @@
+{
+  "name": "伸缩电线",
+  "description": "大盘的伸缩电线，可用于电气连接或捆绑。",
+  "id": "retractable_wire",
+  "category": "Tool"
+}

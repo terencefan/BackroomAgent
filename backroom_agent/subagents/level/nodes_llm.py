@@ -71,7 +71,7 @@ def extract_items_node(state: LevelAgentState):
     logs.append("Extracting items from HTML...")
     
     llm = get_llm()
-    prompt_path = os.path.join(os.path.dirname(__file__), "prompts", "level_agent.prompt")
+    prompt_path = os.path.join(os.path.dirname(__file__), "prompts", "extract_items.prompt")
     system_prompt = load_prompt(prompt_path)
     
     # We might want to truncate HTML if it's too long, but usually wiki pages are okay for recent models
@@ -107,3 +107,50 @@ def extract_items_node(state: LevelAgentState):
     except Exception as e:
         logs.append(f"Error extracting items: {e}")
         return {"extracted_items_raw": [], "logs": logs}
+
+def extract_entities_node(state: LevelAgentState):
+    """
+    Extracts potential entities from the HTML content using LLM.
+    """
+    html_content = state.get("html_content")
+    logs = state.get("logs", [])
+    
+    if not html_content:
+        return {"extracted_entities_raw": [], "logs": logs}
+
+    logs.append("Extracting entities from HTML...")
+    
+    llm = get_llm()
+    prompt_path = os.path.join(os.path.dirname(__file__), "prompts", "extract_entities.prompt")
+    system_prompt = load_prompt(prompt_path)
+    
+    messages = [
+        SystemMessage(content=system_prompt.format(context=html_content)),
+        HumanMessage(content="Extract the entities now in JSON format.")
+    ]
+    
+    try:
+        response = llm.invoke(messages)
+        content = response.content
+        
+        # Parse JSON from Markdown block
+        if "```json" in content:
+            content = content.split("```json")[1].split("```")[0].strip()
+        elif "```" in content:
+            content = content.split("```")[1].strip()
+            
+        parsed_json = json.loads(content)
+        
+        if isinstance(parsed_json, dict) and "entities" in parsed_json:
+            entities = parsed_json["entities"]
+        else:
+            entities = []
+            logs.append(f"Warning: Unexpected JSON format for entities. Got keys: {parsed_json.keys() if isinstance(parsed_json, dict) else 'Not a dict'}")
+
+        logs.append(f"Extracted {len(entities)} raw entities.")
+        return {"extracted_entities_raw": entities, "logs": logs}
+        
+    except Exception as e:
+        logs.append(f"Error extracting entities: {e}")
+        return {"extracted_entities_raw": [], "logs": logs}
+

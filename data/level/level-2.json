@@ -2,210 +2,209 @@
   "level_id": "Level 2",
   "title": "废弃公共带",
   "survival_difficulty": {
-    "class": "等级 2",
-    "description": "不安全，不稳定，中量实体"
+    "class": "未知 (原文未明确提及)",
+    "description": "环境复杂，存在实体威胁，资源匮乏，依赖外部补给"
   },
   "atmosphere": {
     "visuals": [
-      "脏污的水泥/砖墙",
-      "粉尘覆盖的表面",
-      "工业白/橙色荧光灯",
-      "暴露的电线",
-      "散落的工业杂物（平板车、油桶、箱子）",
-      "狭窄逼仄的走廊"
+      "45°角扭曲的隧道",
+      "颓敝脏污的水泥/砖墙",
+      "布满粉尘的墙面",
+      "巨大废弃的工业机械与管线",
+      "工业白或橙色荧光灯光",
+      "散布的工业废料（平板车、油桶、箱子、碎玻璃）",
+      "分布不均的光照区域",
+      "各色样式、材质、大小的门"
     ],
     "audio": [
-      "机器发出的几近无声的运转噪音",
-      "荧光灯的嗡鸣声",
-      "管道内液体/气体的流动声（不稳定）"
+      "近乎无声的机器运转噪音（损坏状态）",
+      "荧光灯的嗡鸣声"
     ],
     "smell": [
       "粉尘味",
-      "工业油污味",
-      "潜在的腐肉气味（管道破裂时）"
+      "管道破裂后可能的腐肉气味（大停电后）"
     ],
-    "vibe": "工业废弃，幽闭恐惧，压抑，混乱"
+    "vibe": "工业，幽闭恐惧，废弃，混乱"
   },
   "environmental_mechanics": [
     {
-      "mechanic": "电路区域性失效",
-      "effect": "一个灯具或线路损坏，会导致其所在片区（约3x3至6x6灯具网格）的所有灯光熄灭，使该区域陷入黑暗。",
-      "trigger_probability": "因勘察、实体破坏或意外而触发（DC 12 感知检定以避免触碰）"
+      "mechanic": "电路区域效应",
+      "effect": "一个灯具或线路损坏，会导致整个相连片区（约3x3至6x6灯具网格）的灯光熄灭，使区域陷入黑暗。",
+      "trigger_probability": "当灯具/线路受损时触发 (DC 取决于破坏行为)"
     },
     {
-      "mechanic": "粉尘环境",
-      "effect": "触摸墙壁会留下粉迹，在狭窄处会弄脏衣物甚至造成皮肤擦伤。",
-      "trigger_probability": "恒定"
+      "mechanic": "虚空房间",
+      "effect": "进入某些特定门后，会到达一个无限、无光、无声的虚空空间，极易迷失。",
+      "trigger_probability": "稀有 (需找到并进入特定的解锁门)"
     },
     {
       "mechanic": "大停电后遗症",
-      "effect": "大多数机器停止运作，仅发出损坏的噪音。部分区域灯光不稳定或仅由紫色应急灯照明。管道可能破裂泄露。",
-      "trigger_probability": "恒定（当前层级状态）"
+      "effect": "所有机器停止运转，管道堵塞/破裂，多数灯光失效，少数区域有紫色应急灯光。部分入口/出口失效，部分先前锁定的门解锁（包括虚空房间）。",
+      "trigger_probability": "历史事件，当前状态可能为常态"
     }
   ],
   "random_events": [
     {
       "event": "灯光闪烁或区域性熄灭",
-      "probability": "中频（因电路脆弱，建议每小时进行1d20检定，结果为1-3时触发）"
+      "probability": "低频 (因线路暴露易损)"
     },
     {
-      "event": "管道破裂或泄露",
-      "probability": "低频（大停电后风险增加，1d100 > 90）"
+      "event": "发现可进入的虚空房间（大停电后）",
+      "probability": "极低 (需找到特定解锁门)"
     },
     {
-      "event": "发现虚空房间的门解锁",
-      "probability": "极罕见（大停电后概率略有增加，1d100 > 98）"
-    }
-  ],
-  "entities": [
-    {
-      "name": "猎犬",
-      "behavior": "敌对",
-      "rarity": "常见",
-      "description": "曾袭击过定居点，是本层级的主要威胁之一。"
-    },
-    {
-      "name": "牧蛇",
-      "behavior": "敌对",
-      "rarity": "少见",
-      "description": "会从侧翼发动伏击，曾阻碍过救援行动。"
-    },
-    {
-      "name": "悲尸",
-      "behavior": "敌对",
-      "rarity": "少见",
-      "description": "曾频繁袭击过“幸存者”聚落。"
-    },
-    {
-      "name": "机巧子民",
-      "behavior": "中立",
-      "rarity": "绝迹",
-      "description": "古代实体，已消亡。其遗迹（废弃城市、工具部件）可能被发现。"
+      "event": "管道破裂，泄露气体或液体",
+      "probability": "低频 (大停电后概率增加)"
     }
   ],
   "key_locations": [
     {
-      "name": "办公区EL3A",
-      "description": "B.N.T.G.的主要行动基地，可通过Level 2内的许多门到达。",
-      "access_probability": "中等（需找到正确的门）"
+      "name": "办公区EL3A (入口/连接点)",
+      "description": "B.N.T.G.的行动主基地，可通过Level 2内许多门到达。",
+      "access_probability": "常见 (通过许多门可抵达)"
     },
     {
-      "name": "B.N.T.G.窄轨铁道系统",
-      "description": "贯穿部分区域的货运/客运轨道，现已因大停电而七零八落，存在脱轨和撞击风险。",
-      "access_probability": "常见（在主要走廊区域）"
+      "name": "B.N.T.G.窄轨铁道系统 (残骸)",
+      "description": "大停电后变得七零八落的货运/客运轨道系统，连接EL3A与Level 2内部分区域。",
+      "access_probability": "中等 (沿特定改造过的隧道寻找)"
     },
     {
-      "name": "虚空房间",
-      "description": "门后是无限、无光、无声的虚空，极易迷失。大停电后部分此类门可能解锁。",
-      "access_probability": "极罕见（找到特定门）"
-    },
-    {
-      "name": "机巧子民废弃城市（疑似）",
-      "description": "位于Level 811出口附近，可能是该古代种族的主城遗迹。",
-      "access_probability": "极难发现（需找到通往Level 811的特定出口）"
+      "name": "机巧子民废弃城市 (疑似，靠近Level 811出口)",
+      "description": "可能曾是机巧子民的主城，现已废弃。",
+      "access_probability": "极难发现 (位置不明)"
     },
     {
       "name": "协济迷失者/幸存者旧址",
-      "description": "废弃的教育和安置聚落，可能留有补给或记录。",
-      "access_probability": "未知（需探索发现）"
+      "description": "曾用于收容和教育新流浪者的聚落，现已废弃。",
+      "access_probability": "未知 (需探索发现)"
     },
     {
-      "name": "M.E.G.旧副基地",
-      "description": "已废弃，曾作为Alpha基地的副基地。",
-      "access_probability": "未知（需探索发现）"
+      "name": "M.E.G.旧副基地旧址",
+      "description": "M.E.G.早期在Level 2的短暂据点，已迁移。",
+      "access_probability": "未知 (需探索发现)"
     }
   ],
   "transitions": {
     "entrances": [
-      "从Level 1进入看起来异常长的走廊",
+      "从Level 1中任意看起来异常延长的走廊进入",
       "从前厅直接切入",
-      "通过其他多种入口（清单中提及但未详述）"
+      "其他多种入口 (见维基清单)"
     ],
     "exits": [
       {
         "method": "通过未上锁的门",
         "condition": "找到墙上留有标记或刻印的门",
-        "success_chance": "高（出口常见）",
+        "success_chance": "高 (常见且易找)",
         "next": "Level 1"
       },
       {
         "method": "通过未上锁的门",
         "condition": "找到墙上留有标记或刻印的门",
-        "success_chance": "高（出口常见）",
+        "success_chance": "高 (常见且易找)",
         "next": "Level 3"
       },
       {
         "method": "通过未上锁的门",
         "condition": "找到墙上留有标记或刻印的门",
-        "success_chance": "高（出口常见）",
+        "success_chance": "高 (常见且易找)",
         "next": "Level 4"
       },
       {
         "method": "通过异常门径",
-        "condition": "找到特定的异常门",
-        "success_chance": "可变（取决于具体门径）",
+        "condition": "找到并进入特定的异常门",
+        "success_chance": "可变 (取决于具体门径)",
         "next": null
       },
       {
         "method": "其他离开途径",
-        "condition": "根据清单中提及的其他方法",
-        "success_chance": "未知",
+        "condition": "根据维基清单中的其他方法",
+        "success_chance": "可变",
         "next": null
       },
       {
-        "method": "找到通往Level 126的出口",
-        "condition": "需要层级电力生效（大停电后可能失效）",
-        "success_chance": "中（需电力恢复）",
-        "next": "Level 126"
-      },
-      {
-        "method": "找到通往Level 811的出口",
-        "condition": "需要层级电力生效（大停电后可能失效），附近可能有废弃城市",
-        "success_chance": "中（需电力恢复）",
-        "next": "Level 811"
+        "method": "通过需要电力的出口 (大停电期间失效)",
+        "condition": "前往Level 126或Level 811的出口 (需层级电力)",
+        "success_chance": "大停电后极低/失效",
+        "next": null
       }
     ]
   },
   "findable_items": [
     {
+      "name": "机械部件",
+      "description": "零散的机械部件，可能来自被拆卸的机器。",
+      "id": "mechanical_parts",
+      "category": "Resource"
+    },
+    {
+      "name": "油桶",
+      "description": "装有油的桶，可能用作燃料或润滑剂。",
+      "id": "oil_drum",
+      "category": "Resource"
+    },
+    {
+      "name": "木箱",
+      "description": "装有可加工材料的木制箱子。",
+      "id": "wooden_crate",
+      "category": "Resource"
+    },
+    {
+      "name": "废纸",
+      "description": "散落在地面上的旧纸张。",
+      "id": "scrap_paper",
+      "category": "Resource"
+    },
+    {
+      "name": "旧工具",
+      "description": "被遗弃的旧工具。",
+      "id": "old_tools",
+      "category": "Tool"
+    },
+    {
+      "name": "碎玻璃",
+      "description": "来自老灯泡的破碎玻璃片。",
+      "id": "broken_glass",
+      "category": "Resource"
+    },
+    {
       "name": "工具箱",
-      "description": "装有各种手动工具的工具箱，可用于维修或拆卸。",
+      "description": "装有各种工具的箱子。",
       "id": "toolbox",
       "category": "Tool"
     },
     {
-      "name": "木材垛",
-      "description": "一堆堆叠好的木材，可作为建筑材料或燃料。",
-      "id": "wood_stack",
+      "name": "木材",
+      "description": "成垛的木材，可用于建造或作为燃料。",
+      "id": "lumber",
       "category": "Resource"
     },
     {
       "name": "机器零件",
-      "description": "从机器上拆卸下来的各种金属零件，可用于维修或交易。",
+      "description": "从机器上拆下的零件。",
       "id": "machine_parts",
       "category": "Resource"
     },
     {
-      "name": "生锈管道",
-      "description": "一段段生锈的金属管道，可能含有有用的金属材料。",
-      "id": "rusty_pipes",
+      "name": "管道",
+      "description": "生锈的金属管道。",
+      "id": "pipe",
       "category": "Resource"
     },
     {
       "name": "折叠梯",
-      "description": "可折叠的梯子，用于攀爬或到达高处。",
+      "description": "可折叠的梯子，便于携带和攀爬。",
       "id": "folding_ladder",
       "category": "Tool"
     },
     {
       "name": "伸缩电线",
-      "description": "大盘的伸缩电线，可用于连接电源或制作陷阱。",
+      "description": "大盘的伸缩电线，可用于电气连接或捆绑。",
       "id": "retractable_wire",
-      "category": "Resource"
+      "category": "Tool"
     },
     {
       "name": "动力工具",
-      "description": "由电力驱动的工业工具，如电钻或角磨机。",
+      "description": "由电力或其他动力驱动的工具。",
       "id": "power_tools",
       "category": "Tool"
     },
@@ -216,58 +215,48 @@
       "category": "Tool"
     },
     {
-      "name": "油桶",
-      "description": "装有燃油或润滑油的金属桶。",
-      "id": "oil_drum",
-      "category": "Resource"
-    },
-    {
-      "name": "木箱",
-      "description": "装有各种可加工材料的木制箱子。",
-      "id": "wooden_crate",
-      "category": "Resource"
-    },
-    {
-      "name": "废纸",
-      "description": "散落在地上的旧纸张，可能包含有用信息或可作引火物。",
-      "id": "scrap_paper",
-      "category": "Resource"
-    },
-    {
-      "name": "旧工具",
-      "description": "磨损但可能仍可使用的旧手动工具。",
-      "id": "old_tools",
-      "category": "Tool"
-    },
-    {
-      "name": "碎玻璃",
-      "description": "来自老灯泡的碎玻璃片，锋利且危险。",
-      "id": "broken_glass",
+      "name": "铜",
+      "description": "从暴露的电线或灯具中收集的铜材料。",
+      "id": "copper",
       "category": "Resource"
     },
     {
       "name": "手电筒",
-      "description": "便携式照明工具，在黑暗区域至关重要。",
+      "description": "便携式照明设备，在黑暗区域至关重要。",
       "id": "flashlight",
       "category": "Tool"
     },
     {
       "name": "汽车电池",
-      "description": "用于储存和提供电力的可充电电池。",
+      "description": "用于储存和提供电力的电池。",
       "id": "car_battery",
       "category": "Resource"
+    }
+  ],
+  "entities": [
+    {
+      "name": "机巧子民",
+      "description": "一个古老的实体种族，最初具有兽性，后来进化出意识。它们曾以Level 2为主要家园，为了生存和增强自身，会拆卸层级的机械来制造类似笨重铠甲的机体强化套装。",
+      "id": "mechanicus_populi",
+      "behavior": "中立"
     },
     {
-      "name": "发电机",
-      "description": "小型便携式发电机，可产生电力。",
-      "id": "generator",
-      "category": "Tool"
+      "name": "猎犬",
+      "description": "一种实体，曾大规模袭击并摧毁了Level 2中的“协济迷失者”基地。",
+      "id": "hounds",
+      "behavior": "敌对"
     },
     {
-      "name": "铁轨",
-      "description": "一段段金属轨道，可用于建造或作为金属原料。",
-      "id": "rail_track",
-      "category": "Resource"
+      "name": "牧蛇",
+      "description": "一种实体，曾从侧翼袭击了试图救援“协济迷失者”基地的M.E.G.志愿者队伍。",
+      "id": "herding_snakes",
+      "behavior": "敌对"
+    },
+    {
+      "name": "悲尸",
+      "description": "一种实体，在2014年频繁袭击了Level 2中重建的“幸存者”聚落。",
+      "id": "sadness_corpses",
+      "behavior": "敌对"
     }
   ]
 }

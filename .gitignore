@@ -42,3 +42,7 @@ tmp/
 # Temporary files
 tmp/
 *.png
+
+# Vector Stores
+data/vector_store/
+

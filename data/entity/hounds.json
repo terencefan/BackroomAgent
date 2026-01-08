@@ -1,0 +1,6 @@
+{
+  "name": "猎犬",
+  "description": "一种实体，曾大规模袭击并摧毁了Level 2中的“协济迷失者”基地。",
+  "id": "hounds",
+  "behavior": "敌对"
+}

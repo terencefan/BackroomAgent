@@ -1,0 +1,6 @@
+{
+  "name": "悲尸",
+  "description": "一种实体，在2014年频繁袭击了Level 2中重建的“幸存者”聚落。",
+  "id": "sadness_corpses",
+  "behavior": "敌对"
+}

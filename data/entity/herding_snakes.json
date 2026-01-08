@@ -1,0 +1,6 @@
+{
+  "name": "牧蛇",
+  "description": "一种实体，曾从侧翼袭击了试图救援“协济迷失者”基地的M.E.G.志愿者队伍。",
+  "id": "herding_snakes",
+  "behavior": "敌对"
+}

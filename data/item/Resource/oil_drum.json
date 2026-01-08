@@ -1,6 +1,6 @@
 {
   "name": "油桶",
-  "description": "装有油的金属桶。",
+  "description": "装有油的桶，可能用作燃料或润滑剂。",
   "id": "oil_drum",
   "category": "Resource"
 }

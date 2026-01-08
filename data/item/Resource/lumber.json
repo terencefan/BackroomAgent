@@ -1,0 +1,6 @@
+{
+  "name": "木材",
+  "description": "成垛的木材，可用于建造或作为燃料。",
+  "id": "lumber",
+  "category": "Resource"
+}

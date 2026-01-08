@@ -5,7 +5,7 @@ from typing import Dict, Any, List
 from urllib.parse import urlparse
 from backroom_agent.utils.common import get_project_root
 from backroom_agent.tools.wiki_tools import fetch_wiki_content, get_level_name_from_url
-from backroom_agent.utils.vector_store import search_similar_items
+from backroom_agent.utils.vector_store import search_similar_items, rebuild_vector_db, update_vector_db
 from backroom_agent.utils.search import search_backrooms_wiki
 from .state import LevelAgentState
 
@@ -14,10 +14,17 @@ logger = logging.getLogger(__name__)
 def resolve_url_node(state: LevelAgentState):
     """
     Check if the input is a valid Backrooms URL. If not, search for it.
+    Also initializes state flags.
     """
     url = state.get("url")
     level_name = state.get("level_name")
     logs = state.get("logs", [])
+    
+    # Initialize flags
+    state_updates = {
+        "items_extracted": False,
+        "entities_extracted": False
+    }
     
     # Allowed domains
     target_domains = ["backrooms-wiki-cn.wikidot.com", "brcn.backroomswiki.cn"]
@@ -27,8 +34,10 @@ def resolve_url_node(state: LevelAgentState):
         parsed = urlparse(url)
         if any(domain in parsed.netloc for domain in target_domains):
             logs.append(f"Valid URL provided: {url}")
-            return {"logs": logs}
+            state_updates["logs"] = logs
+            return state_updates
         else:
+
             # URL provided but not in allowed list? 
             # It might be a search term passed as URL or just an external link.
             # If it's not a URL structure at all, treat as search term.
@@ -49,7 +58,9 @@ def resolve_url_node(state: LevelAgentState):
             html_path = os.path.join(root, "data/level", f"{cand}.html")
             if os.path.exists(html_path):
                 logs.append(f"Found local file for {level_name} at {html_path}. Skipping search.")
-                return {"logs": logs, "level_name": cand}
+                state_updates["logs"] = logs
+                state_updates["level_name"] = cand
+                return state_updates
 
     # 3. If no valid URL and no local file, search using level_name
     if not url and level_name:
@@ -57,11 +68,14 @@ def resolve_url_node(state: LevelAgentState):
         found_url = search_backrooms_wiki(level_name)
         if found_url:
             logs.append(f"Found URL: {found_url}")
-            return {"url": found_url, "logs": logs}
+            state_updates["logs"] = logs
+            state_updates["url"] = found_url
+            return state_updates
         else:
              logs.append(f"Search failed for: {level_name}")
              
-    return {"logs": logs}
+    state_updates["logs"] = logs
+    return state_updates
 
 def fetch_content_node(state: LevelAgentState):
     """
@@ -138,9 +152,12 @@ def filter_items_node(state: LevelAgentState):
     # If similarity > threshold, we count it as a duplicate
     SIMILARITY_THRESHOLD = 0.85 
 
-    for item in raw_items:
+    total_items = len(raw_items)
+    for i, item in enumerate(raw_items):
         name = item.get("name")
         description = item.get("description", "")
+        
+        logs.append(f"Processing item {i+1}/{total_items}: {name}")
         
         # 1. Hallucination Check (Basic)
         # Check if the name (or part of it) actually appears in the text
@@ -168,14 +185,59 @@ def filter_items_node(state: LevelAgentState):
             final_items.append(item)
             logs.append(f"Accepted: {name}")
 
-    return {"final_items": final_items, "logs": logs}
+    return {"final_items": final_items, "logs": logs, "items_extracted": True}
+
+def filter_entities_node(state: LevelAgentState):
+    """
+    Filters extracted entities based on:
+    1. Hallucination check.
+    2. Optional: Vector DB similarity (Dedup) - currently reusing item vector store for checking.
+    """
+    raw_entities = state.get("extracted_entities_raw", [])
+    html_content = state.get("html_content", "")
+    logs = state.get("logs", [])
+    
+    final_entities = []
+    
+    logs.append("Filtering entities...")
+    
+    SIMILARITY_THRESHOLD = 0.85 
+
+    total = len(raw_entities)
+    for i, entity in enumerate(raw_entities):
+        name = entity.get("name")
+        
+        logs.append(f"Processing entity {i+1}/{total}: {name}")
+        
+        # 1. Hallucination Check
+        if name not in html_content:
+            logs.append(f"Filtered (Hallucination): '{name}' not found in source text.")
+            continue
+            
+        # 2. Vector DB Check (Using item store temporarily or same unified store)
+        # Assuming we might want to check against items too (don't want item == entity)
+        # But really we want an entity DB. For now, strict duplicates are fine.
+        # We will implement separate check if needed.
+        
+        final_entities.append(entity)
+        logs.append(f"Accepted: {name}")
+
+    return {"final_entities": final_entities, "logs": logs, "entities_extracted": True}
+
+def check_completion_node(state: LevelAgentState):
+    """
+    Dummy/Barrier node to synchronize execution.
+    It doesn't change state, just passes through.
+    """
+    return {}
 
 def update_level_json_node(state: LevelAgentState):
     """
-    Updates the Level JSON with the extracted and filtered items.
+    Updates the Level JSON with the extracted and filtered items AND entities.
     """
     level_name = state.get("level_name")
     final_items = state.get("final_items", [])
+    final_entities = state.get("final_entities", [])
     logs = state.get("logs", [])
     
     if not level_name:
@@ -193,6 +255,8 @@ def update_level_json_node(state: LevelAgentState):
             data = json.load(f)
             
         data["findable_items"] = final_items
+        data["entities"] = final_entities
+        
         # Remove old key if it exists to keep it clean
         if "items" in data:
             del data["items"]
@@ -200,9 +264,73 @@ def update_level_json_node(state: LevelAgentState):
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
             
-        logs.append(f"Updated {json_path} with {len(final_items)} items.")
+        logs.append(f"Updated level JSON: {json_path}")
+
+        # --- Save Individual Item Files ---
+        item_base_dir = os.path.join(root, "data/item")
+        saved_items_count = 0
+        saved_item_paths = []
+        for item in final_items:
+            try:
+                cat = item.get("category", "Uncategorized")
+                iid = item.get("id", "unknown")
+                item_dir = os.path.join(item_base_dir, cat)
+                os.makedirs(item_dir, exist_ok=True)
+                
+                item_path = os.path.join(item_dir, f"{iid}.json")
+                with open(item_path, 'w', encoding='utf-8') as f:
+                    json.dump(item, f, ensure_ascii=False, indent=2)
+                saved_items_count += 1
+                saved_item_paths.append(item_path)
+            except Exception as e:
+                logs.append(f"Error saving item {item.get('name')}: {e}")
         
+        # --- Save Individual Entity Files ---
+        entity_base_dir = os.path.join(root, "data/entity")
+        saved_entities_count = 0
+        saved_entity_paths = []
+        for entity in final_entities:
+            try:
+                # Entities generally don't have sub-categories like items, or rely on behavior
+                # Simple structure: data/entity/{id}.json
+                eid = entity.get("id", "unknown")
+                os.makedirs(entity_base_dir, exist_ok=True)
+                
+                entity_path = os.path.join(entity_base_dir, f"{eid}.json")
+                with open(entity_path, 'w', encoding='utf-8') as f:
+                    json.dump(entity, f, ensure_ascii=False, indent=2)
+                saved_entities_count += 1
+                saved_entity_paths.append(entity_path)
+            except Exception as e:
+                logs.append(f"Error saving entity {entity.get('name')}: {e}")
+
+        logs.append(f"Saved {saved_items_count} item files and {saved_entities_count} entity files.")
+
+        # --- Update Vector Stores ---
+        try:
+            # 1. Update Item Vector Store
+            item_db_path = os.path.join(root, "data/vector_store/item_vector_store.pkl")
+            if os.path.exists(item_db_path) and saved_item_paths:
+                logs.append(f"Updating Item Vector Store incrementally with {len(saved_item_paths)} items...")
+                update_vector_db(file_paths=saved_item_paths, db_path=item_db_path)
+            else:
+                logs.append("Rebuilding Item Vector Store (Full)...")
+                rebuild_vector_db(item_dir=item_base_dir, db_path=item_db_path)
+            
+            # 2. Update Entity Vector Store
+            entity_db_path = os.path.join(root, "data/vector_store/entity_vector_store.pkl")
+            if os.path.exists(entity_db_path) and saved_entity_paths:
+                logs.append(f"Updating Entity Vector Store incrementally with {len(saved_entity_paths)} entities...")
+                update_vector_db(file_paths=saved_entity_paths, db_path=entity_db_path)
+            else:
+                logs.append("Rebuilding Entity Vector Store (Full)...")
+                rebuild_vector_db(item_dir=entity_base_dir, db_path=entity_db_path)
+            
+            logs.append("Vector stores updated successfully.")
+        except Exception as e:
+            logs.append(f"Error updating vector stores: {e}")
+            
     except Exception as e:
-        logs.append(f"Error updating JSON with items: {str(e)}")
+        logs.append(f"Error updating JSON/Files: {str(e)}")
         
     return {"logs": logs}
