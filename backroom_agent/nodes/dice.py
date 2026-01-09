@@ -19,7 +19,7 @@ def route_check_dice(state: State) -> str:
     """
     if state.get(GraphKeys.LOGIC_EVENT):
         return NodeConstants.DICE
-    return NodeConstants.UPDATE
+    return NodeConstants.SUMMARY
 
 
 def dice_node(state: State) -> Dict[str, Any]:

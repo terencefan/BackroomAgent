@@ -45,5 +45,5 @@ class NodeConstants:
     GENERATE = "generate"
     PROCESS = "process"
     DICE = "dice"
-    UPDATE = "update"
+    SUMMARY = "summary"
     SUGGEST = "suggest"

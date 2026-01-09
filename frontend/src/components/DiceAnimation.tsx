@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 interface DiceAnimationProps {
-  type: 'd20' | 'd100';
+  type: 'd6' | 'd20' | 'd100';
   result: number;
   reason?: string;
   onComplete: () => void;
@@ -19,7 +19,7 @@ export const DiceAnimation: React.FC<DiceAnimationProps> = ({ type, result, reas
         setOpacity(1);
     }, 50);
 
-    const maxVal = type === 'd20' ? 20 : 100;
+    const maxVal = type === 'd20' ? 20 : (type === 'd6' ? 6 : 100);
     let steps = 20;
     let speed = 50;
 
@@ -80,14 +80,14 @@ export const DiceAnimation: React.FC<DiceAnimationProps> = ({ type, result, reas
             transform: `scale(${scale})`,
             transition: 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
         }}>
-            {/* Hexagon shape for D20 / Circle for D100 */}
+            {/* Hexagon shape for D20 / Circle for D100 / Square for D6 */}
             <div style={{
                 position: 'absolute',
                 width: '100%',
                 height: '100%',
                 backgroundColor: '#1a1a1a',
                 border: '4px solid #eab308',
-                borderRadius: type === 'd100' ? '50%' : '20%',
+                borderRadius: type === 'd100' ? '50%' : (type === 'd6' ? '10%' : '20%'),
                 boxShadow: '0 0 30px rgba(234, 179, 8, 0.3), inset 0 0 20px rgba(0,0,0,0.8)',
                 transform: 'rotate(45deg)'
             }} />

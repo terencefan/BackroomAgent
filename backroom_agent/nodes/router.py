@@ -1,5 +1,6 @@
 import logging
-from typing import Dict, Literal, Union
+from typing import Dict, Literal
+from langgraph.graph import END
 
 from backroom_agent.constants import NodeConstants
 from backroom_agent.protocol import EventType
@@ -43,4 +44,5 @@ def route_event(state: State) -> str:
     elif event_type in [EventType.USE, EventType.DROP]:
         return NodeConstants.INVENTORY
     else:
-        return NodeConstants.SIMPLE_CHAT
+        # Check explicit mappings or fallthrough to END
+        return END

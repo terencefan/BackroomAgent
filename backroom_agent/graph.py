@@ -8,13 +8,11 @@ from backroom_agent.nodes import (
     NODE_INVENTORY,
     NODE_PROCESS,
     NODE_ROUTER,
-    NODE_SIMPLE_CHAT,
     NODE_SUGGEST,
-    NODE_UPDATE,
+    NODE_SUMMARY,
     dice_node,
     init_node,
     item_node,
-    llm_node,
     message_node,
     process_message_node,
     route_check_dice,
@@ -36,13 +34,12 @@ def build_graph():
     # Add Task Nodes
     workflow.add_node(NODE_INIT, init_node)
     workflow.add_node(NODE_INVENTORY, item_node)
-    workflow.add_node(NODE_SIMPLE_CHAT, llm_node)
     workflow.add_node(NODE_GENERATE, message_node)
     workflow.add_node(NODE_PROCESS, process_message_node)
     workflow.add_node(NODE_DICE, dice_node)
 
     # Add Summary (Update) & Suggestion Nodes
-    workflow.add_node(NODE_UPDATE, summary_node)
+    workflow.add_node(NODE_SUMMARY, summary_node)
     workflow.add_node(NODE_SUGGEST, suggestion_node)
 
     # Entry Point -> Router
@@ -56,15 +53,14 @@ def build_graph():
         {
             NODE_INIT: NODE_INIT,
             NODE_INVENTORY: NODE_INVENTORY,
-            NODE_SIMPLE_CHAT: NODE_SIMPLE_CHAT,
             NODE_GENERATE: NODE_GENERATE,
+            END: END,
         },
     )
 
     # Reroute standard task nodes to Update (Summary) Node
-    workflow.add_edge(NODE_INIT, NODE_UPDATE)
-    workflow.add_edge(NODE_INVENTORY, NODE_UPDATE)
-    workflow.add_edge(NODE_SIMPLE_CHAT, NODE_UPDATE)
+    workflow.add_edge(NODE_INIT, NODE_SUMMARY)
+    workflow.add_edge(NODE_INVENTORY, NODE_SUMMARY)
 
     # The Generation Loop:
     # 1. Generate (LLM creates text/data)
@@ -80,7 +76,7 @@ def build_graph():
         route_check_dice,
         {
             NODE_DICE: NODE_DICE,
-            NODE_UPDATE: NODE_UPDATE
+            NODE_SUMMARY: NODE_SUMMARY
         }
     )
     
@@ -89,7 +85,7 @@ def build_graph():
     # NOTE: This creates a loop. Dice Node MUST clear GraphKeys.LOGIC_EVENT to break it.
     
     # Update -> Suggest -> END
-    workflow.add_edge(NODE_UPDATE, NODE_SUGGEST)
+    workflow.add_edge(NODE_SUMMARY, NODE_SUGGEST)
     workflow.add_edge(NODE_SUGGEST, END)
 
     return workflow.compile()
