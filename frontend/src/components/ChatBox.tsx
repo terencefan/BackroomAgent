@@ -1,16 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-
-interface Message {
-  id: number;
-  sender: 'dm' | 'player' | 'system';
-  text: string;
-  options?: string[];
-}
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import type { Message } from '../types';
 
 interface ChatBoxProps {
   messages: Message[];
-  onSendMessage: (text: string) => void;
+  onSendMessage: (text: string, hidden?: boolean) => void;
   isLoading?: boolean;
+  onOptionSelect?: (msgId: number, option: string) => void;
 }
 
 const Typewriter = ({ text, onUpdate, onComplete }: { text: string; onUpdate: () => void; onComplete?: () => void }) => {
@@ -18,52 +15,60 @@ const Typewriter = ({ text, onUpdate, onComplete }: { text: string; onUpdate: ()
 
   useEffect(() => {
     if (displayLength < text.length) {
+      // Dynamic speed logic: Max 2000ms total time
+      const maxDuration = 2000;
+      const baseSpeed = 20; // 20ms per char for short texts
+      
+      const totalTime = Math.min(text.length * baseSpeed, maxDuration);
+      const tickRate = 20; // Update every 20ms
+      const totalTicks = Math.max(1, totalTime / tickRate);
+      const charsPerTick = Math.max(1, text.length / totalTicks);
+
       const timeout = setTimeout(() => {
-        setDisplayLength((prev) => prev + 1);
+        setDisplayLength((prev) => {
+             const next = prev + charsPerTick;
+             return next >= text.length ? text.length : next;
+        });
         onUpdate();
-      }, 20);
+      }, tickRate);
       return () => clearTimeout(timeout);
     } else {
        if (onComplete) onComplete();
     }
   }, [displayLength, text, onUpdate, onComplete]);
 
-  return <>{text.slice(0, displayLength)}</>;
+  return (
+    <div className="markdown-content">
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        {text.slice(0, Math.floor(displayLength))}
+      </ReactMarkdown>
+    </div>
+  );
 };
 
-const MessageItem = ({ msg, onSendMessage, isLoading, onScrollRequest }: { 
+const MessageItem = ({ msg, onSendMessage, isLoading, onScrollRequest, onOptionSelect }: { 
     msg: Message; 
-    onSendMessage: (text: string) => void;
+    onSendMessage: (text: string, hidden?: boolean) => void;
     isLoading?: boolean;
     onScrollRequest: () => void;
+    onOptionSelect?: (msgId: number, option: string) => void;
 }) => {
     const [typingDone, setTypingDone] = useState(msg.sender === 'player');
-    const [selectedOptionIdx, setSelectedOptionIdx] = useState<number | null>(null);
 
     const handleTypingComplete = useCallback(() => {
         setTypingDone(true);
     }, []);
 
-    const handleOptionClick = (option: string, idx: number) => {
-        if (!isLoading) {
-            setSelectedOptionIdx(idx);
-            onSendMessage(option);
+    const handleOptionClick = (option: string) => {
+        if (!isLoading && !msg.selectedOption && onOptionSelect) {
+            onOptionSelect(msg.id, option);
+            onSendMessage(option, true);
         }
     };
 
-    // Scroll when options appear
-    useEffect(() => {
-        if (typingDone && msg.options && msg.options.length > 0) {
-            // Check if options are actually being rendered (not hidden by selection)
-            if (selectedOptionIdx === null) {
-                onScrollRequest();
-            }
-        }
-    }, [typingDone, msg.options, onScrollRequest, selectedOptionIdx]);
-
     return (
-        <div className={`message-container ${msg.sender}`}>
-             <div className={`message ${msg.sender}`}>
+        <div className="message-wrapper">
+             <div className={`message-bubble ${msg.sender}`}>
                 {msg.sender === 'player' ? (
                     msg.text
                 ) : (
@@ -74,25 +79,44 @@ const MessageItem = ({ msg, onSendMessage, isLoading, onScrollRequest }: {
                     />
                 )}
              </div>
+
+             {msg.logicEvent && (
+                <div className="logic-event-container message-bubble system">
+                    <div className="logic-event-header">
+                        <strong>事件判定: {msg.logicEvent.name}</strong> 
+                        <span className="die-badge">{msg.logicEvent.die_type}</span>
+                    </div>
+                    <ul className="logic-event-outcomes">
+                        {msg.logicEvent.outcomes.map((outcome, i) => (
+                            <li key={i} className="outcome-item">
+                                <span className="outcome-range">[{outcome.range[0]}-{outcome.range[1]}]</span>
+                                <span className="outcome-content">{outcome.result.content}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+             )}
+
              {msg.options && msg.options.length > 0 && typingDone && (
-                <div className="message-options">
+                <div className="chat-options-container">
                     {msg.options.map((option, idx) => {
-                        // If an option is selected, only show that one. Hide others.
-                        if (selectedOptionIdx !== null && selectedOptionIdx !== idx) {
+                        // Logic:
+                        // 1. If NO option is selected -> Show all (regular style)
+                        // 2. If option IS selected -> Show ONLY the selected one (blue style)
+                        
+                        if (msg.selectedOption && msg.selectedOption !== option) {
                             return null;
                         }
 
-                        let btnClass = "option-btn";
-                        if (selectedOptionIdx === idx) {
-                            btnClass += " selected";
-                        }
-                        
+                        const isSelected = msg.selectedOption === option;
+                        const btnClass = `option-btn ${isSelected ? 'selected' : ''}`;
+
                         return (
                             <button 
                                 key={idx} 
                                 className={btnClass}
-                                onClick={() => handleOptionClick(option, idx)}
-                                disabled={isLoading || selectedOptionIdx !== null}
+                                onClick={() => handleOptionClick(option)}
+                                disabled={isLoading || !!msg.selectedOption}
                             >
                                 {option}
                             </button>
@@ -104,7 +128,7 @@ const MessageItem = ({ msg, onSendMessage, isLoading, onScrollRequest }: {
     );
 };
 
-export const ChatBox: React.FC<ChatBoxProps> = ({ messages, onSendMessage, isLoading }) => {
+export const ChatBox: React.FC<ChatBoxProps> = ({ messages, onSendMessage, isLoading, onOptionSelect }) => {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -143,8 +167,10 @@ export const ChatBox: React.FC<ChatBoxProps> = ({ messages, onSendMessage, isLoa
             onSendMessage={onSendMessage}
             isLoading={isLoading}
             onScrollRequest={scrollToBottom}
+            onOptionSelect={onOptionSelect}
           />
         ))}
+
         {isLoading && (
             <div className="loading-indicator">
                 <span className="dot">.</span><span className="dot">.</span><span className="dot">.</span>
@@ -152,6 +178,7 @@ export const ChatBox: React.FC<ChatBoxProps> = ({ messages, onSendMessage, isLoa
         )}
         <div ref={messagesEndRef} />
       </div>
+
       <form className="input-area" onSubmit={handleSubmit}>
         <input
           ref={inputRef}

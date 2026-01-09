@@ -5,5 +5,9 @@
     "dev": "npm run dev --prefix frontend",
     "install:frontend": "npm install --prefix frontend",
     "start": "npm run dev"
+  },
+  "dependencies": {
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   }
 }

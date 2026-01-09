@@ -17,7 +17,6 @@ class Vitals(BaseModel):
     hp: int
     maxHp: int
     sanity: int
-    maxSanity: int
 
 
 class Item(BaseModel):
@@ -64,7 +63,6 @@ class BackendMessage(BaseModel):
     options: Optional[List[str]] = None
 
 
-
 class DiceRoll(BaseModel):
     type: Literal["d20", "d100"]
     result: int
@@ -76,6 +74,18 @@ class StreamChunkType(str, Enum):
     DICE_ROLL = "dice_roll"
     STATE = "state"
     SUGGESTIONS = "suggestions"
+    LOGIC_EVENT = "logic_event"
+
+
+class EventOutcome(BaseModel):
+    range: List[int]
+    result: dict
+
+
+class LogicEvent(BaseModel):
+    name: str
+    die_type: Literal["d20", "d100"]
+    outcomes: List[EventOutcome]
 
 
 class StreamChunkMessage(BaseModel):
@@ -97,6 +107,11 @@ class StreamChunkState(BaseModel):
 class StreamChunkSuggestions(BaseModel):
     type: Literal[StreamChunkType.SUGGESTIONS]
     options: List[str]
+
+
+class StreamChunkLogicEvent(BaseModel):
+    type: Literal[StreamChunkType.LOGIC_EVENT]
+    event: LogicEvent
 
 
 class ChatResponse(BaseModel):

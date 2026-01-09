@@ -644,3 +644,202 @@ body {
   transition: opacity 0.5s ease-in-out;
 }
 
+
+/* Markdown Content Styling */
+.markdown-content p {
+  margin: 0.5em 0;
+}
+
+.markdown-content h1, .markdown-content h2, .markdown-content h3 {
+  color: #dbdbdb;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.markdown-content ul, .markdown-content ol {
+  margin: 0.5em 0;
+  padding-left: 1.5em;
+}
+
+.markdown-content li {
+  margin: 0.2em 0;
+}
+
+.markdown-content strong {
+  color: #fff;
+  font-weight: bold;
+}
+
+.markdown-content em {
+  color: #a8a8a8;
+  font-style: italic;
+}
+
+.input-options-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 20px;
+  background-color: #1a1a1a;
+  border-top: 1px solid #333;
+}
+
+.chat-options-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+  max-width: 80%;
+  align-self: flex-end;
+  margin-bottom: 10px;
+}
+
+.chat-options-container .option-btn {
+  background-color: transparent;
+  border: 1px solid #eab308;
+  color: #eab308;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: right;
+  transition: all 0.2s;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.chat-options-container .option-btn:hover {
+  background-color: rgba(234, 179, 8, 0.1);
+  box-shadow: 0 0 8px rgba(234, 179, 8, 0.3);
+}
+
+.chat-options-container .option-btn:active {
+  transform: translateY(1px);
+}
+
+
+/* Styling for selected option fixed in history */
+.chat-options-container .option-btn.selected {
+  background-color: #3b82f6; /* Blue 500 */
+  border-color: #3b82f6;
+  color: #fff;
+  cursor: default;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+}
+
+
+/* New Wrapper Layout for MessageItems */
+.message-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+/* Replaces old message-container/message structure styling */
+.message-bubble {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 4px;
+  line-height: 1.5;
+  margin-bottom: 5px;
+  overflow-wrap: break-word; /* Ensure wrapping works */
+  word-wrap: break-word;
+}
+
+.message-bubble.dm {
+  align-self: flex-start;
+  background-color: #262626;
+  border-left: 3px solid #eab308;
+}
+
+.message-bubble.player {
+  align-self: flex-end;
+  background-color: #2d3748;
+  border-right: 3px solid #4299e1;
+  white-space: pre-wrap; /* Preserve newlines for player input */
+}
+
+.message-bubble.system {
+  align-self: center;
+  font-style: italic;
+  color: #718096;
+  font-size: 0.9em;
+  max-width: 70%;
+}
+
+
+/* Logic Event Styling */
+.logic-event-container {
+  margin-top: 10px;
+  background-color: #171923; /* Darker bg */
+  
+  /* Borders: Only top and bottom */
+  border-top: 1px solid #2d3748;
+  border-bottom: 1px solid #2d3748;
+  border-left: none;
+  border-right: none;
+  
+  /* Full width overrides */
+  border-radius: 0;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 8px;
+  font-family: 'JetBrains Mono', 'Menlo', 'Courier New', monospace; /* Monospace for code-like look */
+  font-size: 0.85em;
+  color: #a0aec0;
+}
+
+.logic-event-header {
+  display: flex;
+  justify-content: center; /* Center the title */
+  align-items: center;
+  gap: 10px; /* Space between title and badge */
+  border-bottom: 1px solid #2d3748;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #e2e8f0;
+}
+
+.die-badge {
+  background-color: #2b6cb0;
+  color: white;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.8em;
+}
+
+.logic-event-outcomes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.outcome-item {
+  display: flex;
+  padding: 3px 0;
+  border-bottom: 1px dashed #2d3748;
+}
+
+.outcome-item:last-child {
+  border-bottom: none;
+}
+
+.outcome-range {
+  flex-shrink: 0;
+  width: 70px; /* Fixed width for alignment */
+  color: #ed8936; /* Orange for range */
+  font-weight: bold;
+}
+
+.outcome-content {
+  color: #cbd5e0;
+  word-break: break-all;
+}
+

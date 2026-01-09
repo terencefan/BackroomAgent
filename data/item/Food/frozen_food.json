@@ -1,0 +1,6 @@
+{
+  "name": "冻住的食物",
+  "description": "在低温环境下被冻结的食品。",
+  "id": "frozen_food",
+  "category": "Food"
+}

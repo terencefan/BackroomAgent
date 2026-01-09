@@ -1,0 +1,6 @@
+{
+  "name": "食物",
+  "description": "通过赢得游戏获得的补给品。",
+  "id": "food",
+  "category": "Food"
+}

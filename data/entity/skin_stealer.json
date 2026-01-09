@@ -1,6 +1,6 @@
 {
   "name": "窃皮者",
-  "description": "一种出现在Level 9的实体。",
+  "description": "一种敌对实体，在等候厅和霓虹区均有出现。探索记录中提到小队曾躲避一只窃皮者，并观察到它触碰游戏大门后会跑开。",
   "id": "skin_stealer",
   "behavior": "敌对"
 }

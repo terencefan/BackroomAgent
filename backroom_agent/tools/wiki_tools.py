@@ -1,14 +1,23 @@
 import os
-import re
-from urllib.parse import urlparse
 
-import requests
-from bs4 import BeautifulSoup
 from langchain_core.messages import HumanMessage, SystemMessage
+from langsmith import traceable
 
-from backroom_agent.utils.common import get_llm, get_project_root, load_prompt
+# Import from new refactored modules
+from backroom_agent.tools.wiki.fetch import (
+    fetch_url_content,
+    get_level_name_from_url,
+)
+from backroom_agent.tools.wiki.parse import clean_html_content
+from backroom_agent.utils.common import (
+    get_llm, 
+    get_project_root, 
+    load_prompt, 
+    save_to_file
+)
 
 
+@traceable(run_type="chain", name="Convert HTML to Room JSON")
 def convert_html_to_room_json(html_content: str, level_name: str) -> str:
     """
     Converts cleaned HTML content to a Game Context JSON using an LLM.
@@ -53,21 +62,7 @@ def convert_html_to_room_json(html_content: str, level_name: str) -> str:
     return content
 
 
-def get_level_name_from_url(url: str) -> str:
-    """Extracts the level name from the URL."""
-    path = urlparse(url).path
-    return path.strip("/").split("/")[-1]
-
-
-def save_to_file(content: str, directory: str, filename: str):
-    """Saves content to a file in the specified directory."""
-    os.makedirs(directory, exist_ok=True)
-    filepath = os.path.join(directory, filename)
-    with open(filepath, "w", encoding="utf-8") as f:
-        f.write(content)
-    return filepath
-
-
+@traceable(run_type="tool", name="Fetch Wiki Content")
 def fetch_wiki_content(
     url: str, save_files: bool = True
 ) -> tuple[str | None, str | None]:
@@ -82,210 +77,27 @@ def fetch_wiki_content(
     Returns:
         tuple[str | None, str | None]: The cleaned HTML content string and the Level Name.
     """
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    }
-
-    try:
-        response = requests.get(url, headers=headers, timeout=15)
-        response.raise_for_status()
-        raw_content = response.text
-    except requests.RequestException as e:
-        print(f"Error fetching URL: {str(e)}")
+    raw_content = fetch_url_content(url)
+    
+    if not raw_content:
         return None, None
 
     level_name = get_level_name_from_url(url)
+    root_dir = get_project_root()
 
     if save_files:
-        root_dir = get_project_root()
         save_to_file(
             raw_content, os.path.join(root_dir, "data/raw"), f"{level_name}.html"
         )
 
-    soup = BeautifulSoup(response.content, "html.parser")
+    cleaned_content = clean_html_content(raw_content)
 
-    # Remove unwanted tags completely (structure and content)
-    for tag in soup(
-        [
-            "script",
-            "style",
-            "meta",
-            "link",
-            "noscript",
-            "iframe",
-            "svg",
-            "form",
-            "input",
-            "button",
-            "nav",
-            "footer",
-            "header",
-            "aside",
-        ]
-    ):
-        tag.decompose()
-
-    # Remove elements by class/id that are clearly garbage (heuristic)
-    garbage_classes = [
-        "sidebar",
-        "ad",
-        "advertisement",
-        "cookie",
-        "popup",
-        "newsletter",
-        "menu",
-        "navigation",
-        "social",
-        "share",
-        "creditRate",
-        "credit",
-        "modalbox",
-        "printuser",
-        "licensebox",
-        "rate-box",
-        "page-options-bottom",
-        "bottom-box",
-        "page-tags",
-        "page-info",
-        "page-info-break",
-        "top-text",
-        "bottom-text",
-    ]
-
-    for tag in soup.find_all(True):
-        if not tag.name:
-            continue
-
-        # check for inline style display: none
-        style = tag.get("style", "")
-        if style and "display:none" in style.lower().replace(
-            " ", ""
-        ):  # handle spaces like 'display:none' or 'display: none'
-            tag.decompose()
-            continue
-
-        # check class
-        classes = tag.get("class", [])
-        if classes and any(
-            garbage in " ".join(classes).lower() for garbage in garbage_classes
-        ):
-            tag.decompose()
-            continue
-        # check id
-        id_ = tag.get("id", "")
-        if id_ and any(garbage in id_.lower() for garbage in garbage_classes):
-            tag.decompose()
-            continue
-
-    # Define useful tags to keep AS TAGS. Others will be unwrapped (content kept, tags removed).
-    useful_tags = {
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "p",
-        "br",
-        "hr",
-        "ul",
-        "ol",
-        "li",
-        "dl",
-        "dt",
-        "dd",
-        "table",
-        "thead",
-        "tbody",
-        "tfoot",
-        "tr",
-        "th",
-        "td",
-        "blockquote",
-        "pre",
-        "code",
-        "b",
-        "strong",
-        "i",
-        "em",
-        "u",
-        "a",
-    }
-
-    # Identify the main content area to reduce noise if possible
-    # Common main content containers
-    main_content = None
-    possible_ids = [
-        "main-content",
-        "page-content",
-        "content",
-        "mw-content-text",
-        "wiki-content",
-    ]
-    possible_classes = [
-        "mw-parser-output",
-        "main-content",
-        "post-content",
-        "entry-content",
-    ]
-
-    for pid in possible_ids:
-        found = soup.find(id=pid)
-        if found:
-            main_content = found
-            break
-
-    if not main_content:
-        for pcls in possible_classes:
-            found = soup.find(class_=pcls)
-            if found:
-                main_content = found
-                break
-
-    # If we found a main content area, use it. Otherwise use the body or whole soup.
-    target = main_content if main_content else (soup.body if soup.body else soup)
-
-    # Clean the target
-    for tag in target.find_all(True):
-        if tag.name not in useful_tags:
-            tag.unwrap()
-        else:
-            # Clean attributes - remove style, onclick, etc.
-            # Keep href for 'a', src for 'img'
-            attrs = dict(tag.attrs)
-            for attr in attrs:
-                if attr not in ["href", "src", "alt", "title"]:
-                    del tag[attr]
-
-            # Additional check for href to remove javascript links
-            if tag.name == "a" and "href" in tag.attrs:
-                href = tag["href"].lower().strip()
-                if href.startswith("javascript:") or href == "#":
-                    tag.unwrap()  # Removes the anchor but keeps text
-
-    # Final cleanup: Remove empty tags
-    for tag in target.find_all(["p", "li", "h1", "h2", "h3", "h4", "h5", "h6"]):
-        if not tag.get_text(strip=True):
-            tag.decompose()
-
-    # Normalize whitespace in text nodes
-    for text in target.find_all(string=True):
-        if text.parent.name not in ["pre", "code"]:
-            # Replace multiple whitespace (including newlines) with single space
-            new_text = re.sub(r"\s+", " ", text)
-            if len(new_text) < len(text):
-                text.replace_with(new_text)
-
-    cleaned_content = str(target)
-
-    # Remove empty lines and surrounding whitespace on a line-by-line basis
-    # This helps clear up the structural whitespace left behind
+    # Post-process cleaning (normalize newlines)
     cleaned_content = "\n".join(
         [line.strip() for line in cleaned_content.splitlines() if line.strip()]
     )
 
     if save_files:
-        root_dir = get_project_root()
         save_to_file(
             cleaned_content, os.path.join(root_dir, "data/level"), f"{level_name}.html"
         )

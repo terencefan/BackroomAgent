@@ -1,0 +1,6 @@
+{
+  "name": "水",
+  "description": "由实体提供，用于维持生存的液体。",
+  "id": "water",
+  "category": "Food"
+}

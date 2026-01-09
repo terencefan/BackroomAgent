@@ -7,51 +7,51 @@
   },
   "atmosphere": {
     "visuals": [
-      "发黄的墙纸",
-      "潮湿的地毯",
-      "不规律的荧光灯"
+      "单调的黄色",
+      "破旧的办公室",
+      "空荡的房间"
     ],
     "audio": [
-      "变压器永无止境的嗡鸣声"
+      "荧光灯永无止境的嗡鸣声"
     ],
     "smell": [
       "腐臭的潮湿地毯味"
     ],
-    "vibe": "阈限空间，单调，令人发狂"
+    "vibe": "阈限空间，不安，孤立"
   },
   "environmental_mechanics": [
     {
-      "mechanic": "切出现象 (Noclip)",
-      "effect": "从前厅（现实世界）意外进入后室的主要方式，也是在后室不同地点间穿梭的重要方法。",
-      "trigger_probability": "在‘错误的地方’有概率发生，具体概率未知。"
+      "mechanic": "切出 (No-clip)",
+      "effect": "从前厅（现实世界）意外进入后室的主要方式，也是在后室各层级间穿梭的重要方法。",
+      "trigger_probability": "未知/条件触发（在‘错误的地方’）"
     },
     {
-      "mechanic": "无限层级",
-      "effect": "后室由无限延伸、各不相同的层级构成，探索无尽头。",
+      "mechanic": "无限层级结构",
+      "effect": "后室由无限个被称为‘层级’的空间组成，探索无尽头。",
       "trigger_probability": "恒定"
     },
     {
-      "mechanic": "物理法则异常",
-      "effect": "前厅的常见物理法则可能不适用于后室中的某些现象。",
-      "trigger_probability": "未知"
+      "mechanic": "非标准物理法则",
+      "effect": "前厅的物理法则在后室可能不适用，现象可能无法理喻。",
+      "trigger_probability": "普遍"
     }
   ],
   "random_events": [
     {
       "event": "实体在附近徘徊",
-      "probability": "未知，但需时刻保持警惕"
+      "probability": "未知/取决于具体层级"
     }
   ],
   "key_locations": [],
   "transitions": {
     "entrances": [
-      "在‘错误的地方’从前厅（现实世界）切出 (Noclip)"
+      "在前厅的‘错误的地方’意外切出 (No-clip out of reality)"
     ],
     "exits": [
       {
         "method": "返回前厅",
         "condition": "几乎不可能",
-        "success_chance": "极低/几乎为零",
+        "success_chance": "极低 (近乎 0%)",
         "next": null
       }
     ]

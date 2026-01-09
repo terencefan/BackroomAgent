@@ -1,52 +1,72 @@
 {
-  "level_id": "Backrooms_Introduction",
-  "title": null,
+  "level_id": "Level 14",
+  "title": "天堂",
   "survival_difficulty": {
     "class": "未知",
-    "description": "本文档为介绍性文章，不描述特定层级的生存难度。"
+    "description": "文本未明确提及生存难度，但暗示存在强大的精神同化效应，极度危险。"
   },
   "atmosphere": {
     "visuals": [
-      "发黄的墙纸",
-      "单调的黄色",
-      "空荡的房间"
+      "猩红的草叶",
+      "潮湿的露水",
+      "无垠闪耀的星空",
+      "月光下闪着光的骨头",
+      "夜晚闪烁的森林"
     ],
     "audio": [
-      "荧光灯永无止境的嗡鸣声"
+      "森林的低语",
+      "动听的嚎叫",
+      "尖啸声",
+      "美丽的歌声"
     ],
     "smell": [
-      "腐臭的潮湿地毯味"
+      "潮湿的泥土气息"
     ],
-    "vibe": "阈限空间，单调，令人发狂"
+    "vibe": "诱人，催眠，精神侵蚀，集体狂热，最终导向永恒的宁静（死亡）"
   },
   "environmental_mechanics": [
     {
-      "mechanic": "切出 (Noclip)",
-      "effect": "从前厅（现实世界）意外进入后室的主要方式，也是在后室中穿梭的重要方法。",
-      "trigger_probability": "未知（通常为意外事件）"
+      "mechanic": "精神同化/侵蚀",
+      "effect": "逐渐丧失自主思想，产生强烈的归属感和满足感，最终被层级或其中的实体完全控制。",
+      "trigger_probability": "恒定/渐进式 (建议每停留1小时进行一次意志豁免检定)"
     },
     {
-      "mechanic": "非线性层级结构",
-      "effect": "后室由无限延伸的层级构成，但层级间的连接并非简单的线性递进。",
-      "trigger_probability": "恒定"
+      "mechanic": "幻觉与感知扭曲",
+      "effect": "看到熟人或陌生人的尸体在邀请自己，听到森林的呼唤和歌声。",
+      "trigger_probability": "高频 (进入层级后持续存在)"
     }
   ],
   "random_events": [
     {
-      "event": "实体在附近徘徊",
-      "probability": "未知（取决于具体层级）"
+      "event": "听到森林或“孩子们”的集体低语/嚎叫",
+      "probability": "高频/持续发生"
+    },
+    {
+      "event": "看到月光下尸骨发出邀请的幻觉",
+      "probability": "中频 (感知检定失败时触发)"
+    },
+    {
+      "event": "产生强烈的“如释重负”和“飘走”的感觉",
+      "probability": "渐进式，随停留时间增加而增强"
     }
   ],
-  "key_locations": [],
+  "key_locations": [
+    {
+      "name": "孩子们的聚集地",
+      "description": "疑似被同化者组成的社区，他们排成一列对着月亮嚎叫，等待“圆满之时”，并试图同化新来者。",
+      "access_probability": "很可能被发现 (他们是层级的一部分)"
+    }
+  ],
   "transitions": {
     "entrances": [
-      "在前厅（现实世界）的错误地点意外切出 (Noclip)"
+      "方法未知，但暗示通过强烈的精神渴望或自我暗示可以抵达 (如“在大脑上捅出一个洞，然后拉伸它”)",
+      "可能通过阅读特定墙上的文字触发 (根据采访记录)"
     ],
     "exits": [
       {
-        "method": "返回前厅",
-        "condition": "几乎不可能",
-        "success_chance": "极低（文中明确提及“几乎不可能”）",
+        "method": "未知/被强烈阻止",
+        "condition": "文本强烈暗示离开是“愚蠢的”、“你不会想要离开那里”，且离开者会感到迷失和痛苦。",
+        "success_chance": "极低 (需对抗强大的精神控制并通过极高难度的意志检定)",
         "next": null
       }
     ]

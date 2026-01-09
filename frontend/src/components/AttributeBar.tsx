@@ -27,7 +27,7 @@ export const AttributeBar: React.FC<AttributeBarProps> = ({ attributes, vitals }
         </div>
         <div className="vital-bar">
           <span className="vital-label">理智值</span>
-          <span className="vital-value sanity">{vitals.sanity} / {vitals.maxSanity}</span>
+          <span className="vital-value sanity">{vitals.sanity}</span>
         </div>
       </div>
 

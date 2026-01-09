@@ -1,6 +1,6 @@
 {
   "name": "Nguithr'xurh",
-  "description": "已知出现在Level 5的实体之一。",
+  "description": "一种实体，在等候厅和霓虹区均有出现。",
   "id": "nguithr_xurh",
-  "behavior": "未知"
+  "behavior": "敌对"
 }

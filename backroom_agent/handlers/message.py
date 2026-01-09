@@ -1,57 +1,69 @@
 import asyncio
 from typing import AsyncGenerator
 
-from backroom_agent.protocol import (
-    ChatRequest,
-    GameState,
-    StreamChunkMessage,
-    StreamChunkState,
-    StreamChunkSuggestions,
-    StreamChunkType,
-)
+from langchain_core.messages import AIMessage, HumanMessage
 
-async def handle_message(request: ChatRequest, current_state: GameState) -> AsyncGenerator[str, None]:
-    user_input = request.player_input
-    
-    # Logic: Basic echo or keyword response
-    response_text = f"You said: '{user_input}'. The walls seem to absorb your words."
-    if "look" in user_input.lower():
-        response_text = "You see endless yellow wallpaper, damp and mono-yellow."
-    
-    # yield Message
-    yield StreamChunkMessage(
-        type=StreamChunkType.MESSAGE,
-        text=response_text,
-        sender="dm"
-    ).model_dump_json() + "\n"
+from backroom_agent.graph import graph
+from backroom_agent.protocol import (ChatRequest, GameState, LogicEvent,
+                                     StreamChunkLogicEvent, StreamChunkMessage,
+                                     StreamChunkState, StreamChunkSuggestions,
+                                     StreamChunkType)
 
-    await asyncio.sleep(0.5)
 
-    # Update State (Mock: reduce sanity slightly on 'listen')
-    # Use model_copy() for Pydantic v2, or copy() for v1.
-    try:
-        new_state = current_state.model_copy(deep=True)
-    except AttributeError:
-        new_state = current_state.copy(deep=True) # v1
+async def handle_message(
+    request: ChatRequest, current_state: GameState
+) -> AsyncGenerator[str, None]:
+    # Construct the initial state for the graph execution
+    # For a message event, we include the user's input as a HumanMessage
+    input_state = {
+        "event": request.event,
+        "user_input": request.player_input,
+        "session_id": request.session_id,
+        "current_game_state": current_state,
+        "messages": [HumanMessage(content=request.player_input)],
+    }
 
-    if "listen" in user_input.lower():
-        new_state.vitals.sanity = max(0, new_state.vitals.sanity - 5)
-        yield StreamChunkMessage(
-            type=StreamChunkType.MESSAGE,
-            text="The buzzing noise gnaws at your mind. -5 Sanity.",
-            sender="system"
-        ).model_dump_json() + "\n"
+    # Stream updates from the agent graph
+    async for chunk in graph.astream(input_state, stream_mode="updates"):
+        for node_name, updates in chunk.items():
+            if not updates:
+                continue
 
-    # yield State
-    yield StreamChunkState(
-        type=StreamChunkType.STATE,
-        state=new_state
-    ).model_dump_json() + "\n"
+            # 1. Messages (from LLM or other nodes)
+            if "messages" in updates:
+                msgs = updates["messages"]
+                if not isinstance(msgs, list):
+                    msgs = [msgs]
 
-    await asyncio.sleep(0.2)
+                for msg in msgs:
+                    # We typically only send back AIMessages to the frontend
+                    if isinstance(msg, AIMessage) and msg.content:
+                        yield StreamChunkMessage(
+                            type=StreamChunkType.MESSAGE,
+                            text=str(msg.content),
+                            sender="dm",
+                        ).model_dump_json() + "\n"
 
-    # yield Suggestions
-    yield StreamChunkSuggestions(
-        type=StreamChunkType.SUGGESTIONS,
-        options=["Look around", "Walk forward", "Listen carefully"]
-    ).model_dump_json() + "\n"
+            # 2. Game State
+            if "current_game_state" in updates:
+                new_state = updates["current_game_state"]
+                if isinstance(new_state, GameState):
+                    yield StreamChunkState(
+                        type=StreamChunkType.STATE, state=new_state
+                    ).model_dump_json() + "\n"
+
+            # 3. Logic Event
+            if "logic_event" in updates:
+                evt = updates["logic_event"]
+                if isinstance(evt, LogicEvent):
+                    yield StreamChunkLogicEvent(
+                        type=StreamChunkType.LOGIC_EVENT, event=evt
+                    ).model_dump_json() + "\n"
+
+            # 4. Suggestions
+            if "suggestions" in updates:
+                suggs = updates["suggestions"]
+                if isinstance(suggs, list):
+                    yield StreamChunkSuggestions(
+                        type=StreamChunkType.SUGGESTIONS, options=suggs
+                    ).model_dump_json() + "\n"

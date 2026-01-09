@@ -46,3 +46,11 @@ tmp/
 # Vector Stores
 data/vector_store/
 
+# Node.js / TypeScript
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tsbuildinfo
+

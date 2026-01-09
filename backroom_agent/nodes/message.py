@@ -1,0 +1,167 @@
+import json
+import logging
+import os
+from typing import Optional, Tuple
+
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langchain_core.runnables import RunnableConfig
+
+from backroom_agent.protocol import GameState, LogicEvent
+from backroom_agent.state import State
+from backroom_agent.utils.common import (extract_json_from_text, get_llm,
+                                         load_prompt, print_debug_message)
+
+logger = logging.getLogger(__name__)
+
+# Singleton model instance
+model = get_llm()
+
+
+def _load_system_prompt() -> str:
+    """Load the system prompt from the prompts directory."""
+    try:
+        # Construct path relative to the current file (in nodes package)
+        # ../prompts/dm_agent.prompt
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        prompt_path = os.path.join(base_dir, "prompts", "dm_agent.prompt")
+        return load_prompt(prompt_path)
+    except FileNotFoundError:
+        return "You are a helpful AI Dungeon Master for a Backrooms game."
+
+
+SYSTEM_PROMPT = _load_system_prompt()
+
+
+def parse_dm_response(
+    content: str,
+) -> Tuple[str, Optional[GameState], Optional[LogicEvent]]:
+    """
+    Parses the JSON response from the DM Agent.
+
+    Args:
+        content (str): The raw string content from the LLM response.
+
+    Returns:
+        Tuple[str, Optional[GameState], Optional[LogicEvent]]: A tuple containing the narrative text,
+        the updated GameState object (or None), and the LogicEvent object (or None).
+    """
+    narrative_text = content
+    new_game_state = None
+    logic_event = None
+
+    try:
+        # Attempt to parse json
+        parsed_output = extract_json_from_text(content)
+
+        # Check standard fields
+        if isinstance(parsed_output, dict):
+            narrative_text = parsed_output.get("message", content)
+            updated_state_dict = parsed_output.get("updated_state")
+            event_dict = parsed_output.get("event")
+
+            if updated_state_dict:
+                # Reconstruct GameState object
+                try:
+                    new_game_state = GameState(**updated_state_dict)
+                except Exception as e:
+                    logger.error(f"Failed to parse updated_state into GameState: {e}")
+
+            if event_dict:
+                try:
+                    logic_event = LogicEvent(**event_dict)
+                except Exception as e:
+                    logger.error(f"Failed to parse event into LogicEvent: {e}")
+
+    except json.JSONDecodeError:
+        logger.warning(
+            "LLM response was not valid JSON. Using raw content as narrative."
+        )
+
+    return narrative_text, new_game_state, logic_event
+
+
+def message_node(state: State, config: RunnableConfig) -> dict:
+    """
+    Handles 'message' events: General dialogue between player and DM.
+    """
+    logger.info("Message Node: Processing player message...")
+
+    messages = state["messages"]
+    current_state = state.get("current_game_state")
+
+    debug_content = [
+        f"{i}. [{msg.type}]: {msg.content}" for i, msg in enumerate(messages)
+    ]
+    print_debug_message(f"State Messages Dump ({len(messages)} items):", debug_content)
+
+    # 1. Prepare Game State Data
+    state_dict = {}
+    if current_state:
+        # Robust Dump (Pydantic v2 preferred)
+        try:
+            state_dict = current_state.model_dump()
+        except AttributeError:
+            state_dict = current_state.dict()
+
+    # 2. Extract Current User Message
+    current_message = ""
+    if messages:
+        current_message = messages[-1].content
+
+    # 3. Inject Message into State Dict
+    state_dict["message"] = current_message
+
+    # 4. Dump to JSON
+    json_input = json.dumps(state_dict, ensure_ascii=False, indent=2)
+
+    # Log the JSON Payload
+    print_debug_message("LLM Input Payload (JSON):", state_dict)
+
+    # 5. Invoke LLM
+    final_messages = [
+        SystemMessage(content=SYSTEM_PROMPT),
+        HumanMessage(content=json_input),
+    ]
+
+    response = model.invoke(final_messages, config=config)
+
+    # Log the Output Payload
+    try:
+        print_debug_message("LLM Output Payload (JSON):", json.loads(response.content))
+    except json.JSONDecodeError:
+        print_debug_message("LLM Output Payload (Raw/Invalid JSON):", response.content)
+
+    return {
+        "raw_llm_output": response.content
+    }
+
+
+def process_message_node(state: State, config: RunnableConfig) -> dict:
+    """
+    Processes the raw LLM output from message_node.
+    """
+    raw_content = state.get("raw_llm_output", "")
+    current_state = state.get("current_game_state")
+
+    # Parse Output JSON
+    narrative_text, new_game_state, logic_event = parse_dm_response(raw_content)
+
+    logger.info(f"LLM Response Narrative: {narrative_text[:50]}...")
+
+    # If LLM didn't return a state (or we removed it from prompt), keep the old one
+    if new_game_state is None:
+        new_game_state = current_state
+    else:
+        logger.info("Game State updated by LLM.")
+
+    if logic_event:
+        logger.info(f"Logic Event Generated: {logic_event.name}")
+
+    # Create proper AIMessage with just the narrative text
+    final_response_message = AIMessage(content=narrative_text)
+
+    return {
+        "messages": [final_response_message],
+        "current_game_state": new_game_state,
+        "logic_event": logic_event,
+    }

@@ -8,14 +8,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
-from backroom_agent.handlers import handle_drop_item, handle_init, handle_message, handle_use_item
-from backroom_agent.protocol import (
-    Attributes,
-    ChatRequest,
-    EventType,
-    GameState,
-    Vitals,
-)
+from backroom_agent.handlers import (handle_drop_item, handle_init,
+                                     handle_message, handle_use_item)
+from backroom_agent.protocol import (Attributes, ChatRequest, EventType,
+                                     GameState, Vitals)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -34,13 +30,14 @@ app.add_middleware(
 
 # --- Helper Methods ---
 
+
 def get_initial_state() -> GameState:
     """Returns the default initial game state."""
     return GameState(
         level="Level 0",
         attributes=Attributes(STR=10, DEX=10, CON=10, INT=10, WIS=10, CHA=10),
-        vitals=Vitals(hp=10, maxHp=10, sanity=100, maxSanity=100),
-        inventory=[]
+        vitals=Vitals(hp=10, maxHp=10, sanity=20),
+        inventory=[],
     )
 
 
@@ -71,17 +68,19 @@ async def mock_agent_generator(request: ChatRequest) -> AsyncGenerator[str, None
 
 # --- Routes ---
 
+
 @app.post("/api/chat")
 async def chat_endpoint(request: ChatRequest):
     """
     Streaming endpoint for chat interactions.
     """
     session_id = request.session_id or "NO_SESSION"
-    logger.info(f"[{session_id}] Event: {request.event.type} | Input: {request.player_input}")
-    
+    logger.info(
+        f"[{session_id}] Event: {request.event.type} | Input: {request.player_input}"
+    )
+
     return StreamingResponse(
-        mock_agent_generator(request),
-        media_type="application/x-ndjson"
+        mock_agent_generator(request), media_type="application/x-ndjson"
     )
 
 

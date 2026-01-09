@@ -1,23 +1,24 @@
+import json
 import logging
 import os
+import re
 
 from langchain_core.messages import SystemMessage
 
+from backroom_agent.state import State
 from backroom_agent.utils.common import get_llm, load_prompt
-
-from .state import SuggestionAgentState
 
 logger = logging.getLogger(__name__)
 
 
-def generate_suggestions_node(state: SuggestionAgentState):
+def generate_suggestions_node(state: State):
     """
     Generates action suggestions for the player.
     """
     logger.info("Suggestion Agent: Thinking...")
 
-    current_context = state.get("current_context", "")
-    valid_actions = state.get("valid_actions", [])
+    current_context = state.get("level_context", "")
+    valid_actions = state.get("valid_actions", []) or []
 
     prompt_path = os.path.join(
         os.path.dirname(__file__), "prompts", "suggestion_agent.prompt"
@@ -39,17 +40,32 @@ def generate_suggestions_node(state: SuggestionAgentState):
     llm = get_llm()
     response = llm.invoke(messages)
 
-    # Simple parsing assuming the LLM returns a numbered list or just lines
-    # Ideally we'd ask for JSON, but let's keep it simple for now matching the prompt
-    content = response.content
-    suggestions = [
-        line.strip()
-        for line in content.split("\n")
-        if line.strip() and (line[0].isdigit() or line.startswith("-"))
-    ]
+    content = response.content.strip()
+    suggestions = []
 
-    # Fallback if parsing fails
+    # Clean up markdown code blocks if present
+    content = re.sub(r"^```json\s*", "", content)
+    content = re.sub(r"^```\s*", "", content)
+    content = re.sub(r"\s*```$", "", content)
+
+    try:
+        parsed = json.loads(content)
+        if isinstance(parsed, list):
+            suggestions = [
+                str(s).strip() for s in parsed if isinstance(s, (str, int, float))
+            ]
+    except json.JSONDecodeError:
+        logger.warning(f"Failed to parse suggestions JSON: {content}")
+        # Fallback to simple split if JSON fails
+        suggestions = [
+            line.strip("- *\"'") for line in content.split("\n") if line.strip()
+        ][:3]
+
+    # Final cleanup (just in case)
+    suggestions = [s for s in suggestions if s]
+
+    # Fallback if empty
     if not suggestions:
-        suggestions = [content]
+        suggestions = ["环顾四周", "检查背包"]
 
     return {"suggestions": suggestions}

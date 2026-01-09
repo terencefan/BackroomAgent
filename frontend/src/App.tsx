@@ -82,10 +82,12 @@ function App() {
     fetchInitialState();
   },[]);
 
-  const processGameEvent = async (text: string, eventType: EventType, eventData?: { item_id?: string, quantity?: number }) => {
-    // Add player message immediately
-    const playerMsg = { id: Date.now(), sender: 'player' as const, text };
-    setMessages(prev => [...prev, playerMsg]);
+  const processGameEvent = async (text: string, eventType: EventType, eventData?: { item_id?: string, quantity?: number }, hidden: boolean = false) => {
+    // Add player message immediately ONLY if not hidden
+    if (!hidden) {
+        const playerMsg = { id: Date.now(), sender: 'player' as const, text };
+        setMessages(prev => [...prev, playerMsg]);
+    }
     
     // Guard clause if state isn't loaded yet (though UI should prevent this)
     if (!gameState) return;
@@ -200,11 +202,21 @@ function App() {
             return [...prev.slice(0, -1), lastMsg];
         });
         break;
+
+      case StreamChunkType.LOGIC_EVENT:
+        // Append LogicEvent to the LAST message if possible
+        setMessages(prev => {
+            if (prev.length === 0) return prev;
+            const lastMsg = { ...prev[prev.length - 1] };
+            lastMsg.logicEvent = chunk.event;
+            return [...prev.slice(0, -1), lastMsg];
+        });
+        break;
     }
   };
 
-  const handleSendMessage = (text: string) => {
-    processGameEvent(text, EventType.MESSAGE);
+  const handleSendMessage = (text: string, hidden: boolean = false) => {
+    processGameEvent(text, EventType.MESSAGE, undefined, hidden);
   };
 
   const handleUseItem = (item: Item) => {
@@ -256,6 +268,11 @@ function App() {
             messages={messages} 
             onSendMessage={handleSendMessage} 
             isLoading={isLoading}
+            onOptionSelect={(msgId, option) => {
+              setMessages(prev => prev.map(m => 
+                m.id === msgId ? { ...m, selectedOption: option } : m
+              ));
+            }}
         />
       </div>
 

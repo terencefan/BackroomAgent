@@ -30,8 +30,7 @@ The frontend sends the full game state along with the player's latest input. Thi
     "vitals": {
       "hp": "number",
       "maxHp": "number",
-      "sanity": "number",
-      "maxSanity": "number"
+      "sanity": "number"
     },
     "inventory": [
       {

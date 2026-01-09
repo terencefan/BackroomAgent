@@ -1,64 +1,56 @@
 {
-  "level_id": "Backrooms_Overview",
-  "title": null,
+  "level_id": "Level 19",
+  "title": "阁楼",
   "survival_difficulty": {
     "class": "未知",
-    "description": "本文档为概念介绍，不描述具体层级的生存难度。"
+    "description": "文本未提供生存难度等级。环境存在快速衰败效应。"
   },
   "atmosphere": {
     "visuals": [
-      "腐臭的潮湿地毯",
-      "令人发狂的单调黄色",
-      "空荡的随机分割房间"
+      "文本未提供具体视觉描述"
     ],
     "audio": [
-      "荧光灯全力运作发出的永无止境的嗡鸣"
+      "文本未提供具体听觉描述"
     ],
     "smell": [
-      "腐臭",
-      "潮湿"
+      "文本未提供具体嗅觉描述"
     ],
-    "vibe": "阈限空间，单调，令人不安，深陷其中"
+    "vibe": "档案库，元叙事，被遗忘"
   },
   "environmental_mechanics": [
     {
-      "mechanic": "切出 (No-clip)",
-      "effect": "从前厅（现实世界）意外进入后室的主要方式，也是在后室中穿梭于不同地点的重要方法。",
-      "trigger_probability": "在‘错误的地方’意外触发，概率未知但被描述为‘不小心’导致。"
+      "mechanic": "快速衰败效应",
+      "effect": "对物体可见表面造成快速老化/衰败。箱子和家具内部可能受保护。",
+      "trigger_probability": "恒定作用于暴露的表面"
     },
     {
-      "mechanic": "无限层级",
-      "effect": "后室由无限延伸的层级构成，探索不到尽头。",
-      "trigger_probability": "恒定"
-    },
-    {
-      "mechanic": "层级独特性",
-      "effect": "大多数层级是完全独特的，拥有各自的环境、故事和规则。",
-      "trigger_probability": "恒定"
+      "mechanic": "物体异常衰败",
+      "effect": "约1%的物体会受到更严重的衰败影响（每100个物体中约1个）。",
+      "trigger_probability": "稀有 (d100 投出 100 时)"
     }
   ],
   "random_events": [
     {
-      "event": "实体在附近徘徊",
-      "probability": "未知，但被描述为一种需要警惕的普遍威胁。"
+      "event": "遭遇未知编辑者/实体（基于编辑历史推断）",
+      "probability": "未知"
     }
   ],
   "key_locations": [
     {
-      "name": "Level 0",
-      "description": "后室的经典入口层级，以黄色墙纸、潮湿地毯和荧光灯嗡鸣为特征。",
-      "access_probability": "从前厅意外切出时最常见的目的地之一。"
+      "name": "M.E.O.D. 文章修改档案库",
+      "description": "Level 19文章的编辑历史记录界面，包含12个版本。",
+      "access_probability": "主要界面/恒定存在"
     }
   ],
   "transitions": {
     "entrances": [
-      "在前厅（现实世界）的‘错误的地方’意外切出 (No-clip)"
+      "文本未明确提及进入方法"
     ],
     "exits": [
       {
-        "method": "返回前厅",
-        "condition": "几乎不可能",
-        "success_chance": "极低",
+        "method": "通过页面链接导航",
+        "condition": "可能通过点击页面底部的链接（如 Level 18, Level 20）",
+        "success_chance": "未知",
         "next": null
       }
     ]

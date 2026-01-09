@@ -1,0 +1,6 @@
+{
+  "name": "啼物",
+  "description": "一种实体，在等候厅和霓虹区均有出现。",
+  "id": "weeper",
+  "behavior": "敌对"
+}

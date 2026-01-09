@@ -11,7 +11,6 @@ export interface Vitals {
   hp: number;
   maxHp: number;
   sanity: number;
-  maxSanity: number;
 }
 
 export interface Item {
@@ -78,10 +77,25 @@ export const StreamChunkType = {
   MESSAGE: 'message',
   DICE_ROLL: 'dice_roll',
   STATE: 'state',
-  SUGGESTIONS: 'suggestions'
+  SUGGESTIONS: 'suggestions',
+  LOGIC_EVENT: 'logic_event'
 } as const;
 
 export type StreamChunkType = typeof StreamChunkType[keyof typeof StreamChunkType];
+
+export interface EventOutcome {
+  range: number[];
+  result: {
+    content: string;
+    updated_state_diff?: Partial<GameState>;
+  };
+}
+
+export interface LogicEvent {
+  name: string;
+  die_type: 'd20' | 'd100';
+  outcomes: EventOutcome[];
+}
 
 export interface StreamChunkMessage {
   type: typeof StreamChunkType.MESSAGE;
@@ -104,12 +118,18 @@ export interface StreamChunkSuggestions {
   options: string[];
 }
 
+export interface StreamChunkLogicEvent {
+  type: typeof StreamChunkType.LOGIC_EVENT;
+  event: LogicEvent;
+}
+
 
 export type StreamChunk = 
   | StreamChunkMessage 
   | StreamChunkDice 
   | StreamChunkState 
-  | StreamChunkSuggestions;
+  | StreamChunkSuggestions
+  | StreamChunkLogicEvent;
 
 export interface ChatResponse {
   messages: BackendMessage[];
@@ -123,4 +143,6 @@ export interface Message {
   sender: 'dm' | 'player' | 'system';
   text: string;
   options?: string[];
+  selectedOption?: string;
+  logicEvent?: LogicEvent;
 }
