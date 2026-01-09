@@ -1,0 +1,228 @@
+{
+  "atmosphere": {
+    "audio": [
+      "机器内部几近无声的运转噪音",
+      "荧光灯的嗡嗡声",
+      "管道内液体/气体流动声（大停电前）",
+      "绝对的寂静（大停电期间/后）"
+    ],
+    "smell": [
+      "粉尘味",
+      "机油与金属味",
+      "腐肉气味（管道破裂后）"
+    ],
+    "vibe": [
+      "工业废土",
+      "幽闭恐惧",
+      "阈限空间",
+      "被遗弃感",
+      "焦虑"
+    ],
+    "visuals": [
+      "45°角扭曲的工业隧道",
+      "颓敝脏污的水泥/砖墙",
+      "布满粉尘的墙面",
+      "硕大无朋的废弃机器与管线",
+      "工业白或橙色荧光灯",
+      "地面散落工业垃圾",
+      "颜色各异的钢制门"
+    ]
+  },
+  "entities": [
+    "机巧子民",
+    "猎犬",
+    "牧蛇",
+    "悲尸"
+  ],
+  "environmental_mechanics": [
+    {
+      "effect": "破坏单个灯具或线路会导致整个3x3至6x6灯具网格区域陷入黑暗。",
+      "mechanic": "电路破坏",
+      "trigger_probability": "中等 / DC 15 (因勘察或实体干涉)"
+    },
+    {
+      "effect": "进入后陷入无限、无光、无声的虚空，极易迷失。",
+      "mechanic": "虚空房间",
+      "trigger_probability": "稀有 / DC 20 (进入特定解锁的门)"
+    },
+    {
+      "effect": "全层级断电，机器停转，管道堵塞/破裂，部分入口/出口失效，部分门解锁。",
+      "mechanic": "大停电",
+      "trigger_probability": "极罕见 / d100 \u003e 98 (历史事件，已结束)"
+    },
+    {
+      "effect": "打开未上锁的门可能通往：大型工业房间、回环走廊、空房间或虚空。",
+      "mechanic": "门后空间",
+      "trigger_probability": "恒定 (对所有未上锁门生效)"
+    }
+  ],
+  "events": [
+    {
+      "event": "区域灯光熄灭",
+      "probability": "中等 / 1d20 \u003e 12 (当电路遭破坏时)"
+    },
+    {
+      "event": "管道破裂或泄漏",
+      "probability": "稀有 / DC 20 (尤其在大停电后区域)"
+    },
+    {
+      "event": "发现先前上锁的门突然解锁",
+      "probability": "稀有 / DC 20 (大停电后更频繁)"
+    },
+    {
+      "event": "遭遇实体 (猎犬、悲尸等)",
+      "probability": "高频 / DC 10"
+    },
+    {
+      "event": "发现散落的工作工具或补给箱",
+      "probability": "高频 / DC 10"
+    }
+  ],
+  "factions": [
+    {
+      "alignment": "中立",
+      "description": "以办公区EL3A为主基地的大型贸易组织，曾试图改造并占据Level 2，建造了现已废弃的轨道系统。",
+      "name": "B.N.T.G.",
+      "population": "大型组织"
+    },
+    {
+      "alignment": "友善",
+      "description": "致力于收容和教育新切入流浪者的小型团体，提供临时住所和生存训练。",
+      "name": "幸存者 (原协济迷失者)",
+      "population": "小型 (约35人)"
+    },
+    {
+      "alignment": "中立",
+      "description": "其主基地可通过Level 2内几乎所有门抵达，曾提供粗糙的层级测量数据。",
+      "name": "杰瑞的信众",
+      "population": "未知"
+    },
+    {
+      "alignment": "历史遗迹",
+      "description": "古代实体种族，曾以Level 2为主要家园，拆卸机器制造外骨骼，因资源枯竭而灭绝。",
+      "name": "机巧子民 (历史)",
+      "population": "已灭绝"
+    },
+    {
+      "alignment": "历史遗迹",
+      "description": "曾在此设立副基地，后因空间逼仄和实体侵袭迁至Level 3。",
+      "name": "M.E.G. (历史)",
+      "population": "已撤离"
+    }
+  ],
+  "items": [
+    "机械部件",
+    "油桶",
+    "金属",
+    "纸板",
+    "木材",
+    "废纸",
+    "旧工具",
+    "碎玻璃",
+    "工具箱",
+    "管道",
+    "折叠梯",
+    "伸缩电线",
+    "动力工具",
+    "铜",
+    "汽车电池",
+    "发电机",
+    "手电筒"
+  ],
+  "level_id": "Level 2",
+  "pois": [
+    {
+      "access_probability": "稀有 / DC 20 (需找到Level 811出口)",
+      "description": "位于Level 811出口旁的巨大废弃城市，可能曾是机巧子民主城。",
+      "name": "废弃机巧子民城市 (疑似)"
+    },
+    {
+      "access_probability": "中等 / DC 15 (沿废弃轨道寻找)",
+      "description": "曾用于为货运列车电池充电的区域，是大停电的可能起源点之一。",
+      "name": "B.N.T.G.列车充电/调度区"
+    },
+    {
+      "access_probability": "中等 / DC 15",
+      "description": "原教育聚落的遗址，可能留有废弃物资或记录。",
+      "name": "协济迷失者/幸存者营地遗址"
+    }
+  ],
+  "sub_zones": [
+    {
+      "danger_level": "较低 (有组织控制)",
+      "description": "B.N.T.G.主基地所在地，可通过Level 2内许多门抵达。",
+      "name": "办公区EL3A (入口区域)"
+    },
+    {
+      "danger_level": "中等 (结构不稳定)",
+      "description": "沿隧道铺设的货运/客运轨道，现已七零八落，存在脱轨风险。",
+      "name": "B.N.T.G.窄轨铁道区域"
+    },
+    {
+      "danger_level": "致命",
+      "description": "门后无尽的黑暗空间，无任何特征，极度危险。",
+      "name": "虚空房间"
+    }
+  ],
+  "survival_difficulty": {
+    "class": "等级 2",
+    "description": "环境幽闭，实体威胁常见，资源匮乏，依赖外部补给。"
+  },
+  "title": "废弃公共带",
+  "transitions": {
+    "entrances": [
+      {
+        "from": "The Frontrooms",
+        "method": "切入"
+      },
+      {
+        "from": "Level 1",
+        "method": "进入比Level 1内其他廊道更长的走廊"
+      }
+    ],
+    "exits": [
+      {
+        "condition": "找到带有标记或刻印的门",
+        "method": "通过未上锁的门 (常见)",
+        "next": "Level 1",
+        "success_chance": "高频 / DC 10"
+      },
+      {
+        "condition": "找到带有标记或刻印的门",
+        "method": "通过未上锁的门 (常见)",
+        "next": "Level 3",
+        "success_chance": "高频 / DC 10"
+      },
+      {
+        "condition": "找到带有标记或刻印的门",
+        "method": "通过未上锁的门 (常见)",
+        "next": "Level 4",
+        "success_chance": "高频 / DC 10"
+      },
+      {
+        "condition": "大停电期间失效",
+        "method": "通过特定出口 (需要层级电力)",
+        "next": "Level 126",
+        "success_chance": "中等 / DC 15 (大停电后)"
+      },
+      {
+        "condition": "大停电期间失效",
+        "method": "通过特定出口 (需要层级电力)",
+        "next": "Level 811",
+        "success_chance": "中等 / DC 15 (大停电后)"
+      },
+      {
+        "condition": "门已解锁 (大停电后更常见)",
+        "method": "进入虚空房间的门",
+        "next": null,
+        "success_chance": "极低 / d100 \u003e 95 (生还并返回)"
+      },
+      {
+        "condition": "进入",
+        "method": "通过几乎所有的门",
+        "next": "Jerry's Room",
+        "success_chance": "高频 / DC 10"
+      }
+    ]
+  }
+}

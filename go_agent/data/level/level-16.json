@@ -1,0 +1,28 @@
+{
+  "atmosphere": {
+    "audio": [],
+    "smell": [],
+    "vibe": [
+      "数据缺失",
+      "信息过时"
+    ],
+    "visuals": []
+  },
+  "entities": [],
+  "environmental_mechanics": [],
+  "events": [],
+  "factions": [],
+  "items": [],
+  "level_id": "Level 16",
+  "pois": [],
+  "sub_zones": [],
+  "survival_difficulty": {
+    "class": "未知",
+    "description": "由于数据库条目不可用，生存难度未知。"
+  },
+  "title": "“地形转变”",
+  "transitions": {
+    "entrances": [],
+    "exits": []
+  }
+}

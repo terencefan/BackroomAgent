@@ -1,0 +1,175 @@
+{
+  "atmosphere": {
+    "audio": [
+      "远处传来的发动机声",
+      "机器运转的声音"
+    ],
+    "smell": [
+      "可能存在的金属/机油味（机器）",
+      "无分解物的干燥空气"
+    ],
+    "vibe": [
+      "阈限空间",
+      "废弃的科技设施",
+      "孤独",
+      "诡异",
+      "未解之谜"
+    ],
+    "visuals": [
+      "未来主义风格的白色/灰色混凝土走廊",
+      "墙壁与天花板上的白色钢管",
+      "散发诡异光芒的大灯",
+      "干涸的血液与穿着实验室制服的尸体",
+      "带有金属加固门和厚玻璃墙的机器房间"
+    ]
+  },
+  "entities": [],
+  "environmental_mechanics": [
+    {
+      "effect": "层级面积至少6080平方公里，可能无限延伸，探索极易迷失方向。",
+      "mechanic": "非线性/无限空间",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "房间内存在大小不一、功能各异或损坏的机器。部分机器有明确任务（如生产钢棒），大部分无任务。",
+      "mechanic": "机器房间",
+      "trigger_probability": "高频 / DC 10"
+    },
+    {
+      "effect": "发现无法解剖、脱水的人形尸体，穿着实验室制服，带有冷兵器及枪伤痕迹。尸体不会分解。",
+      "mechanic": "尸体与环境",
+      "trigger_probability": "中等 / DC 15"
+    },
+    {
+      "effect": "房间内的电脑可正常使用，运行“Avalon 2.4”系统，可连接I.L.N.（层级间网络）。文件为未知语言。",
+      "mechanic": "电脑与网络",
+      "trigger_probability": "中等 / DC 15"
+    }
+  ],
+  "events": [
+    {
+      "event": "听到远处或近处机器启动、运转或改变状态的声音。",
+      "probability": "高频 / 1d20 \u003e 5"
+    },
+    {
+      "event": "发现新的、功能未知或已损坏的机器。",
+      "probability": "中等 / 1d20 \u003e 12"
+    },
+    {
+      "event": "在探索中发现穿着实验室制服的干尸及其遗物。",
+      "probability": "中等 / 1d20 \u003e 12"
+    },
+    {
+      "event": "电脑终端上的“雷达扫描”图像显示形状重叠（暗示层级碰撞事件）。",
+      "probability": "稀有 / DC 20"
+    },
+    {
+      "event": "I.L.N.连接暂时中断或受到干扰。",
+      "probability": "低 / 1d20 \u003e 17"
+    }
+  ],
+  "factions": [
+    {
+      "alignment": "友善",
+      "description": "该层级唯一的已知长期居住者，以控制室为基地，通过I.L.N.与外界联系并分享探索记录。心理健康状况堪忧。",
+      "name": "Enric (被困的流浪者)",
+      "population": "1"
+    },
+    {
+      "alignment": "中立",
+      "description": "正在尝试破解层级电脑文件中的未知语言。",
+      "name": "Cygnus Order",
+      "population": "未知（层级外组织）"
+    },
+    {
+      "alignment": "友善",
+      "description": "通过I.L.N.为Enric提供支持（娱乐资源、家庭联系）。",
+      "name": "M.E.G.",
+      "population": "未知（层级外组织）"
+    }
+  ],
+  "items": [
+    "刀",
+    "长矛",
+    "食物",
+    "实验室制服",
+    "电脑"
+  ],
+  "level_id": "Level 15",
+  "pois": [
+    {
+      "access_probability": "已知位置",
+      "description": "层级内唯一已知的活跃基地，是信息交换和生存的中心点。",
+      "name": "Enric的控制室基地"
+    },
+    {
+      "access_probability": "中等 / DC 15",
+      "description": "显示移动形状（疑似代表层级）和连接线的图像，是理解层级移动和入口机制的关键线索。",
+      "name": "显示“雷达扫描”的电脑终端"
+    },
+    {
+      "access_probability": "稀有 / DC 20 (距离基地约2公里)",
+      "description": "可能通往未知区域（疑似新层级或太空）的出口，目前被禁止使用。",
+      "name": "特殊出口（白光门框）"
+    }
+  ],
+  "sub_zones": [
+    {
+      "danger_level": "相同",
+      "description": "存放发出噪音的大型机器的房间，墙壁部分由厚玻璃（疑似夹层玻璃）制成。",
+      "name": "引擎室"
+    },
+    {
+      "danger_level": "更低",
+      "description": "Enric的基地，配备可用的电脑。",
+      "name": "控制室"
+    },
+    {
+      "danger_level": "相同",
+      "description": "空置或配备设施的实验室。",
+      "name": "实验室"
+    },
+    {
+      "danger_level": "相同",
+      "description": "提供基本生活设施和食物（不含杏仁水）的区域。",
+      "name": "宿舍/厨房/储藏室"
+    },
+    {
+      "danger_level": "未知",
+      "description": "曾发现一堆猎犬尸体的房间。",
+      "name": "火化室"
+    },
+    {
+      "danger_level": "未知",
+      "description": "外观似引擎室但无引擎，内含散发白光的门框，门框内景象似夜空与蓝色光球。",
+      "name": "特殊出口房间"
+    }
+  ],
+  "survival_difficulty": {
+    "class": "等级 1",
+    "description": "环境本身相对安全，无已知实体威胁，但资源有限且出口极难寻找，存在长期被困的心理风险。"
+  },
+  "title": "未来走廊",
+  "transitions": {
+    "entrances": [
+      {
+        "from": "Level 10",
+        "method": "在Level 10中发现一堵突然出现、材质与Level 15相同的无限延伸的墙，并找到其中一扇门。"
+      }
+    ],
+    "exits": [
+      {
+        "condition": "找到并进入该房间。",
+        "method": "通过特殊出口房间的白光门框。",
+        "next": null,
+        "success_chance": "100% (但目的地未知且目前被禁止使用)"
+      },
+      {
+        "condition": "未知。",
+        "method": "等待类似进入时的“墙壁事件”在层级内发生（理论上可能）。",
+        "next": "random",
+        "success_chance": "极罕见 / d100 \u003e 98"
+      }
+    ]
+  }
+}

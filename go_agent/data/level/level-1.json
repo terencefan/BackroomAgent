@@ -1,0 +1,299 @@
+{
+  "atmosphere": {
+    "audio": [
+      "零星的金属撞击声",
+      "管道隆隆声",
+      "脚步声回响",
+      "皮肤轻拍水泥地的声响",
+      "电流脉冲声"
+    ],
+    "smell": [
+      "塑料般的死水气息",
+      "沉闷潮湿的空气",
+      "腐败气味"
+    ],
+    "vibe": [
+      "阈限空间",
+      "焦虑",
+      "迷失感",
+      "人造感",
+      "非欧几何扭曲"
+    ],
+    "visuals": [
+      "单调褪色的墙壁",
+      "混凝土支柱",
+      "灰色墙面与地坪",
+      "天花板管道",
+      "应急绿光",
+      "闪烁的灯光"
+    ]
+  },
+  "entities": [
+    "疫疾",
+    "爬菌",
+    "瘟疫地精",
+    "失落一族"
+  ],
+  "environmental_mechanics": [
+    {
+      "effect": "感知距离与实际距离不符，容易迷路。需通过固定视线于地标来导航。",
+      "mechanic": "非欧几何导航",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "所有自然光源随机切断，陷入完全黑暗，实体活动加剧。",
+      "mechanic": "闪烁事件",
+      "trigger_probability": "随机 / 1d20 \u003e 15"
+    },
+    {
+      "effect": "装有随机资源的木箱在视线外出现或消失。",
+      "mechanic": "板条箱生成与消失",
+      "trigger_probability": "高频 / 1d20 \u003e 5"
+    }
+  ],
+  "events": [
+    {
+      "event": "闪烁事件发生，灯光熄灭，实体活动加剧",
+      "probability": "随机 / 1d20 \u003e 15"
+    },
+    {
+      "event": "发现新的板条箱",
+      "probability": "高频 / 1d20 \u003e 5"
+    },
+    {
+      "event": "遭遇敌对实体（如疫疾、爬菌、瘟疫地精等）",
+      "probability": "中等 / 1d20 \u003e 12 (闪烁期间更高)"
+    },
+    {
+      "event": "遇到 M.E.G. 巡逻队",
+      "probability": "中等 / 1d20 \u003e 12"
+    },
+    {
+      "event": "发现组织放置的地标与补给",
+      "probability": "高频 / 1d20 \u003e 5"
+    }
+  ],
+  "factions": [
+    {
+      "alignment": "友善",
+      "description": "在 Level 1 设有 Alpha 基地，积极巡逻寻找并帮助新流浪者，提供培训与资源。",
+      "name": "探险者总署 (M.E.G.)",
+      "population": "大型定居点"
+    },
+    {
+      "alignment": "友善",
+      "description": "参与信息编撰，提供 C.L.I.P.P. 协议等指导。",
+      "name": "阿丽亚娜集团",
+      "population": "未知"
+    },
+    {
+      "alignment": "中立",
+      "description": "在“商人之地”提供保护（需付费），活跃于“跃金段”。",
+      "name": "不结盟贸易集团 (B.N.T.G.)",
+      "population": "未知"
+    },
+    {
+      "alignment": "友善",
+      "description": "无固定基地，仅存在临时定居点。",
+      "name": "游牧民族",
+      "population": "分散"
+    },
+    {
+      "alignment": "友善",
+      "description": "设立报名点时会在本层级活跃。",
+      "name": "速切玩家",
+      "population": "临时性"
+    }
+  ],
+  "items": [
+    "杏仁水",
+    "撬棍",
+    "背包",
+    "木板",
+    "金属机器人",
+    "玻璃板",
+    "瓶装食物",
+    "运动衫",
+    "圣诞毛衣",
+    "袜子",
+    "滑雪裤",
+    "鞋子",
+    "绷带",
+    "纱布",
+    "消毒剂",
+    "肥皂",
+    "手消毒液",
+    "刀",
+    "斧头",
+    "火柴",
+    "打火机",
+    "头灯",
+    "手电筒",
+    "纱线",
+    "笔记本",
+    "笔",
+    "手表",
+    "手机充电器",
+    "睡袋",
+    "福友玉",
+    "滋水枪",
+    "迁跃浆果",
+    "砍刀",
+    "便携炉具",
+    "回溯机器"
+  ],
+  "level_id": "Level 1",
+  "pois": [
+    {
+      "access_probability": "中等 / 跟随巡逻队或地标指引",
+      "description": "位于天鹰段，是 M.E.G. 最古老且第二大的定居点，专注于新成员培训和勘探，已发展成城镇规模。",
+      "name": "M.E.G. Alpha 基地"
+    },
+    {
+      "access_probability": "高频 / 留意墙壁和门边",
+      "description": "由各组织放置的彩色布料标志，通常附有物资和前往定居点的指引。",
+      "name": "组织地标"
+    },
+    {
+      "access_probability": "高频 / 探索小径",
+      "description": "小径内随机出现的无意义房间（如小型办公室、医务室、橡胶房间、画室），可作为临时休息点。",
+      "name": "小径房间"
+    }
+  ],
+  "sub_zones": [
+    {
+      "danger_level": "中等",
+      "description": "宽敞开阔的仓库/停车场空间，受非欧几何影响，是主要资源区和实体活动区。",
+      "name": "过道"
+    },
+    {
+      "danger_level": "较低",
+      "description": "狭窄、迷宫般的混凝土通道网络，灯光昏暗，结构正常，比过道安全，适合建立临时营地。",
+      "name": "小径"
+    },
+    {
+      "danger_level": "中等",
+      "description": "以灰色墙面、地坪和巨型混凝土柱子为特征的著名区段，类似停车场，是新人切入的常见区域。",
+      "name": "天鹰段"
+    }
+  ],
+  "survival_difficulty": {
+    "class": "等级 1",
+    "description": "相对安全，有资源与人类定居点，但存在实体威胁与非欧几何环境。"
+  },
+  "title": "宜居地带",
+  "transitions": {
+    "entrances": [
+      {
+        "from": "Level 0",
+        "method": "从 Level 0 切出"
+      },
+      {
+        "from": "Level 4.2",
+        "method": "打开特定风格的门"
+      },
+      {
+        "from": "Level 11",
+        "method": "打开特定风格的门"
+      },
+      {
+        "from": "Level 12",
+        "method": "打开特定风格的门"
+      },
+      {
+        "from": "Level 40",
+        "method": "打开生锈金属门"
+      },
+      {
+        "from": "Level 46",
+        "method": "打开砂岩门"
+      },
+      {
+        "from": "Level 54",
+        "method": "打开某些门"
+      },
+      {
+        "from": "Level 162",
+        "method": "打开办公室门"
+      },
+      {
+        "from": "Level 215",
+        "method": "打开未提及建筑上的门"
+      },
+      {
+        "from": "Level 330",
+        "method": "打开与某栋建筑相连的门"
+      },
+      {
+        "from": "Level 409",
+        "method": "打开纸板门"
+      },
+      {
+        "from": "Level 726",
+        "method": "打开任意一扇门"
+      }
+    ],
+    "exits": [
+      {
+        "condition": "无特定条件，只需移动",
+        "method": "沿着管道与仪表盘逐渐显现的方向移动足够远",
+        "next": "Level 2",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "找到并进入玻璃门",
+        "method": "通过玻璃门",
+        "next": "Level 22",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "找到并进入该门",
+        "method": "通过装有荧光灯的走廊尽头带独特符号的门",
+        "next": "Level 154",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "找到并进入结冰金属门",
+        "method": "通过结冰金属门",
+        "next": "Level 159",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "找到并进入掩体门",
+        "method": "通过掩体门",
+        "next": "Level 218",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "找到并进入该木门",
+        "method": "通过无厘头位置的木门",
+        "next": "Level 389",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "找到并进入该门",
+        "method": "通过感觉比四周墙面稍冷、位置捉摸不定的门",
+        "next": "Level 740",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "找到并进入，随后走楼梯",
+        "method": "通过外观类似于电梯或升降机的双开铁门",
+        "next": "Level 998",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "找到并进入纯白木门",
+        "method": "通过纯白木门",
+        "next": "Level 998.2",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "遵循特定顺序",
+        "method": "按特定顺序进入门与走廊",
+        "next": "枢纽",
+        "success_chance": "中等 / DC 15"
+      }
+    ]
+  }
+}

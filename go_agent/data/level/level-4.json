@@ -1,0 +1,127 @@
+{
+  "atmosphere": {
+    "audio": [
+      "办公室环境音（推测）"
+    ],
+    "smell": [
+      "办公室气味（推测）"
+    ],
+    "vibe": [
+      "阈限空间",
+      "空旷",
+      "相对安全",
+      "社交中心"
+    ],
+    "visuals": [
+      "空置的办公大楼",
+      "几乎无家具",
+      "被涂黑的窗户",
+      "未涂黑的窗户（陷阱）"
+    ]
+  },
+  "entities": [
+    "猎犬",
+    "钝人"
+  ],
+  "environmental_mechanics": [
+    {
+      "effect": "任何未被涂黑的窗户都是陷阱，应避开。",
+      "mechanic": "陷阱窗户",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "一旦失去对出口的视野，它们可能会消失。",
+      "mechanic": "出口消失",
+      "trigger_probability": "1d20 \u003e 15"
+    }
+  ],
+  "events": [],
+  "factions": [
+    {
+      "alignment": "友善",
+      "description": "M.E.G.的第二个主要基地，半数小队生活于此，守备严密。",
+      "name": "M.E.G. Omega 基地",
+      "population": "大型（半数M.E.G.小队）"
+    },
+    {
+      "alignment": "敌对",
+      "description": "崇拜农业的异教徒团体，种植从Level 0和Level 1获得的菌类，通常怀有敌意。",
+      "name": "神爱之繁生（Amor Incrementum）",
+      "population": "极小（10人）"
+    },
+    {
+      "alignment": "中立",
+      "description": "储存多种物品的小团体，若无互动则无视他人，只售卖无实际用途的奇特物品。",
+      "name": "T.B.D.（悬而未决）",
+      "population": "极小（6人）"
+    }
+  ],
+  "items": [
+    "杏仁水"
+  ],
+  "level_id": "Level 4",
+  "pois": [
+    {
+      "access_probability": "高频",
+      "description": "靠近通往Level 5和Level 6入口的主要基地。",
+      "name": "M.E.G. Omega 基地"
+    },
+    {
+      "access_probability": "高频",
+      "description": "散布各处的补给点，杏仁水出现频率最高。",
+      "name": "冷水器/自动售货机/杏仁水喷水池"
+    }
+  ],
+  "sub_zones": [],
+  "survival_difficulty": {
+    "class": "等级 1",
+    "description": "安全，实体绝迹，资源丰富，是补给和会面的理想地点。"
+  },
+  "title": "废弃办公室",
+  "transitions": {
+    "entrances": [
+      {
+        "from": "枢纽",
+        "method": "从枢纽的墙上跃进"
+      },
+      {
+        "from": "Level 3",
+        "method": "通过Level 3的电梯"
+      },
+      {
+        "from": "Level 2",
+        "method": "通过Level 2中未上锁的门"
+      },
+      {
+        "from": "Level 283",
+        "method": "掉入Level 283的海洋球池后被传送穿过天花板"
+      }
+    ],
+    "exits": [
+      {
+        "condition": "找到楼梯",
+        "method": "办公室风格的楼梯",
+        "next": "Level 5",
+        "success_chance": "中等"
+      },
+      {
+        "condition": "找到楼梯",
+        "method": "办公室风格的楼梯",
+        "next": "Level 6",
+        "success_chance": "中等"
+      },
+      {
+        "condition": "找到电梯",
+        "method": "电梯",
+        "next": "Level 3",
+        "success_chance": "中等"
+      },
+      {
+        "condition": "找到罕见的楼梯",
+        "method": "通往地下室的楼梯",
+        "next": "Level 71",
+        "success_chance": "稀有"
+      }
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "id": "eaa6013f-dcd6-42b4-9c40-b0659edb60c4",
+  "name": "猎犬",
+  "description": "已知出现在本层级的敌对实体。",
+  "behavior": "敌对"
+}

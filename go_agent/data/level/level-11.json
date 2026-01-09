@@ -1,0 +1,215 @@
+{
+  "atmosphere": {
+    "audio": [
+      "城市环境音",
+      "偶尔的无线电广播"
+    ],
+    "smell": [
+      "温暖干燥的空气"
+    ],
+    "vibe": [
+      "阈限空间",
+      "熟悉又陌生",
+      "超现实",
+      "潜在的社区感"
+    ],
+    "visuals": [
+      "无限延伸的现代城市",
+      "随机排列与漂浮的建筑",
+      "反常的内部结构",
+      "停滞的白天",
+      "反常的路灯",
+      "随机行驶的废弃车辆"
+    ]
+  },
+  "entities": [
+    "无面灵",
+    "猎犬",
+    "死亡飞蛾",
+    "爬菌",
+    "笑魇",
+    "邻里守望",
+    "观察者",
+    "碾压者",
+    "阿尔戈斯",
+    "拉尔夫"
+  ],
+  "environmental_mechanics": [
+    {
+      "effect": "建筑内部逻辑混乱，楼梯不通，门开在奇怪位置，重力异常",
+      "mechanic": "反常建筑结构",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "随机汽车模型在街上行驶后停止，可能载有无面灵",
+      "mechanic": "随机车辆事件",
+      "trigger_probability": "中等 / DC 15"
+    },
+    {
+      "effect": "靠近关闭的核电站会受到危险辐射，导致设备失灵",
+      "mechanic": "危险辐射区",
+      "trigger_probability": "恒定（区域限定）"
+    },
+    {
+      "effect": "使无面灵和猎犬行为正常化，表现为普通行人和狗，并尝试沟通",
+      "mechanic": "第11效应",
+      "trigger_probability": "恒定（对特定实体）"
+    }
+  ],
+  "events": [
+    {
+      "event": "随机Wi-Fi信号出现",
+      "probability": "高频 / DC 10"
+    },
+    {
+      "event": "在商店或自动售货机发现杏仁水",
+      "probability": "高频 / DC 10"
+    },
+    {
+      "event": "听到激进电台的广播",
+      "probability": "中等 / DC 15"
+    }
+  ],
+  "factions": [
+    {
+      "alignment": "友善",
+      "description": "M.E.G.的第四个主要基地，组织筹备中，负责援助流浪者",
+      "name": "M.E.G. Beta基地",
+      "population": "未知（团队轮换）"
+    },
+    {
+      "alignment": "中立",
+      "description": "主要基地位于“总部”，安全并可进行交易",
+      "name": "阿尔戈斯之眼",
+      "population": "未知"
+    },
+    {
+      "alignment": "友善",
+      "description": "游荡的帮助小组，教导新人了解后室",
+      "name": "琥珀营Level 11前哨站",
+      "population": "未知"
+    },
+    {
+      "alignment": "敌对（对M.E.G.）",
+      "description": "自给自足，禁止M.E.G.盟友进入，有武装巡逻",
+      "name": "叛乱07号站",
+      "population": "\u003e800人"
+    },
+    {
+      "alignment": "友善",
+      "description": "使用无人机记录其他层级的友好小组",
+      "name": "无人机监视小队！",
+      "population": "14人"
+    },
+    {
+      "alignment": "友善",
+      "description": "提供酒店服务、食物和房间",
+      "name": "家常酒店",
+      "population": "未知"
+    },
+    {
+      "alignment": "有条件友善",
+      "description": "以搜刮为目的的团队，侮辱杰瑞会引发敌意",
+      "name": "杰瑞的追随者 (F.O.J.)",
+      "population": "约40人"
+    },
+    {
+      "alignment": "友善",
+      "description": "提供邮政服务的扩大前哨站",
+      "name": "U.B.D.S. “包裹侦察兵”",
+      "population": "约38人"
+    },
+    {
+      "alignment": "神秘",
+      "description": "目标终结实体的神秘组织，成员穿商业西装",
+      "name": "AEA（反实体机构）",
+      "population": "未知（可能已瓦解）"
+    },
+    {
+      "alignment": "中立",
+      "description": "由青少年运营的移动电台，播放80年代流行乐",
+      "name": "激进电台",
+      "population": "5人"
+    },
+    {
+      "alignment": "友善",
+      "description": "在闲置商店中经营，24小时为流浪者服务",
+      "name": "麦芽糖市场",
+      "population": "28人"
+    },
+    {
+      "alignment": "中立",
+      "description": "层级内的普通居民",
+      "name": "Level 11的公民",
+      "population": "约12,000人"
+    },
+    {
+      "alignment": "中立",
+      "description": "位于翻新银行内的资料库，有武装守卫，进行交易与任务",
+      "name": "永恒资料库011-Θ数据库",
+      "population": "至少300人"
+    }
+  ],
+  "items": [
+    "杏仁水"
+  ],
+  "level_id": "Level 11",
+  "pois": [
+    {
+      "access_probability": "恒定（地理存在）",
+      "description": "关闭但释放危险辐射的大型设施，彼此相距约800公里",
+      "name": "核电站"
+    },
+    {
+      "access_probability": "中等 / DC 15",
+      "description": "来自纽约、芝加哥、洛杉矶等地的可识别建筑，具有层级建筑的反常属性",
+      "name": "前厅城市地标"
+    },
+    {
+      "access_probability": "未知",
+      "description": "阿尔戈斯之眼的主要基地建筑",
+      "name": "总部"
+    },
+    {
+      "access_probability": "稀有 / DC 20",
+      "description": "人类实体“拉尔夫”所在的建筑",
+      "name": "后室电台工作室"
+    },
+    {
+      "access_probability": "恒定（地理存在）",
+      "description": "位于西侧翻新银行，悬挂巨大横幅",
+      "name": "永恒资料库011-Θ数据库"
+    }
+  ],
+  "sub_zones": [
+    {
+      "danger_level": "相同",
+      "description": "流浪者主要聚居区，补给相对稀少",
+      "name": "城市中心地带"
+    },
+    {
+      "danger_level": "更高",
+      "description": "释放危险辐射的关闭核电站，M.E.G.安全保障团驻扎",
+      "name": "核电站周边区域"
+    },
+    {
+      "danger_level": "相同（对友好者）",
+      "description": "永恒资料库011-Θ数据库所在地，有武装守卫",
+      "name": "西侧数据库区"
+    }
+  ],
+  "survival_difficulty": {
+    "class": "等级 1",
+    "description": "安全、稳定、极少量实体"
+  },
+  "title": "无垠城市",
+  "transitions": {
+    "entrances": [
+      {
+        "from": "Level 9",
+        "method": "跟随Level 9的标志"
+      }
+    ],
+    "exits": []
+  }
+}

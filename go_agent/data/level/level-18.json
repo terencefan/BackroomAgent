@@ -1,0 +1,91 @@
+{
+  "atmosphere": {
+    "audio": [
+      "低语声（诉说遗憾或错误）"
+    ],
+    "smell": [],
+    "vibe": [
+      "怀旧",
+      "阈限空间",
+      "情感冲击",
+      "潜在成瘾性",
+      "心理扰动"
+    ],
+    "visuals": [
+      "童年记忆场景（幼儿园、日托所、儿童卧室、教室、游乐场）",
+      "空荡空间（罕见）"
+    ]
+  },
+  "entities": [
+    "毛绒恐龙"
+  ],
+  "environmental_mechanics": [
+    {
+      "effect": "层级外观基于流浪者2-5岁的童年记忆生成，对每个人不同。若无相关记忆，则呈现为无影响的空荡空间。",
+      "mechanic": "个性化环境",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "声音会低语流浪者最大的遗憾或错误，几乎无法压制。",
+      "mechanic": "记忆低语",
+      "trigger_probability": "高频 / DC 10"
+    },
+    {
+      "effect": "重新唤醒被遗忘的童年记忆（如死去的宠物），引发深度情感状态。可通过未知方法抑制。",
+      "mechanic": "记忆唤醒",
+      "trigger_probability": "中等 / DC 15"
+    },
+    {
+      "effect": "某些流浪者会对该层级产生依赖，主动选择留下。",
+      "mechanic": "心理成瘾",
+      "trigger_probability": "稀有 / DC 20"
+    }
+  ],
+  "events": [],
+  "factions": [
+    {
+      "alignment": "中立",
+      "description": "一个由20-25人组成的前哨站，成员将Level 18作为生活方式永久居住于此。他们厌恶毛绒恐龙。",
+      "name": "孩子们（The Children）",
+      "population": "20-25人"
+    }
+  ],
+  "items": [
+    "水",
+    "食物"
+  ],
+  "level_id": "Level 18",
+  "pois": [],
+  "sub_zones": [],
+  "survival_difficulty": {
+    "class": "等级 1",
+    "description": "安全、稳定、宜居。层级本身无物理威胁，提供生存所需资源，但存在心理影响风险。"
+  },
+  "title": "回忆",
+  "transitions": {
+    "entrances": [
+      {
+        "from": null,
+        "method": "回想过去的记忆"
+      },
+      {
+        "from": "Level 17",
+        "method": "通过Level 17的罕见入口"
+      }
+    ],
+    "exits": [
+      {
+        "condition": "在显眼的地方执行转身离开的动作",
+        "method": "转身离开",
+        "next": "Level 19",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "遇到毛绒恐龙并跟随它一段时间",
+        "method": "跟随毛绒恐龙",
+        "next": "random",
+        "success_chance": "100%"
+      }
+    ]
+  }
+}

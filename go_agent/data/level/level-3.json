@@ -1,0 +1,232 @@
+{
+  "atmosphere": {
+    "audio": [
+      "轰鸣的机器噪音",
+      "管道内黑色粘稠液体的流动声"
+    ],
+    "smell": [
+      "灰尘",
+      "金属锈蚀",
+      "有毒烟雾（来自管道液体）"
+    ],
+    "vibe": [
+      "压抑",
+      "幽闭恐惧",
+      "被监视感",
+      "工业废弃感",
+      "焦虑"
+    ],
+    "visuals": [
+      "黑暗曲折的走廊",
+      "布满灰尘的棕色砖墙",
+      "灰色瓷砖地板",
+      "金属天花板",
+      "铜质管道和机器零件",
+      "锈迹斑斑的监狱栅栏",
+      "电力房"
+    ]
+  },
+  "entities": [
+    "猎犬",
+    "无面灵",
+    "悲尸",
+    "死亡飞蛾",
+    "窃皮者",
+    "钝人",
+    "笑魇",
+    "肢团",
+    "爆酸者",
+    "爬菌",
+    "疫疾",
+    "蒙面女郎",
+    "杰瑞的信众"
+  ],
+  "environmental_mechanics": [
+    {
+      "effect": "房间布局随机，走廊狭窄曲折，部分区域需爬行通过，无法全面测绘。",
+      "mechanic": "非线性空间",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "吸入损害神经系统，接触皮肤造成2-3度烧伤。",
+      "mechanic": "有毒烟雾",
+      "trigger_probability": "管道附近 / 恒定"
+    },
+    {
+      "effect": "温度在18-33°C间波动，部分区域可达57°C，空气潮湿厚重难以呼吸。",
+      "mechanic": "极端温度",
+      "trigger_probability": "1d20 \u003e 15 (特定区域)"
+    },
+    {
+      "effect": "自主运行的机器可能自燃或爆炸，造成严重伤害。",
+      "mechanic": "机器故障",
+      "trigger_probability": "中等 / DC 15 (长期暴露)"
+    },
+    {
+      "effect": "栅栏密集区域引发强烈恐惧和不适感，可能产生被监视或看到人形的幻觉。",
+      "mechanic": "监狱栅栏恐惧",
+      "trigger_probability": "进入该区域时 / 1d20 \u003e 10"
+    }
+  ],
+  "events": [
+    {
+      "event": "遭遇实体群（猎犬、无面灵、悲尸等）",
+      "probability": "高频 / 长距离穿越几乎必然遭遇"
+    },
+    {
+      "event": "机器故障（自燃或爆炸）",
+      "probability": "中等 / DC 15 (在机器附近长时间停留)"
+    },
+    {
+      "event": "实体攻击小型基地或前哨",
+      "probability": "高频 / 基地建立后几天内"
+    },
+    {
+      "event": "温度或湿度突然急剧升高",
+      "probability": "中等 / 1d20 \u003e 12 (在特定区域)"
+    },
+    {
+      "event": "发现稀有资源（杏仁水、火盐、瓶装闪电等）",
+      "probability": "中等 / 探索中"
+    }
+  ],
+  "factions": [
+    {
+      "alignment": "友善",
+      "description": "第三重要的M.E.G.基地，由临时材料建造，武装强大，提供庇护和贸易。",
+      "name": "M.E.G. - Gamma基地",
+      "population": "约300名特工及大量住宿者"
+    },
+    {
+      "alignment": "中立",
+      "description": "主要物资存储和交易枢纽，物价高昂，人员流动快。",
+      "name": "B.N.T.G. - 存储设施",
+      "population": "约150名永久成员"
+    },
+    {
+      "alignment": "敌对",
+      "description": "小型资源采集前哨，多次遭实体围攻，对非信徒充满敌意。",
+      "name": "杰瑞的信众 - “蓝色救赎”",
+      "population": "15名永久成员"
+    },
+    {
+      "alignment": "敌对",
+      "description": "据传在此设有基地，频繁攻击Gamma基地，应不惜一切代价避免。",
+      "name": "蒙面女郎",
+      "population": "未知"
+    },
+    {
+      "alignment": "敌对",
+      "description": "资源采集基地，不开放贸易，不应接近。",
+      "name": "U.E.C.（无羁探险者联盟） - 锡拉基地",
+      "population": "未知"
+    }
+  ],
+  "items": [
+    "杏仁水",
+    "糖果",
+    "苦痛汁液",
+    "火盐",
+    "皇家口粮",
+    "滋水枪",
+    "瓶装闪电",
+    "刀子",
+    "打火机",
+    "断线钳",
+    "手电筒",
+    "牙刷",
+    "鞋带",
+    "塑料玩具马蹄铁",
+    "胶水瓶",
+    "电线",
+    "橡皮筋"
+  ],
+  "level_id": "Level 3",
+  "pois": [
+    {
+      "access_probability": "中等 / 需主动寻找或跟随线索",
+      "description": "由临时砖块和骨头弹弓武装的大型防御基地，是重要的安全点和贸易中心。",
+      "name": "Gamma基地 (M.E.G.)"
+    },
+    {
+      "access_probability": "中等 / 需主动寻找或跟随线索",
+      "description": "堆满物资的巨大仓库，是后室重要的物流节点。",
+      "name": "B.N.T.G.存储设施"
+    },
+    {
+      "access_probability": "高频 / 探索中常见",
+      "description": "散布各处的神秘锈蚀栅栏，是层级的标志性障碍和恐惧源。",
+      "name": "无法破坏的监狱栅栏"
+    }
+  ],
+  "sub_zones": [
+    {
+      "danger_level": "更高（高温、机器危险）",
+      "description": "黑暗的房间，内含发电机、电器设备（断路器、电脑、电线、摄像头、荧光灯），温度可能异常高。",
+      "name": "电力房"
+    },
+    {
+      "danger_level": "相同（心理危害为主）",
+      "description": "分布着无法破坏的锈蚀监狱栅栏，阻碍通行，引发心理压力。",
+      "name": "监狱栅栏区"
+    },
+    {
+      "danger_level": "更高（环境危害）",
+      "description": "温度或湿度突然升高至难以忍受程度的局部区域。",
+      "name": "高温/高湿区"
+    }
+  ],
+  "survival_difficulty": {
+    "class": "等级 4",
+    "description": "资源丰富但实体横行，机器危险且环境恶劣，独行风险极高。"
+  },
+  "title": "发电站",
+  "transitions": {
+    "entrances": [
+      {
+        "from": "Level 2",
+        "method": "通过Level 2中未上锁的门"
+      },
+      {
+        "from": "Level 4, Level 5",
+        "method": "通过Level 4或Level 5的电梯"
+      },
+      {
+        "from": "Level 10",
+        "method": "进入Level 10的地堡"
+      },
+      {
+        "from": "Level 11",
+        "method": "进入Level 11中外观像电力站的建筑"
+      },
+      {
+        "from": "Level 13",
+        "method": "触摸Level 13中生锈的管道"
+      },
+      {
+        "from": "地铁",
+        "method": "借助地铁系统"
+      }
+    ],
+    "exits": [
+      {
+        "condition": "找到并进入电梯",
+        "method": "搭乘电梯",
+        "next": "Level 4, Level 5",
+        "success_chance": "100% (若找到)"
+      },
+      {
+        "condition": "找到并打开一扇木门",
+        "method": "通过木门",
+        "next": "Level 31",
+        "success_chance": "100% (若找到)"
+      },
+      {
+        "condition": "在电力房找到汽车并坐上驾驶座",
+        "method": "坐在电力房的汽车前座上",
+        "next": "Level 69",
+        "success_chance": "100% (若触发)"
+      }
+    ]
+  }
+}

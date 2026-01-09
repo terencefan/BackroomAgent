@@ -1,0 +1,131 @@
+{
+  "atmosphere": {
+    "audio": [
+      "偶尔吹动庄稼的风声"
+    ],
+    "smell": [
+      "麦粒香气",
+      "泥土味"
+    ],
+    "vibe": [
+      "阈限空间",
+      "沉闷",
+      "一成不变",
+      "平静",
+      "时间感丧失"
+    ],
+    "visuals": [
+      "广阔的无限麦田",
+      "铅灰色天空",
+      "被灌木丛分割的田地",
+      "散布的湖泊与水体",
+      "泥土小径与轮胎印",
+      "零散的木棚、谷仓等建筑"
+    ]
+  },
+  "entities": [
+    "蠕虫"
+  ],
+  "environmental_mechanics": [
+    {
+      "effect": "天空永远铅灰色，罕有小雨或雾天，时间观念容易丧失。",
+      "mechanic": "恒定气候",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "水积聚于低地形成湖泊，无法渗入地下。",
+      "mechanic": "疏水性土壤",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "泥土小径上的植物不会重新生长，播种也无法发芽。",
+      "mechanic": "小径植物抑制",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "挖掘超过一米深的洞可能导致大量蠕虫涌出，造成滑倒、摔伤、衣物损坏甚至钻入皮肤的风险。",
+      "mechanic": "深层挖掘风险",
+      "trigger_probability": "1d20 \u003e 15 (挖掘超过一米时触发)"
+    }
+  ],
+  "events": [
+    {
+      "event": "短暂的小雨或雾天",
+      "probability": "稀有 / DC 20"
+    },
+    {
+      "event": "蠕虫从超过一米的深洞中涌出",
+      "probability": "1d20 \u003e 15 (仅在触发挖掘机制后)"
+    }
+  ],
+  "factions": [
+    {
+      "alignment": "中立",
+      "description": "将本层级作为临时工作场所，已停止定期小麦收割活动。",
+      "name": "M.E.G. (临时工作组)",
+      "population": "流动人口，无固定前哨"
+    }
+  ],
+  "items": [
+    "木材",
+    "钉子",
+    "小麦"
+  ],
+  "level_id": "Level 10",
+  "pois": [
+    {
+      "access_probability": "中等 / 1d20 \u003e 12 (在探索中发现)",
+      "description": "内部大多空空如也，但可能存放木材、钉子等有用资源。",
+      "name": "各类建筑物（木棚、外屋、谷仓、马厩）"
+    },
+    {
+      "access_probability": "高频 / DC 10 (在探索中发现)",
+      "description": "特征为被草坪隔开的两条轮胎碾痕，推测有载具行驶但从未被目击。",
+      "name": "泥土小径"
+    }
+  ],
+  "sub_zones": [
+    {
+      "danger_level": "相同",
+      "description": "水体周围的区域，包含未开垦的泥土和草地。",
+      "name": "湖泊区域"
+    }
+  ],
+  "survival_difficulty": {
+    "class": "等级 1",
+    "description": "环境风险低，无敌对实体，但逃离略为困难。"
+  },
+  "title": "丰裕",
+  "transitions": {
+    "entrances": [
+      {
+        "from": "Level 9",
+        "method": "从 Level 9 中通往草地的人行道切入"
+      },
+      {
+        "from": "Level 11",
+        "method": "在 Level 11 的某些街道旁找到偏僻小道"
+      }
+    ],
+    "exits": [
+      {
+        "condition": "持续沿小径行走",
+        "method": "找到一条小径并长时间沿它行走",
+        "next": "Level 11",
+        "success_chance": "100% (条件满足时)"
+      },
+      {
+        "condition": "发现并进入芥花籽",
+        "method": "在小麦中找到一片芥花籽并进入其中",
+        "next": "Level 184",
+        "success_chance": "稀有 / DC 20 (发现芥花籽)"
+      },
+      {
+        "condition": "在湖泊中游泳",
+        "method": "在湖中游泳",
+        "next": "random (水域层级)",
+        "success_chance": "高频 / DC 10"
+      }
+    ]
+  }
+}

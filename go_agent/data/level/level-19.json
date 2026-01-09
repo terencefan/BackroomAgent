@@ -1,0 +1,40 @@
+{
+  "atmosphere": {
+    "audio": [],
+    "smell": [],
+    "vibe": [
+      "数字档案",
+      "怀旧",
+      "被遗忘",
+      "元叙事"
+    ],
+    "visuals": [
+      "档案库界面",
+      "编辑历史记录",
+      "聊天记录"
+    ]
+  },
+  "entities": [],
+  "environmental_mechanics": [
+    {
+      "effect": "对物体的可见表面产生快速衰败作用。箱子和家具内部可能受保护，也可能不受影响。",
+      "mechanic": "快速衰败",
+      "trigger_probability": "1d100 \u003e 99 (每100个物体中约有一个受影响)"
+    }
+  ],
+  "events": [],
+  "factions": [],
+  "items": [],
+  "level_id": "Level 19",
+  "pois": [],
+  "sub_zones": [],
+  "survival_difficulty": {
+    "class": "未知",
+    "description": "环境本身似乎无直接危险，但存在快速衰败效果。"
+  },
+  "title": "阁楼",
+  "transitions": {
+    "entrances": [],
+    "exits": []
+  }
+}

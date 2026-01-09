@@ -1,0 +1,117 @@
+{
+  "atmosphere": {
+    "audio": [
+      "未知（记录被屏蔽）"
+    ],
+    "smell": [
+      "未知（记录被屏蔽）"
+    ],
+    "vibe": [
+      "阈限空间",
+      "精神错乱",
+      "记忆模糊",
+      "平淡",
+      "令人不安的平静"
+    ],
+    "visuals": [
+      "明亮的白色房间",
+      "简单的桌椅",
+      "锁着的门",
+      "无限的白色深渊",
+      "随机散落的旧家具",
+      "部分家具嵌入地板"
+    ]
+  },
+  "entities": [],
+  "environmental_mechanics": [
+    {
+      "effect": "任何记录或拍摄该层级的尝试都会失败，产生白色图像、噪音或电视静电。上传到其他设备会变成SMPTE测试屏幕。文件名等信息也会被屏蔽。",
+      "mechanic": "自我屏蔽",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "导致记忆模糊、思维混乱，难以正常交流。离开后一段时间内效果持续，之后才能意识到其严重性。",
+      "mechanic": "精神干扰",
+      "trigger_probability": "高频 / DC 10"
+    },
+    {
+      "effect": "远离初始房间（桌椅）会进入一个无限的白色深渊，环境结构改变，出现随机物品和家具。",
+      "mechanic": "空间畸变",
+      "trigger_probability": "离开初始区域即触发"
+    },
+    {
+      "effect": "成功逃离该层级的流浪者几乎从不记得逃出的具体方法。",
+      "mechanic": "记忆擦除",
+      "trigger_probability": "高频 / DC 10"
+    }
+  ],
+  "events": [
+    {
+      "event": "记忆突然模糊或中断",
+      "probability": "高频 / 1d20 \u003e 5"
+    },
+    {
+      "event": "在白色深渊中发现新的随机物品",
+      "probability": "中等 / 1d20 \u003e 12"
+    }
+  ],
+  "factions": [],
+  "items": [],
+  "level_id": "Level 12",
+  "pois": [
+    {
+      "access_probability": "100%",
+      "description": "层级初始点的唯一家具，是逃脱仪式的重要部分。",
+      "name": "主房间的桌椅"
+    },
+    {
+      "access_probability": "0%",
+      "description": "位于主房间桌子下方，目前无法进入，因为桌子无法移动。",
+      "name": "桌子下的洞"
+    },
+    {
+      "access_probability": "中等 / DC 15",
+      "description": "分布在白色深渊中，外观与主房间的门相同，打开后会返回主房间。",
+      "name": "深渊中的复制门"
+    }
+  ],
+  "sub_zones": [
+    {
+      "danger_level": "低",
+      "description": "一个小的、明亮的白色房间，内有一张桌子、一把椅子和一扇锁着的门。",
+      "name": "主房间"
+    },
+    {
+      "danger_level": "更高",
+      "description": "主房间之外的无限白色空间，散落着各种旧的、破损的随机家具和物品，部分嵌入地面。精神干扰效应在此区域更强。",
+      "name": "白色深渊"
+    }
+  ],
+  "survival_difficulty": {
+    "class": "未知",
+    "description": "物理环境看似平静安全，无实体威胁，但存在严重的精神干扰和记忆模糊效应，且出口机制复杂。"
+  },
+  "title": "矩阵",
+  "transitions": {
+    "entrances": [
+      {
+        "from": "Level 11",
+        "method": "通过 Level 11 的窗户实体"
+      }
+    ],
+    "exits": [
+      {
+        "condition": "1. 在主房间椅子上坐15分钟。2. 尝试打开主房间的门（确认锁着）。3. 在白色深渊中找到一扇复制门并进入（返回主房间）。4. 等待恰好一小时后，再次尝试打开主房间的门。",
+        "method": "遵循“矩阵”探险队发现的仪式步骤",
+        "next": "random",
+        "success_chance": "遵循步骤则100%"
+      },
+      {
+        "condition": "无特定条件，纯随机。",
+        "method": "尝试打开主房间的门（极小概率直接成功）",
+        "next": "null",
+        "success_chance": "极低 / d100 \u003e 98"
+      }
+    ]
+  }
+}

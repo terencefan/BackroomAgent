@@ -1,0 +1,177 @@
+{
+  "atmosphere": {
+    "audio": [
+      "强风声",
+      "粗重的呼吸声"
+    ],
+    "smell": [],
+    "vibe": [
+      "阈限空间",
+      "焦虑",
+      "偏执",
+      "被监视感",
+      "逐渐加剧的绝望",
+      "最终揭示的宇宙恐怖"
+    ],
+    "visuals": [
+      "白色混凝土走廊与棕色地毯",
+      "灰色天花板瓷砖",
+      "霓虹灯装饰的大厅",
+      "窗外黑色虚空与星辰",
+      "偶尔可见的月亮",
+      "从天花板掉落的橙色果冻状物质",
+      "巨大的蓝色岩石地标与黑色建筑"
+    ]
+  },
+  "entities": [
+    "死亡飞蛾",
+    "肢团",
+    "猎犬",
+    "无面灵",
+    "窃皮者",
+    "啼物"
+  ],
+  "environmental_mechanics": [
+    {
+      "effect": "窗户10米范围内温度骤降至-22°C至-43°C，并引发轻微头痛和极度偏执。",
+      "mechanic": "异常窗户",
+      "trigger_probability": "恒定 (进入范围即触发)"
+    },
+    {
+      "effect": "霓虹区温度随深入而缓慢降低，最低记录-27°C至-43°C，导致冻伤风险。",
+      "mechanic": "温度梯度",
+      "trigger_probability": "恒定 (持续生效)"
+    },
+    {
+      "effect": "层级似乎具有意识，会主动生成敌对实体、喷射橙色粘液以阻碍或杀死深入探索者。",
+      "mechanic": "层级恶意",
+      "trigger_probability": "1d20 \u003e 15 (随探索深入概率增加)"
+    },
+    {
+      "effect": "阅读M.E.G.探索记录后进入该层级，将“必然死亡”。",
+      "mechanic": "信息危害",
+      "trigger_probability": "100% (满足条件即触发)"
+    },
+    {
+      "effect": "出现视觉上的降雪幻觉。",
+      "mechanic": "降雪错觉",
+      "trigger_probability": "中等 / DC 15"
+    }
+  ],
+  "events": [
+    {
+      "event": "橙色果冻状物质从天花板掉落",
+      "probability": "不固定间隔 / 1d20 每游戏小时投出 1"
+    },
+    {
+      "event": "遭遇从Level 2迁移而来的非原生实体 (死亡飞蛾、肢团、猎犬、无面灵、窃皮者、Nguithr'xurh、啼物)",
+      "probability": "在等候厅: 稀有 / DC 20；在霓虹区深处: 中等 / DC 15"
+    },
+    {
+      "event": "实体触碰游戏大门后表现出排斥并逃跑",
+      "probability": "100% (当实体接触门时)"
+    },
+    {
+      "event": "探索者产生被监视感和偏执感 (尤其在霓虹区)",
+      "probability": "高频 / DC 10 (在霓虹区)"
+    },
+    {
+      "event": "遭遇层级恶意事件 (如被猎犬偷袭、被橙色粘液喷射)",
+      "probability": "随探索深入而增加，从 稀有 / DC 20 到 中等 / DC 15"
+    }
+  ],
+  "factions": [],
+  "items": [
+    "杏仁水",
+    "软饮料",
+    "巧克力棒",
+    "苏打水",
+    "食物"
+  ],
+  "level_id": "Level 20",
+  "pois": [
+    {
+      "access_probability": "高频 / DC 10",
+      "description": "提供巧克力棒、苏打水、杏仁水等补给。离入口越远，物资越多。",
+      "name": "自动售货机与储物柜"
+    },
+    {
+      "access_probability": "在霓虹区中探索1-4天后必然发现",
+      "description": "通往各种体力竞赛游戏（扔泡沫球、攀岩等）。获胜得补给，失败则生成敌对实体或传送至危险层级。",
+      "name": "游戏门"
+    },
+    {
+      "access_probability": "极罕见 / d100 \u003e 98 (需成功穿越整个霓虹区并存活)",
+      "description": "霓虹区尽头的外部地标，标志着建筑出口和玻瑞阿斯行星表面的起点。",
+      "name": "蓝色岩石地标与黑色建筑"
+    }
+  ],
+  "sub_zones": [
+    {
+      "danger_level": "较低 (实体较少，主要危险来自异常窗户)",
+      "description": "白色混凝土走廊，棕色地毯，灰色天花板。散落着家具、储物柜、自动售货机和杏仁水喷泉。窗户显示黑色虚空与星辰。",
+      "name": "等候厅"
+    },
+    {
+      "danger_level": "高 (低温、实体、游戏失败惩罚、层级恶意)",
+      "description": "黑色天花板、灰色地毯、霓虹灯的大厅。缓缓下坡。包含通往各种“游戏”的门。实体数量随深入增加。",
+      "name": "霓虹区"
+    },
+    {
+      "danger_level": "致命 (直面层级本体，信息危害源头)",
+      "description": "探索记录揭示的层级真相：建筑坐落于一个寒冷行星的表面，被一个名为“玻瑞阿斯”的巨型蓝色血肉球壳生物包裹。",
+      "name": "外部 (玻瑞阿斯行星表面)"
+    }
+  ],
+  "survival_difficulty": {
+    "class": "等级 4 (基于探索记录推断)",
+    "description": "极度危险。环境低温、敌对实体、层级本身的恶意以及潜在的巨大信息危害，使得生存极为困难。"
+  },
+  "title": "玻瑞阿斯的建筑",
+  "transitions": {
+    "entrances": [
+      {
+        "from": "Level 2, Level 21, Level 122",
+        "method": "通过Level 2、Level 21、Level 122中写有“娱乐区”的蓝色门"
+      },
+      {
+        "from": "Level 11",
+        "method": "进入Level 11中任意名为“娱乐区”的建筑"
+      },
+      {
+        "from": "Level 16",
+        "method": "在Level 16处于寒冷状态时看向天空"
+      },
+      {
+        "from": "Level 19",
+        "method": "通过Level 19中破损或被毁坏的门"
+      }
+    ],
+    "exits": [
+      {
+        "condition": "找到并进入",
+        "method": "通过等候厅中的员工专用门",
+        "next": "Level 2",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "切入窗户",
+        "method": "切入等候厅中的窗户",
+        "next": "random (Level 24 或 Level 78)",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "找到并进入游戏门，附近总有出口标志",
+        "method": "通过霓虹区游戏的门 (获胜或随机)",
+        "next": "random (Level 4, Level 21, Level 36)",
+        "success_chance": "极低 / d100 \u003e 95"
+      },
+      {
+        "condition": "在游戏中失败",
+        "method": "在霓虹区输掉游戏",
+        "next": "null (传送至未指定的危险层级)",
+        "success_chance": "100%"
+      }
+    ]
+  }
+}

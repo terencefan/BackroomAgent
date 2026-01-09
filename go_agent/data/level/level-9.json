@@ -1,0 +1,205 @@
+{
+  "atmosphere": {
+    "audio": [
+      "寂静",
+      "偶尔的电器闪烁声"
+    ],
+    "smell": [
+      "潮湿",
+      "腐烂的树叶"
+    ],
+    "vibe": [
+      "阈限空间",
+      "不安",
+      "被窥视感",
+      "思维混乱"
+    ],
+    "visuals": [
+      "永恒的午夜郊区",
+      "各式各样的房屋",
+      "湿润的沥青街道",
+      "覆盖落叶的区域",
+      "闪烁或关闭的路灯",
+      "浓雾"
+    ]
+  },
+  "entities": [
+    "死亡飞蛾",
+    "笑魇",
+    "窃皮者",
+    "杰瑞",
+    "猎犬",
+    "传送者",
+    "尸鼠",
+    "警告风筝",
+    "悲尸",
+    "邻里守望",
+    "观察者",
+    "碾压者"
+  ],
+  "environmental_mechanics": [
+    {
+      "effect": "两栋房子可能物理上不可能地卡在一起",
+      "mechanic": "空间异常",
+      "trigger_probability": "稀有 / DC 20"
+    },
+    {
+      "effect": "房屋内无电源，电器无法运作",
+      "mechanic": "电力缺失",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "浓雾出现时，实体“碾压者”可能生成",
+      "mechanic": "浓雾生成",
+      "trigger_probability": "中等 / DC 15"
+    }
+  ],
+  "events": [
+    {
+      "event": "发现两栋完全相同的房子紧挨着",
+      "probability": "稀有 / DC 20"
+    },
+    {
+      "event": "路灯闪烁或通电",
+      "probability": "中等 / DC 15"
+    },
+    {
+      "event": "遭遇浓雾",
+      "probability": "中等 / DC 15"
+    }
+  ],
+  "factions": [
+    {
+      "alignment": "未知",
+      "description": "最初发现此层的小队，现已全部失踪。",
+      "name": "未知探险者小队",
+      "population": "0 (失踪)"
+    }
+  ],
+  "items": [],
+  "level_id": "Level 9",
+  "pois": [
+    {
+      "access_probability": "稀有 / DC 20",
+      "description": "在前往Level 11标志的路上可能发现。",
+      "name": "飞机场"
+    },
+    {
+      "access_probability": "稀有 / DC 20",
+      "description": "可找到带有白色发光内窗的管道。",
+      "name": "运动场"
+    }
+  ],
+  "sub_zones": [
+    {
+      "danger_level": "较低",
+      "description": "有家具且崭新，可能空无一物，可找到有用物品。",
+      "name": "房屋内部"
+    },
+    {
+      "danger_level": "更高",
+      "description": "湿润的沥青路，无油漆，覆盖树叶，有路灯（通常关闭）。",
+      "name": "街道"
+    },
+    {
+      "danger_level": "相同",
+      "description": "部分房屋后有家具齐全的院子。",
+      "name": "后院"
+    }
+  ],
+  "survival_difficulty": {
+    "class": "等级 2",
+    "description": "相对安全但存在危险实体，街道比房屋更危险。"
+  },
+  "title": "郊区",
+  "transitions": {
+    "entrances": [
+      {
+        "from": "Level 8",
+        "method": "从Level 8的地板随缘切入"
+      },
+      {
+        "from": "Level 34",
+        "method": "从Level 34的下水道格栅爬上来"
+      },
+      {
+        "from": "Level 92",
+        "method": "通过Level 92的众多门中的一扇"
+      },
+      {
+        "from": "Level 40",
+        "method": "通过Level 40中旋转的门"
+      },
+      {
+        "from": "Level 25",
+        "method": "通过Level 25中的黄色拱廊橱柜"
+      },
+      {
+        "from": "Level 54",
+        "method": "进入Level 54中的一扇门"
+      },
+      {
+        "from": "Level 94",
+        "method": "进入Level 94中的动画屋（少见）"
+      },
+      {
+        "from": "Level 87",
+        "method": "打破Level 87的窗户"
+      },
+      {
+        "from": "Level 104",
+        "method": "通过Level 104的后院"
+      }
+    ],
+    "exits": [
+      {
+        "condition": "必须跟着标志",
+        "method": "跟着街道上的箭头标志走100-200英里",
+        "next": "Level 11",
+        "success_chance": "100% (条件满足)"
+      },
+      {
+        "condition": "无",
+        "method": "走上通往草地的人行道",
+        "next": "Level 9.1 或 Level 10",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "无",
+        "method": "切出街道地面",
+        "next": "Level 60",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "无",
+        "method": "进入一栋房子",
+        "next": "Level 53",
+        "success_chance": "中等 / 1d20 \u003e 12"
+      },
+      {
+        "condition": "无",
+        "method": "跟着电线走",
+        "next": "Level 113",
+        "success_chance": "中等 / 1d20 \u003e 12"
+      },
+      {
+        "condition": "找到飞机场",
+        "method": "进入飞机场",
+        "next": "Level 36",
+        "success_chance": "100% (条件满足)"
+      },
+      {
+        "condition": "在飞机场内",
+        "method": "在飞机场切出",
+        "next": "random (开始几个负数层级)",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "找到运动场和管道",
+        "method": "在运动场的白色发光内窗管道中爬行",
+        "next": "Level 283",
+        "success_chance": "100% (条件满足)"
+      }
+    ]
+  }
+}

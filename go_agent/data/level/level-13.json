@@ -1,0 +1,249 @@
+{
+  "atmosphere": {
+    "audio": [
+      "电视播放复古媒体流（画质参差不齐）"
+    ],
+    "smell": [
+      "无明显描述"
+    ],
+    "vibe": [
+      "单调",
+      "熟悉而舒适（对地球流浪者）",
+      "阈限空间",
+      "逐渐显现的险恶",
+      "慵懒",
+      "孤僻"
+    ],
+    "visuals": [
+      "20世纪公寓大楼",
+      "单调的白色/米色走廊",
+      "昏暗的石膏/胶合板/油毡",
+      "几乎一模一样的公寓房间",
+      "老旧的家具和物品"
+    ]
+  },
+  "entities": [],
+  "environmental_mechanics": [
+    {
+      "effect": "冰箱提供基本预包装微波餐，生成老旧衣物、书籍和休闲物品。旧物品有时会在使用中消失。",
+      "mechanic": "物资再生",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "总计290层，宽度和长度可能无限或环形，几何结构稳定但边缘可能不稳定。违反正常结构物理学。",
+      "mechanic": "空间结构异常",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "居住者会变得极度慵懒孤僻，依恋房间不愿离开。居住超过十年者，有时会消失得无影无踪。",
+      "mechanic": "精神萎靡与消失",
+      "trigger_probability": "居住时间 \u003e 10年：1d100 \u003e 95 (估计)"
+    },
+    {
+      "effect": "电视节目很少按顺序播放，同一节目重复播放极为罕见，一旦重播往往是同一集。",
+      "mechanic": "电视节目异常",
+      "trigger_probability": "1d20 \u003e 18 (罕见重播)"
+    }
+  ],
+  "events": [
+    {
+      "event": "长期住户消失",
+      "probability": "居住时间 \u003e 10年：稀有 / DC 20"
+    },
+    {
+      "event": "电视节目重播 (同一集)",
+      "probability": "稀有 / DC 20"
+    },
+    {
+      "event": "物品在使用中消失",
+      "probability": "中等 / DC 15"
+    },
+    {
+      "event": "遇到通往特定层级的特殊出口 (如棋盘门、颜色门)",
+      "probability": "稀有 / DC 20 (每种)"
+    }
+  ],
+  "factions": [
+    {
+      "alignment": "中立",
+      "description": "在第283层运营的住房计划，旨在安置其过剩人口。提供基本住所和食物，但未能有效防止层级的倦怠现象。为愿意离开者提供出口和再融入社会的贷款服务。",
+      "name": "B.N.T.G. - 免费住宅计划",
+      "population": "未公布，据称“幸存者”众多"
+    },
+    {
+      "alignment": "中立",
+      "description": "长期居住在Level 13的普通流浪者，过着单调的日常生活，逐渐变得慵懒孤僻。",
+      "name": "未结盟居民",
+      "population": "成百上千"
+    }
+  ],
+  "items": [
+    "微波餐",
+    "书籍",
+    "衣物"
+  ],
+  "level_id": "Level 13",
+  "pois": [
+    {
+      "access_probability": "100% (主要环境)",
+      "description": "每套住宅包括带厨房和客厅的主房间，以及一间卧室和一间浴室。家具摆放和额外结构（玄关、衣橱）略有不同。",
+      "name": "标准公寓房间"
+    },
+    {
+      "access_probability": "稀有 / DC 20",
+      "description": "罕见的房间布局，触摸棋盘可通往Level 157。不会出现在已有人居住的房间。",
+      "name": "生成西洋棋盘和两张椅子的房间"
+    },
+    {
+      "access_probability": "稀有 / DC 20",
+      "description": "意外找到的门，试图打开会传送至Level 235。",
+      "name": "标有“235”的门"
+    },
+    {
+      "access_probability": "稀有 / DC 20",
+      "description": "通向Level 275的门。",
+      "name": "红色门"
+    },
+    {
+      "access_probability": "中等 / DC 15",
+      "description": "相较其他墙壁颜色更深，切入可通往Level 289。",
+      "name": "色调更深的黄色墙壁/墙纸"
+    }
+  ],
+  "sub_zones": [
+    {
+      "danger_level": "相同 (但精神萎靡风险更高)",
+      "description": "被B.N.T.G.选中的楼层，用于安置人口过剩的成员。超自然的倦怠现象普遍，尽管有房间轮换和食物折扣政策，但很少被执行。",
+      "name": "第283层 (B.N.T.G. 免费住宅计划)"
+    }
+  ],
+  "survival_difficulty": {
+    "class": "等级 1",
+    "description": "极低死亡风险，提供基本生存物资，但长期居住会导致精神萎靡和消失风险。"
+  },
+  "title": "温水煮青蛙",
+  "transitions": {
+    "entrances": [
+      {
+        "from": "Level 62",
+        "method": "单调、朴素的门"
+      },
+      {
+        "from": "Level 151",
+        "method": "单调、朴素的门"
+      },
+      {
+        "from": "Level 210",
+        "method": "单调、朴素的门"
+      },
+      {
+        "from": "Level 683",
+        "method": "单调、朴素的门"
+      },
+      {
+        "from": "Level 979",
+        "method": "单调、朴素的门"
+      },
+      {
+        "from": "Level 12",
+        "method": "随机、平淡无奇的门"
+      },
+      {
+        "from": "Level 12",
+        "method": "白色阶梯"
+      },
+      {
+        "from": "Level 21",
+        "method": "走廊逐渐转变 (视觉效应)"
+      },
+      {
+        "from": "Level 215",
+        "method": "“港畔酒店”的房间门"
+      },
+      {
+        "from": "Level 2-FR",
+        "method": "电梯 (如果能运作)"
+      }
+    ],
+    "exits": [
+      {
+        "condition": "找到并打开",
+        "method": "单调、不显眼的门",
+        "next": "Level 0",
+        "success_chance": "100% (如果找到)"
+      },
+      {
+        "condition": "找到并打开",
+        "method": "单调、不显眼的门",
+        "next": "Level 114",
+        "success_chance": "100% (如果找到)"
+      },
+      {
+        "condition": "找到并打开",
+        "method": "单调、不显眼的门",
+        "next": "Level 327",
+        "success_chance": "100% (如果找到)"
+      },
+      {
+        "condition": "找到并打开",
+        "method": "单调、不显眼的门",
+        "next": "Level 395",
+        "success_chance": "100% (如果找到)"
+      },
+      {
+        "condition": "找到并打开",
+        "method": "单调、不显眼的门",
+        "next": "Level 410",
+        "success_chance": "100% (如果找到)"
+      },
+      {
+        "condition": "使用",
+        "method": "楼梯或电梯往下 (底层)",
+        "next": "Level 70",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "使用",
+        "method": "楼梯或电梯往下 (底层)",
+        "next": "Level 208",
+        "success_chance": "100%"
+      },
+      {
+        "condition": "房间内存在棋盘和两张椅子，且房间未有人居住",
+        "method": "触摸生成的西洋棋盘",
+        "next": "Level 157",
+        "success_chance": "100% (如果条件满足)"
+      },
+      {
+        "condition": "找到并尝试打开",
+        "method": "打开标有“235”的门",
+        "next": "Level 235",
+        "success_chance": "100% (如果找到)"
+      },
+      {
+        "condition": "找到并打开",
+        "method": "打开红色门",
+        "next": "Level 275",
+        "success_chance": "100% (如果找到)"
+      },
+      {
+        "condition": "找到正确的墙壁",
+        "method": "切入色调更深的黄色墙壁/墙纸",
+        "next": "Level 289",
+        "success_chance": "100% (如果找到正确的墙壁)"
+      },
+      {
+        "condition": "理论上可能",
+        "method": "进入任何公寓建筑",
+        "next": "Level 387",
+        "success_chance": "极低 / d100 \u003e 98"
+      },
+      {
+        "condition": "遇到变化的楼梯",
+        "method": "楼梯开始没有尽头的往上延伸",
+        "next": "Level 280",
+        "success_chance": "100% (如果遇到)"
+      }
+    ]
+  }
+}

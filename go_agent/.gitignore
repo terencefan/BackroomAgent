@@ -16,7 +16,6 @@ backroom-go
 .env
 
 # Data (Generated)
-data/
 tmp/
 
 # OS Specific

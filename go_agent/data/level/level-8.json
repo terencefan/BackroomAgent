@@ -1,0 +1,215 @@
+{
+  "atmosphere": {
+    "audio": [
+      "生物活动的悉索声",
+      "异常响亮的回音",
+      "遥远的人类尖叫回声",
+      "水流声",
+      "岩石碎裂声"
+    ],
+    "smell": [
+      "沉浊的空气",
+      "杏仁水气味",
+      "部分区域有硫化氢、氯气、氨气等有害气体",
+      "焦油池的刺鼻气味"
+    ],
+    "vibe": [
+      "令人窒息",
+      "焦虑",
+      "迷失",
+      "寒冷",
+      "绝望",
+      "囚禁感",
+      "阈限空间（地下版）"
+    ],
+    "visuals": [
+      "无限蔓延的地下洞穴",
+      "杂乱无章的钟乳石与石笋",
+      "崎岖延伸的隧道",
+      "黑暗",
+      "部分区域有辉光细菌与真菌"
+    ]
+  },
+  "entities": [
+    "微光向导",
+    "捕食者",
+    "牧蛇",
+    "蛛形纲生物",
+    "焦油之手"
+  ],
+  "environmental_mechanics": [
+    {
+      "effect": "空间非线性延续。笔直通道可能首尾相连；同一条路走两遍可能到达不同终点；原路返回无法回到起点。",
+      "mechanic": "非欧几何空间",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "重力强度与方向变化无常，每个洞穴都可能不同。可能导致水平爬行时感觉重力反向。",
+      "mechanic": "不稳定重力",
+      "trigger_probability": "高频 / DC 10"
+    },
+    {
+      "effect": "食物难以保存，电池迅速失效，人类加速衰老。回音响亮，灯光昏暗（手电筒亮度降至12流明）。未被观测时效应更强，路标等物极快分解。",
+      "mechanic": "异常熵变（时间流速加快）",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "多数洞穴空气沉浊，二氧化碳聚集。部分洞穴存在硫化氢、氯气、氨气等有害气体，可能导致窒息。",
+      "mechanic": "空气问题",
+      "trigger_probability": "高频 / DC 10"
+    },
+    {
+      "effect": "杏仁水水位起落不定，干燥洞穴可能在几秒内被完全淹没。",
+      "mechanic": "水位突涨",
+      "trigger_probability": "中等 / DC 15"
+    },
+    {
+      "effect": "多数洞穴寒冷（10-15°C），部分区域闷热（43°C以上）。",
+      "mechanic": "极端温度",
+      "trigger_probability": "高频 / DC 10"
+    }
+  ],
+  "events": [
+    {
+      "event": "遭遇牧蛇（巨型蛇类捕食者）活动，导致岩洞结构剧烈变化",
+      "probability": "稀有 / DC 20"
+    },
+    {
+      "event": "遭遇蛛形纲生物（蜘蛛、蝎子等）的大规模攻击",
+      "probability": "中等 / DC 15（在蜘蛛占领区为高频）"
+    },
+    {
+      "event": "遭遇微光向导，并可能被引导至其他洞穴",
+      "probability": "中等 / DC 15（在多维之路等区域）"
+    },
+    {
+      "event": "洞穴水位突然上涨，淹没区域",
+      "probability": "中等 / DC 15"
+    },
+    {
+      "event": "重力方向或强度突然改变",
+      "probability": "高频 / DC 10"
+    },
+    {
+      "event": "发现带有发光象形文字的神秘蛛巢",
+      "probability": "稀有 / DC 20"
+    }
+  ],
+  "factions": [
+    {
+      "alignment": "友善",
+      "description": "建立了第九大道导航系统，沿途设有前哨站和聚居点，提供指引、庇护和物资。",
+      "name": "M.E.G. (探险者总署)",
+      "population": "未知（有组织）"
+    },
+    {
+      "alignment": "友善",
+      "description": "在第九大道沿途的聚居点活动，提供贸易和物资补给（如风干水果、蔬菜、维生素药片）。",
+      "name": "B.N.T.G. (不结盟贸易集团)",
+      "population": "未知"
+    },
+    {
+      "alignment": "友善",
+      "description": "生活在层级中的社群，提供岩洞工作服、研究洞穴生态。",
+      "name": "哈莫兹洞穴社群",
+      "population": "未知"
+    },
+    {
+      "alignment": "中立/敌对",
+      "description": "放弃逃生，在过载贫瘠区以偷窃为生，社群混乱堕落。",
+      "name": "流放者/不羁者",
+      "population": "未知"
+    }
+  ],
+  "items": [
+    "杏仁水",
+    "岩洞工作服",
+    "发热器",
+    "手电筒",
+    "氙弹珠",
+    "卡祖笛"
+  ],
+  "level_id": "Level 8",
+  "pois": [
+    {
+      "access_probability": "100%（沿第九大道）",
+      "description": "第九大道起点附近的第一个主要前哨，提供初始指引。",
+      "name": "M.E.G. 前哨站（距入口8.7英里）"
+    },
+    {
+      "access_probability": "中等 / DC 15（沿第九大道）",
+      "description": "提供岩洞工作服、热水澡、食物和休息处。",
+      "name": "哈莫兹营地"
+    },
+    {
+      "access_probability": "高频 / DC 10（沿第九大道）",
+      "description": "第九大道沿途每隔约50米设置的导航标记，带有M.E.G.图标。",
+      "name": "道标（如74号、78号）"
+    }
+  ],
+  "sub_zones": [
+    {
+      "danger_level": "较低（相对）",
+      "description": "由M.E.G.标记的导航道路，连接Level 6入口与Level 9出口。沿途有“稳定的孤岛”（空间和重力相对连续），设有道标，经过M.E.G.、B.N.T.G.和哈莫兹社群的聚居点。",
+      "name": "第九大道"
+    },
+    {
+      "danger_level": "更高",
+      "description": "由水流侵蚀形成的“眼状”轮廓隧道。由于非标准物理，分层面不均匀，隧道以诡异角度倾斜、扭曲、循环。",
+      "name": "潜水管"
+    },
+    {
+      "danger_level": "中等",
+      "description": "二十三条狭窄通道组成的网道，有辉光细菌、真菌、微光向导、普通溪流及无眼鱼、虾米、蝾螈等生物。可能找到氙弹珠。",
+      "name": "多维之路"
+    },
+    {
+      "danger_level": "极高",
+      "description": "被无数蜘蛛、蝎子、蜱虫、螨虫等蛛形纲生物完全占领的区域。巢穴周围可能有发光的象形文字或神秘学符号。",
+      "name": "蜘蛛占领区"
+    },
+    {
+      "danger_level": "极高",
+      "description": "",
+      "name": "焦油池"
+    },
+    {
+      "danger_level": "高",
+      "description": "第九大道中段，由放弃逃生的流放者形成的无组织社群。犯罪活动与疾病泛滥，生存环境恶劣。",
+      "name": "过载贫瘠区"
+    }
+  ],
+  "survival_difficulty": {
+    "class": "等级 4",
+    "description": "极难逃离、极端环境风险、极多敌意存在。流浪者应彻底避开该层级。"
+  },
+  "title": "岩洞系统",
+  "transitions": {
+    "entrances": [
+      {
+        "from": "Level 6",
+        "method": "从Level 6的入口水池进入"
+      }
+    ],
+    "exits": [
+      {
+        "condition": "跟随道标，穿过岩洞系统",
+        "method": "沿着第九大道走到尽头",
+        "next": "Level 9",
+        "success_chance": "中等 / DC 15（如果严格跟随道标）"
+      },
+      {
+        "condition": "靠近焦油池",
+        "method": "被焦油池中的焦油之手拉入",
+        "next": "random",
+        "success_chance": "极低 / d100 \u003e 98（幸存并传送）"
+      },
+      {
+        "condition": "被拉入焦油池",
+        "method": "在焦油池中失去意识",
+        "next": "random",
+        "success_chance": "稀有 / DC 20"
+      }
+    ]
+  }
+}
