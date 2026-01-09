@@ -1,0 +1,6 @@
+{
+  "name": "爬菌",
+  "description": "一种实体，保持卫生（如使用消毒剂）可以预防其感染。",
+  "id": "crawler_mold",
+  "behavior": "敌对"
+}

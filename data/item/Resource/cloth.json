@@ -1,0 +1,11 @@
+{
+  "name": "布料",
+  "name_en": [
+    "Cloth",
+    "Fabric",
+    "Rag"
+  ],
+  "description": "一块彩色的布料，可能带有组织标志，用作地标或标记。",
+  "id": "cloth",
+  "category": "Resource"
+}

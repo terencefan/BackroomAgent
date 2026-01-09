@@ -1,11 +1,6 @@
 {
   "name": "滋水枪",
-  "name_en": [
-    "Water Gun",
-    "Squirt Gun",
-    "Toy Water Pistol"
-  ],
-  "description": "一把玩具水枪，根据填充液体的不同可作为多功能远程武器。",
+  "description": "一种玩具水枪，根据填充液体的不同可具有多种功能。",
   "id": "water_gun",
   "category": "Weapon"
 }

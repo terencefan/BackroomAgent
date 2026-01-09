@@ -1,11 +1,6 @@
 {
   "name": "手消毒液",
-  "name_en": [
-    "Hand Sanitizer",
-    "Hand Rub",
-    "Alcohol Gel"
-  ],
-  "description": "用于手部消毒的液体或凝胶。",
+  "description": "便携的液体消毒剂，用于清洁双手。",
   "id": "hand_sanitizer",
   "category": "Medical"
 }

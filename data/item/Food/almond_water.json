@@ -1,11 +1,6 @@
 {
   "name": "杏仁水",
-  "name_en": [
-    "Almond Water",
-    "Sweet Water",
-    "Almond Drink"
-  ],
-  "description": "一瓶散发着坚果甜味的水，能有效缓解干渴和头痛。",
+  "description": "一种装在瓶子或金属容器中的甜味液体，具有恢复体力和缓解不适的功效。",
   "id": "almond_water",
   "category": "Food"
 }

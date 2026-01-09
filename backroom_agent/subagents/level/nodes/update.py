@@ -3,9 +3,6 @@ import logging
 import os
 
 from backroom_agent.utils.common import get_project_root
-from backroom_agent.utils.vector_store import (rebuild_vector_db,
-                                               update_vector_db)
-
 from ..state import LevelAgentState
 
 logger = logging.getLogger(__name__)
@@ -99,34 +96,9 @@ def update_level_json_node(state: LevelAgentState):
         )
 
         # --- Update Vector Stores ---
-        try:
-            # 1. Update Item Vector Store
-            item_db_path = os.path.join(root, "data/vector_store/item_vector_store.pkl")
-            if os.path.exists(item_db_path) and saved_item_paths:
-                logs.append(
-                    f"Updating Item Vector Store incrementally with {len(saved_item_paths)} items..."
-                )
-                update_vector_db(file_paths=saved_item_paths, db_path=item_db_path)
-            else:
-                logs.append("Rebuilding Item Vector Store (Full)...")
-                rebuild_vector_db(item_dir=item_base_dir, db_path=item_db_path)
-
-            # 2. Update Entity Vector Store
-            entity_db_path = os.path.join(
-                root, "data/vector_store/entity_vector_store.pkl"
-            )
-            if os.path.exists(entity_db_path) and saved_entity_paths:
-                logs.append(
-                    f"Updating Entity Vector Store incrementally with {len(saved_entity_paths)} entities..."
-                )
-                update_vector_db(file_paths=saved_entity_paths, db_path=entity_db_path)
-            else:
-                logs.append("Rebuilding Entity Vector Store (Full)...")
-                rebuild_vector_db(item_dir=entity_base_dir, db_path=entity_db_path)
-
-            logs.append("Vector stores updated successfully.")
-        except Exception as e:
-            logs.append(f"Error updating vector stores: {e}")
+        # Optimized: We explicitly skipped real-time vector store updates in update_level_json_node.
+        # Vector store updates are now handled in post-processing/batch operations.
+        # No logging needed here as we are doing nothing.
 
     except Exception as e:
         logs.append(f"Error updating JSON/Files: {str(e)}")

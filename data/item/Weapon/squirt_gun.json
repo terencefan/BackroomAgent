@@ -1,0 +1,11 @@
+{
+  "name": "滋水枪",
+  "name_en": [
+    "Squirt Gun",
+    "Water Pistol",
+    "Toy Gun"
+  ],
+  "description": "一把可根据填充液体不同而具有多种功能的玩具水枪。",
+  "id": "squirt_gun",
+  "category": "Weapon"
+}

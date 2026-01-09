@@ -1,0 +1,11 @@
+{
+  "name": "纸条",
+  "name_en": [
+    "Note",
+    "Paper Note",
+    "Message"
+  ],
+  "description": "一张写有信息的纸条，可能包含指引或说明。",
+  "id": "note",
+  "category": "Document"
+}

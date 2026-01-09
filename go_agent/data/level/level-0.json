@@ -1,0 +1,66 @@
+{
+  "atmosphere": {
+    "audio": [
+      "荧光灯发出的刺耳、恒定的嗡鸣声"
+    ],
+    "smell": [
+      "腐臭的潮湿地毯味"
+    ],
+    "vibe": [
+      "阈限空间",
+      "单调",
+      "孤独",
+      "感官剥夺",
+      "令人发狂"
+    ],
+    "visuals": [
+      "泛黄的墙纸",
+      "潮湿的地毯",
+      "无规律闪烁的荧光灯",
+      "随机分割的空荡房间"
+    ]
+  },
+  "entities": [],
+  "environmental_mechanics": [
+    {
+      "effect": "直线行走可能返回起点，折返会导致新房间出现。导航极其困难，指南针/GPS失效，无线电失真。",
+      "mechanic": "非线性空间/空间扭曲",
+      "trigger_probability": "恒定"
+    },
+    {
+      "effect": "以小组形式进入本层会导致人员失散，直至离开本层。",
+      "mechanic": "小组分离",
+      "trigger_probability": "100% (进入时触发)"
+    },
+    {
+      "effect": "流浪者会经历多种幻觉，可能影响理智和感知。",
+      "mechanic": "普遍性幻觉",
+      "trigger_probability": "高频 (建议定期进行感知/理智检定)"
+    },
+    {
+      "effect": "环境CO₂浓度正在稳定增加，长期影响未知。",
+      "mechanic": "CO₂水平上升",
+      "trigger_probability": "恒定 (环境背景效应)"
+    }
+  ],
+  "factions": [],
+  "items": [],
+  "level_id": "Level 0",
+  "sub_zones": [
+    {
+      "danger_level": "更高",
+      "description": "拥有红色墙纸和昏暗灯光的罕见房间，危险，应避免进入。",
+      "name": "红色墙纸房间"
+    },
+    {
+      "danger_level": "相同 (但无出口)",
+      "description": "作为长途跋涉幸存者的集合室，流浪者可在此相遇。内有M.E.G.的生存指南文档。是一条死路，没有出口。",
+      "name": "马尼拉房间"
+    }
+  ],
+  "survival_difficulty": {
+    "class": "等级 1",
+    "description": "安全，稳定的环境，极少量实体"
+  },
+  "title": "大厅"
+}

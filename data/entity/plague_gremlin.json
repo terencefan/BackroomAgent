@@ -2,10 +2,10 @@
   "name": "瘟疫地精",
   "name_en": [
     "Plague Gremlin",
-    "Pestilent Gremlin",
+    "Pestilence Goblin",
     "Disease Imp"
   ],
-  "description": "较小的实体，可以被工具（如刀或斧头）吓跑。",
+  "description": "一种较小的实体，文中提及使用刀具或斧头等工具可以将其吓跑。",
   "id": "plague_gremlin",
   "behavior": "敌对"
 }

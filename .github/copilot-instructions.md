@@ -1,9 +1,10 @@
 # Project Architecture & Guidelines
 
-This project is a text-adventure game system composed of three distinct parts:
+This project is a text-adventure game system composed of four distinct parts:
 1.  **Agent Core** (`backroom_agent/`): Logic for the Game Master using LangGraph.
 2.  **Backend** (`backend/`): FastAPI wrapper providing HTTP access to the agent.
 3.  **Frontend** (`frontend/`): React + Vite terminal-style UI.
+4.  **Data Pipeline** (`go_agent/`): High-concurrency Go service for batch scraping and processing Wiki data.
 
 ## Cross-Stack Data Protocol
 The communication contract is strictly defined in `PROTOCOL.md`.
@@ -39,8 +40,11 @@ The agent system is modular, consisting of a main "DM Agent" and specialized "Su
 
 ### Key Patterns
 - **Prompts**: DO NOT hardcode prompts in Python.
-    - Store prompts in `prompts/<name>.md`.
+    - Store prompts in `prompts/<name>.prompt`.
     - Load dynamically using `_load_system_prompt()` or `load_prompt()` utils.
+    - **Standard Structure**: All prompts **MUST** follow the template defined in `backroom_agent/prompts/meta_prompt_optimizer.prompt`.
+    - **Optimization**: Use `backroom_agent/prompts/meta_prompt_optimizer.prompt` to restructure unstructured instructions.
+    - **Format Rules**: Use `backroom_agent/prompts/format_rules_generator.prompt` to generate strict schema constraints (JSON/SQL).
 - **Search & Wiki**:
     - Use `backroom_agent/utils/search.py` for web searches (wraps `ddgs`).
     - Use `backroom_agent/tools/wiki_tools.py` for fetching/parsing Wiki HTML.
@@ -50,6 +54,13 @@ The agent system is modular, consisting of a main "DM Agent" and specialized "Su
 - **Configuration**:
     - Access config via `backroom_agent.constants`.
     - NEVER use `os.getenv` directly in business logic (except in `constants.py`).
+
+## Data Processing (`go_agent/`)
+- **Purpose**: Batch processing of Backrooms Wiki pages to generate structured JSON data.
+- **Execution**:
+    - Batch: `go run main.go -batch -start 0 -end 20`
+    - Single: `go run main.go -url <wiki_url>`
+- **Concurrency**: Uses goroutines for parallel fetching. Be mindful of rate limits.
 
 ## Backend Development (`backend/`)
 - **Entry Point**: `python backend/main.py` (Starts Uvicorn on port 8000).

@@ -1,11 +1,6 @@
 {
   "name": "金属水瓶",
-  "name_en": [
-    "Metal Water Bottle",
-    "Canteen",
-    "Flask"
-  ],
-  "description": "银灰色的金属水瓶，通常用来盛装液体。",
+  "description": "银灰色的金属容器，通常用于储存液体。",
   "id": "metal_water_bottle",
   "category": "Tool"
 }

@@ -9,11 +9,14 @@
     "visuals": [
       "泛黄的墙纸",
       "潮湿的地毯",
-      "不一致安装的荧光灯具",
-      "红色墙纸房间（罕见）"
+      "无规律闪烁的荧光灯",
+      "视觉上相似的房间",
+      "极少出现的红色墙纸房间"
     ],
     "audio": [
-      "荧光灯发出的永无止境、异常刺耳的嗡鸣"
+      "荧光灯发出的刺耳、恒定的嗡鸣声",
+      "类似人类说话声（幻觉）",
+      "类似昆虫的吱吱声（幻觉）"
     ],
     "smell": [
       "腐臭的潮湿地毯味"
@@ -21,88 +24,110 @@
     "vibe": [
       "阈限空间",
       "单调",
-      "令人发狂",
       "孤独",
-      "感官剥夺"
+      "令人发狂",
+      "焦虑"
     ]
   },
   "environmental_mechanics": [
     {
       "mechanic": "非线性空间/空间扭曲",
-      "effect": "直线行走可能返回起点，折返会导致新房间出现，导航极其困难，指南针/GPS失效，无线电失真",
+      "effect": "直线行走可能返回起点，折返会导致新房间出现，导航极其困难，无法使用指南针/GPS",
       "trigger_probability": "恒定"
     },
     {
       "mechanic": "小组分离",
-      "effect": "以小组形式进入本层将导致成员分离失散，直至离开本层",
+      "effect": "以小组形式进入本层会导致成员失散，直至离开本层",
       "trigger_probability": "100% (进入时触发)"
     },
     {
-      "mechanic": "CO₂水平上升",
-      "effect": "环境CO₂浓度以稳定速率上升，长期影响未知",
-      "trigger_probability": "恒定"
+      "mechanic": "感官剥夺与心理创伤",
+      "effect": "长期停留可能导致理智值下降、脱水、饥饿",
+      "trigger_probability": "随时间推移累积 (建议每小时进行意志豁免)"
+    },
+    {
+      "mechanic": "CO₂水平缓慢上升",
+      "effect": "长期影响未知，可能造成生理不适或窒息风险（极长期）",
+      "trigger_probability": "恒定但缓慢"
     }
   ],
   "sub_zones": [
     {
       "name": "红色墙纸房间",
-      "description": "拥有红色墙纸和昏暗灯光的房间，极其罕见，危险，不应靠近或进入",
+      "description": "拥有红色墙纸和昏暗灯光的罕见房间，被视为危险区域",
       "danger_level": "更高"
+    },
+    {
+      "name": "马尼拉房间",
+      "description": "作为长途跋涉幸存者的集合室，流浪者可以在此相遇，内有M.E.G.的生存文档，但无出口",
+      "danger_level": "相同 (但为死路)"
     }
   ],
   "factions": [],
   "random_events": [
     {
-      "event": "荧光灯噪音音量剧增后突然寂静",
-      "probability": "高频 (建议每1-2小时进行一次感知检定)"
+      "event": "幻觉：荧光灯噪音突然震耳欲聋然后寂静",
+      "probability": "高频 (建议每1d4小时进行感知/意志检定)"
     },
     {
-      "event": "观察到门或楼梯的出现（幻觉）",
+      "event": "幻觉：观察到门或楼梯出现",
       "probability": "中频"
     },
     {
-      "event": "突发的既视感 (déjà vu)",
+      "event": "幻觉：突发的既视感 (déjà vu)",
       "probability": "高频"
     },
     {
-      "event": "听见类似人类说话但内容未知的声音（幻觉）",
+      "event": "幻觉：听见未知语言的说话声",
       "probability": "中频"
     },
     {
-      "event": "用余光发现类似昆虫的物体在墙纸下爬行（直接观察时消失）",
-      "probability": "低频"
+      "event": "幻觉：余光看到墙纸下有昆虫爬动，直视时消失",
+      "probability": "中频"
     },
     {
-      "event": "听见类似昆虫发出的吱吱声（幻觉）",
-      "probability": "低频"
+      "event": "遭遇红色墙纸房间",
+      "probability": "极罕见 (d100 > 95)"
     },
     {
-      "event": "灯光无规律闪烁",
-      "probability": "恒定/高频"
+      "event": "发现马尼拉房间",
+      "probability": "极低 (需长途跋涉后检定)"
     }
   ],
   "key_locations": [
     {
+      "name": "红色墙纸房间",
+      "description": "危险区域，切勿靠近或进入",
+      "access_probability": "极罕见 (d100 > 95)"
+    },
+    {
       "name": "马尼拉房间",
-      "description": "作为长途跋涉幸存流浪者的集合室，可以自由相遇，内有M.E.G.的生存指南文档，但本身是死路，没有出口",
-      "access_probability": "极罕见 (需朝任意方向跋涉极长距离，建议使用特殊遭遇或剧情触发)"
+      "description": "幸存者集合室与信息点，内有M.E.G.生存指南，但无出口",
+      "access_probability": "极低 (需朝任意方向长途跋涉后通过DC 18的察觉/生存检定)"
     }
   ],
   "transitions": {
     "entrances": [
-      "意外‘切出’（no-clipping）现实的界限（最常见入口）",
-      "Level 283堡垒中极其少见、散发霉味的木门"
+      "意外‘切出’ (no-clipping) 现实的界限",
+      "Level 283堡垒中散发霉味的罕见木门"
     ],
     "exits": [
       {
-        "method": "切出（noclipping）本层",
-        "condition": "保持对位置的认知并快速适应环境，寻找空间异常点",
-        "success_chance": "低至中等 (取决于玩家对环境的理解和行动)",
+        "method": "‘切出’ (noclipping) 本层",
+        "condition": "保持对位置的认知并快速适应环境，找到空间异常点",
+        "success_chance": "低至中等 (需通过智力/感知检定以理解机制)",
         "next": "Level 1"
       }
     ]
   },
-  "findable_items": [],
+  "findable_items": [
+    {
+      "name": "文档",
+      "description": "来自M.E.G.的纸质文件，可能包含生存指南或逃脱说明。",
+      "id": "document",
+      "category": "Document"
+    }
+  ],
   "entities": [],
   "links": [
     {

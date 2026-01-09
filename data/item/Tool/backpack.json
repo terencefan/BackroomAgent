@@ -1,11 +1,6 @@
 {
   "name": "背包",
-  "name_en": [
-    "Backpack",
-    "Rucksack",
-    "Knapsack"
-  ],
-  "description": "一个黑色的背包，拉链有些损坏但还能使用，可用于携带物品。",
+  "description": "一个用于携带物品的黑色背包，拉链可能损坏但功能基本完好。",
   "id": "backpack",
   "category": "Tool"
 }

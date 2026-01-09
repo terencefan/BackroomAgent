@@ -1,11 +1,6 @@
 {
   "name": "手表",
-  "name_en": [
-    "Watch",
-    "Wristwatch",
-    "Timepiece"
-  ],
-  "description": "一块用于记录时间的手表。",
+  "description": "佩戴在手腕上用于显示时间的仪器。",
   "id": "watch",
   "category": "Tool"
 }

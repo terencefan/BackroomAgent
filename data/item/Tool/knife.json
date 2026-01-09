@@ -1,11 +1,6 @@
 {
   "name": "刀",
-  "name_en": [
-    "Knife",
-    "Blade",
-    "Pocket Knife"
-  ],
-  "description": "一把可用于切割、打开物品或自卫的刀。",
+  "description": "一种锋利的切割工具，可用于多种用途。",
   "id": "knife",
   "category": "Tool"
 }

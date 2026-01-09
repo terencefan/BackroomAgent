@@ -1,11 +1,6 @@
 {
   "name": "肥皂",
-  "name_en": [
-    "Soap",
-    "Bar Soap",
-    "Hand Soap"
-  ],
-  "description": "一块用于清洁的肥皂。",
+  "description": "用于清洁身体和物品的块状物。",
   "id": "soap",
   "category": "Medical"
 }

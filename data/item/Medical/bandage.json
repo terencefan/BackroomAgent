@@ -1,11 +1,6 @@
 {
   "name": "绷带",
-  "name_en": [
-    "Bandage",
-    "Gauze",
-    "Dressing"
-  ],
-  "description": "用于包扎伤口的绷带或纱布。",
+  "description": "用于包扎伤口、防止感染的纱布条。",
   "id": "bandage",
   "category": "Medical"
 }

@@ -1,11 +1,6 @@
 {
   "name": "斧头",
-  "name_en": [
-    "Axe",
-    "Hatchet",
-    "Tomahawk"
-  ],
-  "description": "一把可用于劈砍、打开物品或自卫的斧头。",
+  "description": "一种带有沉重刀头的工具，可用于劈砍或作为武器。",
   "id": "axe",
   "category": "Tool"
 }

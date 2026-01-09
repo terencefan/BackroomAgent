@@ -1,11 +1,6 @@
 {
   "name": "纱线",
-  "name_en": [
-    "Yarn",
-    "Wool",
-    "Thread"
-  ],
-  "description": "一团纱线，可用于编织或作为标记工具。",
+  "description": "一卷线，可用于标记路径或进行手工编织。",
   "id": "yarn",
   "category": "Resource"
 }

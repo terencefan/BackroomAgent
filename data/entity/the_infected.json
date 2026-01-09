@@ -2,10 +2,10 @@
   "name": "疫疾",
   "name_en": [
     "The Infected",
-    "Plaguebearer",
+    "Plague Carrier",
     "Disease Entity"
   ],
-  "description": "一种需要保持卫生以避免感染的实体。",
+  "description": "一种通过感染传播的实体，文中提及需要使用消毒剂等清洁用品来防范。",
   "id": "the_infected",
   "behavior": "敌对"
 }

@@ -51,10 +51,29 @@ def run_batch_levels(start, end):
             print(error_msg)
             with open(log_file, "a") as f:
                 f.write(error_msg + "\n")
+                
+        # Optional: Sleep to be nice to the wiki server
+        time.sleep(1)
 
-        time.sleep(1)  # Small delay
+    # After batch loop, rebuild vector store once
+    print("\n--- Rebuilding Vector Stores (Batch Mode) ---")
+    rebuild_script = os.path.join(os.path.dirname(__file__), "rebuild_vector_store.py")
+    try:
+        subprocess.run([python_executable, rebuild_script], check=True)
+        print("Successfully rebuilt vector stores.")
+    except Exception as e:
+        print(f"Error rebuilding vector stores: {e}")
 
 
 if __name__ == "__main__":
-    # Levels 13 to 20
-    run_batch_levels(13, 20)
+    if len(sys.argv) == 3:
+        try:
+            start = int(sys.argv[1])
+            end = int(sys.argv[2])
+            run_batch_levels(start, end)
+        except ValueError:
+            print("Invalid arguments. Usage: python scripts/batch_run_levels.py <start> <end>")
+    else:
+        # Default behavior or usage guide
+        print("Usage: python scripts/batch_run_levels.py <start> <end>")
+

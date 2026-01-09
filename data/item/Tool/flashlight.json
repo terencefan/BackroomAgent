@@ -1,11 +1,6 @@
 {
   "name": "手电筒",
-  "name_en": [
-    "Flashlight",
-    "Torch",
-    "Electric Torch"
-  ],
-  "description": "一个手持的照明工具。",
+  "description": "便携式手持照明工具。",
   "id": "flashlight",
   "category": "Tool"
 }

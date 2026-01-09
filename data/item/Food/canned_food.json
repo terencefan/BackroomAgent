@@ -1,0 +1,6 @@
+{
+  "name": "罐装/瓶装食物",
+  "description": "密封保存的食物，可以安全食用。",
+  "id": "canned_food",
+  "category": "Food"
+}

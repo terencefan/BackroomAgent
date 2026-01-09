@@ -1,11 +1,6 @@
 {
   "name": "消毒剂",
-  "name_en": [
-    "Disinfectant",
-    "Antiseptic",
-    "Sanitizer"
-  ],
-  "description": "用于清洁伤口和防止感染的消毒剂。",
+  "description": "用于清洁伤口或双手的液体，有助于预防感染。",
   "id": "disinfectant",
   "category": "Medical"
 }

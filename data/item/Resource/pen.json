@@ -1,11 +1,6 @@
 {
   "name": "笔",
-  "name_en": [
-    "Pen",
-    "Ballpoint Pen",
-    "Writing Pen"
-  ],
-  "description": "一支用于书写的笔。",
+  "description": "用于书写的工具。",
   "id": "pen",
   "category": "Resource"
 }

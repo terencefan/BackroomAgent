@@ -5,7 +5,7 @@
     "Jarred Food",
     "Preserved Jar"
   ],
-  "description": "密封的瓶装食物，可以安全食用。",
+  "description": "密封的瓶装食物，可以安全食用，避免污染风险。",
   "id": "bottled_food",
   "category": "Food"
 }

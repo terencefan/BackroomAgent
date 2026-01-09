@@ -1,11 +1,6 @@
 {
   "name": "钝人",
-  "name_en": [
-    "Duller",
-    "Dull Man",
-    "Dull Entity"
-  ],
-  "description": "Level 1 中常见的人形实体，外观和行为模式多样，部分具有掠食性。",
+  "description": "常见的人形实体，外观和行为在文本中未详细描述，但被列为Level 1中常见的实体之一。",
   "id": "duller",
   "behavior": "敌对"
 }
