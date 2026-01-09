@@ -1,3 +1,5 @@
+from typing import cast
+
 from langchain_core.messages import AIMessage, HumanMessage
 from langgraph.graph import END, START, StateGraph
 
@@ -83,9 +85,10 @@ def run_once(user_text: str) -> AIMessage:
     """Convenience helper for a one-turn run."""
     # Note: This helper might need update to handle event_type if used for complex testing
     # defaulting to message/llm
-    result = graph.invoke(
-        {"messages": [HumanMessage(content=user_text)], "event_type": "message"}
+    input_state = cast(
+        State, {"messages": [HumanMessage(content=user_text)], "event_type": "message"}
     )
+    result = graph.invoke(input_state)
     last = result["messages"][-1]
     if not isinstance(last, AIMessage):
         raise TypeError(f"Expected AIMessage, got {type(last)}")

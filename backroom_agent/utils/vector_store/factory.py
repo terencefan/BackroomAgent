@@ -1,16 +1,13 @@
+from typing import Any
+
+from langchain_core.embeddings import Embeddings
+
 from backroom_agent.constants import API_KEY, BASE_URL
 
-# Try to import dependencies for type checking or simple referencing,
-# but main imports are inside get_embedding_model to handle missing deps.
-try:
-    from langchain_huggingface import HuggingFaceEmbeddings
-    from langchain_openai import OpenAIEmbeddings
-except ImportError:
-    HuggingFaceEmbeddings = None
-    OpenAIEmbeddings = None
 
-
-def get_embedding_model(provider: str = "local", model_name: str = "all-MiniLM-L6-v2"):
+def get_embedding_model(
+    provider: str = "local", model_name: str = "all-MiniLM-L6-v2"
+) -> Embeddings:
     """
     Factory function to get the embedding model based on provider and model name.
 
@@ -19,17 +16,23 @@ def get_embedding_model(provider: str = "local", model_name: str = "all-MiniLM-L
         model_name (str): The name of the model to use.
     """
     if provider == "openai":
-        if OpenAIEmbeddings is None:
+        try:
+            from langchain_openai import OpenAIEmbeddings
+        except ImportError:
             raise ImportError("Missing dependencies: pip install langchain-openai")
+
         if not API_KEY:
             raise ValueError("API_KEY is missing. Please check your .env file.")
 
         print(f"Initializing OpenAI embedding model ({model_name})...")
+        # Use api_key and base_url to be safe with newer versions, or ignore type if uncertain
         return OpenAIEmbeddings(
-            model=model_name, openai_api_key=API_KEY, openai_api_base=BASE_URL
+            model=model_name, api_key=API_KEY, base_url=BASE_URL  # type: ignore
         )
     else:  # local / huggingface
-        if HuggingFaceEmbeddings is None:
+        try:
+            from langchain_huggingface import HuggingFaceEmbeddings
+        except ImportError:
             raise ImportError(
                 "Missing dependencies: pip install langchain-huggingface sentence-transformers scikit-learn"
             )

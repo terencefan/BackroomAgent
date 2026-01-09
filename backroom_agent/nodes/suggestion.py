@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import Any, List, cast
 
 from langchain_core.runnables import RunnableConfig
 
@@ -17,7 +17,8 @@ async def suggestion_node(state: State, config: RunnableConfig) -> dict:
 
     # Invoke the sub-agent with shared state
     # Since they share the same schema, we can pass state directly
-    result = await suggestion_agent.ainvoke(state)
+    # Cast State to Any to bypass MyPy TypedDict vs Dict mismatch in LangGraph compiled graph
+    result = await suggestion_agent.ainvoke(cast(Any, state))
 
     suggestions = result.get("suggestions", [])
     if not suggestions:

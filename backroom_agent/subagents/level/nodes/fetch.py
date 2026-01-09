@@ -1,7 +1,7 @@
 import logging
 import os
 import re
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, cast
 from urllib.parse import urlparse
 
 from backroom_agent.tools.wiki.parse import \
@@ -250,11 +250,11 @@ def fetch_content_node(state: LevelAgentState):
     Combines previous resolve_url_node and fetch_content_node.
     """
     url = state.get("url")
-    level_name = state.get("level_name")
+    level_name: Optional[str] = state.get("level_name")
     logs = state.get("logs", [])
     force_update = state.get("force_update", False)
 
-    state_updates = {
+    state_updates: Dict[str, Any] = {
         "items_extracted": False,
         "entities_extracted": False,
         "logs": logs,
@@ -268,7 +268,9 @@ def fetch_content_node(state: LevelAgentState):
         html_content, found_name = _try_load_local(level_name, url, logs)
         if html_content:
             state_updates["html_content"] = html_content
-            state_updates["level_name"] = found_name or level_name
+            name_to_assign = found_name or level_name
+            if name_to_assign:
+                state_updates["level_name"] = name_to_assign
             # If we found it locally, we technically don't need the URL in state to proceed,
             # but usually good to keep what we have.
             if url:
@@ -316,10 +318,14 @@ def fetch_content_node(state: LevelAgentState):
                 state_updates["extracted_links"] = extracted_links
                 state_updates["url"] = cand  # Update state with the working URL
 
-                if not state_updates.get("level_name") and extracted_name:
-                    state_updates["level_name"] = extracted_name
-                elif level_name and not state.get("level_name"):
-                    state_updates["level_name"] = extracted_name
+                if not state_updates.get("level_name") and extracted_name is not None:
+                    state_updates["level_name"] = cast(str, extracted_name)
+                elif (
+                    level_name
+                    and not state.get("level_name")
+                    and extracted_name is not None
+                ):
+                    state_updates["level_name"] = cast(str, extracted_name)
 
                 success = True
                 break  # Stop on success
@@ -342,7 +348,7 @@ def fetch_content_node(state: LevelAgentState):
                     state_updates["html_content"] = html_content
                     state_updates["extracted_links"] = extracted_links
                     # Don't update URL to represent cache, keep the target URL
-                    if not state_updates.get("level_name"):
+                    if not state_updates.get("level_name") and found_name:
                         state_updates["level_name"] = found_name
                     logs.append("Successfully recovered from RAW cache.")
                 else:

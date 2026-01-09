@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from typing import Optional, Tuple
+from typing import Optional, Tuple, cast
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_core.runnables import RunnableConfig
@@ -109,7 +109,12 @@ def message_node(state: State, config: RunnableConfig) -> dict:
     # 2. Extract Current User Message
     current_message = ""
     if messages:
-        current_message = messages[-1].content
+        # Cast content to string (assuming text-only for now)
+        msg_content = messages[-1].content
+        if isinstance(msg_content, str):
+            current_message = msg_content
+        else:
+            current_message = str(msg_content)
 
     # 3. Inject Message into State Dict
     state_dict["message"] = current_message
@@ -118,7 +123,7 @@ def message_node(state: State, config: RunnableConfig) -> dict:
     json_input = json.dumps(state_dict, ensure_ascii=False, indent=2)
 
     # Log the JSON Payload
-    print_debug_message("LLM Input Payload (JSON):", state_dict)
+    print_debug_message("LLM Input Payload (JSON):", json.dumps(state_dict, indent=2))
 
     # 5. Invoke LLM
     final_messages = [
@@ -129,12 +134,21 @@ def message_node(state: State, config: RunnableConfig) -> dict:
     response = model.invoke(final_messages, config=config)
 
     # Log the Output Payload
-    try:
-        print_debug_message("LLM Output Payload (JSON):", json.loads(response.content))
-    except json.JSONDecodeError:
-        print_debug_message("LLM Output Payload (Raw/Invalid JSON):", response.content)
+    raw_response_content = response.content
+    if not isinstance(raw_response_content, str):
+        raw_response_content = str(raw_response_content)
 
-    return {"raw_llm_output": response.content}
+    try:
+        parsed_json = json.loads(raw_response_content)
+        print_debug_message(
+            "LLM Output Payload (JSON):", json.dumps(parsed_json, indent=2)
+        )
+    except json.JSONDecodeError:
+        print_debug_message(
+            "LLM Output Payload (Raw/Invalid JSON):", raw_response_content
+        )
+
+    return {"raw_llm_output": raw_response_content}
 
 
 def process_message_node(state: State, config: RunnableConfig) -> dict:
@@ -160,6 +174,9 @@ def process_message_node(state: State, config: RunnableConfig) -> dict:
     # So I should route DICE -> NODE_MESSAGE.
 
     raw_content = state.get("raw_llm_output", "")
+    if raw_content is None:
+        raw_content = ""
+
     current_state = state.get("current_game_state")
 
     # Parse Output JSON

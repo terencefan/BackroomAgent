@@ -23,7 +23,7 @@ class Item:
 
     def to_dict(self, include_quantity: bool = True) -> Dict[str, Any]:
         """Convert the item to a dictionary for serialization."""
-        data = {
+        data: Dict[str, Any] = {
             "name": self.name,
             "description": self.description,
             "id": self.item_id,

@@ -1,5 +1,6 @@
 import math
 import os
+from typing import Any, cast
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -94,7 +95,7 @@ def generate_bipartite_graph(data_map, id_to_name, title, output_path):
         pos,
         nodelist=obj_nodes,
         node_color=obj_degrees,
-        cmap=plt.cm.YlOrRd,  # Yellow to Red heat map
+        cmap=plt.get_cmap("YlOrRd"),  # Yellow to Red heat map
         node_size=obj_sizes,
         edgecolors="black",  # Border for contrast
         linewidths=0.5,
@@ -158,8 +159,8 @@ def generate_bipartite_graph(data_map, id_to_name, title, output_path):
             labels={n: labels[n] for n in light_text_nodes},
             font_size=8,
             font_family="Arial Unicode MS",
-            font_color="white",
             font_weight="bold",  # Make white text bold for better readability
+            # font_color="white", # Removed due to pyright stub issues
         )
 
     # Add Colorbar for Heatmap
@@ -187,7 +188,7 @@ def generate_interactive_bipartite_graph(data_map, id_to_name, title, output_pat
         height="900px",
         width="100%",
         bgcolor="#222222",
-        font_color="white",
+        font_color="white",  # type: ignore
         select_menu=True,
         filter_menu=True,
     )

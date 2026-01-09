@@ -7,7 +7,10 @@ import sys
 # Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from typing import cast
+
 from backroom_agent.subagents.level import level_agent
+from backroom_agent.subagents.level.state import LevelAgentState
 
 # Configure logging to stdout
 logging.basicConfig(level=logging.INFO, format="%(name)s - %(levelname)s - %(message)s")
@@ -49,7 +52,7 @@ def main():
     print(f"--- Starting Level Agent for: {target} ---")
 
     # Run the graph
-    result = level_agent.invoke(initial_state)
+    result = level_agent.invoke(cast(LevelAgentState, initial_state))
 
     # Output results
     print("\n--- Execution Logs ---")

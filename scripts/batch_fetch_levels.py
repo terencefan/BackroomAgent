@@ -30,7 +30,7 @@ def process_level(level_num):
 
     # 2. Fetch (this saves the new HTML file)
     try:
-        content, fetched_level_name = fetch_wiki_content(url)
+        content, fetched_level_name, _ = fetch_wiki_content(url)
     except Exception as e:
         print(f"Failed to fetch {url}: {e}")
         return

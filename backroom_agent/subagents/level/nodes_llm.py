@@ -48,6 +48,8 @@ def generate_json_node(state: LevelAgentState):
 
         response = llm.invoke(messages)
         content = response.content
+        if not isinstance(content, str):
+            content = str(content)
 
         # Clean up markdown code blocks
         if "```json" in content:
@@ -94,6 +96,8 @@ def extract_items_node(state: LevelAgentState):
     try:
         response = llm.invoke(messages)
         content = response.content
+        if not isinstance(content, str):
+            content = str(content)
 
         # Parse JSON from Markdown block
         if "```json" in content:
@@ -148,6 +152,8 @@ def extract_entities_node(state: LevelAgentState):
     try:
         response = llm.invoke(messages)
         content = response.content
+        if not isinstance(content, str):
+            content = str(content)
 
         # Parse JSON from Markdown block
         if "```json" in content:

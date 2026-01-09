@@ -1,12 +1,20 @@
 import re
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, cast
 
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup, NavigableString, Tag
 
 from backroom_agent.tools.wiki.constants import (GARBAGE_CLASSES,
                                                  MAIN_CONTENT_CLASSES,
                                                  MAIN_CONTENT_IDS,
                                                  UNWANTED_TAGS, USEFUL_TAGS)
+
+
+def _get_attr_str(tag: Tag, attr: str) -> str:
+    """Helper to safely get an attribute as a string."""
+    val = tag.get(attr)
+    if isinstance(val, list):
+        return " ".join(val)
+    return str(val) if val else ""
 
 
 def clean_html_content(raw_html: str) -> Tuple[str, List[Dict[str, str]]]:
@@ -27,27 +35,31 @@ def clean_html_content(raw_html: str) -> Tuple[str, List[Dict[str, str]]]:
             continue
 
         # Check inline style display: none
-        style = tag.get("style", "")
+        style = _get_attr_str(tag, "style")
         if style and "display:none" in style.lower().replace(" ", ""):
             tag.decompose()
             continue
 
         # Check class
-        classes = tag.get("class", [])
-        if classes and any(
-            garbage in " ".join(classes).lower() for garbage in GARBAGE_CLASSES
-        ):
+        classes = tag.get("class")
+        class_str = (
+            " ".join(classes) if isinstance(classes, list) else str(classes or "")
+        )
+        if classes and any(garbage in class_str.lower() for garbage in GARBAGE_CLASSES):
             tag.decompose()
             continue
 
         # Check ID
-        id_ = tag.get("id", "")
+        id_ = _get_attr_str(tag, "id")
         if id_ and any(garbage in id_.lower() for garbage in GARBAGE_CLASSES):
             tag.decompose()
             continue
 
     # 3. Narrow down to main content
     target = _extract_main_content(soup)
+    if not isinstance(target, Tag):
+        # Fallback if main content extraction returned a string or something else
+        return str(target).strip(), []
 
     # --- Link Extraction Phase ---
     extracted_links = []
@@ -104,7 +116,7 @@ def clean_html_content(raw_html: str) -> Tuple[str, List[Dict[str, str]]]:
 
     # 6. Normalize whitespace
     for text in target.find_all(string=True):
-        if text.parent.name not in ["pre", "code"]:
+        if text.parent and text.parent.name not in ["pre", "code"]:
             new_text = re.sub(r"\s+", " ", text)
             if len(new_text) < len(text):
                 text.replace_with(new_text)
@@ -140,7 +152,13 @@ def _clean_attributes(tag: Tag):
             del tag[attr]
 
     # Additional check for javascript hrefs
-    if tag.name == "a" and "href" in tag.attrs:
-        href = tag["href"].lower().strip()
-        if href.startswith("javascript:") or href == "#":
-            tag.unwrap()
+    if tag.name == "a":
+        href_val = tag.attrs.get("href")
+        if href_val:
+            if isinstance(href_val, list):
+                href = " ".join(href_val).lower().strip()
+            else:
+                href = str(href_val).lower().strip()
+
+            if href.startswith("javascript:") or href == "#":
+                tag.unwrap()

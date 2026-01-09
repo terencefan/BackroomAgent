@@ -5,7 +5,10 @@ from pprint import pprint
 # Add project root to sys.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from typing import cast
+
 from backroom_agent.subagents.event import event_agent
+from backroom_agent.subagents.event.state import EventAgentState
 from backroom_agent.utils.item import Item
 
 
@@ -15,15 +18,18 @@ def run_subagent_test():
     # We use a level that should exist or be fetched
     level_name = "level-2"
 
-    initial_state = {
-        "level_name": level_name,
-        "user_input": "我尝试搜寻一些补给",
-        "level_context": "",
-        "events": [],
-        "items": [],
-        "error_message": "",
-        "retry_count": 0,
-    }
+    initial_state = cast(
+        EventAgentState,
+        {
+            "level_name": level_name,
+            "user_input": "我尝试搜寻一些补给",
+            "level_context": "",
+            "events": [],
+            "items": [],
+            "error_message": "",
+            "retry_count": 0,
+        },
+    )
 
     try:
         result = event_agent.invoke(initial_state)

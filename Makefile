@@ -29,6 +29,7 @@ test:
 format:
 	$(PYTHON) -m black .
 	$(PYTHON) -m isort .
+	.venv/bin/pyright
 	cd frontend && npm run lint -- --fix
 
 # frontend

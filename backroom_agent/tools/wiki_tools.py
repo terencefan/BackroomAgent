@@ -43,6 +43,8 @@ def convert_html_to_room_json(html_content: str, level_name: str) -> str:
     # We can try to use standard invoke. The prompt asks for a Markdown code block with JSON.
     response = llm.invoke(messages)
     content = response.content
+    if not isinstance(content, str):
+        content = str(content)
 
     # Helper to clean up markdown code blocks if present
     if "```json" in content:

@@ -1,6 +1,6 @@
 import os
 import pickle
-from typing import Dict, List
+from typing import Any, Dict, List, Tuple, cast
 
 import numpy as np
 
@@ -50,6 +50,7 @@ class PickleVectorStore(BaseVectorStore):
             item_data_dir: 包含 JSON 数据的目录路径
         """
         self._init_model()
+        assert self.embedding_model is not None
 
         # 加载所有数据
         items = load_items_from_dir(item_data_dir)
@@ -98,6 +99,7 @@ class PickleVectorStore(BaseVectorStore):
             )
 
         self._init_model()
+        assert self.embedding_model is not None
 
         # 加载索引
         with open(self.db_path, "rb") as f:
@@ -107,9 +109,9 @@ class PickleVectorStore(BaseVectorStore):
         matrix = data["embedding_matrix"]
 
         # 生成查询向量
-        query_vec = self.embedding_model.embed_query(query)
+        query_vec_list = self.embedding_model.embed_query(query)
         # 转换为 numpy 数组并调整形状 (1, dimension)
-        query_vec = np.array(query_vec).reshape(1, -1)
+        query_vec = np.array(query_vec_list).reshape(1, -1)
 
         # 计算相似度
         scores = cosine_similarity(query_vec, matrix)[0]
@@ -138,13 +140,20 @@ class PickleVectorStore(BaseVectorStore):
             return
 
         self._init_model()
+        assert self.embedding_model is not None
 
-        # 1. 加载现有索引 Load existing index
+        # 加载现有索引 Load existing index
         if os.path.exists(self.db_path):
             with open(self.db_path, "rb") as f:
                 data = pickle.load(f)
-            items = data["items"]  # List[Dict]
-            embedding_matrix = data["embedding_matrix"]  # np.array
+            # Explicitly cast items to list of dicts for mypy
+            items_raw = data.get("items", [])
+            if isinstance(items_raw, list):
+                items: List[Dict] = items_raw
+            else:
+                items = []
+
+            embedding_matrix = data.get("embedding_matrix")
         else:
             items = []
             embedding_matrix = None
@@ -153,7 +162,9 @@ class PickleVectorStore(BaseVectorStore):
         # Helper to find index by item id
         id_to_index = {item["id"]: i for i, item in enumerate(items)}
 
-        new_items_data = []  # List of tuples (target_index, item_data)
+        new_items_data: List[Dict[str, Any]] = (
+            []
+        )  # List of tuples (target_index, item_data)
 
         # 2. 处理输入文件 Process input files
         processed_count = 0
@@ -188,8 +199,8 @@ class PickleVectorStore(BaseVectorStore):
         if embedding_matrix is not None:
 
             # 分离出“更新现有项”和“追加新项”
-            updates = []
-            appends = []
+            updates: List[Tuple[int, Dict, Any]] = []
+            appends: List[Tuple[Dict, Any]] = []
 
             for i, data in enumerate(new_items_data):
                 target_idx = data["target_index"]
@@ -201,20 +212,27 @@ class PickleVectorStore(BaseVectorStore):
                 else:
                     appends.append((item, vec))
 
+            # Ensure items is typed as List[Dict] if inferred as List[Object]
+            items_typed: List[Dict] = cast(List[Dict], items)
+
             # 应用更新 (替换旧值)
             for idx, item, vec in updates:
-                items[idx] = item
-                embedding_matrix[idx] = vec
+                if 0 <= idx < len(items_typed):
+                    items_typed[idx] = item
+                    embedding_matrix[idx] = vec
 
             # 应用追加 (添加到末尾)
             if appends:
                 new_items_list = [x[0] for x in appends]
                 new_vecs_list = [x[1] for x in appends]
-                items.extend(new_items_list)
+                items_typed.extend(new_items_list)
                 # 使用 vstack 堆叠矩阵
                 embedding_matrix = np.vstack(
                     [embedding_matrix, np.array(new_vecs_list)]
                 )
+
+            # Reassign back to items (though list is mutable so items_typed modification affects items)
+            items = items_typed
 
         else:
             # 如果是全新数据库

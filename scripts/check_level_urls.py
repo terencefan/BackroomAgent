@@ -58,7 +58,7 @@ def check_level_urls(start, end):
 
         try:
             # save_files=False to avoid cluttering disk, just verify fetch capability
-            content, extracted_name = fetch_wiki_content(url, save_files=False)
+            content, extracted_name, _ = fetch_wiki_content(url, save_files=False)
 
             if content:
                 status_msg = "✅ Success"

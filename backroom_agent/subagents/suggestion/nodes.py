@@ -40,7 +40,10 @@ def generate_suggestions_node(state: State):
     llm = get_llm()
     response = llm.invoke(messages)
 
-    content = response.content.strip()
+    content = response.content
+    if not isinstance(content, str):
+        content = str(content)
+    content = content.strip()
     suggestions = []
 
     # Clean up markdown code blocks if present

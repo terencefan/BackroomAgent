@@ -2,3 +2,13 @@
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+include = ["backroom_agent", "scripts", "tests"]
+exclude = ["**/node_modules", "**/__pycache__", "tmp", "go_agent"]
+typeCheckingMode = "basic"
+reportMissingImports = false
+reportMissingTypeStubs = false
+pythonVersion = "3.12"
+

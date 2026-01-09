@@ -1,10 +1,10 @@
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, cast
 
 from langchain_core.messages import HumanMessage
 
 from backroom_agent.constants import GraphKeys, NodeConstants
-from backroom_agent.protocol import DiceRoll
+from backroom_agent.protocol import DiceRoll, LogicEvent
 from backroom_agent.state import State
 from backroom_agent.utils.dice import Dice
 
@@ -18,7 +18,7 @@ def route_check_dice(state: State) -> str:
     If yes -> Go to Dice Node.
     If no -> Skip to Summary Node.
     """
-    if state.get(GraphKeys.LOGIC_EVENT):
+    if state.get("logic_event"):
         return NodeConstants.DICE
     return NodeConstants.SUMMARY
 
@@ -33,11 +33,14 @@ def dice_node(state: State) -> Dict[str, Any]:
     5. Updates the game state based on the outcome result.
     6. Returns the dice roll info AND creates a new HumanMessage to feed back to LLM.
     """
-    logic_event = state.get(GraphKeys.LOGIC_EVENT)
+    logic_event = state.get("logic_event")
 
     # If no event, return empty (Router should prevent this)
     if not logic_event:
         return {}
+
+    # Cast to LogicEvent for type checker
+    logic_event = cast(LogicEvent, logic_event)
 
     logger.info(
         f"Dice Node: Processing event '{logic_event.name}' with {logic_event.die_type}"

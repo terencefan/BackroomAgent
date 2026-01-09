@@ -1,6 +1,6 @@
 import os
 import shutil
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 import chromadb
 from chromadb.config import Settings
@@ -60,6 +60,9 @@ class ChromaVectorStore(BaseVectorStore):
         注意：这会重置当前的 Collection。
         """
         self._init_resources()
+        assert self.client is not None
+        assert self.collection is not None
+        assert self.embedding_model is not None
 
         items = load_items_from_dir(item_data_dir)
         if not items:
@@ -100,7 +103,7 @@ class ChromaVectorStore(BaseVectorStore):
 
             self.collection.add(
                 documents=batch_texts,
-                embeddings=embeddings,
+                embeddings=cast(Any, embeddings),
                 metadatas=batch_metadatas,
                 ids=batch_ids,
             )
@@ -113,6 +116,8 @@ class ChromaVectorStore(BaseVectorStore):
     def search(self, query: str, k: int = 3) -> List[Dict]:
         """搜索物品。"""
         self._init_resources()
+        assert self.collection is not None
+        assert self.embedding_model is not None
 
         # Generate query embedding
         query_vec = self.embedding_model.embed_query(query)
@@ -126,7 +131,12 @@ class ChromaVectorStore(BaseVectorStore):
         # Parse results
         # Chroma returns lists of lists (one for each query)
         parsed_results = []
-        if results["ids"] and len(results["ids"]) > 0:
+        if (
+            results["ids"]
+            and len(results["ids"]) > 0
+            and results["metadatas"]
+            and results["documents"]
+        ):
             ids = results["ids"][0]
             metadatas = results["metadatas"][0]
             documents = results["documents"][0]
@@ -146,7 +156,7 @@ class ChromaVectorStore(BaseVectorStore):
                 # if we can configure Chroma to use cosine.
                 # But for now, we just pass what we get.
 
-                item = metadatas[i].copy()
+                item = cast(Dict[str, Any], metadatas[i]).copy()
                 item["id"] = ids[i]
                 item["text"] = documents[i]
 
@@ -172,6 +182,8 @@ class ChromaVectorStore(BaseVectorStore):
             return
 
         self._init_resources()
+        assert self.collection is not None
+        assert self.embedding_model is not None
 
         new_items = []
         for file_path in file_paths:
@@ -202,6 +214,9 @@ class ChromaVectorStore(BaseVectorStore):
 
         # Upsert (insert or update)
         self.collection.upsert(
-            ids=ids, embeddings=embeddings, metadatas=metadatas, documents=texts
+            ids=ids,
+            embeddings=cast(Any, embeddings),
+            metadatas=metadatas,
+            documents=texts,
         )
         print(f"Updated {len(new_items)} items.")

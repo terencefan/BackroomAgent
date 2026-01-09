@@ -25,7 +25,7 @@ def _filter_candidates(
         logs.append(f"Processing {category_label} {i+1}/{total}: {name}")
 
         # 1. Hallucination Check
-        if name not in html_content:
+        if not isinstance(name, str) or name not in html_content:
             logs.append(f"Filtered (Hallucination): '{name}' not found in source text.")
             continue
 

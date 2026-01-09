@@ -37,7 +37,7 @@ def get_llm() -> BaseChatModel:
     if not API_KEY:
         raise ValueError("API_KEY is missing. Please check your .env file.")
 
-    return ChatOpenAI(api_key=API_KEY, base_url=BASE_URL, model=MODEL_NAME)
+    return ChatOpenAI(api_key=API_KEY, base_url=BASE_URL, model=MODEL_NAME)  # type: ignore
 
 
 def print_debug_message(title: str, content: list[str] | str):

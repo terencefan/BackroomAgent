@@ -6,7 +6,7 @@ import uuid
 class Dice:
     """A utility class for rolling dice with reproducible seeds."""
 
-    def __init__(self, seed: int | str = None):
+    def __init__(self, seed: int | str | None = None):
         if seed is None:
             # Default seed using MAC address + timestamp
             mac = uuid.getnode()

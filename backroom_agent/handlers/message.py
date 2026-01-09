@@ -18,19 +18,22 @@ async def handle_message(
 ) -> AsyncGenerator[str, None]:
     # Construct the initial state for the graph execution
     # For a message event, we include the user's input as a HumanMessage
-    input_state: State = {
-        GraphKeys.EVENT: request.event,
-        GraphKeys.USER_INPUT: request.player_input,
-        GraphKeys.SESSION_ID: request.session_id,
-        GraphKeys.CURRENT_GAME_STATE: current_state,
-        GraphKeys.MESSAGES: [HumanMessage(content=request.player_input)],
-        GraphKeys.LOGIC_EVENT: None,
-        GraphKeys.DICE_ROLL: None,
-        GraphKeys.RAW_LLM_OUTPUT: None,
-        GraphKeys.LEVEL_CONTEXT: None,
-        GraphKeys.VALID_ACTIONS: None,
-        GraphKeys.SUGGESTIONS: None,
-    }
+    input_state: State = cast(
+        State,
+        {
+            GraphKeys.EVENT: request.event,
+            GraphKeys.USER_INPUT: request.player_input,
+            GraphKeys.SESSION_ID: request.session_id,
+            GraphKeys.CURRENT_GAME_STATE: current_state,
+            GraphKeys.MESSAGES: [HumanMessage(content=request.player_input)],
+            GraphKeys.LOGIC_EVENT: None,
+            GraphKeys.DICE_ROLL: None,
+            GraphKeys.RAW_LLM_OUTPUT: None,
+            GraphKeys.LEVEL_CONTEXT: None,
+            GraphKeys.VALID_ACTIONS: None,
+            GraphKeys.SUGGESTIONS: None,
+        },
+    )
 
     # Stream updates from the agent graph
     async for chunk in graph.astream(input_state, stream_mode="updates"):

@@ -1,5 +1,5 @@
 import asyncio
-from typing import AsyncGenerator
+from typing import AsyncGenerator, cast
 
 from langchain_core.messages import AIMessage
 
@@ -7,18 +7,22 @@ from backroom_agent.graph import graph
 from backroom_agent.protocol import (ChatRequest, GameState, StreamChunkInit,
                                      StreamChunkMessage, StreamChunkState,
                                      StreamChunkSuggestions, StreamChunkType)
+from backroom_agent.state import State
 
 
 async def handle_init(
     request: ChatRequest, current_state: GameState
 ) -> AsyncGenerator[str, None]:
-    input_state = {
-        "event": request.event,
-        "user_input": request.player_input,
-        "session_id": request.session_id,
-        "current_game_state": current_state,
-        "messages": [],
-    }
+    input_state = cast(
+        State,
+        {
+            "event": request.event,
+            "user_input": request.player_input,
+            "session_id": request.session_id,
+            "current_game_state": current_state,
+            "messages": [],
+        },
+    )
 
     async for chunk in graph.astream(input_state, stream_mode="updates"):
         for _, updates in chunk.items():

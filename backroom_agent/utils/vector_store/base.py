@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Dict, List
+from typing import Dict, List, Optional
+
+from langchain_core.embeddings import Embeddings
 
 from .factory import get_embedding_model
 
@@ -24,7 +26,7 @@ class BaseVectorStore(ABC):
         """
         self.model_name = model_name
         self.provider = provider
-        self.embedding_model = None
+        self.embedding_model: Optional[Embeddings] = None
 
         # 如果使用的是 OpenAI 且模型名仍为默认的本地模型名，则自动调整为 OpenAI 的默认模型
         # Adjust default model name for OpenAI if it looks like the local default
