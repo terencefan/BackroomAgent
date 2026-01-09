@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import List, Literal, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Attributes(BaseModel):
@@ -118,3 +118,103 @@ class ChatResponse(BaseModel):
     messages: List[BackendMessage]
     new_state: GameState
     dice_roll: Optional[DiceRoll] = None
+
+
+# --- Level Data Models (Matches Go Structs) ---
+
+
+class SurvivalDifficulty(BaseModel):
+    class_: str = Field(alias="class")  # 'class' is a keyword in Python
+    description: str
+
+
+class Atmosphere(BaseModel):
+    visuals: List[str]
+    audio: List[str]
+    smell: List[str]
+    vibe: List[str]
+
+
+class EnvironmentalMechanic(BaseModel):
+    mechanic: str
+    effect: str
+    trigger_probability: str
+
+
+class SubZone(BaseModel):
+    name: str
+    description: str
+    danger_level: str
+
+
+class Faction(BaseModel):
+    name: str
+    alignment: str
+    description: str
+    population: str
+
+
+class POI(BaseModel):
+    name: str
+    description: str
+    access_probability: str
+
+
+class Entrance(BaseModel):
+    method: str
+    from_: Optional[str] = Field(None, alias="from")  # 'from' is a keyword
+
+
+class Exit(BaseModel):
+    method: str
+    condition: str
+    success_chance: str
+    next: Optional[str]
+
+
+class Transitions(BaseModel):
+    entrances: List[Entrance]
+    exits: List[Exit]
+
+
+class LevelEvent(BaseModel):
+    event: str
+    probability: str
+
+
+class Link(BaseModel):
+    text: str
+    url: str
+
+
+class LevelEntity(BaseModel):
+    id: str
+    name: str
+    description: str
+    behavior: str
+
+
+class LevelItem(BaseModel):
+    id: str
+    name: str
+    description: str
+    category: str
+
+
+class LevelData(BaseModel):
+    level_id: str
+    title: Optional[str]
+    survival_difficulty: SurvivalDifficulty
+    atmosphere: Atmosphere
+    environmental_mechanics: List[EnvironmentalMechanic]
+    sub_zones: List[SubZone]
+    factions: List[Faction]
+    pois: List[POI]
+    transitions: Transitions
+    events: List[LevelEvent]
+    links: Optional[List[Link]] = None
+    items: Optional[List[str]] = None      # New format: list of names
+    entities: Optional[List[str]] = None   # New format: list of names
+    # Legacy/Full Load support
+    findable_items: Optional[List[LevelItem]] = None
+    entities_list: Optional[List[LevelEntity]] = Field(None, alias="entities") # Handle potential conflict if raw list of dicts

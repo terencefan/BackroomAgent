@@ -32,9 +32,40 @@ type LevelData struct {
 	EnvironmentalMechanics []EnvironmentalMechanic `json:"environmental_mechanics"`
 	SubZones               []SubZone               `json:"sub_zones"`
 	Factions               []Faction               `json:"factions"`
+	POIs                   []POI                   `json:"pois"`
+	Transitions            Transitions             `json:"transitions"`
+	Events                 []LevelEvent            `json:"events"`
 	Links                  []Link                  `json:"links,omitempty"`
 	FindableItems          []Item                  `json:"findable_items,omitempty"`
 	Entities               []Entity                `json:"entities,omitempty"`
+}
+
+type POI struct {
+	Name              string `json:"name"`
+	Description       string `json:"description"`
+	AccessProbability string `json:"access_probability"`
+}
+
+type Transitions struct {
+	Entrances []Entrance `json:"entrances"`
+	Exits     []Exit     `json:"exits"`
+}
+
+type Entrance struct {
+	Method string  `json:"method"`
+	From   *string `json:"from"`
+}
+
+type Exit struct {
+	Method        string  `json:"method"`
+	Condition     string  `json:"condition"`
+	SuccessChance string  `json:"success_chance"`
+	Next          *string `json:"next"` // Use pointer to allow null
+}
+
+type LevelEvent struct {
+	Event       string `json:"event"`
+	Probability string `json:"probability"`
 }
 
 type SubZone struct {
@@ -47,6 +78,7 @@ type Faction struct {
 	Name        string `json:"name"`
 	Alignment   string `json:"alignment"`
 	Description string `json:"description"`
+	Population  string `json:"population"`
 }
 
 type SurvivalDifficulty struct {

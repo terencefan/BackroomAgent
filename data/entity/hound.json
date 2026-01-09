@@ -1,6 +1,0 @@
-{
-  "name": "猎犬",
-  "description": "一种出现在Level 9的实体。",
-  "id": "hound",
-  "behavior": "敌对"
-}

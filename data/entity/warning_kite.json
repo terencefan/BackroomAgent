@@ -1,6 +1,0 @@
-{
-  "name": "警告风筝",
-  "description": "一种出现在Level 9的实体。",
-  "id": "warning_kite",
-  "behavior": "被动"
-}

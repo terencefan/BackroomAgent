@@ -1,66 +1,103 @@
 {
-  "atmosphere": {
-    "audio": [
-      "荧光灯发出的刺耳、恒定的嗡鸣声"
-    ],
-    "smell": [
-      "腐臭的潮湿地毯味"
-    ],
-    "vibe": [
-      "阈限空间",
-      "单调",
-      "孤独",
-      "感官剥夺",
-      "令人发狂"
-    ],
-    "visuals": [
-      "泛黄的墙纸",
-      "潮湿的地毯",
-      "无规律闪烁的荧光灯",
-      "随机分割的空荡房间"
-    ]
+  "level_id": "Level 0",
+  "title": null,
+  "survival_difficulty": {
+    "class": "等级 1",
+    "description": "环境本身静止且无实体，但非线性空间、感官剥夺和孤独感构成主要威胁，极易导致迷失、脱水和心理崩溃。"
   },
-  "entities": [],
+  "atmosphere": {
+    "visuals": ["泛黄/单黄色墙纸", "潮湿的地毯", "不一致安装的闪烁荧光灯", "六亿平方英里随机分割的空荡房间"],
+    "audio": ["荧光灯持续发出的刺耳嗡鸣", "无线电失真", "类似人类语言的未知声音（幻觉）", "类似昆虫的吱吱声（幻觉）"],
+    "smell": ["腐臭/潮湿的地毯气味", "霉味"],
+    "vibe": ["阈限空间", "单调", "令人发狂", "孤独", "焦虑", "迷失感"]
+  },
   "environmental_mechanics": [
     {
-      "effect": "直线行走可能返回起点，折返会导致新房间出现。导航极其困难，指南针/GPS失效，无线电失真。",
-      "mechanic": "非线性空间/空间扭曲",
+      "mechanic": "非线性空间",
+      "effect": "直线行走可能返回起点，原路折返会进入新房间。指南针、GPS失效，导航极其困难。",
       "trigger_probability": "恒定"
     },
     {
-      "effect": "以小组形式进入本层会导致人员失散，直至离开本层。",
       "mechanic": "小组分离",
-      "trigger_probability": "100% (进入时触发)"
+      "effect": "以小组形式进入本层，成员会失散直至离开本层。",
+      "trigger_probability": "100%"
     },
     {
-      "effect": "流浪者会经历多种幻觉，可能影响理智和感知。",
-      "mechanic": "普遍性幻觉",
-      "trigger_probability": "高频 (建议定期进行感知/理智检定)"
-    },
-    {
-      "effect": "环境CO₂浓度正在稳定增加，长期影响未知。",
       "mechanic": "CO₂水平上升",
-      "trigger_probability": "恒定 (环境背景效应)"
+      "effect": "环境CO₂浓度以稳定速率增加，长期影响未知。",
+      "trigger_probability": "恒定"
+    }
+  ],
+  "sub_zones": [
+    {
+      "name": "红色房间",
+      "description": "墙纸为红色，灯光昏暗。极其罕见，危险。",
+      "danger_level": "极高"
+    },
+    {
+      "name": "马尼拉房间",
+      "description": "流浪者可以在此相遇的集合室，内有M.E.G.的生存指南文档，但本身是死路，没有出口。",
+      "danger_level": "相同"
     }
   ],
   "factions": [],
-  "items": [],
-  "level_id": "Level 0",
-  "sub_zones": [
+  "pois": [
     {
-      "danger_level": "更高",
-      "description": "拥有红色墙纸和昏暗灯光的罕见房间，危险，应避免进入。",
-      "name": "红色墙纸房间"
-    },
-    {
-      "danger_level": "相同 (但无出口)",
-      "description": "作为长途跋涉幸存者的集合室，流浪者可在此相遇。内有M.E.G.的生存指南文档。是一条死路，没有出口。",
-      "name": "马尼拉房间"
+      "name": "马尼拉房间",
+      "description": "作为长途跋涉幸存者的集合室，可找到M.E.G.的生存指南。",
+      "access_probability": "极低 / 长途跋涉后小概率发现"
     }
   ],
-  "survival_difficulty": {
-    "class": "等级 1",
-    "description": "安全，稳定的环境，极少量实体"
+  "transitions": {
+    "entrances": [
+      {
+        "method": "意外切出（no-clipping）现实界限",
+        "from": null
+      },
+      {
+        "method": "通过Level 283堡垒中散发霉味的木门",
+        "from": "Level 283"
+      }
+    ],
+    "exits": [
+      {
+        "method": "切出（noclipping）本层",
+        "condition": "保持认知并快速适应环境",
+        "success_chance": "中等 / DC 15 (取决于流浪者适应能力)",
+        "next": "Level 1"
+      },
+      {
+        "method": "进入马尼拉房间",
+        "condition": "朝任意方向长途跋涉",
+        "success_chance": "极低 / d100 > 98",
+        "next": null
+      }
+    ]
   },
-  "title": "大厅"
+  "events": [
+    {
+      "event": "荧光灯噪音剧增后突然寂静",
+      "probability": "偶尔 / 1d20 > 12"
+    },
+    {
+      "event": "观察到门或楼梯的出现（幻觉）",
+      "probability": "偶尔 / 1d20 > 12"
+    },
+    {
+      "event": "突发的既视感（déjà vu）",
+      "probability": "高频 / 1d20 > 5"
+    },
+    {
+      "event": "听见类似人类说话的未知语言声（幻觉）",
+      "probability": "偶尔 / 1d20 > 12"
+    },
+    {
+      "event": "余光发现墙纸下有类似昆虫的物体爬动，直接观察时消失（幻觉）",
+      "probability": "偶尔 / 1d20 > 12"
+    },
+    {
+      "event": "遇见红色房间",
+      "probability": "极度罕见 / d100 > 98"
+    }
+  ]
 }

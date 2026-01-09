@@ -1,6 +1,0 @@
-{
-  "name": "死亡飞蛾",
-  "description": "一种实体，在等候厅和霓虹区均有出现。",
-  "id": "death_moth",
-  "behavior": "敌对"
-}
