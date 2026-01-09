@@ -1,16 +1,16 @@
 import asyncio
-from typing import AsyncGenerator, List, cast, Any
+from typing import Any, AsyncGenerator, List, cast
 
 from langchain_core.messages import AIMessage, HumanMessage
 
 from backroom_agent.constants import GraphKeys
 from backroom_agent.graph import graph
-from backroom_agent.state import State
 from backroom_agent.protocol import (ChatRequest, DiceRoll, GameState,
                                      LogicEvent, StreamChunkDice,
                                      StreamChunkLogicEvent, StreamChunkMessage,
                                      StreamChunkState, StreamChunkSuggestions,
                                      StreamChunkType)
+from backroom_agent.state import State
 
 
 async def handle_message(

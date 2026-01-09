@@ -183,18 +183,25 @@ def generate_interactive_bipartite_graph(data_map, id_to_name, title, output_pat
     Generates an interactive HTML bipartite graph connecting Levels to Items/Entities using Pyvis.
     """
     # Create pyvis network
-    net = Network(height="900px", width="100%", bgcolor="#222222", font_color="white", select_menu=True, filter_menu=True)
-    
+    net = Network(
+        height="900px",
+        width="100%",
+        bgcolor="#222222",
+        font_color="white",
+        select_menu=True,
+        filter_menu=True,
+    )
+
     # Enable physics/layout
     net.force_atlas_2based(spring_length=100)
-    
+
     # Process Data
     items = list(data_map.keys())
     all_levels = set()
-    
+
     # Track degrees for sizing
     degrees = {}
-    
+
     # 1. Collect Levels
     for item, levels in data_map.items():
         degrees[item] = degrees.get(item, 0) + len(levels)
@@ -207,40 +214,40 @@ def generate_interactive_bipartite_graph(data_map, id_to_name, title, output_pat
         label = id_to_name.get(level, level)
         size = 20 + (degrees.get(level, 0) * 2)
         net.add_node(
-            level, 
-            label=label, 
-            title=f"{label} (Level)\nConnections: {degrees.get(level, 0)}", 
-            color="#4CAF50", # Green for Levels
+            level,
+            label=label,
+            title=f"{label} (Level)\nConnections: {degrees.get(level, 0)}",
+            color="#4CAF50",  # Green for Levels
             shape="dot",
             size=size,
-            group="levels"
+            group="levels",
         )
-        
+
     # 3. Add Item/Entity Nodes (Center Concept)
     for item in items:
         label = id_to_name.get(item, item)
         deg = degrees.get(item, 0)
-        
+
         # Heatmap coloring logic could be complex, simple linear scaling here
         # Redder = More connected
-        
+
         size = 10 + (deg * 3)
-        
+
         net.add_node(
-            item, 
-            label=label, 
-            title=f"{label} (Object)\nConnections: {deg}", 
-            color="#FF5722", # Deep Orange for Objects
+            item,
+            label=label,
+            title=f"{label} (Object)\nConnections: {deg}",
+            color="#FF5722",  # Deep Orange for Objects
             shape="diamond",
             size=size,
-            group="objects"
+            group="objects",
         )
-        
+
     # 4. Add Edges
     for item, levels in data_map.items():
         for level in levels:
             net.add_edge(item, level, color="#555555", width=1)
-            
+
     # Save
     output_dir = os.path.dirname(output_path)
     os.makedirs(output_dir, exist_ok=True)
@@ -252,6 +259,5 @@ def generate_interactive_bipartite_graph(data_map, id_to_name, title, output_pat
         net.save_graph(os.path.basename(output_path))
     finally:
         os.chdir(current_dir)
-        
-    print(f"Interactive graph saved to {output_path}")
 
+    print(f"Interactive graph saved to {output_path}")

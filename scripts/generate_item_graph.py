@@ -3,8 +3,8 @@ import os
 
 from backroom_agent.utils.analysis import get_all_level_references
 from backroom_agent.utils.common import get_project_root
-from backroom_agent.utils.visualization import (generate_bipartite_graph,
-                                              generate_interactive_bipartite_graph)
+from backroom_agent.utils.visualization import (
+    generate_bipartite_graph, generate_interactive_bipartite_graph)
 
 
 def generate_graph():

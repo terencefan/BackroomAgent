@@ -206,7 +206,7 @@ def generate_combined_graph(tmp_dir, main_llm_nodes):
     combined_llm_nodes = set(main_llm_nodes)
     if "generate_suggestions" in sub_src:
         combined_llm_nodes.add("sg_generate_suggestions")
-    
+
     arch_dir = os.path.join(tmp_dir, "architecture")
     os.makedirs(arch_dir, exist_ok=True)
 

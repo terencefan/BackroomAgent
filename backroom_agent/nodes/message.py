@@ -91,7 +91,7 @@ def message_node(state: State, config: RunnableConfig) -> dict:
 
     # If the last message is from Dice Node (HumanMessage with specific marker?), treat it as system feedback
     # But for now, we just dump all messages.
-    
+
     debug_content = [
         f"{i}. [{msg.type}]: {msg.content}" for i, msg in enumerate(messages)
     ]
@@ -142,23 +142,23 @@ def process_message_node(state: State, config: RunnableConfig) -> dict:
     Processes the raw LLM output from message_node.
     OR processes the Dice Roll feedback loop.
     """
-    
+
     # Check if we are re-entering from Dice Node
-    # The Router (main loop) calls nodes. If we are in process_message_node, 
+    # The Router (main loop) calls nodes. If we are in process_message_node,
     # it means we were called EITHER by message_node OR by dice_node (per new graph edge).
-    
+
     # ISSUE: process_message_node currently expects "raw_llm_output".
-    # BUT if we come from Dice, we didn't run LLM yet. 
+    # BUT if we come from Dice, we didn't run LLM yet.
     # WE NEED TO RUN LLM HERE if coming from Dice.
-    
+
     # Actually, the graph edge says: DICE -> PROCESS_MESSAGE.
     # But message_node is where LLM runs.
     # process_message_node just PARSES.
-    
+
     # If the user wants "Dice -> Generate", they probably mean "Dice -> LLM -> Parse".
     # In my graph, I have NODE_MESSAGE (LLM) and NODE_PROCESS_MESSAGE (Parse).
     # So I should route DICE -> NODE_MESSAGE.
-    
+
     raw_content = state.get("raw_llm_output", "")
     current_state = state.get("current_game_state")
 

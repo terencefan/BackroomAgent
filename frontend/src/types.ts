@@ -102,6 +102,8 @@ export interface StreamChunkMessage {
   type: typeof StreamChunkType.MESSAGE;
   text: string;
   sender: 'dm' | 'system';
+  logicEvent?: LogicEvent;
+  options?: string[];
 }
 
 export interface StreamChunkInit {

@@ -120,7 +120,7 @@ const InventorySlot: React.FC<{
         return () => {
              if (timeoutRef.current) clearTimeout(timeoutRef.current);
         };
-    }, [item, isResorting]); // Re-run when props change
+    }, [item, isResorting, displayItem]); // Re-run when props or displayItem changes
 
   // Logic to separate "Ghost" from "Real"
   // If prop item is null but displayItem exists, it's a ghost (animating out)

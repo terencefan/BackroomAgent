@@ -3,7 +3,7 @@ from typing import Annotated, List, Optional, TypedDict
 from langchain_core.messages import BaseMessage
 from langgraph.graph.message import add_messages
 
-from backroom_agent.protocol import GameEvent, GameState, LogicEvent, DiceRoll
+from backroom_agent.protocol import DiceRoll, GameEvent, GameState, LogicEvent
 
 
 class State(TypedDict):

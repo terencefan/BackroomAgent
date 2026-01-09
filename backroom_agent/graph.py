@@ -1,26 +1,13 @@
 from langchain_core.messages import AIMessage, HumanMessage
 from langgraph.graph import END, START, StateGraph
 
-from backroom_agent.nodes import (
-    NODE_DICE,
-    NODE_GENERATE,
-    NODE_INIT,
-    NODE_INVENTORY,
-    NODE_PROCESS,
-    NODE_ROUTER,
-    NODE_SUGGEST,
-    NODE_SUMMARY,
-    dice_node,
-    init_node,
-    item_node,
-    message_node,
-    process_message_node,
-    route_check_dice,
-    route_event,
-    router_node,
-    suggestion_node,
-    summary_node,
-)
+from backroom_agent.nodes import (NODE_DICE, NODE_GENERATE, NODE_INIT,
+                                  NODE_INVENTORY, NODE_PROCESS, NODE_ROUTER,
+                                  NODE_SUGGEST, NODE_SUMMARY, dice_node,
+                                  init_node, item_node, message_node,
+                                  process_message_node, route_check_dice,
+                                  route_event, router_node, suggestion_node,
+                                  summary_node)
 from backroom_agent.state import State
 
 
@@ -68,22 +55,19 @@ def build_graph():
     # 3. Dice Check (If dice event needed, roll it)
     # 4. If Dice needed: Dice Node -> Loop back to Generate (to narrate result)
     # 5. If No Dice: -> Update Node
-    
+
     workflow.add_edge(NODE_GENERATE, NODE_PROCESS)
-    
+
     workflow.add_conditional_edges(
         NODE_PROCESS,
         route_check_dice,
-        {
-            NODE_DICE: NODE_DICE,
-            NODE_SUMMARY: NODE_SUMMARY
-        }
+        {NODE_DICE: NODE_DICE, NODE_SUMMARY: NODE_SUMMARY},
     )
-    
+
     # Send Dice Result BACK to Generate Node (LLM Inference) to narrate outcome
-    workflow.add_edge(NODE_DICE, NODE_GENERATE) 
+    workflow.add_edge(NODE_DICE, NODE_GENERATE)
     # NOTE: This creates a loop. Dice Node MUST clear GraphKeys.LOGIC_EVENT to break it.
-    
+
     # Update -> Suggest -> END
     workflow.add_edge(NODE_SUMMARY, NODE_SUGGEST)
     workflow.add_edge(NODE_SUGGEST, END)

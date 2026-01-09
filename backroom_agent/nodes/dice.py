@@ -2,6 +2,7 @@ import logging
 from typing import Any, Dict
 
 from langchain_core.messages import HumanMessage
+
 from backroom_agent.constants import GraphKeys, NodeConstants
 from backroom_agent.protocol import DiceRoll
 from backroom_agent.state import State
@@ -79,27 +80,27 @@ def dice_node(state: State) -> Dict[str, Any]:
                 if min_val <= roll_result <= max_val:
                     matched_outcome = outcome
                     break
-    
+
     # Construct feedback message for LLM
     feedback_text = f"Dice Roll Result: [{die_type.upper()}] {roll_result}. Reason: {logic_event.name}."
     if matched_outcome and matched_outcome.result:
         # Add the outcome content (e.g., "Success! You found a key.") so LLM knows what happened
         content = matched_outcome.result.get("content", "")
         feedback_text += f" Outcome: {content}"
-        
-        # NOTE: logic_outcome is NOT sent to frontend directly via updates here 
+
+        # NOTE: logic_outcome is NOT sent to frontend directly via updates here
         # (unless we want to debug). The LLM will incorporate it into the next narrative.
 
     logger.info(f"Dice Node Feedback: {feedback_text}")
-    
+
     # Create a HumanMessage (or SystemMessage) representing the resolved event to continue the flow
     # Using HumanMessage to simulate "System Feedback" in the chat history for the context model
     feedback_msg = HumanMessage(content=feedback_text)
 
     updates: Dict[str, Any] = {
-        GraphKeys.DICE_ROLL: dice_roll,       # For Frontend Animation
-        GraphKeys.MESSAGES: [feedback_msg],   # For LLM Context
-        GraphKeys.LOGIC_EVENT: None,          # Clear event to prevent loops
+        GraphKeys.DICE_ROLL: dice_roll,  # For Frontend Animation
+        GraphKeys.MESSAGES: [feedback_msg],  # For LLM Context
+        GraphKeys.LOGIC_EVENT: None,  # Clear event to prevent loops
     }
 
     if matched_outcome:

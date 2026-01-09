@@ -23,6 +23,7 @@ LANGCHAIN_PROJECT = os.getenv("LANGCHAIN_PROJECT", "backroom-agent")
 
 class GraphKeys:
     """Keys used in the State TypedDict and graph updates."""
+
     MESSAGES = "messages"
     EVENT = "event"
     USER_INPUT = "user_input"
@@ -38,6 +39,7 @@ class GraphKeys:
 
 class NodeConstants:
     """Keys/Names for Graph Nodes."""
+
     ROUTER = "router"
     INIT = "init"
     INVENTORY = "inventory"

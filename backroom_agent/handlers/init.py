@@ -4,10 +4,9 @@ from typing import AsyncGenerator
 from langchain_core.messages import AIMessage
 
 from backroom_agent.graph import graph
-from backroom_agent.protocol import (ChatRequest, GameState,
-                                     StreamChunkInit, StreamChunkMessage,
-                                     StreamChunkState, StreamChunkSuggestions,
-                                     StreamChunkType)
+from backroom_agent.protocol import (ChatRequest, GameState, StreamChunkInit,
+                                     StreamChunkMessage, StreamChunkState,
+                                     StreamChunkSuggestions, StreamChunkType)
 
 
 async def handle_init(

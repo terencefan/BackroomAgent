@@ -115,14 +115,14 @@ export function useGameEngine() {
           sender: chunk.sender || 'dm',
           text: chunk.text || '',
           // Apply any patched properties if they exist on the chunk object
-          logicEvent: (chunk as any).logicEvent,
-          options: (chunk as any).options
+          logicEvent: chunk.logicEvent,
+          options: chunk.options
         }]);
         
         // If this message has a logicEvent, we need to track its ID for future dice rolls
         // We can't access legitimate ID cleanly here because setState is async/functional.
         // We defer tracking to the effect or rely on functional update side-effect (safe enough for refs).
-        if ((chunk as any).logicEvent) {
+        if (chunk.logicEvent) {
              setMessages(prev => {
                 const last = prev[prev.length - 1]; // This is the new one
                 lastLogicMsgIdRef.current = last.id; 
@@ -235,10 +235,10 @@ export function useGameEngine() {
                 if (target.type === StreamChunkType.MESSAGE) {
                     if (chunk.type === StreamChunkType.LOGIC_EVENT) {
                         // Patch logic event onto the message chunk
-                        (target as any).logicEvent = chunk.event;
+                        target.logicEvent = chunk.event;
                     } else {
                         // Patch options
-                        (target as any).options = chunk.options;
+                        target.options = chunk.options;
                     }
                     return; // Handled in queue
                 }
@@ -307,6 +307,7 @@ export function useGameEngine() {
     };
 
     fetchInitialState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   const processGameEvent = async (text: string, eventType: EventType, eventData?: { item_id?: string, quantity?: number }, hidden: boolean = false) => {
