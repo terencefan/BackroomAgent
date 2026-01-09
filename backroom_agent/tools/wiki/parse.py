@@ -1,13 +1,11 @@
 import re
+
 from bs4 import BeautifulSoup, Tag
 
-from backroom_agent.tools.wiki.constants import (
-    GARBAGE_CLASSES,
-    MAIN_CONTENT_CLASSES,
-    MAIN_CONTENT_IDS,
-    UNWANTED_TAGS,
-    USEFUL_TAGS,
-)
+from backroom_agent.tools.wiki.constants import (GARBAGE_CLASSES,
+                                                 MAIN_CONTENT_CLASSES,
+                                                 MAIN_CONTENT_IDS,
+                                                 UNWANTED_TAGS, USEFUL_TAGS)
 
 
 def clean_html_content(raw_html: str) -> str:
@@ -38,7 +36,7 @@ def clean_html_content(raw_html: str) -> str:
         ):
             tag.decompose()
             continue
-            
+
         # Check ID
         id_ = tag.get("id", "")
         if id_ and any(garbage in id_.lower() for garbage in GARBAGE_CLASSES):

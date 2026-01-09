@@ -179,11 +179,11 @@ def generate_level_graph():
                 short_method = method[:20] + "..." if len(method) > 20 else method
                 dot.edge(safe_src, safe_dst, label=short_method)
 
-    # Ensure docs directory exists
-    docs_dir = os.path.join(root, "docs")
-    os.makedirs(docs_dir, exist_ok=True)
+    # Ensure tmp directory exists
+    tmp_dir = os.path.join(root, "tmp")
+    os.makedirs(tmp_dir, exist_ok=True)
 
-    output_filename = os.path.join(docs_dir, "level_map")  # graphviz appends .png
+    output_filename = os.path.join(tmp_dir, "level_map")  # graphviz appends .png
 
     try:
         output_path = dot.render(output_filename, cleanup=True)

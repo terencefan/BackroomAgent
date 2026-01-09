@@ -62,21 +62,22 @@ def save_to_file(content: str, directory: str, filename: str):
         f.write(content)
     return filepath
 
+
 def extract_json_from_text(text: str) -> dict:
     """
     Attempts to parse JSON from text using multiple strategies.
-    
+
     Strategies:
     1. Direct json.loads
     2. Extract from markdown code blocks (```json ... ```)
     3. Extract from outermost curly braces
-    
+
     Args:
         text (str): The raw text potentially containing JSON.
-        
+
     Returns:
         dict: The parsed JSON object.
-        
+
     Raises:
         json.JSONDecodeError: If JSON cannot be extracted/parsed.
     """
@@ -99,14 +100,14 @@ def extract_json_from_text(text: str) -> dict:
     # Strategy 3: Outermost Braces
     # Finds the first '{' and last '}'
     try:
-        start_idx = text.find('{')
-        end_idx = text.rfind('}')
-        
+        start_idx = text.find("{")
+        end_idx = text.rfind("}")
+
         if start_idx != -1 and end_idx != -1 and start_idx < end_idx:
             json_str = text[start_idx : end_idx + 1]
             return json.loads(json_str)
     except json.JSONDecodeError:
         pass
-        
+
     # If all fail, re-raise the original error (or a generic one)
     raise json.JSONDecodeError("Failed to extract valid JSON from text", text, 0)

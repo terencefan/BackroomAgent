@@ -41,7 +41,11 @@ const InventorySlot: React.FC<{
 
         // Immediate Snap if Resorting (No Animations)
         if (isResorting) {
-            setDisplayItem(current);
+            // Guard against redundant sets (fix for eslint set-state-in-effect)
+            if (displayItem !== current && (displayItem?.id !== current?.id || displayItem?.quantity !== current?.quantity)) {
+                // eslint-disable-next-line react-hooks/set-state-in-effect
+                setDisplayItem(current);
+            }
             setPopup(null);
             prevPropItemRef.current = current ? { ...current } : null;
             if (timeoutRef.current) {
@@ -276,6 +280,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ items, onUseItem, 
      // This allows removal animations to play out in empty spaces.
      // newItemsToAdd will be added AFTER the sort phase.
      
+      
      setDisplaySlots(newDisplaySlots);
 
      // 5. Schedule Sort & Additions
@@ -319,6 +324,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ items, onUseItem, 
          if (sortTimeoutRef.current) clearTimeout(sortTimeoutRef.current);
      };
 
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
   return (

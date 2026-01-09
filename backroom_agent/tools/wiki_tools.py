@@ -4,17 +4,11 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from langsmith import traceable
 
 # Import from new refactored modules
-from backroom_agent.tools.wiki.fetch import (
-    fetch_url_content,
-    get_level_name_from_url,
-)
+from backroom_agent.tools.wiki.fetch import (fetch_url_content,
+                                             get_level_name_from_url)
 from backroom_agent.tools.wiki.parse import clean_html_content
-from backroom_agent.utils.common import (
-    get_llm, 
-    get_project_root, 
-    load_prompt, 
-    save_to_file
-)
+from backroom_agent.utils.common import (get_llm, get_project_root,
+                                         load_prompt, save_to_file)
 
 
 @traceable(run_type="chain", name="Convert HTML to Room JSON")
@@ -78,7 +72,7 @@ def fetch_wiki_content(
         tuple[str | None, str | None]: The cleaned HTML content string and the Level Name.
     """
     raw_content = fetch_url_content(url)
-    
+
     if not raw_content:
         return None, None
 

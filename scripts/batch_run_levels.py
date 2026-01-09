@@ -20,7 +20,7 @@ def run_batch_levels(start, end):
         level_name = f"level-{i}"
         # Construct the URL explicitly to avoid search issues
         level_url = f"https://backrooms-wiki-cn.wikidot.com/{level_name}"
-        
+
         msg = f"Processing {level_name} ({level_url})..."
         print(msg)
         with open(log_file, "a") as f:

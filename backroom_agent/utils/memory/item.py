@@ -1,10 +1,12 @@
 import time
 import uuid
 
+
 class MemoryItem:
     """
     Represents a single unit of memory with metadata.
     """
+
     def __init__(self, content: str):
         self.id: str = str(uuid.uuid4())
         self.content: str = content

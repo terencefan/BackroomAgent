@@ -131,9 +131,7 @@ def message_node(state: State, config: RunnableConfig) -> dict:
     except json.JSONDecodeError:
         print_debug_message("LLM Output Payload (Raw/Invalid JSON):", response.content)
 
-    return {
-        "raw_llm_output": response.content
-    }
+    return {"raw_llm_output": response.content}
 
 
 def process_message_node(state: State, config: RunnableConfig) -> dict:

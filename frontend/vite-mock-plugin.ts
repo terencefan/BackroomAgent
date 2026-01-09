@@ -46,12 +46,11 @@ interface ChatRequest {
     current_state: GameState | null;
 }
 
-
-interface BackendMessage {
-    text: string;
-    sender: 'dm' | 'system';
-    options?: string[];
-}
+// interface BackendMessage {
+//     text: string;
+//     sender: 'dm' | 'system';
+//     options?: string[];
+// }
 
 interface DiceRoll {
     type: 'd20' | 'd100';
@@ -129,6 +128,7 @@ export const mockServerPlugin = (): Plugin => {
                     req.on('end', () => {
                         try {
                             if (body) {
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 (req as any).body = JSON.parse(body);
                             }
                             next();
@@ -145,6 +145,7 @@ export const mockServerPlugin = (): Plugin => {
             // The main route handler
             server.middlewares.use('/api/chat', (req, res) => {
                 if (req.method === 'POST') {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const body = (req as any).body as ChatRequest;
                     // Provide default empty event if missing (for safety)
                     const { player_input, current_state, event } = body || {};
@@ -261,8 +262,8 @@ export const mockServerPlugin = (): Plugin => {
                         chunks.push({ type: 'dice_roll', dice: diceRoll });
                         
                         // Internal check logic (simulating backend logic)
-                        const target = diceRoll.type === 'd100' ? 50 : 10;
-                        const outcome = diceRoll.result <= target ? "Success" : "Failure"; // Lower is better for d100 usually, Higher for d20? Let's just say simplify.
+                        // const target = diceRoll.type === 'd100' ? 50 : 10;
+                        // const outcome = diceRoll.result <= target ? "Success" : "Failure";
                         // Actually in D&D d20 high is good, CoC d100 low is good.
                         // Let's just simplify for mock: > 10 is Good.
                         const isGood = diceRoll.result > (diceRoll.type === 'd20' ? 10 : 50);

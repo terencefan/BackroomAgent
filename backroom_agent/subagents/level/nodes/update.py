@@ -3,7 +3,9 @@ import logging
 import os
 
 from backroom_agent.utils.common import get_project_root
-from backroom_agent.utils.vector_store import rebuild_vector_db, update_vector_db
+from backroom_agent.utils.vector_store import (rebuild_vector_db,
+                                               update_vector_db)
+
 from ..state import LevelAgentState
 
 logger = logging.getLogger(__name__)

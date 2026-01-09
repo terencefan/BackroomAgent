@@ -32,10 +32,10 @@ def fetch_url_content(url: str, retries: int = 4) -> str | None:
                 print(f"Attempt {attempt+1} failed for {url}: {e}")
                 if attempt == retries - 1:
                     raise
-                
-                wait_time = (2 ** attempt) + random.uniform(0.5, 1.5)
+
+                wait_time = (2**attempt) + random.uniform(0.5, 1.5)
                 time.sleep(wait_time)
-                
+
         return None
     except requests.RequestException as e:
         print(f"Error fetching URL: {str(e)}")
