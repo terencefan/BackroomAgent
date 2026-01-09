@@ -3,7 +3,8 @@ import os
 
 from backroom_agent.utils.analysis import get_all_level_references
 from backroom_agent.utils.common import get_project_root
-from backroom_agent.utils.visualization import generate_bipartite_graph
+from backroom_agent.utils.visualization import (generate_bipartite_graph,
+                                              generate_interactive_bipartite_graph)
 
 
 def generate_graph():
@@ -23,11 +24,21 @@ def generate_graph():
 
     # Generate Graph
     print("Generating Entity-Level Graph...")
+    maps_dir = os.path.join(tmp_dir, "maps")
+    os.makedirs(maps_dir, exist_ok=True)
     generate_bipartite_graph(
         entity_data["map"],
         all_names,
         "Entity Distribution Map",
-        os.path.join(tmp_dir, "entity_level_map.png"),
+        os.path.join(maps_dir, "entity_level_map.png"),
+    )
+
+    print("Generating Interactive Entity-Level Graph...")
+    generate_interactive_bipartite_graph(
+        entity_data["map"],
+        all_names,
+        "Entity Distribution Map",
+        os.path.join(maps_dir, "entity_level_map.html"),
     )
 
     valid_ids_path = os.path.join(tmp_dir, "valid_entity_ids.json")

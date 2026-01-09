@@ -3,7 +3,8 @@ import os
 
 from backroom_agent.utils.analysis import get_all_level_references
 from backroom_agent.utils.common import get_project_root
-from backroom_agent.utils.visualization import generate_bipartite_graph
+from backroom_agent.utils.visualization import (generate_bipartite_graph,
+                                              generate_interactive_bipartite_graph)
 
 
 def generate_graph():
@@ -23,11 +24,21 @@ def generate_graph():
 
     # Generate Graph
     print("Generating Item-Level Graph...")
+    maps_dir = os.path.join(tmp_dir, "maps")
+    os.makedirs(maps_dir, exist_ok=True)
     generate_bipartite_graph(
         item_data["map"],
         all_names,
         "Item Distribution Map",
-        os.path.join(tmp_dir, "item_level_map.png"),
+        os.path.join(maps_dir, "item_level_map.png"),
+    )
+
+    print("Generating Interactive Item-Level Graph...")
+    generate_interactive_bipartite_graph(
+        item_data["map"],
+        all_names,
+        "Item Distribution Map",
+        os.path.join(maps_dir, "item_level_map.html"),
     )
 
     # Save Valid Item IDs (Shared with clean_orphans if needed, though clean_orphans can re-scan)

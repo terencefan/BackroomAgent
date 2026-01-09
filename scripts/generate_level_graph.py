@@ -180,10 +180,10 @@ def generate_level_graph():
                 dot.edge(safe_src, safe_dst, label=short_method)
 
     # Ensure tmp directory exists
-    tmp_dir = os.path.join(root, "tmp")
-    os.makedirs(tmp_dir, exist_ok=True)
+    maps_dir = os.path.join(root, "tmp/maps")
+    os.makedirs(maps_dir, exist_ok=True)
 
-    output_filename = os.path.join(tmp_dir, "level_map")  # graphviz appends .png
+    output_filename = os.path.join(maps_dir, "level_map")  # graphviz appends .png
 
     try:
         output_path = dot.render(output_filename, cleanup=True)

@@ -206,10 +206,13 @@ def generate_combined_graph(tmp_dir, main_llm_nodes):
     combined_llm_nodes = set(main_llm_nodes)
     if "generate_suggestions" in sub_src:
         combined_llm_nodes.add("sg_generate_suggestions")
+    
+    arch_dir = os.path.join(tmp_dir, "architecture")
+    os.makedirs(arch_dir, exist_ok=True)
 
     style_and_save_graph(
         None,
-        os.path.join(tmp_dir, "combined_agent_graph.png"),
+        os.path.join(arch_dir, "combined_agent_graph.png"),
         combined_llm_nodes,
         graph_mermaid_code=combined_mermaid,
     )
@@ -218,18 +221,19 @@ def generate_combined_graph(tmp_dir, main_llm_nodes):
 def generate_graphs():
     root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     tmp_dir = os.path.join(root, "tmp")
-    os.makedirs(tmp_dir, exist_ok=True)
+    arch_dir = os.path.join(tmp_dir, "architecture")
+    os.makedirs(arch_dir, exist_ok=True)
 
     print("Generating Main Agent Graph...")
     main_llm_nodes = {"init_node", "llm_node", "summary_node", "suggestion_node"}
     style_and_save_graph(
-        main_graph, os.path.join(tmp_dir, "agent_graph.png"), main_llm_nodes
+        main_graph, os.path.join(arch_dir, "agent_graph.png"), main_llm_nodes
     )
 
     print("Generating Level Agent Graph...")
     level_llm_nodes = {"generate_json", "extract_items", "extract_entities"}
     style_and_save_graph(
-        level_agent, os.path.join(tmp_dir, "level_agent_graph.png"), level_llm_nodes
+        level_agent, os.path.join(arch_dir, "level_agent_graph.png"), level_llm_nodes
     )
 
     generate_combined_graph(tmp_dir, main_llm_nodes)
