@@ -3,104 +3,147 @@
   "title": "大厅",
   "survival_difficulty": {
     "class": "等级 1",
-    "description": "安全，但存在心理和环境危险，无直接实体威胁"
+    "description": "安全，稳定的环境，极少量实体"
   },
   "atmosphere": {
     "visuals": [
       "泛黄的墙纸",
       "潮湿的地毯",
-      "无规律闪烁的荧光灯",
-      "随机分割的空荡房间"
+      "不一致安装的荧光灯具",
+      "红色墙纸房间（罕见）"
     ],
     "audio": [
-      "荧光灯发出的永无止境、刺耳的嗡鸣声"
+      "荧光灯发出的永无止境、异常刺耳的嗡鸣"
     ],
     "smell": [
       "腐臭的潮湿地毯味"
     ],
-    "vibe": "阈限空间，单调，令人发狂，孤独，感官剥夺"
+    "vibe": [
+      "阈限空间",
+      "单调",
+      "令人发狂",
+      "孤独",
+      "感官剥夺"
+    ]
   },
   "environmental_mechanics": [
     {
-      "mechanic": "非线性空间几何",
-      "effect": "直线行走可能返回起点，折返会导致新房间出现，导航设备失效，无线电失真",
+      "mechanic": "非线性空间/空间扭曲",
+      "effect": "直线行走可能返回起点，折返会导致新房间出现，导航极其困难，指南针/GPS失效，无线电失真",
       "trigger_probability": "恒定"
     },
     {
       "mechanic": "小组分离",
-      "effect": "以小组形式进入本层会导致成员失散，直至离开本层",
-      "trigger_probability": "100%"
+      "effect": "以小组形式进入本层将导致成员分离失散，直至离开本层",
+      "trigger_probability": "100% (进入时触发)"
     },
     {
       "mechanic": "CO₂水平上升",
-      "effect": "长期暴露可能导致生理不适，具体影响未知",
+      "effect": "环境CO₂浓度以稳定速率上升，长期影响未知",
       "trigger_probability": "恒定"
     }
   ],
-  "random_events": [
+  "sub_zones": [
     {
-      "event": "幻觉：荧光灯噪音剧增后突然寂静",
-      "probability": "普遍/高频"
-    },
-    {
-      "event": "幻觉：观察到门或楼梯出现",
-      "probability": "普遍/高频"
-    },
-    {
-      "event": "幻觉：突发的既视感",
-      "probability": "普遍/高频"
-    },
-    {
-      "event": "幻觉：听见非人语的说话声",
-      "probability": "普遍/高频"
-    },
-    {
-      "event": "幻觉：余光发现墙纸下有昆虫爬动，直视则消失",
-      "probability": "普遍/高频"
-    },
-    {
-      "event": "幻觉：听见类似昆虫的吱吱声",
-      "probability": "普遍/高频"
-    },
-    {
-      "event": "遭遇红色墙纸房间",
-      "probability": "极罕见 (警告：危险区域)"
+      "name": "红色墙纸房间",
+      "description": "拥有红色墙纸和昏暗灯光的房间，极其罕见，危险，不应靠近或进入",
+      "danger_level": "更高"
     }
   ],
-  "entities": [
+  "factions": [],
+  "random_events": [
     {
-      "name": "无实体",
-      "behavior": "被动",
-      "rarity": "恒定",
-      "description": "本层内不存在任何已知实体。若遭遇看似流浪者的事物，那并非人类。"
+      "event": "荧光灯噪音音量剧增后突然寂静",
+      "probability": "高频 (建议每1-2小时进行一次感知检定)"
+    },
+    {
+      "event": "观察到门或楼梯的出现（幻觉）",
+      "probability": "中频"
+    },
+    {
+      "event": "突发的既视感 (déjà vu)",
+      "probability": "高频"
+    },
+    {
+      "event": "听见类似人类说话但内容未知的声音（幻觉）",
+      "probability": "中频"
+    },
+    {
+      "event": "用余光发现类似昆虫的物体在墙纸下爬行（直接观察时消失）",
+      "probability": "低频"
+    },
+    {
+      "event": "听见类似昆虫发出的吱吱声（幻觉）",
+      "probability": "低频"
+    },
+    {
+      "event": "灯光无规律闪烁",
+      "probability": "恒定/高频"
     }
   ],
   "key_locations": [
     {
       "name": "马尼拉房间",
-      "description": "红色墙纸房间的别称，是长途跋涉幸存者的集合室，内有M.E.G.的生存指南文档，但本身是死路",
-      "access_probability": "极罕见 (需朝任意方向跋涉极长距离)"
+      "description": "作为长途跋涉幸存流浪者的集合室，可以自由相遇，内有M.E.G.的生存指南文档，但本身是死路，没有出口",
+      "access_probability": "极罕见 (需朝任意方向跋涉极长距离，建议使用特殊遭遇或剧情触发)"
     }
   ],
   "transitions": {
     "entrances": [
-      "意外切出 (no-clipping) 现实的界限",
-      "通过Level 283堡垒中极其少见、散发霉味的木门"
+      "意外‘切出’（no-clipping）现实的界限（最常见入口）",
+      "Level 283堡垒中极其少见、散发霉味的木门"
     ],
     "exits": [
       {
-        "method": "切出 (noclipping) 本层",
-        "condition": "保持对位置的认知并快速适应环境，寻找可切出的边界",
-        "success_chance": "低 (新手不熟悉机制)",
+        "method": "切出（noclipping）本层",
+        "condition": "保持对位置的认知并快速适应环境，寻找空间异常点",
+        "success_chance": "低至中等 (取决于玩家对环境的理解和行动)",
         "next": "Level 1"
-      },
-      {
-        "method": "进入马尼拉房间",
-        "condition": "朝任意方向跋涉极长的距离",
-        "success_chance": "极罕见",
-        "next": null
       }
     ]
   },
-  "items": []
+  "findable_items": [],
+  "entities": [],
+  "links": [
+    {
+      "text": "源站点",
+      "url": "https://backrooms-wiki-cn.wikidot.com/level-0"
+    },
+    {
+      "text": "被确认的形式",
+      "url": "/archived:level-0"
+    },
+    {
+      "text": "红色墙纸和昏暗灯光",
+      "url": "/red-rooms"
+    },
+    {
+      "text": "“后室基本生存指南”",
+      "url": "/trimmed:basics-of-the-backrooms-a-guide"
+    },
+    {
+      "text": "Level 283",
+      "url": "/level-283"
+    },
+    {
+      "text": "Level 1",
+      "url": "/level-1"
+    },
+    {
+      "text": "马尼拉房间",
+      "url": "/manila-room"
+    },
+    {
+      "text": "M.E.G.",
+      "url": "/the-m-e-g"
+    },
+    {
+      "text": "Level -0",
+      "url": "/level-minus-0"
+    },
+    {
+      "text": "Level 1",
+      "url": "/level-1"
+    }
+  ]
 }

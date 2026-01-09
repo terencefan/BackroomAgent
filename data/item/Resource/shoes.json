@@ -1,0 +1,11 @@
+{
+  "name": "鞋子",
+  "name_en": [
+    "Shoes",
+    "Footwear",
+    "Boots"
+  ],
+  "description": "一双合适的鞋子，用于长途行走。",
+  "id": "shoes",
+  "category": "Resource"
+}

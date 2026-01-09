@@ -1,0 +1,11 @@
+{
+  "name": "头灯",
+  "name_en": [
+    "Headlamp",
+    "Head Torch",
+    "Head Light"
+  ],
+  "description": "一个戴在头上的照明工具。",
+  "id": "headlamp",
+  "category": "Tool"
+}

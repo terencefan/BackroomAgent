@@ -1,0 +1,11 @@
+{
+  "name": "手机充电器",
+  "name_en": [
+    "Phone Charger",
+    "Charger",
+    "USB Charger"
+  ],
+  "description": "一个用于给手机充电的充电器。",
+  "id": "phone_charger",
+  "category": "Tool"
+}

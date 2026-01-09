@@ -1,0 +1,11 @@
+{
+  "name": "撬棍",
+  "name_en": [
+    "Crowbar",
+    "Pry Bar",
+    "Wrecking Bar"
+  ],
+  "description": "一根结实、带有波纹状灰色外表和锈斑的金属撬棍，可作为工具或武器。",
+  "id": "crowbar",
+  "category": "Tool"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "滑雪裤",
+  "name_en": [
+    "Ski Pants",
+    "Snow Pants",
+    "Winter Trousers"
+  ],
+  "description": "一条用于保暖和防水的裤子。",
+  "id": "ski_pants",
+  "category": "Resource"
+}

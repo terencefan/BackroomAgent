@@ -1,6 +1,11 @@
 {
   "name": "钝人",
-  "description": "可以在该层级被观测到的实体之一，行动缓慢但具有威胁性。",
+  "name_en": [
+    "Duller",
+    "Dull Man",
+    "Dull Entity"
+  ],
+  "description": "Level 1 中常见的人形实体，外观和行为模式多样，部分具有掠食性。",
   "id": "duller",
   "behavior": "敌对"
 }

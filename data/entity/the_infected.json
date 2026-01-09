@@ -1,0 +1,11 @@
+{
+  "name": "疫疾",
+  "name_en": [
+    "The Infected",
+    "Plaguebearer",
+    "Disease Entity"
+  ],
+  "description": "一种需要保持卫生以避免感染的实体。",
+  "id": "the_infected",
+  "behavior": "敌对"
+}

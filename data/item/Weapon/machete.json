@@ -1,0 +1,11 @@
+{
+  "name": "砍刀",
+  "name_en": [
+    "Machete",
+    "Cleaver",
+    "Bolo Knife"
+  ],
+  "description": "一把长而宽的刀，可用于砍劈或作为武器。",
+  "id": "machete",
+  "category": "Weapon"
+}

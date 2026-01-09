@@ -1,0 +1,11 @@
+{
+  "name": "手表",
+  "name_en": [
+    "Watch",
+    "Wristwatch",
+    "Timepiece"
+  ],
+  "description": "一块用于记录时间的手表。",
+  "id": "watch",
+  "category": "Tool"
+}

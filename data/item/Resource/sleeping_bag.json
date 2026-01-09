@@ -1,0 +1,11 @@
+{
+  "name": "睡袋",
+  "name_en": [
+    "Sleeping Bag",
+    "Bedroll",
+    "Sleeping Sack"
+  ],
+  "description": "一个用于睡觉的睡袋。",
+  "id": "sleeping_bag",
+  "category": "Resource"
+}

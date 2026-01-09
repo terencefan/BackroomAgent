@@ -1,0 +1,11 @@
+{
+  "name": "斧头",
+  "name_en": [
+    "Axe",
+    "Hatchet",
+    "Tomahawk"
+  ],
+  "description": "一把可用于劈砍、打开物品或自卫的斧头。",
+  "id": "axe",
+  "category": "Tool"
+}

@@ -3,240 +3,1035 @@
   "title": "宜居地带",
   "survival_difficulty": {
     "class": "等级 2",
-    "description": "不安全，不稳定，少量实体"
+    "description": "不安全，不稳定，中量实体"
   },
   "atmosphere": {
-    "visuals": ["单调褪色的墙壁", "混凝土支柱", "灰色墙面与地坪", "天花板上的管道", "荧光灯", "应急绿灯", "散落的板条箱与残骸"],
-    "audio": ["零星的金属撞击声", "管道隆隆声", "脚步声", "电流脉冲声", "皮肤轻拍水泥地的声响（闪烁事件中）"],
-    "smell": ["塑料般的死水气息", "潮湿沉闷的空气", "发霉味"],
-    "vibe": "阈限空间，压抑，焦虑，迷宫般"
+    "visuals": [
+      "单调褪色的墙壁",
+      "混凝土支柱",
+      "水泥地面",
+      "天花板管道",
+      "应急灯",
+      "金属货架",
+      "成堆的木板条箱",
+      "四散的水坑"
+    ],
+    "audio": [
+      "零星的金属撞击声",
+      "管道隆隆声",
+      "脚步声",
+      "电流脉冲声",
+      "皮肤轻拍水泥地的声响",
+      "沉重的呼吸声"
+    ],
+    "smell": [
+      "塑料般的死水气息",
+      "沉闷潮湿的空气",
+      "霉味"
+    ],
+    "vibe": [
+      "阈限空间",
+      "焦虑",
+      "幽闭恐惧",
+      "迷失感",
+      "非欧几何导致的错位感"
+    ]
   },
   "environmental_mechanics": [
     {
-      "mechanic": "非欧几何结构",
-      "effect": "感知距离与实际距离不符，直线行走可能返回原地或瞬间到达远处，导致迷路",
+      "mechanic": "非欧几何",
+      "effect": "感知距离与实际距离不符，直线行走可能返回原地或瞬间到达远处，极易迷路",
       "trigger_probability": "恒定"
     },
     {
       "mechanic": "闪烁事件",
-      "effect": "所有自然光源随机切断，陷入完全黑暗，敌对实体活跃度大幅增加",
+      "effect": "所有自然光源随机切断，层级陷入完全黑暗，实体活动激增，迷路风险大幅增加",
       "trigger_probability": "随机，不可预测"
     },
     {
-      "mechanic": "板条箱生成/消失",
-      "effect": "资源箱在视线外出现或消失，是获取生存物资的主要来源",
-      "trigger_probability": "高频（经常在背后出现或闪烁后出现）"
+      "mechanic": "板条箱生成与消失",
+      "effect": "装有随机物资（食物、工具、危险品等）的木箱在视线外出现或消失",
+      "trigger_probability": "高频（建议经常回头查看）"
+    }
+  ],
+  "sub_zones": [
+    {
+      "name": "过道",
+      "description": "宽敞开阔的仓库/停车场风格空间，墙壁单调，有混凝土支柱，是板条箱和闪烁事件的主要发生地",
+      "danger_level": "更高（闪烁事件时极高）"
+    },
+    {
+      "name": "小径",
+      "description": "狭窄、迷宫般的混凝土通道网络，连接着各种无特定用途的房间（办公室、医务室等），灯光昏暗但结构正常",
+      "danger_level": "更低（实体极少，闪烁事件时的安全避难所）"
+    },
+    {
+      "name": "天鹰段",
+      "description": "灰色墙面与地坪，巨型混凝土柱子，类似停车场，天花板有漏水管道，M.E.G. Alpha 基地所在地",
+      "danger_level": "相同"
+    },
+    {
+      "name": "跃金段",
+      "description": "B.N.T.G. 商人之地所在地",
+      "danger_level": "未知"
+    },
+    {
+      "name": "哥特段",
+      "description": "区段之一，具体特征未详述",
+      "danger_level": "未知"
+    },
+    {
+      "name": "衔尾段",
+      "description": "区段之一，具体特征未详述",
+      "danger_level": "未知"
+    },
+    {
+      "name": "花园段",
+      "description": "区段之一，具体特征未详述",
+      "danger_level": "未知"
+    },
+    {
+      "name": "传说段",
+      "description": "区段之一，具体特征未详述",
+      "danger_level": "未知"
+    }
+  ],
+  "factions": [
+    {
+      "name": "探险者总署 (M.E.G.)",
+      "alignment": "友善",
+      "description": "致力于探索后室、帮助新流浪者并寻找出口的组织。在 Level 1 设有 Alpha 基地，并会放置补给地标和巡逻。",
+      "population": "大量（在 Alpha 基地）",
+      "trade_goods": [
+        "信息",
+        "庇护",
+        "基础培训",
+        "杏仁水等补给"
+      ]
+    },
+    {
+      "name": "不结盟贸易集团 (B.N.T.G.)",
+      "alignment": "中立（需支付费用）",
+      "description": "贸易组织，在跃金段设有“商人之地”，提供物资和保护，但需要支付费用。",
+      "population": "未知",
+      "trade_goods": [
+        "各种生存物资",
+        "武器",
+        "保护服务"
+      ]
+    },
+    {
+      "name": "阿丽亚娜集团",
+      "alignment": "友善",
+      "description": "参与编撰生存指南的组织，提供信息和支持。",
+      "population": "未知",
+      "trade_goods": [
+        "信息",
+        "协议指导（如 C.L.I.P.P.）"
+      ]
+    },
+    {
+      "name": "游牧民族",
+      "alignment": "未知（可能中立）",
+      "description": "无固定基地，仅存在临时定居点的流浪者团体。",
+      "population": "未知",
+      "trade_goods": [
+        "未知"
+      ]
+    },
+    {
+      "name": "速切玩家",
+      "alignment": "中立",
+      "description": "设立报名点时会在本层级活跃的组织。",
+      "population": "未知",
+      "trade_goods": [
+        "未知"
+      ]
+    },
+    {
+      "name": "琥珀营",
+      "alignment": "未知",
+      "description": "提及的聚居地之一，具体信息不详。",
+      "population": "未知",
+      "trade_goods": [
+        "未知"
+      ]
+    },
+    {
+      "name": "阿尔戈斯之眼",
+      "alignment": "未知",
+      "description": "提及的聚居地之一，具体信息不详。",
+      "population": "未知",
+      "trade_goods": [
+        "未知"
+      ]
+    },
+    {
+      "name": "Tom 的餐馆",
+      "alignment": "友善",
+      "description": "位于 Alpha 基地附近的小餐馆，提供食物和情感支持。",
+      "population": "小",
+      "trade_goods": [
+        "食物",
+        "饮品"
+      ]
     }
   ],
   "random_events": [
     {
-      "event": "灯光闪烁或熄灭（闪烁事件前兆）",
+      "event": "发现 M.E.G. 或其他组织放置的补给地标（杏仁水、纸条）",
+      "probability": "中频（留意墙壁和门边的彩色布料及标志）"
+    },
+    {
+      "event": "遭遇敌对实体（如笑魇、窃皮者、钝人、猎犬等）",
+      "probability": "中频（在过道中更常见，闪烁事件时激增）"
+    },
+    {
+      "event": "发现新生成的板条箱",
+      "probability": "高频（建议每10-30分钟进行一次察觉检定）"
+    },
+    {
+      "event": "灯光异常闪烁（非全黑事件）",
       "probability": "低频"
     },
     {
-      "event": "发现探险者总署（M.E.G.）或其他组织放置的补给地标（杏仁水、纸条）",
-      "probability": "常见（需主动寻找）"
-    }
-  ],
-  "entities": [
-    {
-      "name": "钝人",
-      "behavior": "敌对",
-      "rarity": "常见",
-      "description": "人形实体，在闪烁事件中活跃，会猎捕流浪者"
-    },
-    {
-      "name": "窃皮者",
-      "behavior": "伏击者",
-      "rarity": "少见",
-      "description": "伪装成受伤人类，皮肤松垮，利爪攻击，极具欺骗性"
-    },
-    {
-      "name": "猎犬",
-      "behavior": "敌对",
-      "rarity": "少见",
-      "description": "听觉敏锐，在黑暗中追踪猎物"
-    },
-    {
-      "name": "笑魇",
-      "behavior": "敌对",
-      "rarity": "稀有",
-      "description": "潜伏于黑暗，对光源敏感"
-    },
-    {
-      "name": "尸鼠",
-      "behavior": "被动",
-      "rarity": "常见",
-      "description": "腐食性，通常无害，但可能携带疾病"
-    },
-    {
-      "name": "疫疾",
-      "behavior": "被动",
-      "rarity": "未知",
-      "description": "通过接触传播的疾病实体，需注意卫生"
-    },
-    {
-      "name": "爬菌",
-      "behavior": "被动",
-      "rarity": "未知",
-      "description": "真菌类实体，可能通过接触传播"
-    },
-    {
-      "name": "瘟疫地精",
-      "behavior": "敌对",
-      "rarity": "少见",
-      "description": "小型实体，可被工具吓退"
+      "event": "听到远处的人声或异常声响（可能是实体诱捕）",
+      "probability": "低频但致命"
     }
   ],
   "key_locations": [
     {
-      "name": "天鹰段",
-      "description": "灰色墙面地坪，巨型混凝土柱，类似停车场。M.E.G. Alpha 基地所在地，新人常见切入点。",
-      "access_probability": "常见（从 Level 0 切入大概率到达）"
-    },
-    {
-      "name": "跃金段",
-      "description": "B.N.T.G.（不结盟贸易集团）活跃区域。",
-      "access_probability": "未知（需在层级内探索发现）"
-    },
-    {
-      "name": "哥特段",
-      "description": "建筑风格独特的区段。",
-      "access_probability": "未知（需在层级内探索发现）"
-    },
-    {
-      "name": "衔尾段",
-      "description": "建筑风格独特的区段。",
-      "access_probability": "未知（需在层级内探索发现）"
-    },
-    {
-      "name": "花园段",
-      "description": "建筑风格独特的区段。",
-      "access_probability": "未知（需在层级内探索发现）"
-    },
-    {
-      "name": "传说段",
-      "description": "建筑风格独特的区段。",
-      "access_probability": "未知（需在层级内探索发现）"
-    },
-    {
-      "name": "小径",
-      "description": "狭窄、迷宫般的混凝土通道网络，连接着无数无特定用途的小房间。比过道安全，是闪烁事件中的理想避难所。",
-      "access_probability": "常见（通过过道中的单/双推门进入）"
-    },
-    {
       "name": "M.E.G. Alpha 基地",
-      "description": "探险者总署最古老且第二大的定居点，位于天鹰段小径内，功能齐全如城镇，提供培训、食宿和勘探支持。",
-      "access_probability": "中等（可通过巡逻队或寻找地标指引到达）"
-    },
-    {
-      "name": "Tom 的餐馆",
-      "description": "位于某基地附近的小餐馆，提供食物和社交场所。",
-      "access_probability": "未知（需在层级内探索发现）"
+      "description": "探险者总署最古老且第二大的定居点，位于天鹰段，功能齐全如城镇，提供培训、食宿和勘探支持。",
+      "access_probability": "中等（通过寻找 M.E.G. 巡逻队或跟随其地标指引）"
     },
     {
       "name": "B.N.T.G. 商人之地",
-      "description": "不结盟贸易集团的贸易前哨，位于跃金段，提供物资和保护（需支付费用）。",
-      "access_probability": "未知（需在层级内探索发现）"
+      "description": "不结盟贸易集团的主要贸易前哨，位于跃金段，提供物资和保护（需付费）。",
+      "access_probability": "中等（需找到跃金段并定位其标志）"
     },
     {
-      "name": "阿丽亚娜集团前哨",
-      "description": "提供协助的组织前哨。",
-      "access_probability": "未知（需在层级内探索发现）"
+      "name": "Tom 的餐馆",
+      "description": "Alpha 基地附近提供食物和社区感的小餐馆。",
+      "access_probability": "高（若在 Alpha 基地附近）"
     },
     {
-      "name": "琥珀营",
-      "description": "小型人类营地或社区。",
-      "access_probability": "未知（需在层级内探索发现）"
-    },
-    {
-      "name": "阿尔戈斯之眼",
-      "description": "小型人类营地或社区。",
-      "access_probability": "未知（需在层级内探索发现）"
+      "name": "小径内的无特定用途房间",
+      "description": "散布在小径中的各种房间（办公室、医务室、橡胶房间、挂画房间等），可作为相对安全的休息或避难所。",
+      "access_probability": "高（进入小径后随机发现）"
     }
   ],
   "transitions": {
     "entrances": [
-      "从 Level 0 切出",
-      "从 Level 4.2 中的特定随机门进入",
-      "从 Level 11 中的某些建筑入口进入",
-      "从 Level 12 中特定操作导致出现的门进入",
-      "从 Level 40 中的生锈金属门进入",
-      "从 Level 46 中的砂岩门进入",
-      "从 Level 54 中的某些门进入",
-      "从 Level 162 中的办公室门进入",
-      "从 Level 215 中未提及建筑上的门进入",
-      "从 Level 330 中与某栋建筑相连的门进入",
-      "从 Level 409 中的纸板门进入",
-      "从 Level 726 中的任意一扇门进入"
+      "从 Level 0 切出（最常见入口）",
+      "打开来自 Level 4.2, 11, 12, 40, 46, 54, 162, 215, 330, 409, 726 等层级的特定风格的门并跨过阈界"
     ],
     "exits": [
       {
-        "method": "沿管道与仪表盘逐渐显现的方向行走足够远",
-        "condition": "找到并跟随管道和仪表盘",
-        "success_chance": "高（稳定阈界）",
+        "method": "沿着管道与仪表盘逐渐显现的方向行走足够远",
+        "condition": "需长时间朝特定环境特征方向移动",
+        "success_chance": "高（阈界稳定）",
         "next": "Level 2"
       },
       {
-        "method": "通过玻璃门",
-        "condition": "找到并进入玻璃门",
+        "method": "找到并穿过一扇玻璃门",
+        "condition": "发现玻璃门",
         "success_chance": "未知",
         "next": "Level 22"
       },
       {
-        "method": "通过装有荧光灯的走廊尽头带独特符号的门",
-        "condition": "找到并进入该门",
+        "method": "找到走廊尽头带有独特符号的门（装有荧光灯）",
+        "condition": "发现特定符号的门",
         "success_chance": "未知",
         "next": "Level 154"
       },
       {
-        "method": "通过结冰金属门",
-        "condition": "找到并进入结冰金属门",
+        "method": "找到并穿过一扇结冰金属门",
+        "condition": "发现结冰金属门",
         "success_chance": "未知",
         "next": "Level 159"
       },
       {
-        "method": "通过掩体门",
-        "condition": "找到并进入掩体门",
+        "method": "找到并穿过一扇掩体门",
+        "condition": "发现掩体门",
         "success_chance": "未知",
         "next": "Level 218"
       },
       {
-        "method": "通过无厘头位置的木门",
-        "condition": "找到并进入该木门",
+        "method": "找到并穿过一扇位于无厘头位置的木门",
+        "condition": "发现位置不合常理的木门",
         "success_chance": "未知",
         "next": "Level 389"
       },
       {
-        "method": "通过感觉比四周墙面稍冷、位置捉摸不定的门",
-        "condition": "找到并进入该门",
+        "method": "找到并穿过一扇感觉比四周墙面稍冷、位置捉摸不定的门",
+        "condition": "发现温度异常且位置不定的门",
         "success_chance": "未知",
         "next": "Level 740"
       },
       {
-        "method": "通过外观类似于电梯或升降机的双开铁门",
-        "condition": "找到并进入该门，通过其后的楼梯",
+        "method": "找到外观类似于电梯或升降机的双开铁门，进入其后的楼梯",
+        "condition": "发现特定铁门并进入楼梯",
         "success_chance": "未知",
         "next": "Level 998"
       },
       {
-        "method": "通过纯白木门",
-        "condition": "找到并进入纯白木门",
+        "method": "找到并穿过一扇纯白木门",
+        "condition": "发现纯白木门",
         "success_chance": "未知",
         "next": "Level 998.2"
       },
       {
         "method": "按特定顺序进入门与走廊",
-        "condition": "遵循特定路径",
-        "success_chance": "未知",
-        "next": "枢纽"
+        "condition": "知晓并执行正确的顺序",
+        "success_chance": "低（需知识或运气）",
+        "next": "枢纽 (The Hub)"
       },
       {
-        "method": "切出（No-clip）",
-        "condition": "寻找可切出的表面或墙壁",
-        "success_chance": "极低（目的地随机，不推荐）",
+        "method": "切出（不推荐）",
+        "condition": "寻找可切出的表面",
+        "success_chance": "极低且危险（可能导致进入未知或缺乏资源的层级）",
         "next": null
       }
     ]
-  }
+  },
+  "findable_items": [
+    {
+      "name": "杏仁水",
+      "name_en": [
+        "Almond Water",
+        "Sweet Water",
+        "Almond Drink"
+      ],
+      "description": "一瓶散发着坚果甜味的水，能有效缓解干渴和头痛。",
+      "id": "almond_water",
+      "category": "Food"
+    },
+    {
+      "name": "撬棍",
+      "name_en": [
+        "Crowbar",
+        "Pry Bar",
+        "Wrecking Bar"
+      ],
+      "description": "一根结实、带有波纹状灰色外表和锈斑的金属撬棍，可作为工具或武器。",
+      "id": "crowbar",
+      "category": "Tool"
+    },
+    {
+      "name": "背包",
+      "name_en": [
+        "Backpack",
+        "Rucksack",
+        "Knapsack"
+      ],
+      "description": "一个黑色的背包，拉链有些损坏但还能使用，可用于携带物品。",
+      "id": "backpack",
+      "category": "Tool"
+    },
+    {
+      "name": "金属水瓶",
+      "name_en": [
+        "Metal Water Bottle",
+        "Canteen",
+        "Flask"
+      ],
+      "description": "银灰色的金属水瓶，通常用来盛装液体。",
+      "id": "metal_water_bottle",
+      "category": "Tool"
+    },
+    {
+      "name": "瓶装食物",
+      "name_en": [
+        "Bottled Food",
+        "Jarred Food",
+        "Preserved Jar"
+      ],
+      "description": "密封的瓶装食物，可以安全食用。",
+      "id": "bottled_food",
+      "category": "Food"
+    },
+    {
+      "name": "运动衫",
+      "name_en": [
+        "Sweatshirt",
+        "Hoodie",
+        "Jumper"
+      ],
+      "description": "一件用于保暖的衣物。",
+      "id": "sweatshirt",
+      "category": "Resource"
+    },
+    {
+      "name": "圣诞毛衣",
+      "name_en": [
+        "Christmas Sweater",
+        "Holiday Sweater",
+        "Festive Jumper"
+      ],
+      "description": "一件带有节日图案的毛衣，可用于保暖。",
+      "id": "christmas_sweater",
+      "category": "Resource"
+    },
+    {
+      "name": "袜子",
+      "name_en": [
+        "Socks",
+        "Stockings",
+        "Hosiery"
+      ],
+      "description": "一双用于保暖和保护的袜子。",
+      "id": "socks",
+      "category": "Resource"
+    },
+    {
+      "name": "滑雪裤",
+      "name_en": [
+        "Ski Pants",
+        "Snow Pants",
+        "Winter Trousers"
+      ],
+      "description": "一条用于保暖和防水的裤子。",
+      "id": "ski_pants",
+      "category": "Resource"
+    },
+    {
+      "name": "鞋子",
+      "name_en": [
+        "Shoes",
+        "Footwear",
+        "Boots"
+      ],
+      "description": "一双合适的鞋子，用于长途行走。",
+      "id": "shoes",
+      "category": "Resource"
+    },
+    {
+      "name": "绷带",
+      "name_en": [
+        "Bandage",
+        "Gauze",
+        "Dressing"
+      ],
+      "description": "用于包扎伤口的绷带或纱布。",
+      "id": "bandage",
+      "category": "Medical"
+    },
+    {
+      "name": "消毒剂",
+      "name_en": [
+        "Disinfectant",
+        "Antiseptic",
+        "Sanitizer"
+      ],
+      "description": "用于清洁伤口和防止感染的消毒剂。",
+      "id": "disinfectant",
+      "category": "Medical"
+    },
+    {
+      "name": "肥皂",
+      "name_en": [
+        "Soap",
+        "Bar Soap",
+        "Hand Soap"
+      ],
+      "description": "一块用于清洁的肥皂。",
+      "id": "soap",
+      "category": "Medical"
+    },
+    {
+      "name": "手消毒液",
+      "name_en": [
+        "Hand Sanitizer",
+        "Hand Rub",
+        "Alcohol Gel"
+      ],
+      "description": "用于手部消毒的液体或凝胶。",
+      "id": "hand_sanitizer",
+      "category": "Medical"
+    },
+    {
+      "name": "刀",
+      "name_en": [
+        "Knife",
+        "Blade",
+        "Pocket Knife"
+      ],
+      "description": "一把可用于切割、打开物品或自卫的刀。",
+      "id": "knife",
+      "category": "Tool"
+    },
+    {
+      "name": "斧头",
+      "name_en": [
+        "Axe",
+        "Hatchet",
+        "Tomahawk"
+      ],
+      "description": "一把可用于劈砍、打开物品或自卫的斧头。",
+      "id": "axe",
+      "category": "Tool"
+    },
+    {
+      "name": "火柴",
+      "name_en": [
+        "Matches",
+        "Matchbox",
+        "Matchsticks"
+      ],
+      "description": "一盒用于点火的火柴。",
+      "id": "matches",
+      "category": "Tool"
+    },
+    {
+      "name": "打火机",
+      "name_en": [
+        "Lighter",
+        "Cigarette Lighter",
+        "Flint Lighter"
+      ],
+      "description": "一个用于点火的打火机。",
+      "id": "lighter",
+      "category": "Tool"
+    },
+    {
+      "name": "头灯",
+      "name_en": [
+        "Headlamp",
+        "Head Torch",
+        "Head Light"
+      ],
+      "description": "一个戴在头上的照明工具。",
+      "id": "headlamp",
+      "category": "Tool"
+    },
+    {
+      "name": "手电筒",
+      "name_en": [
+        "Flashlight",
+        "Torch",
+        "Electric Torch"
+      ],
+      "description": "一个手持的照明工具。",
+      "id": "flashlight",
+      "category": "Tool"
+    },
+    {
+      "name": "纱线",
+      "name_en": [
+        "Yarn",
+        "Wool",
+        "Thread"
+      ],
+      "description": "一团纱线，可用于编织或作为标记工具。",
+      "id": "yarn",
+      "category": "Resource"
+    },
+    {
+      "name": "笔记本",
+      "name_en": [
+        "Notebook",
+        "Notepad",
+        "Journal"
+      ],
+      "description": "一个用于记录的笔记本。",
+      "id": "notebook",
+      "category": "Resource"
+    },
+    {
+      "name": "笔",
+      "name_en": [
+        "Pen",
+        "Ballpoint Pen",
+        "Writing Pen"
+      ],
+      "description": "一支用于书写的笔。",
+      "id": "pen",
+      "category": "Resource"
+    },
+    {
+      "name": "手表",
+      "name_en": [
+        "Watch",
+        "Wristwatch",
+        "Timepiece"
+      ],
+      "description": "一块用于记录时间的手表。",
+      "id": "watch",
+      "category": "Tool"
+    },
+    {
+      "name": "手机充电器",
+      "name_en": [
+        "Phone Charger",
+        "Charger",
+        "USB Charger"
+      ],
+      "description": "一个用于给手机充电的充电器。",
+      "id": "phone_charger",
+      "category": "Tool"
+    },
+    {
+      "name": "睡袋",
+      "name_en": [
+        "Sleeping Bag",
+        "Bedroll",
+        "Sleeping Sack"
+      ],
+      "description": "一个用于睡觉的睡袋。",
+      "id": "sleeping_bag",
+      "category": "Resource"
+    },
+    {
+      "name": "福友玉",
+      "name_en": [
+        "Fuyu Jade",
+        "Friend Jade",
+        "Glowing Jade"
+      ],
+      "description": "一种会发光以侦测附近实体的玉石。",
+      "id": "fuyu_jade",
+      "category": "Tool"
+    },
+    {
+      "name": "滋水枪",
+      "name_en": [
+        "Water Gun",
+        "Squirt Gun",
+        "Toy Water Pistol"
+      ],
+      "description": "一把玩具水枪，根据填充液体的不同可作为多功能远程武器。",
+      "id": "water_gun",
+      "category": "Weapon"
+    },
+    {
+      "name": "迁跃浆果",
+      "name_en": [
+        "Warp Berry",
+        "Jump Berry",
+        "Teleport Berry"
+      ],
+      "description": "一种可用于紧急逃脱的浆果，但使用后会产生副作用。",
+      "id": "warp_berry",
+      "category": "Resource"
+    },
+    {
+      "name": "砍刀",
+      "name_en": [
+        "Machete",
+        "Cleaver",
+        "Bolo Knife"
+      ],
+      "description": "一把长而宽的刀，可用于砍劈或作为武器。",
+      "id": "machete",
+      "category": "Weapon"
+    },
+    {
+      "name": "木材",
+      "name_en": [
+        "Wood",
+        "Lumber",
+        "Timber"
+      ],
+      "description": "可用于建造或作为燃料的木材。",
+      "id": "wood",
+      "category": "Resource"
+    }
+  ],
+  "entities": [
+    {
+      "name": "钝人",
+      "name_en": [
+        "Duller",
+        "Dull Man",
+        "Dull Entity"
+      ],
+      "description": "Level 1 中常见的人形实体，外观和行为模式多样，部分具有掠食性。",
+      "id": "duller",
+      "behavior": "敌对"
+    },
+    {
+      "name": "疫疾",
+      "name_en": [
+        "The Infected",
+        "Plaguebearer",
+        "Disease Entity"
+      ],
+      "description": "一种需要保持卫生以避免感染的实体。",
+      "id": "the_infected",
+      "behavior": "敌对"
+    },
+    {
+      "name": "爬菌",
+      "name_en": [
+        "Crawl Mold",
+        "Creeping Mold",
+        "Fungal Crawler"
+      ],
+      "description": "一种需要保持卫生以避免感染的实体。",
+      "id": "crawl_mold",
+      "behavior": "敌对"
+    },
+    {
+      "name": "瘟疫地精",
+      "name_en": [
+        "Plague Gremlin",
+        "Pestilent Gremlin",
+        "Disease Imp"
+      ],
+      "description": "较小的实体，可以被工具（如刀或斧头）吓跑。",
+      "id": "plague_gremlin",
+      "behavior": "敌对"
+    }
+  ],
+  "links": [
+    {
+      "text": "源站点",
+      "url": "https://backrooms-wiki-cn.wikidot.com/level-1"
+    },
+    {
+      "text": "http://backrooms-int.wikidot.com/level-1",
+      "url": "http://backrooms-int.wikidot.com/level-1"
+    },
+    {
+      "text": "http://backrooms-wiki.wikidot.com/level-1",
+      "url": "http://backrooms-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "http://ru-backrooms-wiki.wikidot.com/level-1",
+      "url": "http://ru-backrooms-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "https://brcn.backroomswiki.cn/level-1",
+      "url": "https://brcn.backroomswiki.cn/level-1"
+    },
+    {
+      "text": "http://fr-backrooms-wiki.wikidot.com/level-1",
+      "url": "http://fr-backrooms-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "http://pt-br-backrooms-wiki.wikidot.com/level-1",
+      "url": "http://pt-br-backrooms-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "http://backrooms-vn.wikidot.com/level-1",
+      "url": "http://backrooms-vn.wikidot.com/level-1"
+    },
+    {
+      "text": "http://es-backrooms-wiki.wikidot.com/level-1",
+      "url": "http://es-backrooms-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "http://pl-backrooms-wiki.wikidot.com/level-1",
+      "url": "http://pl-backrooms-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "http://japan-backrooms-wiki.wikidot.com/level-1",
+      "url": "http://japan-backrooms-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "http://id-backrooms-wiki.wikidot.com/level-1",
+      "url": "http://id-backrooms-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "http://it-backrooms-wiki.wikidot.com/level-1",
+      "url": "http://it-backrooms-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "http://backrooms-uli.wikidot.com/and:level-1",
+      "url": "http://backrooms-uli.wikidot.com/and:level-1"
+    },
+    {
+      "text": "http://ar-backrooms-wiki.wikidot.com/level-1",
+      "url": "http://ar-backrooms-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "http://backrooms-uli.wikidot.com/bih:level-1",
+      "url": "http://backrooms-uli.wikidot.com/bih:level-1"
+    },
+    {
+      "text": "http://backrooms-uli.wikidot.com/cz:level-1",
+      "url": "http://backrooms-uli.wikidot.com/cz:level-1"
+    },
+    {
+      "text": "http://de-backrooms-wiki.wikidot.com/level-1",
+      "url": "http://de-backrooms-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "http://backrooms-uli.wikidot.com/en:level-1",
+      "url": "http://backrooms-uli.wikidot.com/en:level-1"
+    },
+    {
+      "text": "http://eo-backrooms-wiki.wikidot.com/level-1",
+      "url": "http://eo-backrooms-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "http://backrooms-uli.wikidot.com/ga:level-1",
+      "url": "http://backrooms-uli.wikidot.com/ga:level-1"
+    },
+    {
+      "text": "http://backrooms-uli.wikidot.com/ko:level-1",
+      "url": "http://backrooms-uli.wikidot.com/ko:level-1"
+    },
+    {
+      "text": "http://backrooms-uli.wikidot.com/la:level-1",
+      "url": "http://backrooms-uli.wikidot.com/la:level-1"
+    },
+    {
+      "text": "http://backrooms-uli.wikidot.com/lv:level-1",
+      "url": "http://backrooms-uli.wikidot.com/lv:level-1"
+    },
+    {
+      "text": "http://backrooms-uli.wikidot.com/mr:level-1",
+      "url": "http://backrooms-uli.wikidot.com/mr:level-1"
+    },
+    {
+      "text": "http://backrooms-uli.wikidot.com/mt:level-1",
+      "url": "http://backrooms-uli.wikidot.com/mt:level-1"
+    },
+    {
+      "text": "http://backrooms-uli.wikidot.com/ro:level-1",
+      "url": "http://backrooms-uli.wikidot.com/ro:level-1"
+    },
+    {
+      "text": "http://th-backrooms-wiki.wikidot.com/level-1",
+      "url": "http://th-backrooms-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "http://backrooms-tok-wiki.wikidot.com/level-1",
+      "url": "http://backrooms-tok-wiki.wikidot.com/level-1"
+    },
+    {
+      "text": "http://backrooms-uli.wikidot.com/tr:level-1",
+      "url": "http://backrooms-uli.wikidot.com/tr:level-1"
+    },
+    {
+      "text": "http://backrooms-uli.wikidot.com/ua:level-1",
+      "url": "http://backrooms-uli.wikidot.com/ua:level-1"
+    },
+    {
+      "text": "切出",
+      "url": "/phenomene-1-fr"
+    },
+    {
+      "text": "黄色厅房",
+      "url": "/level-0"
+    },
+    {
+      "text": "马尼拉房间",
+      "url": "/manila-room"
+    },
+    {
+      "text": "切入",
+      "url": "/phenomene-1-fr"
+    },
+    {
+      "text": "阿丽亚娜集团",
+      "url": "/cercle-ariane"
+    },
+    {
+      "text": "不结盟贸易集团",
+      "url": "/b-n-t-g"
+    },
+    {
+      "text": "探险者总署",
+      "url": "/the-m-e-g"
+    },
+    {
+      "text": "游牧民族",
+      "url": "/nomades"
+    },
+    {
+      "text": "速切玩家",
+      "url": "https://brcn.backroomswiki.cn/speednoclippers/offset/1"
+    },
+    {
+      "text": "实体",
+      "url": "/level-1#toc5"
+    },
+    {
+      "text": "随机出现的板条箱",
+      "url": "/level-1#toc4"
+    },
+    {
+      "text": "明灭不定的灯光",
+      "url": "/level-1#toc3"
+    },
+    {
+      "text": "黄色厅房",
+      "url": "/level-0"
+    },
+    {
+      "text": "探险者总署",
+      "url": "/the-m-e-g"
+    },
+    {
+      "text": "杏仁水",
+      "url": "/object-1"
+    },
+    {
+      "text": "现象",
+      "url": "/phenomena"
+    },
+    {
+      "text": "杏仁水",
+      "url": "/object-1"
+    },
+    {
+      "text": "福友玉",
+      "url": "/object-101"
+    },
+    {
+      "text": "滋水枪",
+      "url": "/object-19"
+    },
+    {
+      "text": "迁跃浆果",
+      "url": "/object-74"
+    },
+    {
+      "text": "详细说明",
+      "url": "/entities"
+    },
+    {
+      "text": "探险者总署",
+      "url": "/the-m-e-g"
+    },
+    {
+      "text": "Alpha 基地",
+      "url": "/base-alpha"
+    },
+    {
+      "text": "出现并消失",
+      "url": "/phenomenon-32"
+    },
+    {
+      "text": "Level 0",
+      "url": "/level-0"
+    },
+    {
+      "text": "Level 4.2",
+      "url": "/trimmed:level-4-2"
+    },
+    {
+      "text": "Level 11",
+      "url": "/level-11"
+    },
+    {
+      "text": "Level 12",
+      "url": "/level-12"
+    },
+    {
+      "text": "Level 40",
+      "url": "/level-40"
+    },
+    {
+      "text": "Level 46",
+      "url": "/level-46"
+    },
+    {
+      "text": "Level 54",
+      "url": "/level-54"
+    },
+    {
+      "text": "Level 162",
+      "url": "/level-162"
+    },
+    {
+      "text": "Level 215",
+      "url": "/level-215"
+    },
+    {
+      "text": "Level 330",
+      "url": "/level-330"
+    },
+    {
+      "text": "level-409",
+      "url": "/trimmed:level-409"
+    },
+    {
+      "text": "Level 726",
+      "url": "/level-726"
+    },
+    {
+      "text": "Level 2",
+      "url": "/level-2"
+    },
+    {
+      "text": "阿丽亚娜集团数据库",
+      "url": "/phenomene-1-fr#toc11"
+    },
+    {
+      "text": "Level 22",
+      "url": "/level-22"
+    },
+    {
+      "text": "Level 154",
+      "url": "/level-154"
+    },
+    {
+      "text": "Level 159",
+      "url": "/level-159"
+    },
+    {
+      "text": "Level 218",
+      "url": "/level-218"
+    },
+    {
+      "text": "Level 389",
+      "url": "/level-389"
+    },
+    {
+      "text": "Level 740",
+      "url": "/level-740"
+    },
+    {
+      "text": "Level 998",
+      "url": "/level-998"
+    },
+    {
+      "text": "Level 998.2",
+      "url": "/level-998-2"
+    },
+    {
+      "text": "枢纽",
+      "url": "/the-hub"
+    },
+    {
+      "text": "Level 0",
+      "url": "/level-0"
+    },
+    {
+      "text": "Level 2",
+      "url": "/level-2"
+    },
+    {
+      "text": "回溯机器",
+      "url": "/object-22"
+    },
+    {
+      "text": "疫疾",
+      "url": "/entity-19"
+    },
+    {
+      "text": "爬菌",
+      "url": "/entity-17"
+    },
+    {
+      "text": "瘟疫地精",
+      "url": "/entity-25"
+    },
+    {
+      "text": "失落一族",
+      "url": "/level-51"
+    },
+    {
+      "text": "Level 0",
+      "url": "/level-0"
+    },
+    {
+      "text": "11",
+      "url": "/level-11"
+    }
+  ]
 }

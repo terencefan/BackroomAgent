@@ -1,0 +1,11 @@
+{
+  "name": "肥皂",
+  "name_en": [
+    "Soap",
+    "Bar Soap",
+    "Hand Soap"
+  ],
+  "description": "一块用于清洁的肥皂。",
+  "id": "soap",
+  "category": "Medical"
+}

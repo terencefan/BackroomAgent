@@ -1,0 +1,11 @@
+{
+  "name": "迁跃浆果",
+  "name_en": [
+    "Warp Berry",
+    "Jump Berry",
+    "Teleport Berry"
+  ],
+  "description": "一种可用于紧急逃脱的浆果，但使用后会产生副作用。",
+  "id": "warp_berry",
+  "category": "Resource"
+}

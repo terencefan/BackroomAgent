@@ -7,9 +7,9 @@ This project is a text-adventure game system composed of three distinct parts:
 
 ## Cross-Stack Data Protocol
 The communication contract is strictly defined in `PROTOCOL.md`.
-- **Python**: Models are in `backend/protocol.py` (Pydantic).
+- **Python**: Models are in `backroom_agent/protocol.py` (Pydantic).
 - **TypeScript**: Interfaces are in `frontend/src/types.ts`.
-- **Rule**: Any change to the game state structure (e.g., adding a new stat) **MUST** be applied synchronously to `PROTOCOL.md`, `backend/protocol.py`, and `frontend/src/types.ts`.
+- **Rule**: Any change to the game state structure (e.g., adding a new stat) **MUST** be applied synchronously to `PROTOCOL.md`, `backroom_agent/protocol.py`, and `frontend/src/types.ts`.
 
 ## Agent Development (`backroom_agent/`)
 
@@ -17,6 +17,19 @@ The communication contract is strictly defined in `PROTOCOL.md`.
 The agent system is modular, consisting of a main "DM Agent" and specialized "Subagents".
 - **Main Agent**: `backroom_agent/agent.py` (Orchestrator).
 - **Subagents**: Located in `backroom_agent/subagents/`.
+- **Subagent State Pattern**:
+    - `state.py`: TypedDict definition. **MUST** group keys by the Node that produces/updates them.
+    - Example Structure:
+      ```python
+      class AgentState(TypedDict):
+          # --- Input/Config ---
+          ...
+          # --- Node: fetch_content ---
+          url: str
+          html_content: str
+          # --- Node: extract_items ---
+          raw_items: List[dict]
+      ```
 - **Standard Subagent Structure**:
     - `state.py`: TypedDict definition for the subagent's internal state.
     - `nodes.py`: Atomic logic functions (Nodes) that modify the state.

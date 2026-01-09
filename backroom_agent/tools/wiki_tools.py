@@ -1,4 +1,5 @@
 import os
+from typing import List, Dict
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langsmith import traceable
@@ -59,7 +60,7 @@ def convert_html_to_room_json(html_content: str, level_name: str) -> str:
 @traceable(run_type="tool", name="Fetch Wiki Content")
 def fetch_wiki_content(
     url: str, save_files: bool = True
-) -> tuple[str | None, str | None]:
+) -> tuple[str | None, str | None, List[Dict[str, str]]]:
     """
     Fetches the content of a URL and cleans it, keeping only useful tags.
     Saves raw content to data/raw and cleaned content to data/level.
@@ -69,12 +70,13 @@ def fetch_wiki_content(
         save_files (bool): Whether to save the raw and cleaned content to files.
 
     Returns:
-        tuple[str | None, str | None]: The cleaned HTML content string and the Level Name.
+        tuple[str | None, str | None, List[Dict[str, str]]]: 
+        (cleaned HTML content, Level Name, Extracted Links)
     """
     raw_content = fetch_url_content(url)
 
     if not raw_content:
-        return None, None
+        return None, None, []
 
     level_name = get_level_name_from_url(url)
     root_dir = get_project_root()
@@ -84,7 +86,8 @@ def fetch_wiki_content(
             raw_content, os.path.join(root_dir, "data/raw"), f"{level_name}.html"
         )
 
-    cleaned_content = clean_html_content(raw_content)
+    # Now unpack the link list as well
+    cleaned_content, extracted_links = clean_html_content(raw_content)
 
     # Post-process cleaning (normalize newlines)
     cleaned_content = "\n".join(
@@ -96,4 +99,5 @@ def fetch_wiki_content(
             cleaned_content, os.path.join(root_dir, "data/level"), f"{level_name}.html"
         )
 
-    return cleaned_content, level_name
+    return cleaned_content, level_name, extracted_links
+

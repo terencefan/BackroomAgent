@@ -1,0 +1,11 @@
+{
+  "name": "运动衫",
+  "name_en": [
+    "Sweatshirt",
+    "Hoodie",
+    "Jumper"
+  ],
+  "description": "一件用于保暖的衣物。",
+  "id": "sweatshirt",
+  "category": "Resource"
+}

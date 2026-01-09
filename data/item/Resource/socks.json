@@ -1,0 +1,11 @@
+{
+  "name": "袜子",
+  "name_en": [
+    "Socks",
+    "Stockings",
+    "Hosiery"
+  ],
+  "description": "一双用于保暖和保护的袜子。",
+  "id": "socks",
+  "category": "Resource"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "爬菌",
+  "name_en": [
+    "Crawl Mold",
+    "Creeping Mold",
+    "Fungal Crawler"
+  ],
+  "description": "一种需要保持卫生以避免感染的实体。",
+  "id": "crawl_mold",
+  "behavior": "敌对"
+}

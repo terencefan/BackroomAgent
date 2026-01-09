@@ -1,0 +1,11 @@
+{
+  "name": "瓶装食物",
+  "name_en": [
+    "Bottled Food",
+    "Jarred Food",
+    "Preserved Jar"
+  ],
+  "description": "密封的瓶装食物，可以安全食用。",
+  "id": "bottled_food",
+  "category": "Food"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "消毒剂",
+  "name_en": [
+    "Disinfectant",
+    "Antiseptic",
+    "Sanitizer"
+  ],
+  "description": "用于清洁伤口和防止感染的消毒剂。",
+  "id": "disinfectant",
+  "category": "Medical"
+}

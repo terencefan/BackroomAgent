@@ -1,0 +1,11 @@
+{
+  "name": "笔记本",
+  "name_en": [
+    "Notebook",
+    "Notepad",
+    "Journal"
+  ],
+  "description": "一个用于记录的笔记本。",
+  "id": "notebook",
+  "category": "Resource"
+}

@@ -1,6 +1,11 @@
 {
   "name": "打火机",
-  "description": "一种便携式点火装置。",
+  "name_en": [
+    "Lighter",
+    "Cigarette Lighter",
+    "Flint Lighter"
+  ],
+  "description": "一个用于点火的打火机。",
   "id": "lighter",
   "category": "Tool"
 }

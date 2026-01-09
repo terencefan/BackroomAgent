@@ -1,6 +1,11 @@
 {
   "name": "杏仁水",
-  "description": "一杯温热的杏仁水，散发着淡淡的甜味。",
+  "name_en": [
+    "Almond Water",
+    "Sweet Water",
+    "Almond Drink"
+  ],
+  "description": "一瓶散发着坚果甜味的水，能有效缓解干渴和头痛。",
   "id": "almond_water",
   "category": "Food"
 }

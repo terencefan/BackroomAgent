@@ -1,6 +1,11 @@
 {
   "name": "背包",
-  "description": "用于携带个人物品和补给品的容器。",
+  "name_en": [
+    "Backpack",
+    "Rucksack",
+    "Knapsack"
+  ],
+  "description": "一个黑色的背包，拉链有些损坏但还能使用，可用于携带物品。",
   "id": "backpack",
   "category": "Tool"
 }
