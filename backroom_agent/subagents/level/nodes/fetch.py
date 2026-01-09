@@ -1,10 +1,11 @@
 import logging
 import os
 import re
-from typing import List, Optional, Tuple, Dict
+from typing import Dict, List, Optional, Tuple
 from urllib.parse import urlparse
 
-from backroom_agent.tools.wiki.parse import clean_html_content  # Import cleaning logic
+from backroom_agent.tools.wiki.parse import \
+    clean_html_content  # Import cleaning logic
 from backroom_agent.tools.wiki_tools import (fetch_wiki_content,
                                              get_level_name_from_url)
 from backroom_agent.utils.common import get_project_root
@@ -24,6 +25,7 @@ WIKI_MIRRORS = [
 
 def _get_allowed_domains() -> List[str]:
     return [urlparse(m).netloc for m in WIKI_MIRRORS]
+
 
 def _try_load_raw_and_clean(
     level_name: Optional[str], url: Optional[str], logs: List[str]
@@ -53,25 +55,28 @@ def _try_load_raw_and_clean(
             try:
                 with open(raw_path, "r", encoding="utf-8") as f:
                     raw_content = f.read()
-                
+
                 # Apply Cleaning
                 cleaned_content, extracted_links = clean_html_content(raw_content)
                 cleaned_content = "\n".join(
-                    [line.strip() for line in cleaned_content.splitlines() if line.strip()]
+                    [
+                        line.strip()
+                        for line in cleaned_content.splitlines()
+                        if line.strip()
+                    ]
                 )
-                
-                # Optional: Update the data/level/ file too? 
+
+                # Optional: Update the data/level/ file too?
                 # Yes, if we are 'forcing' update from raw, we should update the cleaned cache.
                 clean_path = os.path.join(root, "data/level", f"{cand}.html")
                 with open(clean_path, "w", encoding="utf-8") as f:
                     f.write(cleaned_content)
-                
+
                 return cleaned_content, cand, extracted_links
             except Exception as e:
                 logs.append(f"Failed to process raw file: {e}")
-    
-    return None, None, []
 
+    return None, None, []
 
 
 def _get_mirror_url(path_segment: str, mirror_base: str) -> str:
@@ -303,7 +308,9 @@ def fetch_content_node(state: LevelAgentState):
         for cand in candidates:
             try:
                 logs.append(f"Attempting fetch from: {cand}")
-                content, extracted_name, extracted_links = fetch_wiki_content(cand, save_files=True)
+                content, extracted_name, extracted_links = fetch_wiki_content(
+                    cand, save_files=True
+                )
 
                 state_updates["html_content"] = content
                 state_updates["extracted_links"] = extracted_links
@@ -322,17 +329,21 @@ def fetch_content_node(state: LevelAgentState):
 
         if not success:
             logs.append(f"All fetch attempts failed. Last error: {last_error}")
-            
+
             # 5. Fallback to RAW cache if fetch failed
             if force_update:
-                logs.append("Attempting fallback to local RAW cache due to fetch failure...")
-                html_content, found_name, extracted_links = _try_load_raw_and_clean(level_name, url, logs)
+                logs.append(
+                    "Attempting fallback to local RAW cache due to fetch failure..."
+                )
+                html_content, found_name, extracted_links = _try_load_raw_and_clean(
+                    level_name, url, logs
+                )
                 if html_content:
                     state_updates["html_content"] = html_content
                     state_updates["extracted_links"] = extracted_links
                     # Don't update URL to represent cache, keep the target URL
                     if not state_updates.get("level_name"):
-                         state_updates["level_name"] = found_name
+                        state_updates["level_name"] = found_name
                     logs.append("Successfully recovered from RAW cache.")
                 else:
                     logs.append("Fallback to RAW cache failed.")

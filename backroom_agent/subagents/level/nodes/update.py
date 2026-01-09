@@ -3,6 +3,7 @@ import logging
 import os
 
 from backroom_agent.utils.common import get_project_root
+
 from ..state import LevelAgentState
 
 logger = logging.getLogger(__name__)
@@ -43,7 +44,7 @@ def update_level_json_node(state: LevelAgentState):
         data["findable_items"] = final_items
         data["entities"] = final_entities
         data["links"] = extracted_links
-        
+
         # Remove old key if it exists to keep it clean
         if "items" in data:
             del data["items"]

@@ -51,7 +51,7 @@ def run_batch_levels(start, end):
             print(error_msg)
             with open(log_file, "a") as f:
                 f.write(error_msg + "\n")
-                
+
         # Optional: Sleep to be nice to the wiki server
         time.sleep(1)
 
@@ -72,8 +72,9 @@ if __name__ == "__main__":
             end = int(sys.argv[2])
             run_batch_levels(start, end)
         except ValueError:
-            print("Invalid arguments. Usage: python scripts/batch_run_levels.py <start> <end>")
+            print(
+                "Invalid arguments. Usage: python scripts/batch_run_levels.py <start> <end>"
+            )
     else:
         # Default behavior or usage guide
         print("Usage: python scripts/batch_run_levels.py <start> <end>")
-

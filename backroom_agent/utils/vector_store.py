@@ -16,17 +16,18 @@ except ImportError:
     HuggingFaceEmbeddings = None
     OpenAIEmbeddings = None
     cosine_similarity = None
-    
+
 from backroom_agent.constants import API_KEY, BASE_URL
 
 # Global cache for embedding models to avoid reloading
 _MODEL_CACHE = {}
 
+
 def get_embedding_model(provider: str = "local", model_name: str = "all-MiniLM-L6-v2"):
     """
     Factory function to get the embedding model based on provider and model name.
     Uses caching to return the same instance within the same process.
-    
+
     Args:
         provider (str): "local" (HuggingFace) or "openai".
         model_name (str): The name of the model to use.
@@ -40,12 +41,10 @@ def get_embedding_model(provider: str = "local", model_name: str = "all-MiniLM-L
             raise ImportError("Missing dependencies: pip install langchain-openai")
         if not API_KEY:
             raise ValueError("API_KEY is missing. Please check your .env file.")
-        
+
         print(f"Initializing OpenAI embedding model ({model_name})...")
         model = OpenAIEmbeddings(
-            model=model_name,
-            openai_api_key=API_KEY,
-            openai_api_base=BASE_URL
+            model=model_name, openai_api_key=API_KEY, openai_api_base=BASE_URL
         )
     else:  # local / huggingface
         if HuggingFaceEmbeddings is None:
@@ -54,7 +53,7 @@ def get_embedding_model(provider: str = "local", model_name: str = "all-MiniLM-L
             )
         print(f"Initializing local embedding model ({model_name})...")
         model = HuggingFaceEmbeddings(model_name=model_name)
-    
+
     _MODEL_CACHE[cache_key] = model
     return model
 
@@ -70,9 +69,7 @@ def load_item_from_file(file_path: str) -> Optional[Dict]:
         description = data.get("description", "")
         category = data.get("category", None)
         behavior = data.get("behavior", None)  # For entities
-        item_id = data.get(
-            "id", os.path.basename(file_path).replace(".json", "")
-        )
+        item_id = data.get("id", os.path.basename(file_path).replace(".json", ""))
 
         # Construct text for embedding
         if category:
@@ -97,6 +94,7 @@ def load_item_from_file(file_path: str) -> Optional[Dict]:
     except Exception as e:
         print(f"Warning loading {file_path}: {e}")
         return None
+
 
 def load_items_from_dir(item_data_dir: str = "./data/item") -> List[Dict]:
     """Traverses directory to load all items."""
@@ -126,7 +124,7 @@ class SimpleVectorStore:
         self.model_name = model_name
         self.provider = provider
         self.embedding_model = None
-        
+
         # Adjust default model name for OpenAI if it looks like the local default
         if self.provider == "openai" and self.model_name == "all-MiniLM-L6-v2":
             self.model_name = "text-embedding-3-small"
@@ -144,9 +142,7 @@ class SimpleVectorStore:
             print("No items to index.")
             return
 
-        print(
-            f"Generating embeddings for {len(items)} items..."
-        )
+        print(f"Generating embeddings for {len(items)} items...")
 
         texts = [item["text"] for item in items]
         embeddings = self.embedding_model.embed_documents(texts)
@@ -222,7 +218,7 @@ class SimpleVectorStore:
             item_dict = load_item_from_file(file_path)
             if not item_dict:
                 continue
-            
+
             item_id = item_dict["id"]
             target_idx = id_to_index.get(item_id, -1)
             new_items_data.append({"target_index": target_idx, "item": item_dict})
@@ -306,7 +302,7 @@ def rebuild_vector_db(
 
 
 def update_vector_db(
-    file_paths: List[str], 
+    file_paths: List[str],
     db_path: str = "./data/vector_store/item_vector_store.pkl",
     provider: str = "local",
     model_name: str = "all-MiniLM-L6-v2",
@@ -317,8 +313,8 @@ def update_vector_db(
 
 
 def search_similar_items(
-    query: str, 
-    k: int = 3, 
+    query: str,
+    k: int = 3,
     db_path: str = "./data/vector_store/item_vector_store.pkl",
     provider: str = "local",
     model_name: str = "all-MiniLM-L6-v2",

@@ -213,8 +213,10 @@ class LevelData(BaseModel):
     transitions: Transitions
     events: List[LevelEvent]
     links: Optional[List[Link]] = None
-    items: Optional[List[str]] = None      # New format: list of names
-    entities: Optional[List[str]] = None   # New format: list of names
+    items: Optional[List[str]] = None  # New format: list of names
+    entities: Optional[List[str]] = None  # New format: list of names
     # Legacy/Full Load support
     findable_items: Optional[List[LevelItem]] = None
-    entities_list: Optional[List[LevelEntity]] = Field(None, alias="entities") # Handle potential conflict if raw list of dicts
+    entities_list: Optional[List[LevelEntity]] = Field(
+        None, alias="entities"
+    )  # Handle potential conflict if raw list of dicts

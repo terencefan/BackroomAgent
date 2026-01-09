@@ -81,7 +81,7 @@ def get_all_level_references() -> Dict[str, Dict]:
                     res["items"]["valid_ids"].add(iid)
                     res["items"]["map"][iid].append(level_id)
                     res["items"]["names"][iid] = name
-            
+
             # Items (Old Format - Objects)
             if not item_names:
                 items = data.get("findable_items", [])
@@ -105,9 +105,15 @@ def get_all_level_references() -> Dict[str, Dict]:
 
             # Entities (Old Format - Objects)
             if not entity_names:
-                entities = data.get("entities_list", data.get("entities", [])) # Handle potential key confusion if objects were under 'entities' before
+                entities = data.get(
+                    "entities_list", data.get("entities", [])
+                )  # Handle potential key confusion if objects were under 'entities' before
                 # Check if first element is object
-                if isinstance(entities, list) and len(entities) > 0 and isinstance(entities[0], dict):
+                if (
+                    isinstance(entities, list)
+                    and len(entities) > 0
+                    and isinstance(entities[0], dict)
+                ):
                     for entity in entities:
                         if "id" in entity:
                             eid = entity["id"]

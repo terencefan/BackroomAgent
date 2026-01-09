@@ -5,6 +5,7 @@ from ..state import LevelAgentState
 
 logger = logging.getLogger(__name__)
 
+
 def _filter_candidates(
     candidates: List[dict],
     html_content: str,

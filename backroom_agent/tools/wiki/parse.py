@@ -1,5 +1,5 @@
-from typing import List, Tuple, Dict
 import re
+from typing import Dict, List, Tuple
 
 from bs4 import BeautifulSoup, Tag
 
@@ -48,7 +48,7 @@ def clean_html_content(raw_html: str) -> Tuple[str, List[Dict[str, str]]]:
 
     # 3. Narrow down to main content
     target = _extract_main_content(soup)
-    
+
     # --- Link Extraction Phase ---
     extracted_links = []
     # Find all 'a' tags with href BEFORE we start unwrapping or decomposing empty ones
@@ -70,14 +70,30 @@ def clean_html_content(raw_html: str) -> Tuple[str, List[Dict[str, str]]]:
     # 5. Remove empty tags
     # Expand list to include formatting and anchors
     tags_to_check = [
-        "p", "li", "h1", "h2", "h3", "h4", "h5", "h6", 
-        "a", "b", "strong", "i", "em", "u",
-        "blockquote", "pre", "code", "div", "span"
+        "p",
+        "li",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "a",
+        "b",
+        "strong",
+        "i",
+        "em",
+        "u",
+        "blockquote",
+        "pre",
+        "code",
+        "div",
+        "span",
     ]
     for tag in target.find_all(tags_to_check):
         if not tag.get_text(strip=True):
             tag.decompose()
-            
+
     # 5b. Remove independent/unpaired useless tags that might have been left over
     # (e.g. <br> or <hr> at start/end or clustered?)
     # Users request: "clean independent unpaired tags".
@@ -94,7 +110,6 @@ def clean_html_content(raw_html: str) -> Tuple[str, List[Dict[str, str]]]:
                 text.replace_with(new_text)
 
     return str(target).strip(), extracted_links
-
 
 
 def _extract_main_content(soup: BeautifulSoup):

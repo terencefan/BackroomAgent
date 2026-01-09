@@ -1,5 +1,5 @@
 import os
-from typing import List, Dict
+from typing import Dict, List
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langsmith import traceable
@@ -70,7 +70,7 @@ def fetch_wiki_content(
         save_files (bool): Whether to save the raw and cleaned content to files.
 
     Returns:
-        tuple[str | None, str | None, List[Dict[str, str]]]: 
+        tuple[str | None, str | None, List[Dict[str, str]]]:
         (cleaned HTML content, Level Name, Extracted Links)
     """
     raw_content = fetch_url_content(url)
@@ -100,4 +100,3 @@ def fetch_wiki_content(
         )
 
     return cleaned_content, level_name, extracted_links
-
