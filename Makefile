@@ -1,9 +1,15 @@
-.PHONY: install server graph frontend-install frontend-dev frontend-build clean format
+.PHONY: install server client graph frontend-install frontend-dev frontend-build clean format
 
 PYTHON = .venv/bin/python
 PIP = .venv/bin/pip
 
 # backend
+server:
+	PYTHONPATH=. $(PYTHON) -m backroom_agent.server
+
+client:
+	cd frontend && npm run dev
+
 install:
 	$(PIP) install -e .
 	$(PIP) install -r requirements.txt
@@ -53,3 +59,6 @@ rebuild-indices:
 	PYTHONPATH=. $(PYTHON) scripts/rebuild_indices.py --backend=$(BACKEND)
 
 rebuild-all: rebuild-indices
+
+clean-redis:
+	PYTHONPATH=. $(PYTHON) scripts/clear_redis.py

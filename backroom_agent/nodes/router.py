@@ -1,14 +1,10 @@
 import logging
 from typing import Dict, Literal, Union
 
+from backroom_agent.constants import NodeConstants
 from backroom_agent.protocol import EventType
 from backroom_agent.state import State
 from backroom_agent.utils.level import find_level_data
-
-from .init import init_node
-from .item import item_node
-from .llm import llm_node
-from .message import message_node
 
 logger = logging.getLogger(__name__)
 
@@ -41,10 +37,10 @@ def route_event(state: State) -> str:
     event_type = event.type if event else EventType.MESSAGE
 
     if event_type == EventType.INIT:
-        return init_node.__name__
+        return NodeConstants.INIT
     elif event_type == EventType.MESSAGE:
-        return message_node.__name__
+        return NodeConstants.GENERATE
     elif event_type in [EventType.USE, EventType.DROP]:
-        return item_node.__name__
+        return NodeConstants.INVENTORY
     else:
-        return llm_node.__name__
+        return NodeConstants.SIMPLE_CHAT

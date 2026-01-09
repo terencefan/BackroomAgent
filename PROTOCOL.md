@@ -67,7 +67,7 @@ The backend calculates the consequences of the action and returns the *diff* or 
     // ...
   },
   "dice_roll": {                  // Optional: Dice result
-    "type": "d20",                // "d20" or "d100"
+    "type": "d20",                // "d6", "d20" or "d100"
     "result": 18,
     "target": 12,                 // Optional target/DC
     "reason": "Dexterity Check"   // Optional context
@@ -80,7 +80,7 @@ The backend calculates the consequences of the action and returns the *diff* or 
 ### DiceRoll
 ```typescript
 interface DiceRoll {
-  type: 'd20' | 'd100';
+  type: 'd6' | 'd20' | 'd100';
   result: number;
   reason?: string;
 }

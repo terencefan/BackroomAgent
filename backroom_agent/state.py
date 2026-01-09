@@ -3,7 +3,7 @@ from typing import Annotated, List, Optional, TypedDict
 from langchain_core.messages import BaseMessage
 from langgraph.graph.message import add_messages
 
-from backroom_agent.protocol import GameEvent, GameState, LogicEvent
+from backroom_agent.protocol import GameEvent, GameState, LogicEvent, DiceRoll
 
 
 class State(TypedDict):
@@ -21,6 +21,9 @@ class State(TypedDict):
 
     # Logic Event (if generated)
     logic_event: Optional[LogicEvent]
+
+    # Dice Roll (if generated)
+    dice_roll: Optional[DiceRoll]
 
     # Raw LLM Output (Intermediate)
     raw_llm_output: Optional[str]

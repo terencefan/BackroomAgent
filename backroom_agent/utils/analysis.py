@@ -2,19 +2,28 @@ import glob
 import json
 import os
 from collections import defaultdict
-from typing import Dict, List, Set
+from typing import Any, Dict, List, Set, TypedDict, cast
 
 from .common import get_project_root
 
 
-def get_all_level_references() -> Dict[str, Dict]:
+class CategoryData(TypedDict):
+    valid_ids: Set[str]
+    map: Dict[str, List[str]]
+    names: Dict[str, str]
+
+
+class AnalysisResult(TypedDict):
+    items: CategoryData
+    entities: CategoryData
+    level_names: Dict[str, str]
+
+
+def get_all_level_references() -> AnalysisResult:
     """
     Scans all level files and returns valid IDs and mappings.
     Returns:
-        {
-            "items": {"valid_ids": Set[str], "map": Dict[str, List[str]], "names": Dict[str, str]},
-            "entities": {"valid_ids": Set[str], "map": Dict[str, List[str]], "names": Dict[str, str]}
-        }
+        AnalysisResult
     """
     root = get_project_root()
     level_dir = os.path.join(root, "data/level")
@@ -22,15 +31,15 @@ def get_all_level_references() -> Dict[str, Dict]:
     entity_dir = os.path.join(root, "data/entity")
 
     # Results
-    res = {
+    res: AnalysisResult = {
         "items": {"valid_ids": set(), "map": defaultdict(list), "names": {}},
         "entities": {"valid_ids": set(), "map": defaultdict(list), "names": {}},
         "level_names": {},
     }
 
     # 1. Build Name -> ID Maps from data/item and data/entity
-    item_name_to_id = {}
-    entity_name_to_id = {}
+    item_name_to_id: Dict[str, str] = {}
+    entity_name_to_id: Dict[str, str] = {}
 
     # Scan Items (Recursive)
     item_files = glob.glob(os.path.join(item_dir, "**/*.json"), recursive=True)
@@ -105,22 +114,21 @@ def get_all_level_references() -> Dict[str, Dict]:
 
             # Entities (Old Format - Objects)
             if not entity_names:
-                entities = data.get(
-                    "entities_list", data.get("entities", [])
-                )  # Handle potential key confusion if objects were under 'entities' before
-                # Check if first element is object
-                if (
-                    isinstance(entities, list)
-                    and len(entities) > 0
-                    and isinstance(entities[0], dict)
-                ):
-                    for entity in entities:
-                        if "id" in entity:
-                            eid = entity["id"]
-                            name = entity.get("name", eid)
-                            res["entities"]["valid_ids"].add(eid)
-                            res["entities"]["map"][eid].append(level_id)
-                            res["entities"]["names"][eid] = name
+                raw_entities = data.get("entities_list", data.get("entities", []))
+
+                # Check if it's a list of dicts
+                if isinstance(raw_entities, list):
+                    matches = cast(List[Any], raw_entities)
+                    if len(matches) > 0 and isinstance(matches[0], dict):
+                        # Explicit cast for type safety
+                        typed_entities = cast(List[Dict[str, Any]], matches)
+                        for entity in typed_entities:
+                            if "id" in entity:
+                                eid = entity["id"]
+                                name = entity.get("name", eid)
+                                res["entities"]["valid_ids"].add(eid)
+                                res["entities"]["map"][eid].append(level_id)
+                                res["entities"]["names"][eid] = name
 
         except Exception as e:
             print(f"Error reading {level_file}: {e}")

@@ -1,5 +1,4 @@
 import asyncio
-import json
 import logging
 from typing import AsyncGenerator
 
@@ -36,7 +35,7 @@ def get_initial_state() -> GameState:
     return GameState(
         level="Level 0",
         attributes=Attributes(STR=10, DEX=10, CON=10, INT=10, WIS=10, CHA=10),
-        vitals=Vitals(hp=10, maxHp=10, sanity=20),
+        vitals=Vitals(hp=10, maxHp=10, sanity=100),
         inventory=[],
     )
 
@@ -70,7 +69,7 @@ async def mock_agent_generator(request: ChatRequest) -> AsyncGenerator[str, None
 
 
 @app.post("/api/chat")
-async def chat_endpoint(request: ChatRequest):
+async def chat_endpoint(request: ChatRequest) -> StreamingResponse:
     """
     Streaming endpoint for chat interactions.
     """
@@ -85,11 +84,11 @@ async def chat_endpoint(request: ChatRequest):
 
 
 @app.get("/health")
-def health_check():
+def health_check() -> dict[str, str]:
     return {"status": "ok"}
 
 
-def start():
+def start() -> None:
     """Launched with `python -m backroom_agent.server`"""
     # Assuming running from the project root
     uvicorn.run("backroom_agent.server:app", host="0.0.0.0", port=8000, reload=True)

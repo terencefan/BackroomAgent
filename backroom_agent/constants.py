@@ -19,3 +19,31 @@ LANGCHAIN_TRACING_V2 = os.getenv("LANGCHAIN_TRACING_V2", "false").lower() == "tr
 LANGCHAIN_ENDPOINT = os.getenv("LANGCHAIN_ENDPOINT", "https://api.smith.langchain.com")
 LANGCHAIN_API_KEY = os.getenv("LANGCHAIN_API_KEY", "")
 LANGCHAIN_PROJECT = os.getenv("LANGCHAIN_PROJECT", "backroom-agent")
+
+
+class GraphKeys:
+    """Keys used in the State TypedDict and graph updates."""
+    MESSAGES = "messages"
+    EVENT = "event"
+    USER_INPUT = "user_input"
+    SESSION_ID = "session_id"
+    CURRENT_GAME_STATE = "current_game_state"
+    LOGIC_EVENT = "logic_event"
+    DICE_ROLL = "dice_roll"
+    RAW_LLM_OUTPUT = "raw_llm_output"
+    LEVEL_CONTEXT = "level_context"
+    VALID_ACTIONS = "valid_actions"
+    SUGGESTIONS = "suggestions"
+
+
+class NodeConstants:
+    """Keys/Names for Graph Nodes."""
+    ROUTER = "router"
+    INIT = "init"
+    INVENTORY = "inventory"
+    SIMPLE_CHAT = "simple_chat"
+    GENERATE = "generate"
+    PROCESS = "process"
+    DICE = "dice"
+    UPDATE = "update"
+    SUGGEST = "suggest"

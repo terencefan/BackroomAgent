@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -64,7 +64,7 @@ class BackendMessage(BaseModel):
 
 
 class DiceRoll(BaseModel):
-    type: Literal["d20", "d100"]
+    type: Literal["d6", "d20", "d100"]
     result: int
     reason: Optional[str] = None
 
@@ -75,16 +75,17 @@ class StreamChunkType(str, Enum):
     STATE = "state"
     SUGGESTIONS = "suggestions"
     LOGIC_EVENT = "logic_event"
+    INIT = "init"
 
 
 class EventOutcome(BaseModel):
     range: List[int]
-    result: dict
+    result: Dict[str, Any]
 
 
 class LogicEvent(BaseModel):
     name: str
-    die_type: Literal["d20", "d100"]
+    die_type: Literal["d6", "d20", "d100"]
     outcomes: List[EventOutcome]
 
 
@@ -92,6 +93,11 @@ class StreamChunkMessage(BaseModel):
     type: Literal[StreamChunkType.MESSAGE]
     text: str
     sender: Literal["dm", "system"]
+
+
+class StreamChunkInit(BaseModel):
+    type: Literal[StreamChunkType.INIT]
+    text: str
 
 
 class StreamChunkDice(BaseModel):

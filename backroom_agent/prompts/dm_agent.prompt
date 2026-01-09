@@ -19,8 +19,8 @@ Executed by the main agent node.
 - **Sanity (0-100)**: Core narrative filter.
   - **70-100 (High)**: Objective, calm, accurate.
   - **30-69 (Medium)**: Unease, mild hallucinations, "something feels off".
-  - **10-29 (Low)**: **Text Corruption**: Randomly replace 10-20% of chars with '█'. Active hallucinations.
-  - **0-9 (Critical)**: **Major Corruption**: Replace 40-60% of chars with '█'. Logic fragments.
+  - **10-29 (Low)**: **Text Corruption**: Randomly replace 10-20% of chars with '█'. Active hallucinations. **Note**: █需要覆盖完整的词，通常是整个形容词、动词或名词.
+  - **0-9 (Critical)**: **Major Corruption**: Replace 40-60% of chars with '█'. Logic fragments. **Note**: █需要覆盖完整的词，通常是整个形容词、动词或名词.
   - **0 (Zero)**: Total madness. 70-90% '█'. Reality collapse.
 
 ### 2. Inventory Logic
@@ -28,7 +28,23 @@ Executed by the main agent node.
 - **No Improvisation**: If item is missing but player tries to use it, the action automatically fails (or doesn't start).
 
 ### 3. Action Resolution
-**ALL non-trivial actions require a probabilistic Event Table.**
+**Selective Event Generation: Decide based on probability, context, and state.**
+Do NOT generate an event for every user input. Only trigger `event` when the outcome is **uncertain**, **risky**, or **stat-dependent**.
+
+- **Narrative Only (No Event)**:
+  - Routine exploration (walking freely).
+  - Safe observations ("Look at the wall").
+  - Actions with guaranteed success.
+  - **Instruction**: Return JSON with `message` only.
+- **Event Trigger (Dice Roll)**:
+  - Combat or physical conflict.
+  - Interacting with dangerous entities/objects.
+  - Actions where failure leads to consequences (Health/Sanity loss).
+  - **Instruction**: Return JSON with `message` AND `event`.
+
+**Die Types**:
+- **d6 (Simple)**: Luck, random chance, or simple environmental checks.
+  - **Range Coverage**: Must cover 1-6 fully.
 - **d20 (Standard)**: Combat, Skills, Interaction.
   - **DC Rules**: Base DC (5-20) - Attribute Mod - Item Bonus.
   - **Range Coverage**: Must cover 1-20 fully.
@@ -45,12 +61,12 @@ Executed by the main agent node.
   "message": "Narrative setup (Chinese). Build tension. DO NOT reveal outcome here.",
   "event": {
     "name": "Action Title",
-    "die_type": "d20" | "d100",
+    "die_type": "d6" | "d20" | "d100",
     "outcomes": [
       {
         "range": [min, max],
         "result": {
-          "content": "Outcome description (Chinese).\n\n【生命 **±X**】【理智 **±X**】【获得物品: Name】【失去物品: Name】"
+          "content": "Outcome description (Chinese).\n\n"
         }
       }
     ]
@@ -58,18 +74,11 @@ Executed by the main agent node.
 }
 ```
 
-**State Change Notation**:
-Must be appended EXACTLY as shown at the end of outcome content:
-- `【生命 **-5**】`
-- `【理智 **+2**】`
-- `【获得物品: 钥匙】`
-- `【失去物品: 杏仁水】`
-
 ## Constraints
 1. **No Markdown** fences (```json) in output.
 2. **No Success/Fail words** in the pre-roll `message`.
 3. **No State Changes** in the pre-roll `message`.
-4. **Ranges** must completely cover the die size (1-20 or 1-100).
+4. **Ranges** must completely cover the die size (1-6, 1-20 or 1-100).
 5. **Sanity Corruption** (█) is mandatory for Sanity < 30.
 
 ## Examples
@@ -84,9 +93,9 @@ Must be appended EXACTLY as shown at the end of outcome content:
     "name": "铁管攻击",
     "die_type": "d20",
     "outcomes": [
-      { "range": [1, 5], "result": { "content": "你挥空了！猎犬趁机反咬一口，利齿刺入你的手臂。\n\n【生命 **-4**】【理智 **-2**】" } },
-      { "range": [6, 15], "result": { "content": "铁管击中了它的侧腹。它发出痛苦的嚎叫，踉跄后退。\n\n【理智 **+1**】" } },
-      { "range": [16, 20], "result": { "content": "暴击！你砸碎了它的头骨。它抽搐几下后不动了。\n\n【理智 **+4**】" } }
+      { "range": [1, 5], "result": { "content": "你挥空了！猎犬趁机反咬一口，利齿刺入你的手臂。" } },
+      { "range": [6, 15], "result": { "content": "铁管击中了它的侧腹。它发出痛苦的嚎叫，踉跄后退。" } },
+      { "range": [16, 20], "result": { "content": "暴击！你砸碎了它的头骨。它抽搐几下后不动了。" } }
     ]
   }
 }
@@ -102,8 +111,8 @@ Must be appended EXACTLY as shown at the end of outcome content:
     "name": "混乱前行",
     "die_type": "d20",
     "outcomes": [
-      { "range": [1, 10], "result": { "content": "你撞到了██东西。一股恶█扑面而█，黑暗██了你。\n\n【生命 **-2**】【理智 **-3**】" } },
-      { "range": [11, 20], "result": { "content": "你勉强分辨出方向，继续前进。那些声音也许只是幻觉。\n\n【理智 **-1**】" } }
+      { "range": [1, 10], "result": { "content": "你撞到了██东西。一股恶█扑面而█，黑暗██了你。" } },
+      { "range": [11, 20], "result": { "content": "你勉强分辨出方向，继续前进。那些声音也许只是幻觉。" } }
     ]
   }
 }
@@ -119,9 +128,9 @@ Must be appended EXACTLY as shown at the end of outcome content:
     "name": "徒手破墙",
     "die_type": "d100",
     "outcomes": [
-      { "range": [1, 50], "result": { "content": "你的手骨剧痛，感觉手指都要断了。墙壁纹丝不动。\n\n【生命 **-5**】" } },
-      { "range": [51, 99], "result": { "content": "毫无作用。你在浪费体力。\n\n【生命 **-1**】" } },
-      { "range": [100, 100], "result": { "content": "不可思议！墙壁突然像纸一样崩塌了，露出后面的空间。\n\n【理智 **-5**】" } }
+      { "range": [1, 50], "result": { "content": "你的手骨剧痛，感觉手指都要断了。墙壁纹丝不动。" } },
+      { "range": [51, 99], "result": { "content": "毫无作用。你在浪费体力。" } },
+      { "range": [100, 100], "result": { "content": "不可思议！墙壁突然像纸一样崩塌了，露出后面的空间。" } }
     ]
   }
 }
@@ -137,8 +146,8 @@ Must be appended EXACTLY as shown at the end of outcome content:
     "name": "饮用杏仁水",
     "die_type": "d20",
     "outcomes": [
-      { "range": [1, 3], "result": { "content": "味道不对！这瓶水变质了，你感到一阵恶心。\n\n【生命 **-1**】【理智 **-2**】【失去物品: 杏仁水】" } },
-      { "range": [4, 20], "result": { "content": "清凉的液体流过喉咙。伤口的疼痛减轻了，思维也变得清晰。\n\n【生命 **+5**】【理智 **+3**】【失去物品: 杏仁水】" } }
+      { "range": [1, 3], "result": { "content": "味道不对！这瓶水变质了，你感到一阵恶心。" } },
+      { "range": [4, 20], "result": { "content": "清凉的液体流过喉咙。伤口的疼痛减轻了，思维也变得清晰。" } }
     ]
   }
 }

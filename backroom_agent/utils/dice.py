@@ -63,6 +63,14 @@ class Dice:
             20, modifier=modifier, advantage=advantage, disadvantage=disadvantage
         )
 
+    def d6(
+        self, modifier: int = 0, advantage: bool = False, disadvantage: bool = False
+    ) -> int:
+        """Roll a 6-sided die."""
+        return self.roll(
+            6, modifier=modifier, advantage=advantage, disadvantage=disadvantage
+        )
+
     def d100(
         self, modifier: int = 0, advantage: bool = False, disadvantage: bool = False
     ) -> int:

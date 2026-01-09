@@ -5,8 +5,9 @@ from langchain_core.messages import AIMessage
 
 from backroom_agent.graph import graph
 from backroom_agent.protocol import (ChatRequest, GameState,
-                                     StreamChunkMessage, StreamChunkState,
-                                     StreamChunkSuggestions, StreamChunkType)
+                                     StreamChunkInit, StreamChunkMessage,
+                                     StreamChunkState, StreamChunkSuggestions,
+                                     StreamChunkType)
 
 
 async def handle_init(
@@ -23,7 +24,7 @@ async def handle_init(
     async for chunk in graph.astream(input_state, stream_mode="updates"):
         for _, updates in chunk.items():
 
-            # 1. Messages
+            # 1. Messages -> INIT Type
             if "messages" in updates:
                 msgs = updates["messages"]
                 if not isinstance(msgs, list):
@@ -31,10 +32,10 @@ async def handle_init(
 
                 for msg in msgs:
                     if isinstance(msg, AIMessage) and msg.content:
-                        yield StreamChunkMessage(
-                            type=StreamChunkType.MESSAGE,
+                        # Use StreamChunkInit for initialization messages
+                        yield StreamChunkInit(
+                            type=StreamChunkType.INIT,
                             text=str(msg.content),
-                            sender="dm",
                         ).model_dump_json() + "\n"
 
             # 2. Game State

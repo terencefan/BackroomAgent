@@ -33,8 +33,8 @@ def style_and_save_graph(graph_obj, output_path, llm_nodes, graph_mermaid_code=N
 
         style_defs = (
             "\n"
-            "classDef llm fill:#ffdfba,stroke:#333,stroke-width:2px;\n"
-            "classDef normal fill:#baffc9,stroke:#333,stroke-width:2px;\n"
+            "classDef llm fill:#ffdfba,stroke:#333,stroke-width:2px,width:180px,min-width:180px;\n"
+            "classDef normal fill:#baffc9,stroke:#333,stroke-width:2px,width:180px,min-width:180px;\n"
         )
 
         class_assignments = []
@@ -180,15 +180,15 @@ def generate_combined_graph(tmp_dir, main_llm_nodes):
         if match:
             u, arrow, v = match.groups()
 
-            if u == "suggestion_node":
+            if u == "suggest":
                 u = sub_exit if sub_exit else u
-            if v == "suggestion_node":
+            if v == "suggest":
                 v = sub_entry if sub_entry else v
 
             if u and v:
                 new_lines.append(f"    {u} {arrow} {v};")
         else:
-            if "suggestion_node" in line:
+            if "suggest" in line:
                 continue
             new_lines.append(f"    {line};")
 
@@ -225,7 +225,7 @@ def generate_graphs():
     os.makedirs(arch_dir, exist_ok=True)
 
     print("Generating Main Agent Graph...")
-    main_llm_nodes = {"init_node", "llm_node", "summary_node", "suggestion_node"}
+    main_llm_nodes = {"init", "chat", "update", "suggest", "generate", "dice"}
     style_and_save_graph(
         main_graph, os.path.join(arch_dir, "agent_graph.png"), main_llm_nodes
     )

@@ -68,7 +68,7 @@ export type UIEvent =
 
 
 export interface DiceRoll {
-  type: 'd20' | 'd100';
+  type: 'd6' | 'd20' | 'd100';
   result: number;
   reason?: string;
 }
@@ -78,7 +78,8 @@ export const StreamChunkType = {
   DICE_ROLL: 'dice_roll',
   STATE: 'state',
   SUGGESTIONS: 'suggestions',
-  LOGIC_EVENT: 'logic_event'
+  LOGIC_EVENT: 'logic_event',
+  INIT: 'init',
 } as const;
 
 export type StreamChunkType = typeof StreamChunkType[keyof typeof StreamChunkType];
@@ -93,7 +94,7 @@ export interface EventOutcome {
 
 export interface LogicEvent {
   name: string;
-  die_type: 'd20' | 'd100';
+  die_type: 'd6' | 'd20' | 'd100';
   outcomes: EventOutcome[];
 }
 
@@ -101,6 +102,11 @@ export interface StreamChunkMessage {
   type: typeof StreamChunkType.MESSAGE;
   text: string;
   sender: 'dm' | 'system';
+}
+
+export interface StreamChunkInit {
+  type: typeof StreamChunkType.INIT;
+  text: string;
 }
 
 export interface StreamChunkDice {
@@ -129,7 +135,8 @@ export type StreamChunk =
   | StreamChunkDice 
   | StreamChunkState 
   | StreamChunkSuggestions
-  | StreamChunkLogicEvent;
+  | StreamChunkLogicEvent
+  | StreamChunkInit;
 
 export interface ChatResponse {
   messages: BackendMessage[];
@@ -140,9 +147,11 @@ export interface ChatResponse {
 
 export interface Message {
   id: number;
-  sender: 'dm' | 'player' | 'system';
+  sender: 'dm' | 'player' | 'system' | 'init';
   text: string;
   options?: string[];
   selectedOption?: string;
   logicEvent?: LogicEvent;
+  logicEventConfirmed?: boolean;
+  logicRollResult?: number;
 }
