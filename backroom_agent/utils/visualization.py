@@ -242,7 +242,16 @@ def generate_interactive_bipartite_graph(data_map, id_to_name, title, output_pat
             net.add_edge(item, level, color="#555555", width=1)
             
     # Save
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    net.save_graph(output_path)
+    output_dir = os.path.dirname(output_path)
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Change to output directory so generated 'lib' folder appears there
+    current_dir = os.getcwd()
+    try:
+        os.chdir(output_dir)
+        net.save_graph(os.path.basename(output_path))
+    finally:
+        os.chdir(current_dir)
+        
     print(f"Interactive graph saved to {output_path}")
 
