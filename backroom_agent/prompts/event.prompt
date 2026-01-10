@@ -71,7 +71,8 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
              "hp": 0,                // Integer delta (e.g., -5, +2)
              "sanity": 0,            // Integer delta
              "add_items": [],        // List of objects: {"id": "str", "name": "str", "quantity": 1}
-             "remove_items": []      // List of item IDs (strings) to remove
+             "remove_items": [],     // List of item IDs (strings) to remove
+             "new_level": "Level X"  // Optional: Target Level ID if transition occurs
           }
         }
       }
@@ -87,6 +88,7 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
 4. **Ranges** must completely cover the die size (1-6, 1-20 or 1-100).
 5. **Sanity Corruption** (█) is mandatory for Sanity < 30.
 6. **State Updates**: You MUST calculate specific HP/Sanity/Inventory changes for each outcome NOW. Do not leave it vague.
+7. **Level Transitions**: If the user attempts to NoClip or enter an exit, and it is uncertain/risky, use a Dice Event. If successful, include `"new_level": "Level ID"` in the updates.
 
 ## Examples
 
