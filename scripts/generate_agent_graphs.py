@@ -191,15 +191,15 @@ def generate_combined_graph(tmp_dir, main_llm_nodes, suggestion_llm_nodes):
         if match:
             u, arrow, v = match.groups()
 
-            if u == "suggest":
+            if u == "suggestion_node":
                 u = sub_exit if sub_exit else u
-            if v == "suggest":
+            if v == "suggestion_node":
                 v = sub_entry if sub_entry else v
 
             if u and v:
                 new_lines.append(f"    {u} {arrow} {v};")
         else:
-            if "suggest" in line:
+            if "suggestion_node" in line:
                 continue
             new_lines.append(f"    {line};")
 

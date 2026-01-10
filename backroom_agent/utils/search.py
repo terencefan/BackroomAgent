@@ -5,6 +5,7 @@ from langsmith import traceable
 
 from backroom_agent.utils.logger import logger
 
+
 @traceable(run_type="tool", name="Search Backrooms Wiki")
 def search_backrooms_wiki(query_content: str) -> str | None:
     """

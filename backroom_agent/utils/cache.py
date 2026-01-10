@@ -6,6 +6,7 @@ import redis
 from backroom_agent.constants import REDIS_HOST, REDIS_PASSWORD, REDIS_PORT
 from backroom_agent.utils.logger import logger
 
+
 class RedisCache:
     _instance = None
     _client: Optional[redis.Redis] = None

@@ -11,7 +11,7 @@ def summary_node(state: State, config: RunnableConfig) -> dict:
     Summarizes the transaction and updates the final game state.
     """
     logger.info("▶ NODE: Summary Node")
-    
+
     current = state.get("current_game_state")
     if current:
         # Assuming Pydantic v2 model_copy.

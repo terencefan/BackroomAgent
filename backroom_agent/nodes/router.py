@@ -18,7 +18,7 @@ def router_node(state: State) -> Dict[Literal["level_context"], str]:
     2. Does NOT determine the next step directly (Routing logic is separate).
     """
     logger.info("▶ NODE: Router Node")
-    
+
     current_game_state = state.get("current_game_state")
     level_id = current_game_state.level if current_game_state else "Level 0"
 
@@ -41,11 +41,11 @@ def route_event(state: State) -> str:
     event_type = event.type if event else EventType.MESSAGE
 
     if event_type == EventType.INIT:
-        return NodeConstants.INIT
+        return NodeConstants.INIT_NODE
     elif event_type == EventType.MESSAGE:
-        return NodeConstants.GENERATE
+        return NodeConstants.MESSAGE_NODE
     elif event_type in [EventType.USE, EventType.DROP]:
-        return NodeConstants.INVENTORY
+        return NodeConstants.ITEM_NODE
     else:
         # Check explicit mappings or fallthrough to END
         return END

@@ -5,6 +5,7 @@ from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 from typing import Optional
 
+
 # Define ANSI color codes for console output
 class LogColors:
     RESET = "\033[0m"
@@ -18,6 +19,7 @@ class LogColors:
     WHITE = "\033[37m"
     BOLD_RED = "\033[1;31m"
     BOLD_YELLOW = "\033[1;33m"
+
 
 class ColoredFormatter(logging.Formatter):
     """
@@ -40,41 +42,44 @@ class ColoredFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         # Create a copy so we don't alter the original record for other handlers
         log_fmt = self.FORMAT_STR
-        
+
         # Apply color only if it's going to a stream that supports it (simulated logic here)
         # In this specific class, we assume we want colors.
         color = self.LEVEL_COLORS.get(record.levelno, LogColors.RESET)
-        
+
         # We inject the color codes around the levelname in the format string dynamically
-        # Or we can format the levelname attribute. 
+        # Or we can format the levelname attribute.
         # Better approach: Override formatMessage or just modify levelname temporarily.
         original_levelname = record.levelname
         record.levelname = f"{color}{original_levelname}{LogColors.RESET}"
-        
+
         formatter = logging.Formatter(log_fmt, self.DATE_FORMAT)
         result = formatter.format(record)
-        
+
         # Restore original levelname
         record.levelname = original_levelname
         return result
+
 
 class PlainFormatter(logging.Formatter):
     """
     Plain text formatter for file logs (no color codes).
     """
+
     FORMAT_STR = "%(asctime)s.%(msecs)03d | %(levelname)-8s | %(filename)s:%(lineno)d | %(name)s | %(message)s"
     DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
     def __init__(self):
         super().__init__(self.FORMAT_STR, self.DATE_FORMAT)
 
+
 class LogManager:
     """
     Manager class to setup and provide logger instances.
     """
-    
+
     _instance: Optional[logging.Logger] = None
-    
+
     @staticmethod
     def setup_logger(
         name: str = "backroom_agent",
@@ -83,7 +88,7 @@ class LogManager:
         level: int = logging.INFO,
         console_output: bool = True,
         file_output: bool = True,
-        backup_count: int = 30
+        backup_count: int = 30,
     ) -> logging.Logger:
         """
         Creates and configures a logger instance.
@@ -102,11 +107,11 @@ class LogManager:
         """
         logger = logging.getLogger(name)
         logger.setLevel(level)
-        
+
         # Clear existing handlers to avoid duplicate logs if setup is called multiple times
         if logger.handlers:
             logger.handlers.clear()
-            
+
         # Prevent propagation to root logger to avoid double printing if root is configured
         logger.propagate = False
 
@@ -122,21 +127,21 @@ class LogManager:
             # Ensure log directory exists
             log_path = Path(log_dir)
             log_path.mkdir(parents=True, exist_ok=True)
-            
+
             file_path = log_path / log_file
-            
+
             # TimedRotatingFileHandler: Rotates logs daily ('midnight')
             file_handler = TimedRotatingFileHandler(
                 filename=file_path,
                 when="midnight",
                 interval=1,
                 backupCount=backup_count,
-                encoding="utf-8"
+                encoding="utf-8",
             )
             file_handler.setLevel(level)
             file_handler.setFormatter(PlainFormatter())
             # Suffix for rotated files: YYYY-MM-DD
-            file_handler.suffix = "%Y-%m-%d" 
+            file_handler.suffix = "%Y-%m-%d"
             logger.addHandler(file_handler)
 
         return logger
@@ -151,11 +156,13 @@ class LogManager:
             cls._instance = cls.setup_logger(name=name, level=logging.DEBUG)
         return cls._instance
 
+
 # --- Convenience Exports ---
 
 # 1. Initialize the global default logger immediately
 # This ensures 'from logger import logger' works out of the box
 logger = LogManager.get_logger()
+
 
 # 2. Function to re-configure the global logger if needed (e.g., from main config)
 def configure_global_logger(log_dir: str = "logs", level: int = logging.INFO):
@@ -170,11 +177,11 @@ if __name__ == "__main__":
         name="test_logger",
         log_dir="tmp/test_logs",
         log_file="test.log",
-        level=logging.DEBUG
+        level=logging.DEBUG,
     )
 
     print(f"Testing logger. Checking logs in ./tmp/test_logs/test.log")
-    
+
     # 1. Standard Levels
     test_logger.debug("This is a DEBUG message - only visible if level is DEBUG.")
     test_logger.info("This is an INFO message - standard operating info.")

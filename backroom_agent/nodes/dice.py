@@ -18,8 +18,8 @@ def route_check_dice(state: State) -> str:
     If no -> Skip to Settle Node.
     """
     if state.get(GraphKeys.LOGIC_EVENT):
-        return NodeConstants.DICE
-    return NodeConstants.SETTLE
+        return NodeConstants.DICE_NODE
+    return NodeConstants.SETTLE_NODE
 
 
 @annotate_node("normal")
@@ -34,7 +34,7 @@ def dice_node(state: State) -> Dict[str, Any]:
     6. Returns the dice roll info AND creates a new HumanMessage to feed back to LLM.
     """
     logger.info("▶ NODE: Dice Node")
-    
+
     logic_event = state.get("logic_event")
 
     # If no event, return empty (Router should prevent this)

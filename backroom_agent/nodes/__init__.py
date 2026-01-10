@@ -12,27 +12,27 @@ from .suggestion import suggestion_node
 from .summary import summary_node
 
 # Define Node Constants (Aliases to centralized constants)
-NODE_ROUTER = NodeConstants.ROUTER
-NODE_INIT = NodeConstants.INIT
-NODE_INVENTORY = NodeConstants.INVENTORY
-NODE_GENERATE = NodeConstants.GENERATE
-NODE_PROCESS = NodeConstants.PROCESS
-NODE_DICE = NodeConstants.DICE
-NODE_SETTLE = NodeConstants.SETTLE
-NODE_SUMMARY = NodeConstants.SUMMARY
-NODE_SUGGEST = NodeConstants.SUGGEST
+NODE_ROUTER_NODE = NodeConstants.ROUTER_NODE
+NODE_INIT_NODE = NodeConstants.INIT_NODE
+NODE_ITEM_NODE = NodeConstants.ITEM_NODE
+NODE_MESSAGE_NODE = NodeConstants.MESSAGE_NODE
+NODE_PROCESS_MESSAGE_NODE = NodeConstants.PROCESS_MESSAGE_NODE
+NODE_DICE_NODE = NodeConstants.DICE_NODE
+NODE_SETTLE_NODE = NodeConstants.SETTLE_NODE
+NODE_SUMMARY_NODE = NodeConstants.SUMMARY_NODE
+NODE_SUGGESTION_NODE = NodeConstants.SUGGESTION_NODE
 
 # Node annotations (used by tooling/visualization)
 NODE_CALLABLES_BY_ID = {
-    NODE_ROUTER: router_node,
-    NODE_INIT: init_node,
-    NODE_INVENTORY: item_node,
-    NODE_GENERATE: message_node,
-    NODE_PROCESS: process_message_node,
-    NODE_DICE: dice_node,
-    NODE_SETTLE: settle_node,
-    NODE_SUMMARY: summary_node,
-    NODE_SUGGEST: suggestion_node,
+    NODE_ROUTER_NODE: router_node,
+    NODE_INIT_NODE: init_node,
+    NODE_ITEM_NODE: item_node,
+    NODE_MESSAGE_NODE: message_node,
+    NODE_PROCESS_MESSAGE_NODE: process_message_node,
+    NODE_DICE_NODE: dice_node,
+    NODE_SETTLE_NODE: settle_node,
+    NODE_SUMMARY_NODE: summary_node,
+    NODE_SUGGESTION_NODE: suggestion_node,
 }
 
 NODE_ANNOTATIONS_BY_ID: dict[str, NodeAnnotation] = {
@@ -56,15 +56,15 @@ __all__ = [
     "summary_node",
     "suggestion_node",
     "route_event",
-    "NODE_ROUTER",
-    "NODE_INIT",
-    "NODE_INVENTORY",
-    "NODE_GENERATE",
-    "NODE_PROCESS",
-    "NODE_DICE",
-    "NODE_SETTLE",
-    "NODE_SUMMARY",
-    "NODE_SUGGEST",
+    "NODE_ROUTER_NODE",
+    "NODE_INIT_NODE",
+    "NODE_ITEM_NODE",
+    "NODE_MESSAGE_NODE",
+    "NODE_PROCESS_MESSAGE_NODE",
+    "NODE_DICE_NODE",
+    "NODE_SETTLE_NODE",
+    "NODE_SUMMARY_NODE",
+    "NODE_SUGGESTION_NODE",
     "NodeAnnotation",
     "NodeKind",
     "NODE_CALLABLES_BY_ID",

@@ -95,7 +95,9 @@ def message_node(state: State, config: RunnableConfig) -> dict:
     debug_content = [
         f"{i}. [{msg.type}]: {msg.content}" for i, msg in enumerate(messages)
     ]
-    logger.debug(f"State Messages Dump ({len(messages)} items):\n" + "\n".join(debug_content))
+    logger.debug(
+        f"State Messages Dump ({len(messages)} items):\n" + "\n".join(debug_content)
+    )
 
     # 1. Prepare Game State Data
     state_dict = {}

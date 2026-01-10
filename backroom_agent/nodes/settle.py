@@ -98,7 +98,7 @@ def settle_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
     # 1. Prepare Input
     messages = state.get(GraphKeys.MESSAGES, [])
     serialized_msgs = _serialize_messages(messages)
-    
+
     current_state = state.get(GraphKeys.CURRENT_GAME_STATE)
     gs_data = _serialize_game_state(current_state)
 
@@ -107,7 +107,7 @@ def settle_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
         logic_outcome = logic_outcome.model_dump()
     elif hasattr(logic_outcome, "dict"):
         logic_outcome = logic_outcome.dict()
-    
+
     input_data = {
         "current_game_state": gs_data,
         "interaction_messages": serialized_msgs,
@@ -124,7 +124,7 @@ def settle_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
 
     # 3. Process Response
     data = _parse_llm_response(content)
-    
+
     updates = data.get("state_updates", {})
     new_game_state = _apply_state_updates(current_state, updates)
 
@@ -134,14 +134,14 @@ def settle_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
 
 
 def route_settle(state: State) -> str:
-        """Decides where to go after Settle.
+    """Decides where to go after Settle.
 
-        Note:
-        - Routing functions should be pure (no state mutation). Mutating `state` here does not
-            reliably persist across LangGraph steps.
-        - The dice follow-up narrative loop is handled in the graph edges (Dice -> Generate).
-        """
+    Note:
+    - Routing functions should be pure (no state mutation). Mutating `state` here does not
+        reliably persist across LangGraph steps.
+    - The dice follow-up narrative loop is handled in the graph edges (Dice -> Generate).
+    """
 
-        # Settle is the last resolver step; always proceed to summary.
-        logger.debug("Route Settle -> SUMMARY")
-        return NodeConstants.SUMMARY
+    # Settle is the last resolver step; always proceed to summary.
+    logger.debug("Route Settle -> SUMMARY")
+    return NodeConstants.SUMMARY_NODE
