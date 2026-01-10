@@ -1,5 +1,6 @@
 from typing import Dict, Literal
 
+from langchain_core.messages import HumanMessage
 from langgraph.graph import END
 
 from backroom_agent.constants import NodeConstants
@@ -23,13 +24,21 @@ def router_node(state: State) -> Dict[Literal["level_context"], str]:
     level_id = current_game_state.level if current_game_state else "Level 0"
 
     # Check if context is already loaded to avoid redundant reads
+    updates = {"turn_loop_count": 0}
+    
     if not state.get("level_context"):
         logger.info(f"Router pre-fetching context for {level_id}")
         _, level_context = find_level_data(level_id)
         if level_context:
-            return {"level_context": level_context, "turn_loop_count": 0}
+            updates["level_context"] = level_context
 
-    return {"turn_loop_count": 0}
+    # If explicit INIT event, inject a prompt for the Event Node so it has "User Input"
+    event = state.get("event")
+    if event and event.type == EventType.INIT:
+        logger.info("Router: Injecting trigger message for Init -> Event")
+        updates["messages"] = [HumanMessage(content="进入新层级，请帮我生成事件")]
+
+    return updates
 
 
 def route_event(state: State) -> str:
@@ -41,7 +50,7 @@ def route_event(state: State) -> str:
     event_type = event.type if event else EventType.MESSAGE
 
     if event_type == EventType.INIT:
-        return NodeConstants.INIT_NODE
+        return NodeConstants.EVENT_NODE
     elif event_type == EventType.MESSAGE:
         return NodeConstants.EVENT_NODE
     elif event_type in [EventType.USE, EventType.DROP]:
