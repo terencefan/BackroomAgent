@@ -1,7 +1,7 @@
 import asyncio
 from typing import Any, AsyncGenerator, List, cast
 
-from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 
 from backroom_agent.constants import GraphKeys
 from backroom_agent.graph import graph
