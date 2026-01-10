@@ -897,4 +897,63 @@ body {
 }
 
 .chat-box-content { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
-.chat-box-content { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+/* Vital Animations */
+@keyframes float-up-fade {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-30px) scale(1.2); opacity: 0; }
+}
+
+@keyframes float-down-fade {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(30px) scale(1.2); opacity: 0; }
+}
+
+@keyframes shake-vital {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+}
+
+.vital-container {
+  position: relative;
+  /* Ensure overflow is visible so floating text can be seen outside */
+  overflow: visible !important; 
+}
+
+.vital-popup {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-weight: 900;
+  font-size: 1.5rem;
+  pointer-events: none;
+  z-index: 100;
+  text-shadow: 0 0 3px black;
+}
+
+.vital-popup.positive {
+  color: #4ade80; /* Green */
+  animation: float-up-fade 1.5s ease-out forwards;
+}
+
+.vital-popup.negative {
+  color: #ef4444; /* Red */
+  animation: float-down-fade 1.5s ease-out forwards;
+}
+
+.vital-popup.sanity-positive {
+  color: #d6bcfa; /* Light Purple */
+  animation: float-up-fade 1.5s ease-out forwards;
+}
+
+.vital-popup.sanity-negative {
+  color: #805ad5; /* Dark Purple */
+  animation: float-down-fade 1.5s ease-out forwards;
+}
+
+/* Add shake class dynamically */
+.shaking {
+  animation: shake-vital 0.4s ease-in-out;
+}
