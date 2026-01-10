@@ -382,3 +382,47 @@ DEBUG: Summary Node [Turn Complete]:
 - Model Output: 你仔细检查着潮湿的黄色墙纸，指尖划过那些重复的、令人不安的纹理。荧光灯的嗡鸣声在耳边持续不断，空气里弥漫着陈旧地毯和霉菌的混合气味。你寻找着任何不寻常的痕迹——一个缺口、一片污渍，或是某种不属于这里的记号。...
 2026-01-10 20:41:27.164 | INFO     | suggestion.py:16 | backroom_agent | ▶ NODE: Suggestion Node
 2026-01-10 20:41:27.165 | INFO     | nodes.py:18 | backroom_agent | Suggestion Agent: Thinking...
+2026-01-10 20:41:30.958 | INFO     | server.py:73 | backroom_agent | [session-1767974738845-0xxq7eagp] Event: EventType.MESSAGE | Input: 聆听远处可能的说话声
+2026-01-10 20:41:31.463 | INFO     | router.py:20 | backroom_agent | ▶ NODE: Router Node
+2026-01-10 20:41:31.463 | INFO     | router.py:27 | backroom_agent | Router pre-fetching context for Level 0
+2026-01-10 20:41:31.464 | INFO     | level.py:27 | backroom_agent | Searching for level data for ID: 'Level 0' in /Users/bytedance/workspace/BackroomAgent/data/level
+2026-01-10 20:41:31.466 | INFO     | message.py:87 | backroom_agent | ▶ NODE: Message Node (LLM Generation)
+2026-01-10 20:41:31.466 | DEBUG    | message.py:98 | backroom_agent | State Messages Dump (1 items):
+0. [human]: 聆听远处可能的说话声
+2026-01-10 20:41:31.467 | DEBUG    | message.py:128 | backroom_agent | LLM Input Payload (JSON):
+{
+  "level": "Level 0",
+  "time": 482,
+  "attributes": {
+    "STR": 10,
+    "DEX": 10,
+    "CON": 10,
+    "INT": 10,
+    "WIS": 10,
+    "CHA": 10
+  },
+  "vitals": {
+    "hp": 10,
+    "maxHp": 10,
+    "sanity": 98
+  },
+  "inventory": [],
+  "message": "\u8046\u542c\u8fdc\u5904\u53ef\u80fd\u7684\u8bf4\u8bdd\u58f0"
+}
+2026-01-10 20:41:35.140 | DEBUG    | message.py:145 | backroom_agent | LLM Output Payload (JSON):
+{
+  "message": "\u4f60\u505c\u4e0b\u811a\u6b65\uff0c\u5c4f\u4f4f\u547c\u5438\uff0c\u4fa7\u8033\u503e\u542c\u3002\u6f6e\u6e7f\u7684\u7a7a\u6c14\u4f3c\u4e4e\u51dd\u56fa\u4e86\uff0c\u53ea\u6709\u8367\u5149\u706f\u7ba1\u6301\u7eed\u4e0d\u65ad\u7684\u55e1\u55e1\u58f0\u3002\u4f60\u96c6\u4e2d\u7cbe\u795e\uff0c\u8bd5\u56fe\u4ece\u8fd9\u7247\u5355\u8c03\u7684\u80cc\u666f\u566a\u97f3\u4e2d\u5206\u8fa8\u51fa\u4efb\u4f55\u5f02\u5e38\u2014\u2014\u4e5f\u8bb8\u662f\u811a\u6b65\u58f0\uff0c\u4e5f\u8bb8\u662f\u4f4e\u8bed\uff0c\u4e5f\u8bb8\u662f\u522b\u7684\u4ec0\u4e48\u3002"
+}
+2026-01-10 20:41:35.142 | INFO     | message.py:158 | backroom_agent | ▶ NODE: Process Message Node
+2026-01-10 20:41:35.142 | INFO     | message.py:185 | backroom_agent | LLM Response Narrative: 你停下脚步，屏住呼吸，侧耳倾听。潮湿的空气似乎凝固了，只有荧光灯管持续不断的嗡嗡声。你集中精神，试图...
+2026-01-10 20:41:35.143 | INFO     | settle.py:96 | backroom_agent | ▶ NODE: Settle Node
+2026-01-10 20:41:37.653 | INFO     | settle.py:80 | backroom_agent | Settle Node Applied Updates: HP+0 Sanity-2
+2026-01-10 20:41:37.654 | DEBUG    | settle.py:146 | backroom_agent | Route Settle -> SUMMARY
+2026-01-10 20:41:37.656 | INFO     | summary.py:13 | backroom_agent | ▶ NODE: Summary Node
+2026-01-10 20:41:37.656 | DEBUG    | summary.py:31 | backroom_agent | Summary Node [Turn Complete]:
+- Time: 483
+- Model Output: 你停下脚步，屏住呼吸，侧耳倾听。潮湿的空气似乎凝固了，只有荧光灯管持续不断的嗡嗡声。你集中精神，试图从这片单调的背景噪音中分辨出任何异常——也许是脚步声，也许是低语，也许是别的什么。...
+2026-01-10 20:41:37.658 | INFO     | suggestion.py:16 | backroom_agent | ▶ NODE: Suggestion Node
+2026-01-10 20:41:37.659 | INFO     | nodes.py:18 | backroom_agent | Suggestion Agent: Thinking...
+2026-01-10 20:42:51.506 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:44:08.259 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379

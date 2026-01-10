@@ -15,10 +15,11 @@ install:
 	$(PIP) install -r requirements.txt
 
 graph:
-	PYTHONPATH=. $(PYTHON) scripts/generate_level_graph.py
-	PYTHONPATH=. $(PYTHON) scripts/generate_item_graph.py
-	PYTHONPATH=. $(PYTHON) scripts/generate_entity_graph.py
-	PYTHONPATH=. $(PYTHON) scripts/generate_agent_graphs.py
+	PYTHONPATH=. $(PYTHON) scripts/generate_level_graph.py & \
+	PYTHONPATH=. $(PYTHON) scripts/generate_item_graph.py & \
+	PYTHONPATH=. $(PYTHON) scripts/generate_entity_graph.py & \
+	PYTHONPATH=. $(PYTHON) scripts/generate_agent_graphs.py & \
+	wait
 
 scripts-fetch:
 	PYTHONPATH=. $(PYTHON) scripts/batch_fetch_levels.py
