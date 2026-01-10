@@ -5,6 +5,11 @@ from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 from typing import Optional
 
+# Determine Project Root to ensure logs are always in workspace root
+# logger.py is in backroom_agent/utils/
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+DEFAULT_LOG_DIR = PROJECT_ROOT / "logs"
+
 
 # Define ANSI color codes for console output
 class LogColors:
@@ -83,7 +88,7 @@ class LogManager:
     @staticmethod
     def setup_logger(
         name: str = "backroom_agent",
-        log_dir: str = "logs",
+        log_dir: str = str(DEFAULT_LOG_DIR),
         log_file: str = "app.log",
         level: int = logging.INFO,
         console_output: bool = True,
@@ -165,7 +170,9 @@ logger = LogManager.get_logger()
 
 
 # 2. Function to re-configure the global logger if needed (e.g., from main config)
-def configure_global_logger(log_dir: str = "logs", level: int = logging.INFO):
+def configure_global_logger(
+    log_dir: str = str(DEFAULT_LOG_DIR), level: int = logging.INFO
+):
     global logger
     logger = LogManager.setup_logger(log_dir=log_dir, level=level)
 
