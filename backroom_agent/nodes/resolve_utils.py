@@ -61,8 +61,9 @@ def apply_state_updates(current_state: Any, updates: Dict[str, Any]) -> Any:
     if not updates:
         return new_game_state
 
-    hp_change = int(updates.get("hp_change", 0))
-    sanity_change = int(updates.get("sanity_change", 0))
+    # Support both old "hp_change" and new "hp" keys
+    hp_change = int(updates.get("hp", updates.get("hp_change", 0)))
+    sanity_change = int(updates.get("sanity", updates.get("sanity_change", 0)))
 
     new_game_state.vitals.hp = max(
         0, min(new_game_state.vitals.maxHp, new_game_state.vitals.hp + hp_change)
@@ -83,7 +84,63 @@ def apply_state_updates(current_state: Any, updates: Dict[str, Any]) -> Any:
         new_game_state.level = new_level
         logger.info(f"Level Transition detected: {old_level} -> {new_level}")
 
-    # Note: Inventory updates (items_added/removed) logic placeholder
-    # Future implementation goes here.
+    # Handle Inventory Updates
+    from backroom_agent.protocol import Item
+
+    # 1. Add Items
+    items_to_add = updates.get("add_items", [])
+    if items_to_add:
+        for item_data in items_to_add:
+            try:
+                # Basic validation
+                if "id" not in item_data:
+                    # Generate ID from name if missing
+                    item_data["id"] = (
+                        item_data.get("name", "unknown").lower().replace(" ", "_")
+                    )
+
+                new_item = Item(**item_data)
+
+                # Check if item already exists (stack it)
+                existing_item = next(
+                    (i for i in new_game_state.inventory if i and i.id == new_item.id),
+                    None,
+                )
+                if existing_item:
+                    existing_item.quantity += new_item.quantity
+                    logger.info(f"Stacked item {new_item.id} (+{new_item.quantity})")
+                else:
+                    new_game_state.inventory.append(new_item)
+                    logger.info(f"Added new item {new_item.id}")
+            except Exception as e:
+                logger.error(f"Failed to add item {item_data}: {e}")
+
+    # 2. Remove Items
+    items_to_remove = updates.get("remove_items", [])
+    if items_to_remove:
+        # Assuming list of IDs
+        for item_id_or_name in items_to_remove:
+            target_id = str(item_id_or_name).lower()
+
+            # Find item
+            # We iterate a copy or index to modify list safely
+            # Assuming simple removal of 1 quantity or full removal?
+            # Start with full removal/decrement logic
+
+            found_index = -1
+            for idx, item in enumerate(new_game_state.inventory):
+                if item and (item.id == target_id or item.name.lower() == target_id):
+                    found_index = idx
+                    break
+
+            if found_index != -1:
+                # For now, just remove 1 quantity.
+                item = new_game_state.inventory[found_index]
+                if item and item.quantity > 1:
+                    item.quantity -= 1
+                    logger.info(f"Decremented item {item.id}")
+                else:
+                    new_game_state.inventory.pop(found_index)
+                    logger.info(f"Removed item {target_id}")
 
     return new_game_state

@@ -47,7 +47,7 @@ def build_graph():
         route_event,
         {
             NODE_INIT_NODE: NODE_INIT_NODE,
-            "item_node": NODE_ITEM_RESOLVE_NODE, # Map old key to new node
+            "item_node": NODE_ITEM_RESOLVE_NODE,  # Map old key to new node
             NODE_EVENT_NODE: NODE_EVENT_NODE,
             END: END,
         },

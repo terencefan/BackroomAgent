@@ -1,83 +1,52 @@
 import json
 from typing import Any, Dict
 
-from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.runnables import RunnableConfig
 
 from backroom_agent.constants import GraphKeys, NodeConstants
-from backroom_agent.nodes.resolve_utils import (apply_state_updates,
-                                                load_settle_prompt,
-                                                parse_settle_response,
-                                                serialize_game_state,
-                                                serialize_messages)
+from backroom_agent.nodes.resolve_utils import apply_state_updates
 from backroom_agent.state import State
-from backroom_agent.utils.common import get_llm
-from backroom_agent.utils.level import find_level_data
 from backroom_agent.utils.logger import logger
 from backroom_agent.utils.node_annotation import annotate_node
 
-SETTLE_PROMPT = load_settle_prompt()
 
-
-@annotate_node("llm")
+@annotate_node("normal")
 def event_resolve_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
     """
-    Event Resolve Node (formerly Settle Node):
-    Resolves the turn for non-dice paths (or cleanup), deciding implicit state changes based on narrative.
+    Event Resolve Node:
+    Deterministic state updates based on the Dice outcome.
+    NO LLM CALLS.
     """
     logger.info("▶ NODE: Event Resolve Node")
 
-    # 1. Prepare Input
-    messages = state.get(GraphKeys.MESSAGES, [])
-    serialized_msgs = serialize_messages(messages)
-
     current_state = state.get(GraphKeys.CURRENT_GAME_STATE)
-    gs_data = serialize_game_state(current_state)
-
     logic_outcome = state.get(GraphKeys.LOGIC_OUTCOME)
-    if hasattr(logic_outcome, "model_dump"):
-        logic_outcome = logic_outcome.model_dump()  # type: ignore
-    elif hasattr(logic_outcome, "dict"):
-        logic_outcome = logic_outcome.dict()  # type: ignore
 
-    # Fetch Level Exits for Context
-    level_exits = []
-    level_id = None
-    if current_state:
-        if hasattr(current_state, "level"):
-            level_id = current_state.level
-        elif isinstance(current_state, dict):
-            level_id = current_state.get("level")
+    if not current_state:
+        return {}
 
-    if level_id:
-        level_data, _ = find_level_data(level_id)
-        if level_data and "transitions" in level_data:
-            raw_exits = level_data["transitions"].get("exits", [])
-            # Filter out 'success_chance' if present
-            for exit_item in raw_exits:
-                if isinstance(exit_item, dict):
-                    exit_item.pop("success_chance", None)
-            level_exits = raw_exits
+    # Extract updates from the chosen outcome
+    updates = {}
+    if logic_outcome:
+        # logic_outcome comes from Dice Node, representing the selected EventOutcome
+        result = None
+        if isinstance(logic_outcome, dict):
+            result = logic_outcome.get("result")
+        elif hasattr(logic_outcome, "result"):
+            result = logic_outcome.result
 
-    input_data = {
-        "current_game_state": gs_data,
-        "interaction_messages": serialized_msgs,
-        "logic_outcome": logic_outcome,
-        "level_exits": level_exits,
-    }
-    user_content = json.dumps(input_data, ensure_ascii=False, indent=2)
+        if result and isinstance(result, dict):
+            # Check for explicit "updates" key (new format)
+            if "updates" in result:
+                updates = result["updates"]
+            # Fallback (legacy/simple): check for direct keys if we flatten structure later
+            # But currently we enforce "updates" block.
 
-    # 2. Invoke LLM
-    llm = get_llm()
-    response = llm.invoke(
-        [SystemMessage(content=SETTLE_PROMPT), HumanMessage(content=user_content)]
-    )
-    content = str(response.content)
+    if not updates:
+        logger.info("No specific state updates found in logic outcome.")
+        return {}
 
-    # 3. Process Response
-    data = parse_settle_response(content)
-
-    updates = data.get("state_updates", {})
+    # Apply updates mechanistically
     new_game_state = apply_state_updates(current_state, updates)
 
     return {
