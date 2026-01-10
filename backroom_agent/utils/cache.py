@@ -1,4 +1,5 @@
 import hashlib
+import json
 from typing import Any, Callable, Optional
 
 import redis
@@ -44,6 +45,20 @@ class RedisCache:
         content_hash = hashlib.md5(content.encode("utf-8")).hexdigest()
         return f"backroom:{prefix}:{content_hash}"
 
+    def _serialize(self, value: Any) -> str:
+        """Serializes data to string for Redis storage."""
+        if isinstance(value, (dict, list)):
+            return json.dumps(value, ensure_ascii=False)
+        return str(value)
+
+    def _deserialize(self, value: str) -> Any:
+        """Attempts to deserialize data from Redis string."""
+        try:
+            return json.loads(value)
+        except (json.JSONDecodeError, TypeError):
+            # Fallback for plain strings or legacy data
+            return value
+
     def get(
         self, prefix: str, content: str, on_miss: Optional[Callable[[], Any]] = None
     ) -> Optional[Any]:
@@ -58,7 +73,7 @@ class RedisCache:
             try:
                 value = self._client.get(key)
                 if value is not None:
-                    return value
+                    return self._deserialize(value)
             except redis.RedisError as e:
                 logger.warning(f"Redis get error: {e}")
 
@@ -68,7 +83,8 @@ class RedisCache:
             if self._client and result:
                 try:
                     # Default TTL 24 hours
-                    self._client.setex(key, 86400, str(result))
+                    serialized = self._serialize(result)
+                    self._client.setex(key, 86400, serialized)
                 except redis.RedisError as e:
                     logger.warning(f"Redis set error: {e}")
             return result
@@ -80,7 +96,8 @@ class RedisCache:
         key = self._generate_key(prefix, content)
         if self._client:
             try:
-                self._client.setex(key, 86400, str(value))
+                serialized = self._serialize(value)
+                self._client.setex(key, 86400, serialized)
             except redis.RedisError as e:
                 logger.warning(f"Redis set error: {e}")
 
