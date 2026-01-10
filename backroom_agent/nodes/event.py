@@ -81,105 +81,109 @@ def parse_dm_response(
     return narrative_text, new_game_state, logic_event
 
 
+def _prepare_level_context(level_id: str) -> str:
+    """Retrieves and dumps level data JSON."""
+    level_data_json, _ = find_level_data(level_id)
+    if not level_data_json:
+        level_data_json = {"level_id": level_id, "error": "Level data not found"}
+    return json.dumps(level_data_json, ensure_ascii=False, indent=2)
+
+
+def _prepare_player_input(state_dict: dict, current_message: str) -> str:
+    """Constructs the player input JSON string matching local GameState + Input."""
+    input_data = {
+        "state": state_dict,
+        "input": current_message,
+    }
+    return json.dumps(input_data, ensure_ascii=False, indent=2)
+
+
 @annotate_node("llm")
 def event_node(state: State, config: RunnableConfig) -> dict:
     """
-    Handles 'message' events: General dialogue between player and DM.
+    Event Node (LLM Driver):
+    Orchestrates the main interaction between Player and DM.
+
+    Process:
+    1.  **Context Preparation**:
+        -   Extracts GameState from LangGraph state.
+        -   Fetches static Level Data (Message 1).
+        -   Constructs Player Input JSON (Message 2).
+    2.  **LLM Invocation**:
+        -   Sends System Prompt + Level Data + Player Input.
+        -   LLM acts as DM, generating narrative and potential probability events.
+    3.  **Response Parsing**:
+        -   Parses JSON response.
+        -   Extracts `message` (narrative text).
+        -   Extracts `event` (LogicEvent for dice rolls).
+        -   Updates local GameState if provided.
+    4.  **State Update**:
+        -   Returns new messages and events to the graph.
+
+    Protocol:
+    -   Input: Two consecutive JSON messages.
+    -   Output: Strict JSON schema (see `event.prompt`).
     """
     logger.info("▶ NODE: Event Node (LLM Generation)")
 
     messages = state["messages"]
     current_state = state.get("current_game_state")
 
-    # If the last message is from Dice Node (HumanMessage with specific marker?), treat it as system feedback
-    # But for now, we just dump all messages.
-
-    debug_content = [
-        f"{i}. [{msg.type}]: {msg.content}" for i, msg in enumerate(messages)
-    ]
-    logger.debug(
-        f"State Messages Dump ({len(messages)} items):\n" + "\n".join(debug_content)
-    )
-
     # 1. Prepare Game State Data
     state_dict = {}
     if current_state:
-        # Robust Dump (Pydantic v2 preferred)
         state_dict = dict_from_pydantic(current_state)
 
     # 2. Extract Current User Message
     current_message = ""
     if messages:
-        # Cast content to string (assuming text-only for now)
         msg_content = messages[-1].content
-        if isinstance(msg_content, str):
-            current_message = msg_content
-        else:
-            current_message = str(msg_content)
+        current_message = str(msg_content)
 
-    # 3. Construct Structured Input
+    # 3. Construct Context Messages
     level_id = state_dict.get("level", "Level 0")
     
-    # 3a. Retrieve Static Level Data
-    level_data_json, _ = find_level_data(level_id)
-    if not level_data_json:
-        level_data_json = {"level_id": level_id, "error": "Level data not found"}
-    
-    level_msg_content = json.dumps(level_data_json, ensure_ascii=False, indent=2)
+    # Message 1: Static Environment Data
+    level_context_str = _prepare_level_context(level_id)
 
-    # 3b. Construct Dynamic Player Input
-    # Structure matches GameState + input
-    llm_input_data = {
-        "state": state_dict,
-        "input": current_message,
-    }
+    # Message 2: Dynamic Player State & Input
+    player_input_str = _prepare_player_input(state_dict, current_message)
 
-    # 4. Dump to JSON
-    json_input = json.dumps(llm_input_data, ensure_ascii=False, indent=2)
+    # Log Payload (Truncated for readability)
+    logger.debug(f"LLM Input (Level Context): {level_context_str[:100]}...")
+    logger.debug(f"LLM Input (Player State): {player_input_str[:100]}...")
 
-    # Log the JSON Payloads
-    logger.debug(f"LLM Input (Level Context):\n{level_msg_content[:200]}...")
-    logger.debug(f"LLM Input (Player State):\n{json_input}")
-
-    # 5. Invoke LLM
+    # 4. Invoke LLM
     final_messages = [
         SystemMessage(content=SYSTEM_PROMPT),
-        HumanMessage(content=level_msg_content),
-        HumanMessage(content=json_input),
+        HumanMessage(content=level_context_str),
+        HumanMessage(content=player_input_str),
     ]
 
     response = model.invoke(final_messages, config=config)
 
-    # Log the Output Payload
-    raw_response_content = response.content
-    if not isinstance(raw_response_content, str):
-        raw_response_content = str(raw_response_content)
+    # 5. Process Response
+    raw_response_content = str(response.content)
 
     try:
-        parsed_json = json.loads(raw_response_content)
-        logger.debug(f"LLM Output Payload (JSON):\n{json.dumps(parsed_json, indent=2)}")
+        # Just logging valid JSON for debugging
+        parsed_debug = json.loads(raw_response_content)
+        # logger.debug(f"LLM Output Payload (JSON):\n{json.dumps(parsed_debug, indent=2)}")
     except json.JSONDecodeError:
-        logger.debug(f"LLM Output Payload (Raw/Invalid JSON):\n{raw_response_content}")
+        logger.debug(f"LLM Output Payload (Raw):\n{raw_response_content}")
 
-    # --- Processing Logic Merged Here ---
-
-    # Parse Output JSON
     narrative_text, new_game_state, logic_event = parse_dm_response(
         raw_response_content
     )
 
-    logger.info(f"LLM Response Narrative: {narrative_text[:50]}...")
+    logger.info(f"LLM Narrative: {narrative_text[:50]}...")
 
-    # If LLM didn't return a state (or we removed it from prompt), keep the old one
     if new_game_state is None:
         new_game_state = current_state
-    else:
-        logger.info("Game State updated by LLM.")
 
     if logic_event:
-        logger.info(f"Logic Event Generated: {logic_event.name}")
+        logger.info(f"Logic Event: {logic_event.name}")
 
-    # Create proper AIMessage with just the narrative text
     final_response_message = AIMessage(content=narrative_text)
 
     return {
