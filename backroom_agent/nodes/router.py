@@ -27,9 +27,9 @@ def router_node(state: State) -> Dict[Literal["level_context"], str]:
         logger.info(f"Router pre-fetching context for {level_id}")
         _, level_context = find_level_data(level_id)
         if level_context:
-            return {"level_context": level_context}
+            return {"level_context": level_context, "turn_loop_count": 0}
 
-    return {}
+    return {"turn_loop_count": 0}
 
 
 def route_event(state: State) -> str:

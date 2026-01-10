@@ -39,3 +39,6 @@ class State(TypedDict):
     settlement_delta: Optional[
         dict
     ]  # Using dict for serializability of SettlementDelta
+
+    # Mechanics
+    turn_loop_count: int

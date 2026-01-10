@@ -113,6 +113,10 @@ def dice_node(state: State) -> Dict[str, Any]:
 
     messages_to_add: list[BaseMessage] = [feedback_msg]
 
+    # Increment loop counter
+    current_loops = state.get("turn_loop_count", 0)
+    new_loops = current_loops + 1
+
     # 2. Settlement Delta for Client UI
     # We no longer create a SystemMessage with HTML here.
     # Instead, we pass the structured delta to the state so the handler can emit it.
@@ -124,4 +128,5 @@ def dice_node(state: State) -> Dict[str, Any]:
         GraphKeys.CURRENT_GAME_STATE: new_game_state,  # Updated State
         GraphKeys.LOGIC_OUTCOME: matched_outcome,
         GraphKeys.SETTLEMENT_DELTA: dict_from_pydantic(delta) if delta else None,
+        "turn_loop_count": new_loops,
     }

@@ -35,7 +35,7 @@ SYSTEM_PROMPT = _load_system_prompt()
 
 def parse_dm_response(
     content: str,
-) -> Tuple[str, Optional[GameState], Optional[LogicEvent]]:
+) -> Tuple[str, Optional[GameState], Optional[LogicEvent], list[str]]:
     """
     Parses the JSON response from the DM Agent.
 
@@ -43,12 +43,13 @@ def parse_dm_response(
         content (str): The raw string content from the LLM response.
 
     Returns:
-        Tuple[str, Optional[GameState], Optional[LogicEvent]]: A tuple containing the narrative text,
-        the updated GameState object (or None), and the LogicEvent object (or None).
+        Tuple[str, Optional[GameState], Optional[LogicEvent], list[str]]: 
+        narrative text, updated GameState, LogicEvent, and list of suggestion strings.
     """
     narrative_text = content
     new_game_state = None
     logic_event = None
+    suggestions = []
 
     try:
         # Attempt to parse json
@@ -59,6 +60,7 @@ def parse_dm_response(
             narrative_text = parsed_output.get("message", content)
             updated_state_dict = parsed_output.get("updated_state")
             event_dict = parsed_output.get("event")
+            suggestions = parsed_output.get("suggestions", [])
 
             if updated_state_dict:
                 # Reconstruct GameState object
@@ -78,7 +80,7 @@ def parse_dm_response(
             "LLM response was not valid JSON. Using raw content as narrative."
         )
 
-    return narrative_text, new_game_state, logic_event
+    return narrative_text, new_game_state, logic_event, suggestions
 
 
 def _prepare_level_context(level_id: str) -> str:
@@ -97,6 +99,9 @@ def _prepare_player_input(state_dict: dict, current_message: str) -> str:
     }
     return json.dumps(input_data, ensure_ascii=False, indent=2)
 
+def _prepare_loop_context(loops: int) -> str:
+    return json.dumps({"dice_loops": loops}, indent=2)
+
 
 @annotate_node("llm")
 def event_node(state: State, config: RunnableConfig) -> dict:
@@ -109,16 +114,18 @@ def event_node(state: State, config: RunnableConfig) -> dict:
         -   Extracts GameState from LangGraph state.
         -   Fetches static Level Data (Message 1).
         -   Constructs Player Input JSON (Message 2).
+        -   Passes loop count to control event generation frequency.
     2.  **LLM Invocation**:
-        -   Sends System Prompt + Level Data + Player Input.
+        -   Sends System Prompt + Level Data + Player Input + Loop Context.
         -   LLM acts as DM, generating narrative and potential probability events.
     3.  **Response Parsing**:
         -   Parses JSON response.
         -   Extracts `message` (narrative text).
         -   Extracts `event` (LogicEvent for dice rolls).
+        -   Extracts `suggestions` (Guide for next actions).
         -   Updates local GameState if provided.
     4.  **State Update**:
-        -   Returns new messages and events to the graph.
+        -   Returns new messages, events, and suggestions to the graph.
 
     Protocol:
     -   Input: Two consecutive JSON messages.
@@ -128,6 +135,7 @@ def event_node(state: State, config: RunnableConfig) -> dict:
 
     messages = state["messages"]
     current_state = state.get("current_game_state")
+    loop_count = state.get("turn_loop_count", 0)
 
     # 1. Prepare Game State Data
     state_dict = {}
@@ -149,15 +157,20 @@ def event_node(state: State, config: RunnableConfig) -> dict:
     # Message 2: Dynamic Player State & Input
     player_input_str = _prepare_player_input(state_dict, current_message)
 
+    # Message 3: Loop Context
+    loop_context_str = _prepare_loop_context(loop_count)
+
     # Log Payload (Truncated for readability)
     logger.debug(f"LLM Input (Level Context): {level_context_str[:100]}...")
     logger.debug(f"LLM Input (Player State): {player_input_str[:100]}...")
+    logger.debug(f"LLM Input (Loop Context): {loop_context_str}")
 
     # 4. Invoke LLM
     final_messages = [
         SystemMessage(content=SYSTEM_PROMPT),
         HumanMessage(content=level_context_str),
         HumanMessage(content=player_input_str),
+        HumanMessage(content=loop_context_str),
     ]
 
     response = model.invoke(final_messages, config=config)
@@ -172,7 +185,7 @@ def event_node(state: State, config: RunnableConfig) -> dict:
     except json.JSONDecodeError:
         logger.debug(f"LLM Output Payload (Raw):\n{raw_response_content}")
 
-    narrative_text, new_game_state, logic_event = parse_dm_response(
+    narrative_text, new_game_state, logic_event, suggestions = parse_dm_response(
         raw_response_content
     )
 
@@ -183,6 +196,10 @@ def event_node(state: State, config: RunnableConfig) -> dict:
 
     if logic_event:
         logger.info(f"Logic Event: {logic_event.name}")
+        # Clear suggestions if an event is generated to avoid confusing UI,
+        # unless we support simultaneous display (which frontend does, but conceptually suggestions are for next turn)
+        # But wait, if event is generated, the user MUST roll dice, so they can't take suggestion actions yet.
+        suggestions = []
 
     final_response_message = AIMessage(content=narrative_text)
 
@@ -191,6 +208,7 @@ def event_node(state: State, config: RunnableConfig) -> dict:
         "current_game_state": new_game_state,
         "logic_event": logic_event,
         "raw_llm_output": raw_response_content,
+        "suggestions": suggestions,
     }
 
 

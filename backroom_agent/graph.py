@@ -26,9 +26,9 @@ def build_graph():
     workflow.add_node(NODE_DICE_NODE, dice_node)
     workflow.add_node(NODE_RESOLVE_NODE, resolve_node)
 
-    # Add Convergence, Summary & Suggestion Nodes
+    # Add Convergence, Summary Node (Suggestion Node Removed)
     workflow.add_node(NODE_SUMMARY_NODE, summary_node)
-    workflow.add_node(NODE_SUGGESTION_NODE, suggestion_node)
+    # workflow.add_node(NODE_SUGGESTION_NODE, suggestion_node) # DEPRECATED
 
     # Entry Point -> Router
     workflow.add_edge(START, NODE_ROUTER_NODE)
@@ -67,10 +67,10 @@ def build_graph():
     # Dice Result -> Event Loop (to narrate outcome)
     workflow.add_edge(NODE_DICE_NODE, NODE_EVENT_NODE)
 
-    # Resolve -> Summary -> Suggestion -> END
+    # Resolve -> Summary -> END
     workflow.add_edge(NODE_RESOLVE_NODE, NODE_SUMMARY_NODE)
-    workflow.add_edge(NODE_SUMMARY_NODE, NODE_SUGGESTION_NODE)
-    workflow.add_edge(NODE_SUGGESTION_NODE, END)
+    workflow.add_edge(NODE_SUMMARY_NODE, END)
+    # workflow.add_edge(NODE_SUGGESTION_NODE, END) # REMOVED
 
     return workflow.compile()
 
