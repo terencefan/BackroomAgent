@@ -5,7 +5,7 @@ from backroom_agent.utils.node_annotation import (NodeAnnotation, NodeKind,
 from .dice import dice_node, route_check_dice
 from .init import init_node
 from .item import item_node
-from .message import message_node, process_message_node
+from .message import message_node
 from .router import route_event, router_node
 from .settle import route_settle, settle_node
 from .suggestion import suggestion_node
@@ -16,7 +16,6 @@ NODE_ROUTER_NODE = NodeConstants.ROUTER_NODE
 NODE_INIT_NODE = NodeConstants.INIT_NODE
 NODE_ITEM_NODE = NodeConstants.ITEM_NODE
 NODE_MESSAGE_NODE = NodeConstants.MESSAGE_NODE
-NODE_PROCESS_MESSAGE_NODE = NodeConstants.PROCESS_MESSAGE_NODE
 NODE_DICE_NODE = NodeConstants.DICE_NODE
 NODE_SETTLE_NODE = NodeConstants.SETTLE_NODE
 NODE_SUMMARY_NODE = NodeConstants.SUMMARY_NODE
@@ -28,7 +27,6 @@ NODE_CALLABLES_BY_ID = {
     NODE_INIT_NODE: init_node,
     NODE_ITEM_NODE: item_node,
     NODE_MESSAGE_NODE: message_node,
-    NODE_PROCESS_MESSAGE_NODE: process_message_node,
     NODE_DICE_NODE: dice_node,
     NODE_SETTLE_NODE: settle_node,
     NODE_SUMMARY_NODE: summary_node,
@@ -47,7 +45,6 @@ __all__ = [
     "init_node",
     "item_node",
     "message_node",
-    "process_message_node",
     "dice_node",
     "route_check_dice",
     "settle_node",
@@ -60,7 +57,6 @@ __all__ = [
     "NODE_INIT_NODE",
     "NODE_ITEM_NODE",
     "NODE_MESSAGE_NODE",
-    "NODE_PROCESS_MESSAGE_NODE",
     "NODE_DICE_NODE",
     "NODE_SETTLE_NODE",
     "NODE_SUMMARY_NODE",

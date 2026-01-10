@@ -5,10 +5,10 @@ from langgraph.graph import END, START, StateGraph
 
 from backroom_agent.nodes import (  # Node Constants; Node Functions; Routing Functions
     NODE_DICE_NODE, NODE_INIT_NODE, NODE_ITEM_NODE, NODE_MESSAGE_NODE,
-    NODE_PROCESS_MESSAGE_NODE, NODE_ROUTER_NODE, NODE_SETTLE_NODE,
-    NODE_SUGGESTION_NODE, NODE_SUMMARY_NODE, dice_node, init_node, item_node,
-    message_node, process_message_node, route_check_dice, route_event,
-    route_settle, router_node, settle_node, suggestion_node, summary_node)
+    NODE_ROUTER_NODE, NODE_SETTLE_NODE, NODE_SUGGESTION_NODE,
+    NODE_SUMMARY_NODE, dice_node, init_node, item_node, message_node,
+    route_check_dice, route_event, route_settle, router_node, settle_node,
+    suggestion_node, summary_node)
 from backroom_agent.state import State
 
 
@@ -23,7 +23,6 @@ def build_graph():
     workflow.add_node(NODE_INIT_NODE, init_node)
     workflow.add_node(NODE_ITEM_NODE, item_node)
     workflow.add_node(NODE_MESSAGE_NODE, message_node)
-    workflow.add_node(NODE_PROCESS_MESSAGE_NODE, process_message_node)
     workflow.add_node(NODE_DICE_NODE, dice_node)
     workflow.add_node(NODE_SETTLE_NODE, settle_node)
 
@@ -52,24 +51,13 @@ def build_graph():
     workflow.add_edge(NODE_ITEM_NODE, NODE_SUMMARY_NODE)
 
     # The Generation Loop:
-    # 1. Generate (LLM creates text/data)
-    # 2. Process (Parser extracts events/logic)
-    # 3. Dice Check (If dice event needed, roll it)
-    # 4. If Dice needed: Dice Node -> Settle Node
-    # 5. If No Dice: -> Settle Node (Wait, Process -> Settle directly? Or Summary?)
-    #    Actually current flow:
-    #    Generate -> Process (Check Dice?) -> [Yes -> Dice] OR [No -> Summary?]
-    #    Revised FLow:
-    #    Generate -> Process
-    #       -> (LogicEvent?) -> Yes -> Dice -> Settle
-    #       -> No -> Settle (To confirm narrative?) OR Summary?
-    #    The Request: "dice 和 process 后面需要加一个结算节点"
-    #    So: Process -> Settle (if no dice) AND Dice -> Settle.
-
-    workflow.add_edge(NODE_MESSAGE_NODE, NODE_PROCESS_MESSAGE_NODE)
+    # 1. Generate & Process (LLM creates text/data, parser extracts events)
+    # 2. Dice Check (If dice event needed, roll it)
+    # 3. If Dice needed: Dice Node -> Settle Node
+    # 4. If No Dice: -> Settle Node
 
     workflow.add_conditional_edges(
-        NODE_PROCESS_MESSAGE_NODE,
+        NODE_MESSAGE_NODE,
         route_check_dice,
         {NODE_DICE_NODE: NODE_DICE_NODE, NODE_SETTLE_NODE: NODE_SETTLE_NODE},
     )

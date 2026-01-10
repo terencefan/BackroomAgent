@@ -103,10 +103,11 @@ def settle_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
     gs_data = _serialize_game_state(current_state)
 
     logic_outcome = state.get(GraphKeys.LOGIC_OUTCOME)
+    # logic_outcome is defined as Optional[dict] in State, but might be a Pydantic model at runtime
     if hasattr(logic_outcome, "model_dump"):
-        logic_outcome = logic_outcome.model_dump()
+        logic_outcome = logic_outcome.model_dump()  # type: ignore
     elif hasattr(logic_outcome, "dict"):
-        logic_outcome = logic_outcome.dict()
+        logic_outcome = logic_outcome.dict()  # type: ignore
 
     input_data = {
         "current_game_state": gs_data,

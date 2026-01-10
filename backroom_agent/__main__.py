@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import os
 
 from dotenv import load_dotenv
@@ -11,7 +12,7 @@ def main() -> None:
     load_dotenv()
 
     text = os.getenv("PROMPT", "Hello from BackroomAgent")
-    msg = run_once(text)
+    msg = asyncio.run(run_once(text))
     print(msg.content)
 
 

@@ -46,7 +46,6 @@ class NodeConstants:
     ITEM_NODE = "item_node"
     SIMPLE_CHAT = "simple_chat"
     MESSAGE_NODE = "message_node"
-    PROCESS_MESSAGE_NODE = "process_message_node"
     DICE_NODE = "dice_node"
     SETTLE_NODE = "settle_node"
     SUMMARY_NODE = "summary_node"
