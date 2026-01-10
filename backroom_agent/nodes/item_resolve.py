@@ -65,7 +65,7 @@ def item_resolve_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
 
     updates = data.get("state_updates", {})
     new_game_state, log_content = apply_state_updates(current_state, updates)
-    
+
     messages_out = []
     if log_content:
         messages_out.append(SystemMessage(content=log_content))

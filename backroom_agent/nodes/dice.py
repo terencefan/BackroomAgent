@@ -1,6 +1,6 @@
 from typing import Any, Dict, cast
 
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import BaseMessage, HumanMessage, SystemMessage
 
 from backroom_agent.constants import GraphKeys, NodeConstants
 from backroom_agent.nodes.resolve_utils import apply_state_updates
@@ -109,9 +109,9 @@ def dice_node(state: State) -> Dict[str, Any]:
 
     # 1. System Feedback for LLM (HumanMessage)
     feedback_msg = HumanMessage(content=feedback_text)
-    
-    messages_to_add = [feedback_msg]
-    
+
+    messages_to_add: list[BaseMessage] = [feedback_msg]
+
     # 2. System Status Update (SystemMessage) - Intended for Client UI display
     if log_content:
         system_status_msg = SystemMessage(content=log_content)

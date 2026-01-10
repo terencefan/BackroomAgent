@@ -53,15 +53,10 @@ def parse_settle_response(content: str) -> Dict[str, Any]:
         return {}
 
 
-def format_delta(val: int) -> str:
-    """Helper to colorize numerical changes (yellow)."""
-    sign = "+" if val > 0 else ""
-    return f'<span style="color:#ffee00">{sign}{val}</span>'
-
-
-def format_item_line(prefix: str, name: str) -> str:
-    """Helper to colorize item changes."""
-    return f'{prefix} <span style="color:#ffee00">{name}</span>'
+def format_val_custom(val: int, color: str) -> str:
+    """Helper to colorize numerical changes with specific color."""
+    sign = "+" if val >= 0 else ""
+    return f'<span style="color:{color}">{sign}{val}</span>'
 
 
 def apply_state_updates(
@@ -78,7 +73,8 @@ def apply_state_updates(
     if not updates:
         return new_game_state, None
 
-    log_lines = []
+    vitals_parts = []
+    item_changes = []
 
     # Support both old "hp_change" and new "hp" keys
     hp_change = int(updates.get("hp", updates.get("hp_change", 0)))
@@ -92,9 +88,15 @@ def apply_state_updates(
     )
 
     if hp_change != 0:
-        log_lines.append(f"HP {format_delta(hp_change)}")
+        # Red color for HP #e53e3e
+        vitals_parts.append(
+            f'<span style="color:#e53e3e; font-weight:bold;">生命值 {format_val_custom(hp_change, "#e53e3e")}</span>'
+        )
     if sanity_change != 0:
-        log_lines.append(f"Sanity {format_delta(sanity_change)}")
+        # Purple color for Sanity #805ad5
+        vitals_parts.append(
+            f'<span style="color:#805ad5; font-weight:bold;">理智值 {format_val_custom(sanity_change, "#805ad5")}</span>'
+        )
 
     if hp_change != 0 or sanity_change != 0:
         logger.info(
@@ -106,8 +108,10 @@ def apply_state_updates(
     if new_level and isinstance(new_level, str):
         old_level = new_game_state.level
         new_game_state.level = new_level
-        log_lines.append(f"Level Transfer: {old_level} -> {format_item_line('', new_level)}")
-        logger.info(f"Level Transition detected: {old_level} -> {new_level}")
+        # Add to item_changes for now as a general event line, or separate?
+        # User requested item grouping. Level transition is special.
+        # Let's put it on its own line if it happens.
+        pass
 
     # Handle Inventory Updates
     from backroom_agent.protocol import Item
@@ -131,14 +135,22 @@ def apply_state_updates(
                     (i for i in new_game_state.inventory if i and i.id == new_item.id),
                     None,
                 )
+
+                item_label = new_item.name
                 if existing_item:
                     existing_item.quantity += new_item.quantity
-                    log_lines.append(format_item_line("+", f"{new_item.name} x{new_item.quantity}"))
                     logger.info(f"Stacked item {new_item.id} (+{new_item.quantity})")
+                    if new_item.quantity > 1:
+                        item_label += f" x{new_item.quantity}"
                 else:
                     new_game_state.inventory.append(new_item)
-                    log_lines.append(format_item_line("+", f"{new_item.name}"))
                     logger.info(f"Added new item {new_item.id}")
+
+                # Use yellow for item additions
+                item_changes.append(
+                    f'<span>+ <span style="color:#ffee00">{item_label}</span></span>'
+                )
+
             except Exception as e:
                 logger.error(f"Failed to add item {item_data}: {e}")
 
@@ -148,11 +160,6 @@ def apply_state_updates(
         # Assuming list of IDs
         for item_id_or_name in items_to_remove:
             target_id = str(item_id_or_name).lower()
-
-            # Find item
-            # We iterate a copy or index to modify list safely
-            # Assuming simple removal of 1 quantity or full removal?
-            # Start with full removal/decrement logic
 
             found_index = -1
             found_name = target_id
@@ -171,12 +178,44 @@ def apply_state_updates(
                 else:
                     new_game_state.inventory.pop(found_index)
                     logger.info(f"Removed item {target_id}")
-                
-                log_lines.append(format_item_line("-", found_name))
 
-    # Construct final log string
+                # Use yellow for item removals too, consistent highlighting
+                item_changes.append(
+                    f'<span>- <span style="color:#ffee00">{found_name}</span></span>'
+                )
+
+    # Construct final HTML structure
+    # Container
+    html_parts = [
+        '<div style="display:flex; flex-direction:column; align-items:center; gap:4px; font-size:0.95em;">'
+    ]
+
+    # 1. Row: Vitals
+    if vitals_parts:
+        html_parts.append(
+            f'<div style="display:flex; justify-content:center; gap:16px;">{" ".join(vitals_parts)}</div>'
+        )
+
+    # 2. Row: Level Transition (if any)
+    if new_level and isinstance(new_level, str):
+        # old_level was captured above locally? No, need to recapture or just print new
+        # Let's just say "Level Transfer: X"
+        html_parts.append(
+            f'<div style="text-align:center;">Level Transfer: <span style="color:#ffee00">{new_level}</span></div>'
+        )
+
+    # 3. Row: Items (Wrapped)
+    if item_changes:
+        # Flex wrap container for items
+        items_html = " ".join(item_changes)
+        html_parts.append(
+            f'<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px;">{items_html}</div>'
+        )
+
+    html_parts.append("</div>")
+
     log_content = None
-    if log_lines:
-        log_content = "  \n".join(log_lines) # Two spaces for markdown newline
+    if vitals_parts or item_changes or new_level:
+        log_content = "".join(html_parts)
 
     return new_game_state, log_content

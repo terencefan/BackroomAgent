@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import type { Message, LogicEvent } from '../types';
 
 interface ChatBoxProps {
@@ -99,7 +100,7 @@ const Typewriter = ({ text, onUpdate, onComplete }: { text: string; onUpdate: ()
 
   return (
     <div className="markdown-content">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
         {text.slice(0, Math.floor(displayLength))}
       </ReactMarkdown>
     </div>
@@ -115,11 +116,24 @@ const MessageItem = ({ msg, onSendMessage, isLoading, onScrollRequest, onOptionS
     onLogicEventConfirm?: (msgId: number) => void;
     onAnimationComplete?: (msgId: number) => void;
 }) => {
-    const [typingDone, setTypingDone] = useState(msg.sender === 'player');
+    // If it's a generic system message (not the player), we assume it might contain status updates.
+    // However, if the message is from "system" specifically (mechanistic logs),
+    // we might want to skip typewriter simply because it's usually short and we want to see the formatting instantly.
+    // For now, let's keep it simple: player messages instant, others typed.
+    // But if it's 'system' sender, let's display instantly to avoid HTML tag typing glitch.
+    
+    // Check if we should typewrite:
+    // Player: No
+    // System (Visual Logs): No (Instant)
+    // DM (Narrative): Yes
+
+    const shouldTypewrite = msg.sender === 'dm';
+
+    const [typingDone, setTypingDone] = useState(!shouldTypewrite);
     const animationReported = useRef(false);
 
     useEffect(() => {
-        // Report completion for player messages immediately (or if already typingDone)
+        // Report completion immediately if no typing needed
         if (typingDone && !animationReported.current && onAnimationComplete) {
             animationReported.current = true;
             onAnimationComplete(msg.id);
@@ -140,14 +154,18 @@ const MessageItem = ({ msg, onSendMessage, isLoading, onScrollRequest, onOptionS
     return (
         <div className="message-wrapper">
              <div className={`message-bubble ${msg.sender}`}>
-                {msg.sender === 'player' ? (
-                    msg.text
-                ) : (
+                {shouldTypewrite ? (
                     <Typewriter 
                         text={msg.text} 
                         onUpdate={onScrollRequest} 
                         onComplete={handleTypingComplete}
                     />
+                ) : (
+                    <div className="markdown-content">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                            {msg.text}
+                        </ReactMarkdown>
+                    </div>
                 )}
              </div>
 
