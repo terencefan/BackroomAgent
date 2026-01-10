@@ -64,10 +64,15 @@ def item_resolve_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
     data = parse_settle_response(content)
 
     updates = data.get("state_updates", {})
-    new_game_state = apply_state_updates(current_state, updates)
+    new_game_state, log_content = apply_state_updates(current_state, updates)
+    
+    messages_out = []
+    if log_content:
+        messages_out.append(SystemMessage(content=log_content))
 
     # Note: We do NOT append an AIMessage here. The Summary Node should describe the effect.
     return {
         GraphKeys.CURRENT_GAME_STATE: new_game_state,
         GraphKeys.LOGIC_OUTCOME: logic_outcome,
+        GraphKeys.MESSAGES: messages_out,
     }
