@@ -72,10 +72,10 @@ All services must adhere to the logging standards defined in the `logger-generat
 - **Python**: Use the pre-configured `backroom_agent.utils.logger`.
 
 ### Automated Version Control
-The agent MUST perform a git commit after every significant code update.
-1.  **Summarize**: Analyze changes made in the current turn.
-2.  **Commit**: Use the `git-committer` skill standards to run `git add .` and `git commit`.
-3.  **Report**: Inform the user that changes have been committed.
+You MUST perform a git commit at the end of EVERY task execution or turn that involves code modifications.
+1.  **Summarize**: Generate a concise summary of the task completed.
+2.  **Commit**: Execute `git add .` followed by `git commit` using the `git-committer` skill standards.
+3.  **Report**: Inform the user that the task has been summarized and committed.
 
 
 
