@@ -8,7 +8,7 @@ from langchain_core.runnables import RunnableConfig
 from backroom_agent.protocol import GameState, LogicEvent
 from backroom_agent.state import State
 from backroom_agent.utils.common import (extract_json_from_text, get_llm,
-                                         load_prompt, print_debug_message)
+                                         load_prompt)
 from backroom_agent.utils.logger import logger
 from backroom_agent.utils.node_annotation import annotate_node
 
@@ -95,7 +95,7 @@ def message_node(state: State, config: RunnableConfig) -> dict:
     debug_content = [
         f"{i}. [{msg.type}]: {msg.content}" for i, msg in enumerate(messages)
     ]
-    print_debug_message(f"State Messages Dump ({len(messages)} items):", debug_content)
+    logger.debug(f"State Messages Dump ({len(messages)} items):\n" + "\n".join(debug_content))
 
     # 1. Prepare Game State Data
     state_dict = {}
@@ -123,7 +123,7 @@ def message_node(state: State, config: RunnableConfig) -> dict:
     json_input = json.dumps(state_dict, ensure_ascii=False, indent=2)
 
     # Log the JSON Payload
-    print_debug_message("LLM Input Payload (JSON):", json.dumps(state_dict, indent=2))
+    logger.debug(f"LLM Input Payload (JSON):\n{json.dumps(state_dict, indent=2)}")
 
     # 5. Invoke LLM
     final_messages = [
@@ -140,13 +140,9 @@ def message_node(state: State, config: RunnableConfig) -> dict:
 
     try:
         parsed_json = json.loads(raw_response_content)
-        print_debug_message(
-            "LLM Output Payload (JSON):", json.dumps(parsed_json, indent=2)
-        )
+        logger.debug(f"LLM Output Payload (JSON):\n{json.dumps(parsed_json, indent=2)}")
     except json.JSONDecodeError:
-        print_debug_message(
-            "LLM Output Payload (Raw/Invalid JSON):", raw_response_content
-        )
+        logger.debug(f"LLM Output Payload (Raw/Invalid JSON):\n{raw_response_content}")
 
     return {"raw_llm_output": raw_response_content}
 

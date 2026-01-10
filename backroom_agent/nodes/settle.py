@@ -7,7 +7,7 @@ from langchain_core.runnables import RunnableConfig
 
 from backroom_agent.constants import GraphKeys, NodeConstants
 from backroom_agent.state import State
-from backroom_agent.utils.common import get_llm, load_prompt, print_debug_message
+from backroom_agent.utils.common import get_llm, load_prompt
 from backroom_agent.utils.logger import logger
 from backroom_agent.utils.node_annotation import annotate_node
 
@@ -143,5 +143,5 @@ def route_settle(state: State) -> str:
         """
 
         # Settle is the last resolver step; always proceed to summary.
-        print_debug_message("Route Settle", "-> SUMMARY")
+        logger.debug("Route Settle -> SUMMARY")
         return NodeConstants.SUMMARY

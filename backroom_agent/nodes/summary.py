@@ -1,7 +1,6 @@
 from langchain_core.runnables import RunnableConfig
 
 from backroom_agent.state import State
-from backroom_agent.utils.common import print_debug_message
 from backroom_agent.utils.logger import logger
 from backroom_agent.utils.node_annotation import annotate_node
 
@@ -29,12 +28,8 @@ def summary_node(state: State, config: RunnableConfig) -> dict:
         msgs = state.get("messages", [])
         if msgs:
             last_content = msgs[-1].content
-            print_debug_message(
-                "Summary Node [Turn Complete]:",
-                [
-                    f"- Time: {new_state.time}",
-                    f"- Model Output: {str(last_content)[:200]}...",
-                ],
+            logger.debug(
+                f"Summary Node [Turn Complete]:\n- Time: {new_state.time}\n- Model Output: {str(last_content)[:200]}..."
             )
 
         return {"current_game_state": new_state}

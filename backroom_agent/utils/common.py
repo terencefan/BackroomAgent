@@ -41,18 +41,6 @@ def get_llm() -> BaseChatModel:
     return ChatOpenAI(api_key=API_KEY, base_url=BASE_URL, model=MODEL_NAME)  # type: ignore
 
 
-def print_debug_message(title: str, content: list[str] | str):
-    """Prints a formatted debug message to the console using logger."""
-    
-    msg_body = ""
-    if isinstance(content, list):
-        msg_body = "\n".join(content)
-    else:
-        msg_body = str(content)
-
-    logger.debug(f"\n{'-'*30}\nDEBUG: {title}\n{msg_body}\n{'-'*30}")
-
-
 def save_to_file(content: str, directory: str, filename: str):
     """Saves content to a file in the specified directory."""
     os.makedirs(directory, exist_ok=True)

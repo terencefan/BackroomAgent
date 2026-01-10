@@ -194,3 +194,13 @@ DEBUG: Summary Node [Turn Complete]:
 2026-01-10 20:29:32.679 | INFO     | cache.py:26 | backroom_agent | Connected to Redis at localhost:6379
 2026-01-10 20:29:37.932 | INFO     | cache.py:26 | backroom_agent | Connected to Redis at localhost:6379
 2026-01-10 20:29:44.115 | INFO     | cache.py:26 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:30:34.048 | INFO     | cache.py:26 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:31:14.586 | INFO     | cache.py:26 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:31:20.267 | INFO     | cache.py:26 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:31:30.474 | INFO     | cache.py:26 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:31:35.418 | INFO     | cache.py:26 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:31:45.139 | INFO     | cache.py:26 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:31:52.851 | INFO     | cache.py:26 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:31:58.581 | INFO     | cache.py:26 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:32:04.655 | INFO     | cache.py:26 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:32:15.742 | INFO     | cache.py:26 | backroom_agent | Connected to Redis at localhost:6379
