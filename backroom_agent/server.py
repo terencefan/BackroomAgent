@@ -49,14 +49,8 @@ async def mock_agent_generator(request: ChatRequest) -> AsyncGenerator[str, None
     if request.event.type == EventType.INIT:
         async for chunk in handle_init(request, current_state):
             yield chunk
-    elif request.event.type == EventType.USE:
-        async for chunk in handle_use_item(request, current_state):
-            yield chunk
-    elif request.event.type == EventType.DROP:
-        async for chunk in handle_drop_item(request, current_state):
-            yield chunk
     else:
-        # Default/Message/Action
+        # Universal Graph Handler for Message, Action, Use, Drop
         async for chunk in handle_message(request, current_state):
             yield chunk
 

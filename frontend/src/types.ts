@@ -80,9 +80,24 @@ export const StreamChunkType = {
   SUGGESTIONS: 'suggestions',
   LOGIC_EVENT: 'logic_event',
   INIT: 'init',
+  SETTLEMENT: 'settlement',
 } as const;
 
 export type StreamChunkType = typeof StreamChunkType[keyof typeof StreamChunkType];
+
+export interface SettlementDelta {
+    hp_change: number;
+    sanity_change: number;
+    items_added: string[];
+    items_removed: string[];
+    level_transition?: string;
+}
+
+export interface StreamChunkSettlement {
+    type: typeof StreamChunkType.SETTLEMENT;
+    delta: SettlementDelta;
+}
+
 
 export interface EventOutcome {
   range: number[];
@@ -138,7 +153,8 @@ export type StreamChunk =
   | StreamChunkState 
   | StreamChunkSuggestions
   | StreamChunkLogicEvent
-  | StreamChunkInit;
+  | StreamChunkInit
+  | StreamChunkSettlement;
 
 export interface ChatResponse {
   messages: BackendMessage[];
@@ -156,4 +172,5 @@ export interface Message {
   logicEvent?: LogicEvent;
   logicEventConfirmed?: boolean;
   logicRollResult?: number;
+  settlement?: SettlementDelta; // For rendering visual logs
 }

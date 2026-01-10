@@ -36,6 +36,7 @@ class GraphKeys:
     LEVEL_CONTEXT = "level_context"
     VALID_ACTIONS = "valid_actions"
     SUGGESTIONS = "suggestions"
+    SETTLEMENT_DELTA = "settlement_delta"
 
 
 class NodeConstants:

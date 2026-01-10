@@ -76,6 +76,7 @@ class StreamChunkType(str, Enum):
     SUGGESTIONS = "suggestions"
     LOGIC_EVENT = "logic_event"
     INIT = "init"
+    SETTLEMENT = "settlement"
 
 
 class EventOutcome(BaseModel):
@@ -87,6 +88,19 @@ class LogicEvent(BaseModel):
     name: str
     die_type: Literal["d6", "d20", "d100"]
     outcomes: List[EventOutcome]
+
+
+class SettlementDelta(BaseModel):
+    hp_change: int = 0
+    sanity_change: int = 0
+    items_added: List[str] = []  # formatted strings like "Name xQty"
+    items_removed: List[str] = []
+    level_transition: Optional[str] = None
+
+
+class StreamChunkSettlement(BaseModel):
+    type: Literal[StreamChunkType.SETTLEMENT]
+    delta: SettlementDelta
 
 
 class StreamChunkMessage(BaseModel):

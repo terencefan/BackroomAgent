@@ -104,23 +104,23 @@ def dice_node(state: State) -> Dict[str, Any]:
 
     logger.info(f"Dice Node Feedback: {feedback_text}")
 
-    # Apply State Updates
-    new_game_state, log_content = apply_state_updates(current_state, updates)
+    # Apply State Updates (returns SettlementDelta object)
+    new_game_state, delta = apply_state_updates(current_state, updates)
 
     # 1. System Feedback for LLM (HumanMessage)
     feedback_msg = HumanMessage(content=feedback_text)
 
     messages_to_add: list[BaseMessage] = [feedback_msg]
 
-    # 2. System Status Update (SystemMessage) - Intended for Client UI display
-    if log_content:
-        system_status_msg = SystemMessage(content=log_content)
-        messages_to_add.append(system_status_msg)
+    # 2. Settlement Delta for Client UI
+    # We no longer create a SystemMessage with HTML here.
+    # Instead, we pass the structured delta to the state so the handler can emit it.
 
     return {
         GraphKeys.DICE_ROLL: dice_roll,  # For Frontend Animation
         GraphKeys.MESSAGES: messages_to_add,  # For LLM Context
         GraphKeys.LOGIC_EVENT: None,  # Clear event to prevent loops
         GraphKeys.CURRENT_GAME_STATE: new_game_state,  # Updated State
-        GraphKeys.LOGIC_OUTCOME: matched_outcome,  # Optional: Keep for debugging
+        GraphKeys.LOGIC_OUTCOME: matched_outcome,
+        GraphKeys.SETTLEMENT_DELTA: delta.model_dump() if delta else None,
     }

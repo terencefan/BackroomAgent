@@ -158,6 +158,17 @@ export function useGameEngine() {
         }
         break;
 
+      case StreamChunkType.SETTLEMENT:
+        setMessages(prev => [...prev, {
+            id: Date.now(),
+            sender: 'system',
+            text: '', // Empty text for visual log
+            settlement: chunk.delta
+        }]);
+        // Don't block queue for settlement logs, they should appear instantly
+        tryProcessQueue();
+        break;
+
       case StreamChunkType.DICE_ROLL:
         // Logic for Dice Roll handling
         pendingDiceRef.current = chunk.dice;

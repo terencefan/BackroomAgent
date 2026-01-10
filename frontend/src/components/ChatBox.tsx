@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import type { Message, LogicEvent } from '../types';
+import type { Message, LogicEvent, SettlementDelta } from '../types';
 
 interface ChatBoxProps {
   messages: Message[];
@@ -12,6 +12,81 @@ interface ChatBoxProps {
   onLogicEventConfirm?: (msgId: number) => void;
   onMessageAnimationComplete?: (msgId: number) => void;
 }
+
+const SettlementDisplay = ({ delta }: { delta: SettlementDelta }) => {
+    // Styling constants
+    const COLOR_HP = '#e53e3e';
+    const COLOR_SANITY = '#805ad5';
+    const COLOR_ITEM = '#ffee00';
+    const COLOR_TEXT = '#a0aec0';
+
+    const formatVal = (val: number, color: string) => (
+        <span style={{ color, fontWeight: 'bold', marginLeft: '4px' }}>
+            {val > 0 ? '+' : ''}{val}
+        </span>
+    );
+
+    return (
+        <div className="settlement-container" style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            gap: '8px', 
+            fontSize: '0.95em',
+            margin: '10px 0',
+            // Use lighter background to separate from dark chat
+            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            padding: '10px',
+            borderRadius: '4px',
+            border: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
+            {/* Row 1: Vitals */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+                {delta.hp_change !== 0 && (
+                    <div style={{ display: 'flex', alignItems: 'center', color: COLOR_HP }}>
+                        <span style={{ fontWeight: 'bold' }}>生命值</span>
+                        {formatVal(delta.hp_change, COLOR_HP)}
+                    </div>
+                )}
+                {delta.sanity_change !== 0 && (
+                    <div style={{ display: 'flex', alignItems: 'center', color: COLOR_SANITY }}>
+                        <span style={{ fontWeight: 'bold' }}>理智值</span>
+                        {formatVal(delta.sanity_change, COLOR_SANITY)}
+                    </div>
+                )}
+            </div>
+
+            {/* Row 2: Level Transition */}
+            {delta.level_transition && (
+                <div style={{ textAlign: 'center', color: COLOR_TEXT }}>
+                    Level Transfer: <span style={{ color: COLOR_ITEM }}>{delta.level_transition}</span>
+                </div>
+            )}
+
+            {/* Row 3: Items */}
+            {(delta.items_added.length > 0 || delta.items_removed.length > 0) && (
+                <div style={{ 
+                    display: 'flex', 
+                    flexWrap: 'wrap', 
+                    justifyContent: 'center', 
+                    gap: '12px',
+                    marginTop: '4px'
+                }}>
+                    {delta.items_added.map((item, idx) => (
+                        <span key={`add-${idx}`} style={{ color: COLOR_TEXT }}>
+                            + <span style={{ color: COLOR_ITEM }}>{item}</span>
+                        </span>
+                    ))}
+                    {delta.items_removed.map((item, idx) => (
+                        <span key={`remove-${idx}`} style={{ color: COLOR_TEXT }}>
+                            - <span style={{ color: COLOR_ITEM }}>{item}</span>
+                        </span>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+};
 
 const LogicEventDisplay = ({ 
     event, 
@@ -153,23 +228,37 @@ const MessageItem = ({ msg, onSendMessage, isLoading, onScrollRequest, onOptionS
 
     return (
         <div className="message-wrapper">
-             <div className={`message-bubble ${msg.sender}`}>
-                {shouldTypewrite ? (
-                    <Typewriter 
-                        text={msg.text} 
-                        onUpdate={onScrollRequest} 
-                        onComplete={handleTypingComplete}
-                    />
-                ) : (
-                    <div className="markdown-content">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                            {msg.text}
-                        </ReactMarkdown>
-                    </div>
-                )}
-             </div>
+             {/* Render Text Content if exists */}
+             {msg.text && (
+                 <div className={`message-bubble ${msg.sender}`}>
+                    {shouldTypewrite ? (
+                        <Typewriter 
+                            text={msg.text} 
+                            onUpdate={onScrollRequest} 
+                            onComplete={handleTypingComplete}
+                        />
+                    ) : (
+                        <div className="markdown-content">
+                            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                                {msg.text}
+                            </ReactMarkdown>
+                        </div>
+                    )}
+                 </div>
+             )}
+             
+             {/* Helper to just "complete typing" if no text */}
+             {!msg.text && !typingDone && (
+                  // If msg has no text (e.g. pure logic event or settlement), mark as done immediately
+                  // Using effect or simple immediate state update logic
+                  // For now, rely on useEffect above for typingDone... wait, if text is empty, Typewriter might be confused.
+                  // Actually if text is empty, we skip the bubble above, so we should setTypingDone true.
+                  // Effect logic needs review or just force it here
+                  <div style={{ display: 'none' }} />
+             )}
 
-             {msg.logicEvent && typingDone && (
+             {/* Logic Event Display */}
+             {msg.logicEvent && (typingDone || !msg.text) && (
                  <LogicEventDisplay 
                     event={msg.logicEvent} 
                     confirmed={msg.logicEventConfirmed}
@@ -179,8 +268,14 @@ const MessageItem = ({ msg, onSendMessage, isLoading, onScrollRequest, onOptionS
                     }}
                  />
              )}
+            
+             {/* Settlement Display */}
+             {msg.settlement && (
+                <SettlementDisplay delta={msg.settlement} />
+             )}
 
-             {msg.options && msg.options.length > 0 && typingDone && (
+             {/* Options Display */}
+             {msg.options && msg.options.length > 0 && (typingDone || !msg.text) && (
                 <div className="chat-options-container">
                     {msg.options.map((option, idx) => {
                         // Logic:
@@ -210,6 +305,7 @@ const MessageItem = ({ msg, onSendMessage, isLoading, onScrollRequest, onOptionS
         </div>
     );
 };
+
 
 export const ChatBox: React.FC<ChatBoxProps> = ({ messages, onSendMessage, isLoading, onOptionSelect, onLogicEventConfirm, onMessageAnimationComplete }) => {
   const [input, setInput] = useState('');

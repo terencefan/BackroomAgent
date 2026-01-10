@@ -53,18 +53,12 @@ def parse_settle_response(content: str) -> Dict[str, Any]:
         return {}
 
 
-def format_val_custom(val: int, color: str) -> str:
-    """Helper to colorize numerical changes with specific color."""
-    sign = "+" if val >= 0 else ""
-    return f'<span style="color:{color}">{sign}{val}</span>'
-
-
 def apply_state_updates(
     current_state: Any, updates: Dict[str, Any]
-) -> Tuple[Any, Optional[str]]:
+) -> Tuple[Any, Optional[Any]]:
     """
-    Applies updates to state and returns (new_state, log_content).
-    log_content is None if no significant changes happened.
+    Applies updates to state and returns (new_state, SettlementDelta).
+    SettlementDelta is None if no significant changes happened.
     """
     if not current_state:
         return current_state, None
@@ -73,8 +67,10 @@ def apply_state_updates(
     if not updates:
         return new_game_state, None
 
-    vitals_parts = []
-    item_changes = []
+    from backroom_agent.protocol import SettlementDelta
+
+    delta = SettlementDelta()
+    has_changes = False
 
     # Support both old "hp_change" and new "hp" keys
     hp_change = int(updates.get("hp", updates.get("hp_change", 0)))
@@ -88,15 +84,12 @@ def apply_state_updates(
     )
 
     if hp_change != 0:
-        # Red color for HP #e53e3e
-        vitals_parts.append(
-            f'<span style="color:#e53e3e; font-weight:bold;">生命值 {format_val_custom(hp_change, "#e53e3e")}</span>'
-        )
+        delta.hp_change = hp_change
+        has_changes = True
+
     if sanity_change != 0:
-        # Purple color for Sanity #805ad5
-        vitals_parts.append(
-            f'<span style="color:#805ad5; font-weight:bold;">理智值 {format_val_custom(sanity_change, "#805ad5")}</span>'
-        )
+        delta.sanity_change = sanity_change
+        has_changes = True
 
     if hp_change != 0 or sanity_change != 0:
         logger.info(
@@ -108,10 +101,9 @@ def apply_state_updates(
     if new_level and isinstance(new_level, str):
         old_level = new_game_state.level
         new_game_state.level = new_level
-        # Add to item_changes for now as a general event line, or separate?
-        # User requested item grouping. Level transition is special.
-        # Let's put it on its own line if it happens.
-        pass
+        delta.level_transition = new_level
+        has_changes = True
+        logger.info(f"Level Transition detected: {old_level} -> {new_level}")
 
     # Handle Inventory Updates
     from backroom_agent.protocol import Item
@@ -145,11 +137,11 @@ def apply_state_updates(
                 else:
                     new_game_state.inventory.append(new_item)
                     logger.info(f"Added new item {new_item.id}")
+                    if new_item.quantity > 1:
+                        item_label += f" x{new_item.quantity}"
 
-                # Use yellow for item additions
-                item_changes.append(
-                    f'<span>+ <span style="color:#ffee00">{item_label}</span></span>'
-                )
+                delta.items_added.append(item_label)
+                has_changes = True
 
             except Exception as e:
                 logger.error(f"Failed to add item {item_data}: {e}")
@@ -179,43 +171,7 @@ def apply_state_updates(
                     new_game_state.inventory.pop(found_index)
                     logger.info(f"Removed item {target_id}")
 
-                # Use yellow for item removals too, consistent highlighting
-                item_changes.append(
-                    f'<span>- <span style="color:#ffee00">{found_name}</span></span>'
-                )
+                delta.items_removed.append(found_name)
+                has_changes = True
 
-    # Construct final HTML structure
-    # Container
-    html_parts = [
-        '<div style="display:flex; flex-direction:column; align-items:center; gap:4px; font-size:0.95em;">'
-    ]
-
-    # 1. Row: Vitals
-    if vitals_parts:
-        html_parts.append(
-            f'<div style="display:flex; justify-content:center; gap:16px;">{" ".join(vitals_parts)}</div>'
-        )
-
-    # 2. Row: Level Transition (if any)
-    if new_level and isinstance(new_level, str):
-        # old_level was captured above locally? No, need to recapture or just print new
-        # Let's just say "Level Transfer: X"
-        html_parts.append(
-            f'<div style="text-align:center;">Level Transfer: <span style="color:#ffee00">{new_level}</span></div>'
-        )
-
-    # 3. Row: Items (Wrapped)
-    if item_changes:
-        # Flex wrap container for items
-        items_html = " ".join(item_changes)
-        html_parts.append(
-            f'<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px;">{items_html}</div>'
-        )
-
-    html_parts.append("</div>")
-
-    log_content = None
-    if vitals_parts or item_changes or new_level:
-        log_content = "".join(html_parts)
-
-    return new_game_state, log_content
+    return new_game_state, delta if has_changes else None

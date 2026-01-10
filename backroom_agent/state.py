@@ -36,3 +36,6 @@ class State(TypedDict):
 
     # Output
     suggestions: Optional[List[str]]
+    settlement_delta: Optional[
+        dict
+    ]  # Using dict for serializability of SettlementDelta
