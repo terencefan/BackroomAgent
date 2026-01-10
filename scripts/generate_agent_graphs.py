@@ -9,6 +9,7 @@ from langchain_core.runnables.graph_mermaid import draw_mermaid_png
 
 from backroom_agent.graph import graph as main_graph
 from backroom_agent.nodes import LLM_NODE_IDS
+from backroom_agent.subagents.event import EVENT_LLM_NODES, event_agent
 from backroom_agent.subagents.level import LEVEL_LLM_NODES, level_agent
 from backroom_agent.subagents.suggestion import (SUGGESTION_LLM_NODES,
                                                  suggestion_agent)
@@ -140,29 +141,56 @@ def parse_graph_structure(mermaid_src):
     return edges, entry, exit_node
 
 
-def generate_combined_graph(tmp_dir, main_llm_nodes, suggestion_llm_nodes):
-    print("Generating Combined Agent Graph...")
+def process_subgraph_lines(graph, prefix):
+    src = graph.get_graph().draw_mermaid()
+    edges, entry, exit_node = parse_graph_structure(src)
 
-    main_src = main_graph.get_graph().draw_mermaid()
-    sub_src = suggestion_agent.get_graph().draw_mermaid()
-
-    sub_edges, sub_entry, sub_exit = parse_graph_structure(sub_src)
-
-    prefix = "sg_"
-    sub_entry = f"{prefix}{sub_entry}" if sub_entry else None
-    sub_exit = f"{prefix}{sub_exit}" if sub_exit else None
-
-    prefixed_sub_edges = []
-    for edge in sub_edges:
+    prefixed_edges = []
+    for edge in edges:
         parts = re.split(r"(\s*(?:--|==|-[.]-)+>\s*)", edge)
         if len(parts) >= 3:
             u = parts[0]
             arrow = parts[1]
             v = parts[2]
-            prefixed_sub_edges.append(f"{prefix}{u}{arrow}{prefix}{v}")
+            prefixed_edges.append(f"{prefix}{u}{arrow}{prefix}{v}")
 
+    prefixed_entry = f"{prefix}{entry}" if entry else None
+    prefixed_exit = f"{prefix}{exit_node}" if exit_node else None
+
+    return prefixed_edges, prefixed_entry, prefixed_exit
+
+
+def generate_full_graph(tmp_dir):
+    print("Generating Full Agent Graph (Combined)...")
+
+    # Graph Definitions (Prefix -> (GraphObject, Title))
+    subagents = {
+        "sg_sugg_": (suggestion_agent, "Suggestion_Agent"),
+        "sg_level_": (level_agent, "Level_Agent"),
+        "sg_evt_": (event_agent, "Event_Agent"),
+    }
+
+    # Prepare Subagent Data
+    subagent_data = {}
+    all_llm_nodes = set(LLM_NODE_IDS)
+
+    for prefix, (agent, title) in subagents.items():
+        edges, entry, exit_n = process_subgraph_lines(agent, prefix)
+        subagent_data[title] = {"edges": edges, "entry": entry, "exit": exit_n}
+
+        # Collect LLM Nodes
+        if title == "Suggestion_Agent":
+            all_llm_nodes.update({f"{prefix}{nid}" for nid in SUGGESTION_LLM_NODES})
+        elif title == "Level_Agent":
+            all_llm_nodes.update({f"{prefix}{nid}" for nid in LEVEL_LLM_NODES})
+        elif title == "Event_Agent":
+            all_llm_nodes.update({f"{prefix}{nid}" for nid in EVENT_LLM_NODES})
+
+    # Start Building Mermaid
     new_lines = ["graph TD;"]
 
+    # Process Main Graph
+    main_src = main_graph.get_graph().draw_mermaid()
     main_body = extract_body_lines(main_src)
     edge_pattern = re.compile(
         r"([a-zA-Z0-9_]+)\s*((?:--|==|-[.]-)+>)\s*([a-zA-Z0-9_]+)"
@@ -182,10 +210,15 @@ def generate_combined_graph(tmp_dir, main_llm_nodes, suggestion_llm_nodes):
         if match:
             u, arrow, v = match.groups()
 
-            if u == "suggestion_node":
-                u = sub_exit if sub_exit else u
-            if v == "suggestion_node":
-                v = sub_entry if sub_entry else v
+            # Link Suggestion Agent
+            sugg_data = subagent_data["Suggestion_Agent"]
+            if u == "suggestion_node" and sugg_data["exit"]:
+                u = sugg_data["exit"]
+            if v == "suggestion_node" and sugg_data["entry"]:
+                v = sugg_data["entry"]
+
+            # Note: Level and Event agents are standalone/tools, so no direct replacement in Main Graph edges.
+            # We just display them alongside.
 
             if u and v:
                 new_lines.append(f"    {u} {arrow} {v};")
@@ -194,27 +227,25 @@ def generate_combined_graph(tmp_dir, main_llm_nodes, suggestion_llm_nodes):
                 continue
             new_lines.append(f"    {line};")
 
-    new_lines.append("    subgraph Suggestion_Agent")
-    if prefixed_sub_edges:
-        for edge in prefixed_sub_edges:
-            new_lines.append(f"        {edge};")
-    else:
-        if sub_entry and sub_entry == sub_exit:
-            new_lines.append(f"        {sub_entry};")
-    new_lines.append("    end")
+    # Append Subgraphs
+    for title, data in subagent_data.items():
+        new_lines.append(f"    subgraph {title}")
+        if data["edges"]:
+            for edge in data["edges"]:
+                new_lines.append(f"        {edge};")
+        else:
+            if data["entry"]:
+                new_lines.append(f"        {data['entry']};")
+        new_lines.append("    end")
 
     combined_mermaid = "\n".join(new_lines)
-
-    combined_llm_nodes = set(main_llm_nodes)
-    combined_llm_nodes.update({f"sg_{nid}" for nid in suggestion_llm_nodes})
-
     arch_dir = os.path.join(tmp_dir, "architecture")
     os.makedirs(arch_dir, exist_ok=True)
 
     style_and_save_graph(
         None,
-        os.path.join(arch_dir, "combined_agent_graph.png"),
-        combined_llm_nodes,
+        os.path.join(arch_dir, "full_agent_graph.png"),
+        all_llm_nodes,
         graph_mermaid_code=combined_mermaid,
     )
 
@@ -236,7 +267,7 @@ def generate_graphs():
         level_agent, os.path.join(arch_dir, "level_agent_graph.png"), LEVEL_LLM_NODES
     )
 
-    generate_combined_graph(tmp_dir, main_llm_nodes, SUGGESTION_LLM_NODES)
+    generate_full_graph(tmp_dir)
 
 
 if __name__ == "__main__":

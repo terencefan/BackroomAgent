@@ -4,10 +4,12 @@ from langchain_core.messages import SystemMessage
 
 from backroom_agent.utils.common import get_llm, load_prompt
 from backroom_agent.utils.logger import logger
+from backroom_agent.utils.node_annotation import annotate_node
 
 from .state import EventAgentState
 
 
+@annotate_node("llm")
 def generate_event_node(state: EventAgentState):
     """
     Generates a random event based on current context.
