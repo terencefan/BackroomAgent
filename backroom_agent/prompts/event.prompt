@@ -40,11 +40,12 @@ A JSON object describing the static level data.
 ```
 
 **Message 2: Player Input (Dynamic State)**
-A JSON object describing the dynamic game state and user action.
+A JSON object containing the full GameState and the User Input.
 ```json
 {
-  "player": {
-    "input": "User Action String (e.g., 'Open the door')",
+  "state": {
+    "level": "Level 0",
+    "time": 480,
     "vitals": {
       "hp": 10,
       "maxHp": 10,
@@ -67,10 +68,7 @@ A JSON object describing the dynamic game state and user action.
       }
     ]
   },
-  "environment": {
-    "level_id": "Level 0",
-    "time": 480
-  }
+  "input": "User Action String (e.g., 'Open the door')"
 }
 ```
 
@@ -159,10 +157,8 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
 **Input**:
 ```json
 {
-  "player": {
-    "input": "Use pipe to attack Hound",
-    "vitals": {"hp":8, "sanity":65}
-  }
+  "state": { "vitals": {"hp":8, "sanity":65}, ... },
+  "input": "Use pipe to attack Hound"
 }
 ```
 **Output**:
@@ -187,10 +183,8 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
 {
   "player": {
     "input": "Walk forward",
-    "vitals": {"sanity":15}
-  }
-}
-```
+   state": { "vitals": {"sanity":15}, ... },
+  "input": "Walk forward"
 **Output**:
 ```json
 {
@@ -230,10 +224,8 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
 {
   "player": {
     "input": "Drink Almond Water",
-    "inventory": [{"name":"Almond Water", ...}]
-  }
-}
-```
+   state": { "inventory": [{"name":"Almond Water", ...}], ... },
+  "input": "Drink Almond Water"
 **Output**:
 ```json
 {
@@ -255,10 +247,8 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
 {
   "player": {
     "input": "Shoot the smiler with pistol",
-    "inventory": []
-  }
-}
-```
+   state": { "inventory": [] },
+  "input": "Shoot the smiler with pistol"
 **Output**:
 ```json
 {

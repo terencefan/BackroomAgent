@@ -128,19 +128,10 @@ def event_node(state: State, config: RunnableConfig) -> dict:
     level_msg_content = json.dumps(level_data_json, ensure_ascii=False, indent=2)
 
     # 3b. Construct Dynamic Player Input
+    # Structure matches GameState + input
     llm_input_data = {
-        "player": {
-            "input": current_message,
-            "vitals": state_dict.get("vitals", {}),
-            "attributes": state_dict.get("attributes", {}),
-            "inventory": state_dict.get("inventory", []),
-        },
-        "environment": {
-            "level_id": level_id,
-            "time": state_dict.get("time", 0),
-        },
-        # Optionally add context/history here
-        # "context": { ... }
+        "state": state_dict,
+        "input": current_message,
     }
 
     # 4. Dump to JSON
