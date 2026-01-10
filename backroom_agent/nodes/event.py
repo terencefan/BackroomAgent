@@ -118,14 +118,27 @@ def event_node(state: State, config: RunnableConfig) -> dict:
         else:
             current_message = str(msg_content)
 
-    # 3. Inject Message into State Dict
-    state_dict["message"] = current_message
+    # 3. Construct Structured Input
+    llm_input_data = {
+        "player": {
+            "input": current_message,
+            "vitals": state_dict.get("vitals", {}),
+            "attributes": state_dict.get("attributes", {}),
+            "inventory": state_dict.get("inventory", []),
+        },
+        "environment": {
+            "level_id": state_dict.get("level", "Unknown"),
+            "time": state_dict.get("time", 0),
+        },
+        # Optionally add context/history here
+        # "context": { ... }
+    }
 
     # 4. Dump to JSON
-    json_input = json.dumps(state_dict, ensure_ascii=False, indent=2)
+    json_input = json.dumps(llm_input_data, ensure_ascii=False, indent=2)
 
     # Log the JSON Payload
-    logger.debug(f"LLM Input Payload (JSON):\n{json.dumps(state_dict, indent=2)}")
+    logger.debug(f"LLM Input Payload (JSON):\n{json_input}")
 
     # 5. Invoke LLM
     final_messages = [

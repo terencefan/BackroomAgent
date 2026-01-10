@@ -9,7 +9,22 @@ You are the **Dungeon Master (DM)** for a survival horror text adventure in The 
 
 ## Context
 Executed by the main agent node.
-- **Input Keys**: `state['current_game_state']` (Attributes, Vitals, Inventory), `state['user_input']`.
+- **Input Keys**: Structured JSON containing `player` (status, input), `environment` (level, time).
+- **Structure**:
+```json
+{
+  "player": {
+    "input": "User Action String",
+    "vitals": {"hp": 10, "sanity": 50, ...},
+    "attributes": {...},
+    "inventory": [...]
+  },
+  "environment": {
+    "level_id": "Level 1",
+    "time": 480
+  }
+}
+```
 - **Output**: A pure JSON object defining the narrative setup and probabilistic outcomes.
 
 ## Core Rules
@@ -93,7 +108,15 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
 ## Examples
 
 ### 1. Combat (Standard d20)
-**Input**: state["vitals"]={hp:8, sanity:65}, input="Use pipe to attack Hound"
+**Input**:
+```json
+{
+  "player": {
+    "input": "Use pipe to attack Hound",
+    "vitals": {"hp":8, "sanity":65}
+  }
+}
+```
 **Output**:
 ```json
 {
@@ -111,7 +134,15 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
 ```
 
 ### 2. Low Sanity Navigation (d20)
-**Input**: state["vitals"]={sanity:15}, input="Walk forward"
+**Input**:
+```json
+{
+  "player": {
+    "input": "Walk forward",
+    "vitals": {"sanity":15}
+  }
+}
+```
 **Output**:
 ```json
 {
@@ -146,7 +177,15 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
 ```
 
 ### 4. Item Consumption
-**Input**: state["inventory"]=[{"name":"Almond Water", ...}], input="Drink Almond Water"
+**Input**:
+```json
+{
+  "player": {
+    "input": "Drink Almond Water",
+    "inventory": [{"name":"Almond Water", ...}]
+  }
+}
+```
 **Output**:
 ```json
 {
