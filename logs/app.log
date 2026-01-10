@@ -579,3 +579,117 @@ DEBUG: Summary Node [Turn Complete]:
 2026-01-10 20:56:53.825 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
 2026-01-10 20:57:06.465 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
 2026-01-10 20:58:28.615 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:59:22.110 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 21:00:42.728 | INFO     | server.py:73 | backroom_agent | [session-1767974738845-0xxq7eagp] Event: EventType.MESSAGE | Input: 用背包里的东西擦拭痕迹
+2026-01-10 21:00:43.331 | INFO     | router.py:20 | backroom_agent | ▶ NODE: Router Node
+2026-01-10 21:00:43.331 | INFO     | router.py:27 | backroom_agent | Router pre-fetching context for Level 0
+2026-01-10 21:00:43.331 | INFO     | level.py:27 | backroom_agent | Searching for level data for ID: 'Level 0' in /Users/bytedance/workspace/BackroomAgent/data/level
+2026-01-10 21:00:43.334 | INFO     | event.py:87 | backroom_agent | ▶ NODE: Event Node (LLM Generation)
+2026-01-10 21:00:43.334 | DEBUG    | event.py:98 | backroom_agent | State Messages Dump (1 items):
+0. [human]: 用背包里的东西擦拭痕迹
+2026-01-10 21:00:43.334 | DEBUG    | event.py:128 | backroom_agent | LLM Input Payload (JSON):
+{
+  "level": "Level 0",
+  "time": 482,
+  "attributes": {
+    "STR": 10,
+    "DEX": 10,
+    "CON": 10,
+    "INT": 10,
+    "WIS": 10,
+    "CHA": 10
+  },
+  "vitals": {
+    "hp": 10,
+    "maxHp": 10,
+    "sanity": 95
+  },
+  "inventory": [],
+  "message": "\u7528\u80cc\u5305\u91cc\u7684\u4e1c\u897f\u64e6\u62ed\u75d5\u8ff9"
+}
+2026-01-10 21:00:53.106 | DEBUG    | event.py:145 | backroom_agent | LLM Output Payload (JSON):
+{
+  "message": "\u4f60\u6253\u5f00\u80cc\u5305\uff0c\u91cc\u9762\u7a7a\u7a7a\u5982\u4e5f\u3002\u4f60\u8bd5\u56fe\u5bfb\u627e\u4efb\u4f55\u53ef\u4ee5\u7528\u6765\u64e6\u62ed\u7684\u4e1c\u897f\uff0c\u4f46\u53ea\u6709\u7c97\u7cd9\u7684\u5e06\u5e03\u5185\u886c\u3002\u4f60\u7528\u624b\u6307\u62b9\u8fc7\u5185\u886c\uff0c\u611f\u89c9\u5b83\u5e72\u71e5\u800c\u7c97\u7cd9\uff0c\u51e0\u4e4e\u65e0\u6cd5\u5438\u6536\u4efb\u4f55\u6db2\u4f53\u3002",
+  "event": {
+    "name": "\u5f92\u624b\u6e05\u7406",
+    "die_type": "d20",
+    "outcomes": [
+      {
+        "range": [
+          1,
+          8
+        ],
+        "result": {
+          "content": "\u5e06\u5e03\u5185\u886c\u4e0d\u4ec5\u6ca1\u80fd\u64e6\u6389\u75d5\u8ff9\uff0c\u53cd\u800c\u8ba9\u4f60\u7684\u624b\u6307\u6cbe\u4e0a\u4e86\u66f4\u591a\u6c61\u6e0d\uff0c\u8fd8\u628a\u75d5\u8ff9\u62b9\u5f97\u66f4\u5f00\u4e86\u3002\u4f60\u611f\u5230\u4e00\u9635\u5f92\u52b3\u7684\u6cae\u4e27\u3002"
+        }
+      },
+      {
+        "range": [
+          9,
+          15
+        ],
+        "result": {
+          "content": "\u4f60\u52c9\u5f3a\u7528\u80cc\u5305\u5185\u886c\u8e6d\u6389\u4e86\u4e00\u4e9b\u8868\u9762\u7684\u6d6e\u5c18\uff0c\u4f46\u6df1\u8272\u7684\u75d5\u8ff9\u4f9d\u7136\u987d\u56fa\u5730\u7559\u5728\u90a3\u91cc\u3002\u81f3\u5c11\u770b\u8d77\u6765\u6ca1\u90a3\u4e48\u663e\u773c\u4e86\u3002"
+        }
+      },
+      {
+        "range": [
+          16,
+          20
+        ],
+        "result": {
+          "content": "\u4f60\u7075\u673a\u4e00\u52a8\uff0c\u7528\u80cc\u5305\u5185\u886c\u7c97\u7cd9\u7684\u4e00\u9762\u53cd\u590d\u6469\u64e6\u3002\u867d\u7136\u65e0\u6cd5\u5b8c\u5168\u6e05\u9664\uff0c\u4f46\u75d5\u8ff9\u88ab\u6709\u6548\u5730\u63a9\u76d6\u548c\u6253\u6563\uff0c\u4e0d\u518d\u6784\u6210\u660e\u663e\u7684\u56fe\u6848\u3002"
+        }
+      }
+    ]
+  }
+}
+2026-01-10 21:00:53.107 | INFO     | event.py:156 | backroom_agent | LLM Response Narrative: 你打开背包，里面空空如也。你试图寻找任何可以用来擦拭的东西，但只有粗糙的帆布内衬。你用手指抹过内衬，...
+2026-01-10 21:00:53.107 | INFO     | event.py:165 | backroom_agent | Logic Event Generated: 徒手清理
+2026-01-10 21:00:58.114 | INFO     | dice.py:36 | backroom_agent | ▶ NODE: Dice Node
+2026-01-10 21:00:58.114 | INFO     | dice.py:47 | backroom_agent | Dice Node: Processing event '徒手清理' with d20
+2026-01-10 21:00:58.115 | INFO     | dice.py:99 | backroom_agent | Dice Node Feedback: Dice Roll Result: [D20] 6. Reason: 徒手清理. Outcome: 帆布内衬不仅没能擦掉痕迹，反而让你的手指沾上了更多污渍，还把痕迹抹得更开了。你感到一阵徒劳的沮丧。
+2026-01-10 21:01:01.119 | INFO     | settle.py:98 | backroom_agent | ▶ NODE: Dice Resolve Node
+2026-01-10 21:01:01.122 | INFO     | event.py:87 | backroom_agent | ▶ NODE: Event Node (LLM Generation)
+2026-01-10 21:01:01.123 | DEBUG    | event.py:98 | backroom_agent | State Messages Dump (3 items):
+0. [human]: 用背包里的东西擦拭痕迹
+1. [ai]: 你打开背包，里面空空如也。你试图寻找任何可以用来擦拭的东西，但只有粗糙的帆布内衬。你用手指抹过内衬，感觉它干燥而粗糙，几乎无法吸收任何液体。
+2. [human]: Dice Roll Result: [D20] 6. Reason: 徒手清理. Outcome: 帆布内衬不仅没能擦掉痕迹，反而让你的手指沾上了更多污渍，还把痕迹抹得更开了。你感到一阵徒劳的沮丧。
+2026-01-10 21:01:01.123 | DEBUG    | event.py:128 | backroom_agent | LLM Input Payload (JSON):
+{
+  "level": "Level 0",
+  "time": 482,
+  "attributes": {
+    "STR": 10,
+    "DEX": 10,
+    "CON": 10,
+    "INT": 10,
+    "WIS": 10,
+    "CHA": 10
+  },
+  "vitals": {
+    "hp": 10,
+    "maxHp": 10,
+    "sanity": 95
+  },
+  "inventory": [],
+  "message": "Dice Roll Result: [D20] 6. Reason: \u5f92\u624b\u6e05\u7406. Outcome: \u5e06\u5e03\u5185\u886c\u4e0d\u4ec5\u6ca1\u80fd\u64e6\u6389\u75d5\u8ff9\uff0c\u53cd\u800c\u8ba9\u4f60\u7684\u624b\u6307\u6cbe\u4e0a\u4e86\u66f4\u591a\u6c61\u6e0d\uff0c\u8fd8\u628a\u75d5\u8ff9\u62b9\u5f97\u66f4\u5f00\u4e86\u3002\u4f60\u611f\u5230\u4e00\u9635\u5f92\u52b3\u7684\u6cae\u4e27\u3002"
+}
+2026-01-10 21:01:04.238 | DEBUG    | event.py:145 | backroom_agent | LLM Output Payload (JSON):
+{
+  "message": "\u4f60\u770b\u7740\u88ab\u81ea\u5df1\u62b9\u5f97\u66f4\u810f\u7684\u5899\u58c1\uff0c\u5f92\u52b3\u611f\u5728\u6f6e\u6e7f\u7684\u7a7a\u6c14\u4e2d\u8513\u5ef6\u3002\u624b\u6307\u4e0a\u9ecf\u7cca\u7cca\u7684\u6c61\u6e0d\u6563\u53d1\u7740\u9709\u5473\u3002\u8fdc\u5904\u8367\u5149\u706f\u7684\u55e1\u55e1\u58f0\u4f3c\u4e4e\u66f4\u54cd\u4e86\uff0c\u5355\u8c03\u5730\u6572\u6253\u7740\u4f60\u7684\u795e\u7ecf\u3002"
+}
+2026-01-10 21:01:04.238 | INFO     | event.py:156 | backroom_agent | LLM Response Narrative: 你看着被自己抹得更脏的墙壁，徒劳感在潮湿的空气中蔓延。手指上黏糊糊的污渍散发着霉味。远处荧光灯的嗡嗡...
+2026-01-10 21:01:04.240 | INFO     | settle.py:119 | backroom_agent | ▶ NODE: Event Resolve Node
+2026-01-10 21:01:07.007 | INFO     | settle.py:80 | backroom_agent | Settle Node Applied Updates: HP+0 Sanity-5
+2026-01-10 21:01:07.012 | INFO     | summary.py:13 | backroom_agent | ▶ NODE: Summary Node
+2026-01-10 21:01:07.012 | DEBUG    | summary.py:31 | backroom_agent | Summary Node [Turn Complete]:
+- Time: 483
+- Model Output: 你看着被自己抹得更脏的墙壁，徒劳感在潮湿的空气中蔓延。手指上黏糊糊的污渍散发着霉味。远处荧光灯的嗡嗡声似乎更响了，单调地敲打着你的神经。...
+2026-01-10 21:01:07.014 | INFO     | suggestion.py:16 | backroom_agent | ▶ NODE: Suggestion Node
+2026-01-10 21:01:07.016 | INFO     | nodes.py:18 | backroom_agent | Suggestion Agent: Thinking...
+2026-01-10 21:02:06.489 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 21:02:15.716 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 21:02:28.412 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 21:02:53.487 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 21:03:21.466 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
