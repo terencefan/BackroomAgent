@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from langchain_core.messages import AIMessage, SystemMessage
 
@@ -53,13 +53,32 @@ def parse_settle_response(content: str) -> Dict[str, Any]:
         return {}
 
 
-def apply_state_updates(current_state: Any, updates: Dict[str, Any]) -> Any:
+def format_delta(val: int) -> str:
+    """Helper to colorize numerical changes (yellow)."""
+    sign = "+" if val > 0 else ""
+    return f'<span style="color:#ffee00">{sign}{val}</span>'
+
+
+def format_item_line(prefix: str, name: str) -> str:
+    """Helper to colorize item changes."""
+    return f'{prefix} <span style="color:#ffee00">{name}</span>'
+
+
+def apply_state_updates(
+    current_state: Any, updates: Dict[str, Any]
+) -> Tuple[Any, Optional[str]]:
+    """
+    Applies updates to state and returns (new_state, log_content).
+    log_content is None if no significant changes happened.
+    """
     if not current_state:
-        return current_state
+        return current_state, None
 
     new_game_state = current_state.model_copy(deep=True)
     if not updates:
-        return new_game_state
+        return new_game_state, None
+
+    log_lines = []
 
     # Support both old "hp_change" and new "hp" keys
     hp_change = int(updates.get("hp", updates.get("hp_change", 0)))
@@ -72,6 +91,11 @@ def apply_state_updates(current_state: Any, updates: Dict[str, Any]) -> Any:
         0, min(100, new_game_state.vitals.sanity + sanity_change)
     )
 
+    if hp_change != 0:
+        log_lines.append(f"HP {format_delta(hp_change)}")
+    if sanity_change != 0:
+        log_lines.append(f"Sanity {format_delta(sanity_change)}")
+
     if hp_change != 0 or sanity_change != 0:
         logger.info(
             f"Settle/Resolve Applied Updates: HP{hp_change:+} Sanity{sanity_change:+}"
@@ -82,6 +106,7 @@ def apply_state_updates(current_state: Any, updates: Dict[str, Any]) -> Any:
     if new_level and isinstance(new_level, str):
         old_level = new_game_state.level
         new_game_state.level = new_level
+        log_lines.append(f"Level Transfer: {old_level} -> {format_item_line('', new_level)}")
         logger.info(f"Level Transition detected: {old_level} -> {new_level}")
 
     # Handle Inventory Updates
@@ -108,9 +133,11 @@ def apply_state_updates(current_state: Any, updates: Dict[str, Any]) -> Any:
                 )
                 if existing_item:
                     existing_item.quantity += new_item.quantity
+                    log_lines.append(format_item_line("+", f"{new_item.name} x{new_item.quantity}"))
                     logger.info(f"Stacked item {new_item.id} (+{new_item.quantity})")
                 else:
                     new_game_state.inventory.append(new_item)
+                    log_lines.append(format_item_line("+", f"{new_item.name}"))
                     logger.info(f"Added new item {new_item.id}")
             except Exception as e:
                 logger.error(f"Failed to add item {item_data}: {e}")
@@ -128,9 +155,11 @@ def apply_state_updates(current_state: Any, updates: Dict[str, Any]) -> Any:
             # Start with full removal/decrement logic
 
             found_index = -1
+            found_name = target_id
             for idx, item in enumerate(new_game_state.inventory):
                 if item and (item.id == target_id or item.name.lower() == target_id):
                     found_index = idx
+                    found_name = item.name
                     break
 
             if found_index != -1:
@@ -142,5 +171,12 @@ def apply_state_updates(current_state: Any, updates: Dict[str, Any]) -> Any:
                 else:
                     new_game_state.inventory.pop(found_index)
                     logger.info(f"Removed item {target_id}")
+                
+                log_lines.append(format_item_line("-", found_name))
 
-    return new_game_state
+    # Construct final log string
+    log_content = None
+    if log_lines:
+        log_content = "  \n".join(log_lines) # Two spaces for markdown newline
+
+    return new_game_state, log_content

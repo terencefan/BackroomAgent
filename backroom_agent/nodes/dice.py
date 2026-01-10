@@ -1,6 +1,6 @@
 from typing import Any, Dict, cast
 
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, SystemMessage
 
 from backroom_agent.constants import GraphKeys, NodeConstants
 from backroom_agent.nodes.resolve_utils import apply_state_updates
@@ -105,14 +105,21 @@ def dice_node(state: State) -> Dict[str, Any]:
     logger.info(f"Dice Node Feedback: {feedback_text}")
 
     # Apply State Updates
-    new_game_state = apply_state_updates(current_state, updates)
+    new_game_state, log_content = apply_state_updates(current_state, updates)
 
-    # Create a HumanMessage (or SystemMessage) representing the resolved event to continue the flow
+    # 1. System Feedback for LLM (HumanMessage)
     feedback_msg = HumanMessage(content=feedback_text)
+    
+    messages_to_add = [feedback_msg]
+    
+    # 2. System Status Update (SystemMessage) - Intended for Client UI display
+    if log_content:
+        system_status_msg = SystemMessage(content=log_content)
+        messages_to_add.append(system_status_msg)
 
     return {
         GraphKeys.DICE_ROLL: dice_roll,  # For Frontend Animation
-        GraphKeys.MESSAGES: [feedback_msg],  # For LLM Context
+        GraphKeys.MESSAGES: messages_to_add,  # For LLM Context
         GraphKeys.LOGIC_EVENT: None,  # Clear event to prevent loops
         GraphKeys.CURRENT_GAME_STATE: new_game_state,  # Updated State
         GraphKeys.LOGIC_OUTCOME: matched_outcome,  # Optional: Keep for debugging
