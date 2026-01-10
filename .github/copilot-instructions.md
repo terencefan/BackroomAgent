@@ -65,3 +65,17 @@ Specialized agents (e.g., `level_agent`) run as independent graphs for specific 
 - **Dependency Management**: New dependencies must also include type stubs (e.g., `types-requests`) in `requirements.txt`.
 - **References**: Item/Entity refs are strictly strings (IDs), not nested objects.
 
+### Logging Standards
+All services must adhere to the logging standards defined in the `logger-generator` skill (`.github/skills/logger-generator/SKILL.md`).
+- **Dual Output**: Colored console for development + Daily rotating plain-text files for production.
+- **Format**: Must include Timestamp (ms), Level, File:Line, and Module.
+- **Python**: Use the pre-configured `backroom_agent.utils.logger`.
+
+### Automated Version Control
+The agent MUST perform a git commit after every significant code update.
+1.  **Summarize**: Analyze changes made in the current turn.
+2.  **Commit**: Use the `git-committer` skill standards to run `git add .` and `git commit`.
+3.  **Report**: Inform the user that changes have been committed.
+
+
+

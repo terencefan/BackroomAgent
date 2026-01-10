@@ -1,4 +1,3 @@
-import logging
 import os
 
 from langchain_core.messages import AIMessage, SystemMessage
@@ -8,8 +7,8 @@ from backroom_agent.state import State
 from backroom_agent.utils.cache import memory_cache
 from backroom_agent.utils.common import get_llm, load_prompt
 from backroom_agent.utils.level import find_level_data
-
-logger = logging.getLogger(__name__)
+from backroom_agent.utils.logger import logger
+from backroom_agent.utils.node_annotation import annotate_node
 
 
 def _load_init_prompt() -> str:
@@ -36,6 +35,7 @@ def _generate_llm_intro(level: str, level_context: str) -> str:
     return str(llm.invoke([SystemMessage(content=prompt)]).content)
 
 
+@annotate_node("llm")
 def init_node(state: State, config: RunnableConfig) -> dict:
     """Handles the initialization event."""
     current_game_state = state.get("current_game_state")

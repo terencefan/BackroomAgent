@@ -21,6 +21,8 @@ class State(TypedDict):
 
     # Logic Event (if generated)
     logic_event: Optional[LogicEvent]
+    # Logic Outcome (resolved from dice)
+    logic_outcome: Optional[dict]  # Using dict to accept Pydantic dump or object
 
     # Dice Roll (if generated)
     dice_roll: Optional[DiceRoll]

@@ -6,6 +6,7 @@ from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
 
 from backroom_agent.constants import API_KEY, BASE_URL, MODEL_NAME
+from backroom_agent.utils.logger import logger
 
 
 def get_project_root() -> str:
@@ -41,17 +42,15 @@ def get_llm() -> BaseChatModel:
 
 
 def print_debug_message(title: str, content: list[str] | str):
-    """Prints a formatted debug message to the console."""
-    print("-" * 30)
-    print(f"DEBUG: {title}")
-
+    """Prints a formatted debug message to the console using logger."""
+    
+    msg_body = ""
     if isinstance(content, list):
-        for line in content:
-            print(line)
+        msg_body = "\n".join(content)
     else:
-        print(content)
+        msg_body = str(content)
 
-    print("-" * 30)
+    logger.debug(f"\n{'-'*30}\nDEBUG: {title}\n{msg_body}\n{'-'*30}")
 
 
 def save_to_file(content: str, directory: str, filename: str):

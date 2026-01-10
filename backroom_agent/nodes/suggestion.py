@@ -1,14 +1,14 @@
-import logging
 from typing import Any, List, cast
 
 from langchain_core.runnables import RunnableConfig
 
 from backroom_agent.state import State
 from backroom_agent.subagents.suggestion import suggestion_agent
+from backroom_agent.utils.logger import logger
+from backroom_agent.utils.node_annotation import annotate_node
 
-logger = logging.getLogger(__name__)
 
-
+@annotate_node("llm")
 async def suggestion_node(state: State, config: RunnableConfig) -> dict:
     """
     Generates suggestions for the player's next actions.

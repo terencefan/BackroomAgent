@@ -1,5 +1,4 @@
 import asyncio
-import logging
 from typing import AsyncGenerator
 
 import uvicorn
@@ -11,10 +10,7 @@ from backroom_agent.handlers import (handle_drop_item, handle_init,
                                      handle_message, handle_use_item)
 from backroom_agent.protocol import (Attributes, ChatRequest, EventType,
                                      GameState, Vitals)
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from backroom_agent.utils.logger import logger
 
 app = FastAPI(title="Backroom Agent API")
 

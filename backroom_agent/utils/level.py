@@ -1,10 +1,9 @@
 import glob
 import json
-import logging
 import os
 from typing import Dict, Optional, Tuple
 
-logger = logging.getLogger(__name__)
+from backroom_agent.utils.logger import logger
 
 # Assumes this file is in backroom_agent/utils/level.py
 # data/level is at ../../data/level relative to this file

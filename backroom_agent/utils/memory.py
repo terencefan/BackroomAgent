@@ -1,9 +1,8 @@
-import logging
 import time
 import uuid
 from typing import Any, Dict, List
 
-logger = logging.getLogger(__name__)
+from backroom_agent.utils.logger import logger
 
 
 class MemoryItem:

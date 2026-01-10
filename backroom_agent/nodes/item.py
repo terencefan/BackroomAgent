@@ -3,8 +3,10 @@ from langchain_core.runnables import RunnableConfig
 
 from backroom_agent.protocol import EventType
 from backroom_agent.state import State
+from backroom_agent.utils.node_annotation import annotate_node
 
 
+@annotate_node("normal")
 def item_node(state: State, config: RunnableConfig) -> dict:
     """Handles item usage and dropping."""
     event = state.get("event")

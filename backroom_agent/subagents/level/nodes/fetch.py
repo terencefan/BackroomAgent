@@ -1,4 +1,3 @@
-import logging
 import os
 import re
 from typing import Any, Dict, List, Optional, Tuple, cast
@@ -9,11 +8,11 @@ from backroom_agent.tools.wiki.parse import \
 from backroom_agent.tools.wiki_tools import (fetch_wiki_content,
                                              get_level_name_from_url)
 from backroom_agent.utils.common import get_project_root
+from backroom_agent.utils.logger import logger
+from backroom_agent.utils.node_annotation import annotate_node
 from backroom_agent.utils.search import search_backrooms_wiki
 
 from ..state import LevelAgentState
-
-logger = logging.getLogger(__name__)
 
 # --- Domain Priority Configuration ---
 # Ordered by priority (first is preferred)
@@ -244,6 +243,7 @@ def _resolve_missing_url(level_name: str, logs: List[str]) -> str:
     return fallback_url
 
 
+@annotate_node("normal")
 def fetch_content_node(state: LevelAgentState):
     """
     Resolves URL (if needed) and fetches HTML content (local or remote).

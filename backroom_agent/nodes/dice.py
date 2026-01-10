@@ -1,4 +1,3 @@
-import logging
 from typing import Any, Dict, cast
 
 from langchain_core.messages import HumanMessage
@@ -7,8 +6,8 @@ from backroom_agent.constants import GraphKeys, NodeConstants
 from backroom_agent.protocol import DiceRoll, LogicEvent
 from backroom_agent.state import State
 from backroom_agent.utils.dice import Dice
-
-logger = logging.getLogger(__name__)
+from backroom_agent.utils.logger import logger
+from backroom_agent.utils.node_annotation import annotate_node
 
 
 def route_check_dice(state: State) -> str:
@@ -16,13 +15,14 @@ def route_check_dice(state: State) -> str:
     Conditional Routing:
     Check if a logic_event was generated.
     If yes -> Go to Dice Node.
-    If no -> Skip to Summary Node.
+    If no -> Skip to Settle Node.
     """
-    if state.get("logic_event"):
+    if state.get(GraphKeys.LOGIC_EVENT):
         return NodeConstants.DICE
-    return NodeConstants.SUMMARY
+    return NodeConstants.SETTLE
 
 
+@annotate_node("normal")
 def dice_node(state: State) -> Dict[str, Any]:
     """
     Dice Node:

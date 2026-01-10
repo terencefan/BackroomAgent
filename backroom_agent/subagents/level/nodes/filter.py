@@ -1,9 +1,8 @@
-import logging
 from typing import Callable, List, Optional, Tuple
 
-from ..state import LevelAgentState
+from backroom_agent.utils.node_annotation import annotate_node
 
-logger = logging.getLogger(__name__)
+from ..state import LevelAgentState
 
 
 def _filter_candidates(
@@ -35,6 +34,7 @@ def _filter_candidates(
     return final_list
 
 
+@annotate_node("normal")
 def filter_items_node(state: LevelAgentState):
     """
     Filters extracted items based on:
@@ -54,6 +54,7 @@ def filter_items_node(state: LevelAgentState):
     return {"final_items": final_items, "logs": logs, "items_extracted": True}
 
 
+@annotate_node("normal")
 def filter_entities_node(state: LevelAgentState):
     """
     Filters extracted entities based on:

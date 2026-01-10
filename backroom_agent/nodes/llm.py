@@ -5,6 +5,7 @@ from langchain_core.runnables import RunnableConfig
 
 from backroom_agent.state import State
 from backroom_agent.utils.common import get_llm, load_prompt
+from backroom_agent.utils.node_annotation import annotate_node
 
 # Singleton model instance
 model = get_llm()
@@ -27,6 +28,7 @@ def _load_system_prompt() -> str:
 SYSTEM_PROMPT = _load_system_prompt()
 
 
+@annotate_node("llm")
 def llm_node(state: State, config: RunnableConfig) -> dict:
     """
     The main agent node that calls the LLM for general dialogue.

@@ -1,9 +1,8 @@
-import logging
 from typing import Dict, List
 
-from .item import MemoryItem
+from backroom_agent.utils.logger import logger
 
-logger = logging.getLogger(__name__)
+from .item import MemoryItem
 
 
 class MemoryManager:

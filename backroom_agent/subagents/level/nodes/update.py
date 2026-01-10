@@ -1,14 +1,13 @@
 import json
-import logging
 import os
 
 from backroom_agent.utils.common import get_project_root
+from backroom_agent.utils.node_annotation import annotate_node
 
 from ..state import LevelAgentState
 
-logger = logging.getLogger(__name__)
 
-
+@annotate_node("normal")
 def check_completion_node(state: LevelAgentState):
     """
     Dummy/Barrier node to synchronize execution.
@@ -17,6 +16,7 @@ def check_completion_node(state: LevelAgentState):
     return {}
 
 
+@annotate_node("normal")
 def update_level_json_node(state: LevelAgentState):
     """
     Updates the Level JSON with the extracted and filtered items AND entities.

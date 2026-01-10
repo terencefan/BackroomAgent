@@ -8,8 +8,19 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from langchain_core.runnables.graph_mermaid import draw_mermaid_png
 
 from backroom_agent.graph import graph as main_graph
+from backroom_agent.nodes import LLM_NODE_IDS
 from backroom_agent.subagents.level.graph import level_agent
+from backroom_agent.subagents.level.nodes import (check_completion_node,
+                                                  fetch_content_node,
+                                                  filter_entities_node,
+                                                  filter_items_node,
+                                                  update_level_json_node)
+from backroom_agent.subagents.level.nodes_llm import (extract_entities_node,
+                                                      extract_items_node,
+                                                      generate_json_node)
 from backroom_agent.subagents.suggestion.graph import suggestion_agent
+from backroom_agent.subagents.suggestion.nodes import generate_suggestions_node
+from backroom_agent.utils.node_annotation import is_llm_node
 
 
 def style_and_save_graph(graph_obj, output_path, llm_nodes, graph_mermaid_code=None):
@@ -138,7 +149,7 @@ def parse_graph_structure(mermaid_src):
     return edges, entry, exit_node
 
 
-def generate_combined_graph(tmp_dir, main_llm_nodes):
+def generate_combined_graph(tmp_dir, main_llm_nodes, suggestion_llm_nodes):
     print("Generating Combined Agent Graph...")
 
     main_src = main_graph.get_graph().draw_mermaid()
@@ -204,8 +215,7 @@ def generate_combined_graph(tmp_dir, main_llm_nodes):
     combined_mermaid = "\n".join(new_lines)
 
     combined_llm_nodes = set(main_llm_nodes)
-    if "generate_suggestions" in sub_src:
-        combined_llm_nodes.add("sg_generate_suggestions")
+    combined_llm_nodes.update({f"sg_{nid}" for nid in suggestion_llm_nodes})
 
     arch_dir = os.path.join(tmp_dir, "architecture")
     os.makedirs(arch_dir, exist_ok=True)
@@ -225,18 +235,35 @@ def generate_graphs():
     os.makedirs(arch_dir, exist_ok=True)
 
     print("Generating Main Agent Graph...")
-    main_llm_nodes = {"init", "chat", "update", "suggest", "generate", "dice"}
+    main_llm_nodes = set(LLM_NODE_IDS)
     style_and_save_graph(
         main_graph, os.path.join(arch_dir, "agent_graph.png"), main_llm_nodes
     )
 
     print("Generating Level Agent Graph...")
-    level_llm_nodes = {"generate_json", "extract_items", "extract_entities"}
+    level_nodes = {
+        "fetch_content": fetch_content_node,
+        "generate_json": generate_json_node,
+        "extract_items": extract_items_node,
+        "extract_entities": extract_entities_node,
+        "filter_items": filter_items_node,
+        "filter_entities": filter_entities_node,
+        "check_completion": check_completion_node,
+        "update_level_json": update_level_json_node,
+    }
+    level_llm_nodes = {
+        node_id for node_id, fn in level_nodes.items() if is_llm_node(fn)
+    }
     style_and_save_graph(
         level_agent, os.path.join(arch_dir, "level_agent_graph.png"), level_llm_nodes
     )
 
-    generate_combined_graph(tmp_dir, main_llm_nodes)
+    suggestion_nodes = {"generate_suggestions": generate_suggestions_node}
+    suggestion_llm_nodes = {
+        node_id for node_id, fn in suggestion_nodes.items() if is_llm_node(fn)
+    }
+
+    generate_combined_graph(tmp_dir, main_llm_nodes, suggestion_llm_nodes)
 
 
 if __name__ == "__main__":

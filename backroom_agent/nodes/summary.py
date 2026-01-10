@@ -1,13 +1,12 @@
-import logging
-
 from langchain_core.runnables import RunnableConfig
 
 from backroom_agent.state import State
 from backroom_agent.utils.common import print_debug_message
+from backroom_agent.utils.logger import logger
+from backroom_agent.utils.node_annotation import annotate_node
 
-logger = logging.getLogger(__name__)
 
-
+@annotate_node("normal")
 def summary_node(state: State, config: RunnableConfig) -> dict:
     """
     Summarizes the transaction and updates the final game state.

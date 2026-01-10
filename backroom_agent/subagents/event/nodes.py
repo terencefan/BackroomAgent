@@ -1,13 +1,11 @@
-import logging
 import os
 
 from langchain_core.messages import SystemMessage
 
 from backroom_agent.utils.common import get_llm, load_prompt
+from backroom_agent.utils.logger import logger
 
 from .state import EventAgentState
-
-logger = logging.getLogger(__name__)
 
 
 def generate_event_node(state: EventAgentState):

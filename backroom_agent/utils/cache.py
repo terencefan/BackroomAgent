@@ -1,13 +1,10 @@
 import hashlib
-import logging
 from typing import Any, Callable, Optional
 
 import redis
 
 from backroom_agent.constants import REDIS_HOST, REDIS_PASSWORD, REDIS_PORT
-
-logger = logging.getLogger(__name__)
-
+from backroom_agent.utils.logger import logger
 
 class RedisCache:
     _instance = None

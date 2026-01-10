@@ -1,5 +1,4 @@
 import json
-import logging
 import os
 import re
 
@@ -7,10 +6,11 @@ from langchain_core.messages import SystemMessage
 
 from backroom_agent.state import State
 from backroom_agent.utils.common import get_llm, load_prompt
+from backroom_agent.utils.logger import logger
+from backroom_agent.utils.node_annotation import annotate_node
 
-logger = logging.getLogger(__name__)
 
-
+@annotate_node("llm")
 def generate_suggestions_node(state: State):
     """
     Generates action suggestions for the player.

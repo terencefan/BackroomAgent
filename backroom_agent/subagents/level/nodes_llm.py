@@ -1,16 +1,15 @@
 import json
-import logging
 import os
 
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from backroom_agent.utils.common import get_llm, get_project_root, load_prompt
+from backroom_agent.utils.node_annotation import annotate_node
 
 from .state import LevelAgentState
 
-logger = logging.getLogger(__name__)
 
-
+@annotate_node("llm")
 def generate_json_node(state: LevelAgentState):
     """
     Generates the Level JSON description from HTML using an LLM.
@@ -69,6 +68,7 @@ def generate_json_node(state: LevelAgentState):
         return {"level_json_generated": False, "logs": logs}
 
 
+@annotate_node("llm")
 def extract_items_node(state: LevelAgentState):
     """
     Extracts potential items from the HTML content using LLM.
@@ -126,6 +126,7 @@ def extract_items_node(state: LevelAgentState):
         return {"extracted_items_raw": [], "logs": logs}
 
 
+@annotate_node("llm")
 def extract_entities_node(state: LevelAgentState):
     """
     Extracts potential entities from the HTML content using LLM.

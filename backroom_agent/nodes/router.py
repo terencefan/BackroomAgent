@@ -1,4 +1,3 @@
-import logging
 from typing import Dict, Literal
 
 from langgraph.graph import END
@@ -7,10 +6,11 @@ from backroom_agent.constants import NodeConstants
 from backroom_agent.protocol import EventType
 from backroom_agent.state import State
 from backroom_agent.utils.level import find_level_data
+from backroom_agent.utils.logger import logger
+from backroom_agent.utils.node_annotation import annotate_node
 
-logger = logging.getLogger(__name__)
 
-
+@annotate_node("normal")
 def router_node(state: State) -> Dict[Literal["level_context"], str]:
     """
     Router Node:

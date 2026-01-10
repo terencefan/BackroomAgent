@@ -1,5 +1,4 @@
 import json
-import logging
 import os
 from typing import Optional, Tuple, cast
 
@@ -10,8 +9,8 @@ from backroom_agent.protocol import GameState, LogicEvent
 from backroom_agent.state import State
 from backroom_agent.utils.common import (extract_json_from_text, get_llm,
                                          load_prompt, print_debug_message)
-
-logger = logging.getLogger(__name__)
+from backroom_agent.utils.logger import logger
+from backroom_agent.utils.node_annotation import annotate_node
 
 # Singleton model instance
 model = get_llm()
@@ -80,6 +79,7 @@ def parse_dm_response(
     return narrative_text, new_game_state, logic_event
 
 
+@annotate_node("llm")
 def message_node(state: State, config: RunnableConfig) -> dict:
     """
     Handles 'message' events: General dialogue between player and DM.
@@ -151,6 +151,7 @@ def message_node(state: State, config: RunnableConfig) -> dict:
     return {"raw_llm_output": raw_response_content}
 
 
+@annotate_node("normal")
 def process_message_node(state: State, config: RunnableConfig) -> dict:
     """
     Processes the raw LLM output from message_node.

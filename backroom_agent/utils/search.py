@@ -1,11 +1,9 @@
-import logging
 from urllib.parse import urlparse
 
 from ddgs import DDGS
 from langsmith import traceable
 
-logger = logging.getLogger(__name__)
-
+from backroom_agent.utils.logger import logger
 
 @traceable(run_type="tool", name="Search Backrooms Wiki")
 def search_backrooms_wiki(query_content: str) -> str | None:

@@ -9,13 +9,13 @@ from textwrap import dedent
 from backroom_agent.graph import run_once
 
 
-def run_demo():
+async def run_demo(user_input: str = None):
     print("--- Starting Agent Test ---")
-    query = "Hello, Backrooms Entity! What is your name?"
+    query = user_input or "Hello, Backrooms Entity! What is your name?"
     print(f"User: {query}")
 
     try:
-        response = run_once(query)
+        response = await run_once(query)
         print(f"Agent: {response.content}")
         print("\n--- Test Passed ✅ ---")
     except Exception as e:
@@ -27,4 +27,11 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    run_demo()
+    import argparse
+    import asyncio
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input", type=str, help="User input message")
+    args = parser.parse_args()
+
+    asyncio.run(run_demo(args.input))
