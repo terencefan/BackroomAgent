@@ -76,7 +76,8 @@ export function useGameEngine() {
           // 1. Narrative result (MESSAGE) doesn't show before animation
           // 2. State updates don't happen before animation
           // 3. Dice Roll data (background) CAN pass through to ready the animation
-          if (nextChunk.type !== StreamChunkType.DICE_ROLL) {
+          // 4. Update: Allowing SETTLEMENT to pass logic block to prevent deadlock if it arrives before confirm
+          if (nextChunk.type !== StreamChunkType.DICE_ROLL && nextChunk.type !== StreamChunkType.SETTLEMENT) {
                return; 
           }
       }
