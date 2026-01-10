@@ -84,7 +84,7 @@ def message_node(state: State, config: RunnableConfig) -> dict:
     """
     Handles 'message' events: General dialogue between player and DM.
     """
-    logger.info("Message Node: Processing player message...")
+    logger.info("▶ NODE: Message Node (LLM Generation)")
 
     messages = state["messages"]
     current_state = state.get("current_game_state")
@@ -157,6 +157,7 @@ def process_message_node(state: State, config: RunnableConfig) -> dict:
     Processes the raw LLM output from message_node.
     OR processes the Dice Roll feedback loop.
     """
+    logger.info("▶ NODE: Process Message Node")
 
     # Check if we are re-entering from Dice Node
     # The Router (main loop) calls nodes. If we are in process_message_node,

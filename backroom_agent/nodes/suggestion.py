@@ -13,7 +13,7 @@ async def suggestion_node(state: State, config: RunnableConfig) -> dict:
     """
     Generates suggestions for the player's next actions.
     """
-    logger.info("Invoking Suggestion Sub-Agent...")
+    logger.info("▶ NODE: Suggestion Node")
 
     # Invoke the sub-agent with shared state
     # Since they share the same schema, we can pass state directly

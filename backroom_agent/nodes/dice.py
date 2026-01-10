@@ -33,6 +33,8 @@ def dice_node(state: State) -> Dict[str, Any]:
     5. Updates the game state based on the outcome result.
     6. Returns the dice roll info AND creates a new HumanMessage to feed back to LLM.
     """
+    logger.info("▶ NODE: Dice Node")
+    
     logic_event = state.get("logic_event")
 
     # If no event, return empty (Router should prevent this)

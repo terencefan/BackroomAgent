@@ -93,7 +93,7 @@ def settle_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
     """
     Settle Node: Resolves the turn, blending dice results if any, and deciding next step.
     """
-    logger.info("Settle Node: resolving turn...")
+    logger.info("▶ NODE: Settle Node")
 
     # 1. Prepare Input
     messages = state.get(GraphKeys.MESSAGES, [])

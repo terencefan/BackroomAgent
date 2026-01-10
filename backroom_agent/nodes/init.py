@@ -41,7 +41,7 @@ def init_node(state: State, config: RunnableConfig) -> dict:
     current_game_state = state.get("current_game_state")
     level = current_game_state.level if current_game_state else "Unknown Level"
 
-    logger.info(f"Initializing Game at {level}")
+    logger.info(f"▶ NODE: Init Node (Level: {level})")
 
     # Use HTML from State (Pre-fetched by Router)
     level_context = state.get("level_context")

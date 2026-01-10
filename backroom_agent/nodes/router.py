@@ -17,6 +17,8 @@ def router_node(state: State) -> Dict[Literal["level_context"], str]:
     1. Pre-fetch level context (HTML) and inject into State.
     2. Does NOT determine the next step directly (Routing logic is separate).
     """
+    logger.info("▶ NODE: Router Node")
+    
     current_game_state = state.get("current_game_state")
     level_id = current_game_state.level if current_game_state else "Level 0"
 
