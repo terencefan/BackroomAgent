@@ -148,6 +148,8 @@ def event_node(state: State, config: RunnableConfig) -> dict:
         msg_content = messages[-1].content
         current_message = str(msg_content)
 
+    logger.info(f"Player Input: {current_message}")
+
     # 3. Construct Context Messages
     level_id = state_dict.get("level", "Level 0")
 
