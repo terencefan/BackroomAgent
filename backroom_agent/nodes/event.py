@@ -10,6 +10,7 @@ from backroom_agent.state import State
 from backroom_agent.utils.common import (dict_from_pydantic,
                                          extract_json_from_text, get_llm,
                                          load_prompt)
+from backroom_agent.utils.level import find_level_data
 from backroom_agent.utils.logger import logger
 from backroom_agent.utils.node_annotation import annotate_node
 
@@ -117,6 +118,16 @@ def event_node(state: State, config: RunnableConfig) -> dict:
             current_message = str(msg_content)
 
     # 3. Construct Structured Input
+    level_id = state_dict.get("level", "Level 0")
+    
+    # 3a. Retrieve Static Level Data
+    level_data_json, _ = find_level_data(level_id)
+    if not level_data_json:
+        level_data_json = {"level_id": level_id, "error": "Level data not found"}
+    
+    level_msg_content = json.dumps(level_data_json, ensure_ascii=False, indent=2)
+
+    # 3b. Construct Dynamic Player Input
     llm_input_data = {
         "player": {
             "input": current_message,
@@ -125,7 +136,7 @@ def event_node(state: State, config: RunnableConfig) -> dict:
             "inventory": state_dict.get("inventory", []),
         },
         "environment": {
-            "level_id": state_dict.get("level", "Unknown"),
+            "level_id": level_id,
             "time": state_dict.get("time", 0),
         },
         # Optionally add context/history here
@@ -135,12 +146,14 @@ def event_node(state: State, config: RunnableConfig) -> dict:
     # 4. Dump to JSON
     json_input = json.dumps(llm_input_data, ensure_ascii=False, indent=2)
 
-    # Log the JSON Payload
-    logger.debug(f"LLM Input Payload (JSON):\n{json_input}")
+    # Log the JSON Payloads
+    logger.debug(f"LLM Input (Level Context):\n{level_msg_content[:200]}...")
+    logger.debug(f"LLM Input (Player State):\n{json_input}")
 
     # 5. Invoke LLM
     final_messages = [
         SystemMessage(content=SYSTEM_PROMPT),
+        HumanMessage(content=level_msg_content),
         HumanMessage(content=json_input),
     ]
 
