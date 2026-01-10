@@ -12,14 +12,14 @@ Your goal is to describe the environment of a new Level objectively, strictly ba
 ## Output Requirements
 You must respond with **RAW JSON ONLY**.
 ```json
-{
+{{
   "message": "A descriptive paragraph of the immediate surroundings. Focus on sensory details (sight, sound, smell). Objectively describe the atmosphere. (Chinese)",
   "suggestions": [
     "Action 1 (Short, 2-5 words)",
     "Action 2",
     "Action 3"
   ]
-}
+}}
 ```
 
 ## Guidelines
