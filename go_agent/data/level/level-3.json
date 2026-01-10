@@ -55,7 +55,7 @@
     {
       "effect": "温度在18-33°C间波动，部分区域可达57°C，空气潮湿厚重难以呼吸。",
       "mechanic": "极端温度",
-      "trigger_probability": "1d20 \u003e 15 (特定区域)"
+      "trigger_probability": "1d20 > 15 (特定区域)"
     },
     {
       "effect": "自主运行的机器可能自燃或爆炸，造成严重伤害。",
@@ -65,7 +65,7 @@
     {
       "effect": "栅栏密集区域引发强烈恐惧和不适感，可能产生被监视或看到人形的幻觉。",
       "mechanic": "监狱栅栏恐惧",
-      "trigger_probability": "进入该区域时 / 1d20 \u003e 10"
+      "trigger_probability": "进入该区域时 / 1d20 > 10"
     }
   ],
   "events": [
@@ -83,7 +83,7 @@
     },
     {
       "event": "温度或湿度突然急剧升高",
-      "probability": "中等 / 1d20 \u003e 12 (在特定区域)"
+      "probability": "中等 / 1d20 > 12 (在特定区域)"
     },
     {
       "event": "发现稀有资源（杏仁水、火盐、瓶装闪电等）",
@@ -212,20 +212,17 @@
       {
         "condition": "找到并进入电梯",
         "method": "搭乘电梯",
-        "next": "Level 4, Level 5",
-        "success_chance": "100% (若找到)"
+        "next": "Level 4, Level 5"
       },
       {
         "condition": "找到并打开一扇木门",
         "method": "通过木门",
-        "next": "Level 31",
-        "success_chance": "100% (若找到)"
+        "next": "Level 31"
       },
       {
         "condition": "在电力房找到汽车并坐上驾驶座",
         "method": "坐在电力房的汽车前座上",
-        "next": "Level 69",
-        "success_chance": "100% (若触发)"
+        "next": "Level 69"
       }
     ]
   }

@@ -48,7 +48,7 @@
     {
       "effect": "全层级断电，机器停转，管道堵塞/破裂，部分入口/出口失效，部分门解锁。",
       "mechanic": "大停电",
-      "trigger_probability": "极罕见 / d100 \u003e 98 (历史事件，已结束)"
+      "trigger_probability": "极罕见 / d100 > 98 (历史事件，已结束)"
     },
     {
       "effect": "打开未上锁的门可能通往：大型工业房间、回环走廊、空房间或虚空。",
@@ -59,7 +59,7 @@
   "events": [
     {
       "event": "区域灯光熄灭",
-      "probability": "中等 / 1d20 \u003e 12 (当电路遭破坏时)"
+      "probability": "中等 / 1d20 > 12 (当电路遭破坏时)"
     },
     {
       "event": "管道破裂或泄漏",
@@ -184,44 +184,37 @@
       {
         "condition": "找到带有标记或刻印的门",
         "method": "通过未上锁的门 (常见)",
-        "next": "Level 1",
-        "success_chance": "高频 / DC 10"
+        "next": "Level 1"
       },
       {
         "condition": "找到带有标记或刻印的门",
         "method": "通过未上锁的门 (常见)",
-        "next": "Level 3",
-        "success_chance": "高频 / DC 10"
+        "next": "Level 3"
       },
       {
         "condition": "找到带有标记或刻印的门",
         "method": "通过未上锁的门 (常见)",
-        "next": "Level 4",
-        "success_chance": "高频 / DC 10"
+        "next": "Level 4"
       },
       {
         "condition": "大停电期间失效",
         "method": "通过特定出口 (需要层级电力)",
-        "next": "Level 126",
-        "success_chance": "中等 / DC 15 (大停电后)"
+        "next": "Level 126"
       },
       {
         "condition": "大停电期间失效",
         "method": "通过特定出口 (需要层级电力)",
-        "next": "Level 811",
-        "success_chance": "中等 / DC 15 (大停电后)"
+        "next": "Level 811"
       },
       {
         "condition": "门已解锁 (大停电后更常见)",
         "method": "进入虚空房间的门",
-        "next": null,
-        "success_chance": "极低 / d100 \u003e 95 (生还并返回)"
+        "next": null
       },
       {
         "condition": "进入",
         "method": "通过几乎所有的门",
-        "next": "Jerry's Room",
-        "success_chance": "高频 / DC 10"
+        "next": "Jerry's Room"
       }
     ]
   }

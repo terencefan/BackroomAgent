@@ -32,7 +32,7 @@
     {
       "effect": "一旦失去对出口的视野，它们可能会消失。",
       "mechanic": "出口消失",
-      "trigger_probability": "1d20 \u003e 15"
+      "trigger_probability": "1d20 > 15"
     }
   ],
   "events": [],
@@ -101,26 +101,22 @@
       {
         "condition": "找到楼梯",
         "method": "办公室风格的楼梯",
-        "next": "Level 5",
-        "success_chance": "中等"
+        "next": "Level 5"
       },
       {
         "condition": "找到楼梯",
         "method": "办公室风格的楼梯",
-        "next": "Level 6",
-        "success_chance": "中等"
+        "next": "Level 6"
       },
       {
         "condition": "找到电梯",
         "method": "电梯",
-        "next": "Level 3",
-        "success_chance": "中等"
+        "next": "Level 3"
       },
       {
         "condition": "找到罕见的楼梯",
         "method": "通往地下室的楼梯",
-        "next": "Level 71",
-        "success_chance": "稀有"
+        "next": "Level 71"
       }
     ]
   }

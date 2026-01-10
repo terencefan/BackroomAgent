@@ -37,18 +37,18 @@
     {
       "effect": "居住者会变得极度慵懒孤僻，依恋房间不愿离开。居住超过十年者，有时会消失得无影无踪。",
       "mechanic": "精神萎靡与消失",
-      "trigger_probability": "居住时间 \u003e 10年：1d100 \u003e 95 (估计)"
+      "trigger_probability": "居住时间 > 10年：1d100 > 95 (估计)"
     },
     {
       "effect": "电视节目很少按顺序播放，同一节目重复播放极为罕见，一旦重播往往是同一集。",
       "mechanic": "电视节目异常",
-      "trigger_probability": "1d20 \u003e 18 (罕见重播)"
+      "trigger_probability": "1d20 > 18 (罕见重播)"
     }
   ],
   "events": [
     {
       "event": "长期住户消失",
-      "probability": "居住时间 \u003e 10年：稀有 / DC 20"
+      "probability": "居住时间 > 10年：稀有 / DC 20"
     },
     {
       "event": "电视节目重播 (同一集)",
@@ -169,80 +169,67 @@
       {
         "condition": "找到并打开",
         "method": "单调、不显眼的门",
-        "next": "Level 0",
-        "success_chance": "100% (如果找到)"
+        "next": "Level 0"
       },
       {
         "condition": "找到并打开",
         "method": "单调、不显眼的门",
-        "next": "Level 114",
-        "success_chance": "100% (如果找到)"
+        "next": "Level 114"
       },
       {
         "condition": "找到并打开",
         "method": "单调、不显眼的门",
-        "next": "Level 327",
-        "success_chance": "100% (如果找到)"
+        "next": "Level 327"
       },
       {
         "condition": "找到并打开",
         "method": "单调、不显眼的门",
-        "next": "Level 395",
-        "success_chance": "100% (如果找到)"
+        "next": "Level 395"
       },
       {
         "condition": "找到并打开",
         "method": "单调、不显眼的门",
-        "next": "Level 410",
-        "success_chance": "100% (如果找到)"
+        "next": "Level 410"
       },
       {
         "condition": "使用",
         "method": "楼梯或电梯往下 (底层)",
-        "next": "Level 70",
-        "success_chance": "100%"
+        "next": "Level 70"
       },
       {
         "condition": "使用",
         "method": "楼梯或电梯往下 (底层)",
-        "next": "Level 208",
-        "success_chance": "100%"
+        "next": "Level 208"
       },
       {
         "condition": "房间内存在棋盘和两张椅子，且房间未有人居住",
         "method": "触摸生成的西洋棋盘",
-        "next": "Level 157",
-        "success_chance": "100% (如果条件满足)"
+        "next": "Level 157"
       },
       {
         "condition": "找到并尝试打开",
         "method": "打开标有“235”的门",
-        "next": "Level 235",
-        "success_chance": "100% (如果找到)"
+        "next": "Level 235"
       },
       {
         "condition": "找到并打开",
         "method": "打开红色门",
-        "next": "Level 275",
-        "success_chance": "100% (如果找到)"
+        "next": "Level 275"
       },
       {
         "condition": "找到正确的墙壁",
         "method": "切入色调更深的黄色墙壁/墙纸",
-        "next": "Level 289",
-        "success_chance": "100% (如果找到正确的墙壁)"
+        "next": "Level 289"
       },
       {
         "condition": "理论上可能",
         "method": "进入任何公寓建筑",
-        "next": "Level 387",
-        "success_chance": "极低 / d100 \u003e 98"
+        "next": "Level 387"
       },
       {
         "condition": "遇到变化的楼梯",
         "method": "楼梯开始没有尽头的往上延伸",
-        "next": "Level 280",
-        "success_chance": "100% (如果遇到)"
+        "next": "Level 280"
       }
     ]
   }

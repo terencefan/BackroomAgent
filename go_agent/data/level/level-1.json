@@ -43,34 +43,34 @@
     {
       "effect": "所有自然光源随机切断，陷入完全黑暗，实体活动加剧。",
       "mechanic": "闪烁事件",
-      "trigger_probability": "随机 / 1d20 \u003e 15"
+      "trigger_probability": "随机 / 1d20 > 15"
     },
     {
       "effect": "装有随机资源的木箱在视线外出现或消失。",
       "mechanic": "板条箱生成与消失",
-      "trigger_probability": "高频 / 1d20 \u003e 5"
+      "trigger_probability": "高频 / 1d20 > 5"
     }
   ],
   "events": [
     {
       "event": "闪烁事件发生，灯光熄灭，实体活动加剧",
-      "probability": "随机 / 1d20 \u003e 15"
+      "probability": "随机 / 1d20 > 15"
     },
     {
       "event": "发现新的板条箱",
-      "probability": "高频 / 1d20 \u003e 5"
+      "probability": "高频 / 1d20 > 5"
     },
     {
       "event": "遭遇敌对实体（如疫疾、爬菌、瘟疫地精等）",
-      "probability": "中等 / 1d20 \u003e 12 (闪烁期间更高)"
+      "probability": "中等 / 1d20 > 12 (闪烁期间更高)"
     },
     {
       "event": "遇到 M.E.G. 巡逻队",
-      "probability": "中等 / 1d20 \u003e 12"
+      "probability": "中等 / 1d20 > 12"
     },
     {
       "event": "发现组织放置的地标与补给",
-      "probability": "高频 / 1d20 \u003e 5"
+      "probability": "高频 / 1d20 > 5"
     }
   ],
   "factions": [
@@ -237,62 +237,52 @@
       {
         "condition": "无特定条件，只需移动",
         "method": "沿着管道与仪表盘逐渐显现的方向移动足够远",
-        "next": "Level 2",
-        "success_chance": "100%"
+        "next": "Level 2"
       },
       {
         "condition": "找到并进入玻璃门",
         "method": "通过玻璃门",
-        "next": "Level 22",
-        "success_chance": "100%"
+        "next": "Level 22"
       },
       {
         "condition": "找到并进入该门",
         "method": "通过装有荧光灯的走廊尽头带独特符号的门",
-        "next": "Level 154",
-        "success_chance": "100%"
+        "next": "Level 154"
       },
       {
         "condition": "找到并进入结冰金属门",
         "method": "通过结冰金属门",
-        "next": "Level 159",
-        "success_chance": "100%"
+        "next": "Level 159"
       },
       {
         "condition": "找到并进入掩体门",
         "method": "通过掩体门",
-        "next": "Level 218",
-        "success_chance": "100%"
+        "next": "Level 218"
       },
       {
         "condition": "找到并进入该木门",
         "method": "通过无厘头位置的木门",
-        "next": "Level 389",
-        "success_chance": "100%"
+        "next": "Level 389"
       },
       {
         "condition": "找到并进入该门",
         "method": "通过感觉比四周墙面稍冷、位置捉摸不定的门",
-        "next": "Level 740",
-        "success_chance": "100%"
+        "next": "Level 740"
       },
       {
         "condition": "找到并进入，随后走楼梯",
         "method": "通过外观类似于电梯或升降机的双开铁门",
-        "next": "Level 998",
-        "success_chance": "100%"
+        "next": "Level 998"
       },
       {
         "condition": "找到并进入纯白木门",
         "method": "通过纯白木门",
-        "next": "Level 998.2",
-        "success_chance": "100%"
+        "next": "Level 998.2"
       },
       {
         "condition": "遵循特定顺序",
         "method": "按特定顺序进入门与走廊",
-        "next": "枢纽",
-        "success_chance": "中等 / DC 15"
+        "next": "枢纽"
       }
     ]
   }

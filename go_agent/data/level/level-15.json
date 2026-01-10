@@ -49,15 +49,15 @@
   "events": [
     {
       "event": "听到远处或近处机器启动、运转或改变状态的声音。",
-      "probability": "高频 / 1d20 \u003e 5"
+      "probability": "高频 / 1d20 > 5"
     },
     {
       "event": "发现新的、功能未知或已损坏的机器。",
-      "probability": "中等 / 1d20 \u003e 12"
+      "probability": "中等 / 1d20 > 12"
     },
     {
       "event": "在探索中发现穿着实验室制服的干尸及其遗物。",
-      "probability": "中等 / 1d20 \u003e 12"
+      "probability": "中等 / 1d20 > 12"
     },
     {
       "event": "电脑终端上的“雷达扫描”图像显示形状重叠（暗示层级碰撞事件）。",
@@ -65,7 +65,7 @@
     },
     {
       "event": "I.L.N.连接暂时中断或受到干扰。",
-      "probability": "低 / 1d20 \u003e 17"
+      "probability": "低 / 1d20 > 17"
     }
   ],
   "factions": [
@@ -161,14 +161,12 @@
       {
         "condition": "找到并进入该房间。",
         "method": "通过特殊出口房间的白光门框。",
-        "next": null,
-        "success_chance": "100% (但目的地未知且目前被禁止使用)"
+        "next": null
       },
       {
         "condition": "未知。",
         "method": "等待类似进入时的“墙壁事件”在层级内发生（理论上可能）。",
-        "next": "random",
-        "success_chance": "极罕见 / d100 \u003e 98"
+        "next": "random"
       }
     ]
   }

@@ -54,7 +54,7 @@
   "events": [
     {
       "event": "遭遇实体“小小”（日光带/暮色带）",
-      "probability": "中等 / 1d20 \u003e 12（在该区域活动时）"
+      "probability": "中等 / 1d20 > 12（在该区域活动时）"
     },
     {
       "event": "遭遇实体“七层之物”（午夜带/深渊带）",
@@ -154,26 +154,22 @@
       {
         "condition": "深潜至午夜带并找到特定岩洞",
         "method": "进入午夜带底部海底山侧的岩洞",
-        "next": "Level 8",
-        "success_chance": "极低（需精准定位与生存）"
+        "next": "Level 8"
       },
       {
         "condition": "深潜至深渊带并失去意识",
         "method": "潜入深渊带并让自己陷入昏迷",
-        "next": "Level 83",
-        "success_chance": "极低且危险"
+        "next": "Level 83"
       },
       {
         "condition": "潜水找到该结构并打开木门",
         "method": "进入入口房间西侧水下150米的圆形结构木门",
-        "next": "Level 9",
-        "success_chance": "中等（但需规避实体小小）"
+        "next": "Level 9"
       },
       {
         "condition": "长时间向西航行",
         "method": "从入口房间划船向西移动极远距离",
-        "next": "Level 880",
-        "success_chance": "未证实 / 稀有"
+        "next": "Level 880"
       }
     ]
   }

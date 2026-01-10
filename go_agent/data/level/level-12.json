@@ -48,11 +48,11 @@
   "events": [
     {
       "event": "记忆突然模糊或中断",
-      "probability": "高频 / 1d20 \u003e 5"
+      "probability": "高频 / 1d20 > 5"
     },
     {
       "event": "在白色深渊中发现新的随机物品",
-      "probability": "中等 / 1d20 \u003e 12"
+      "probability": "中等 / 1d20 > 12"
     }
   ],
   "factions": [],
@@ -103,14 +103,12 @@
       {
         "condition": "1. 在主房间椅子上坐15分钟。2. 尝试打开主房间的门（确认锁着）。3. 在白色深渊中找到一扇复制门并进入（返回主房间）。4. 等待恰好一小时后，再次尝试打开主房间的门。",
         "method": "遵循“矩阵”探险队发现的仪式步骤",
-        "next": "random",
-        "success_chance": "遵循步骤则100%"
+        "next": "random"
       },
       {
         "condition": "无特定条件，纯随机。",
         "method": "尝试打开主房间的门（极小概率直接成功）",
-        "next": "null",
-        "success_chance": "极低 / d100 \u003e 98"
+        "next": "null"
       }
     ]
   }

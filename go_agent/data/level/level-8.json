@@ -195,20 +195,17 @@
       {
         "condition": "跟随道标，穿过岩洞系统",
         "method": "沿着第九大道走到尽头",
-        "next": "Level 9",
-        "success_chance": "中等 / DC 15（如果严格跟随道标）"
+        "next": "Level 9"
       },
       {
         "condition": "靠近焦油池",
         "method": "被焦油池中的焦油之手拉入",
-        "next": "random",
-        "success_chance": "极低 / d100 \u003e 98（幸存并传送）"
+        "next": "random"
       },
       {
         "condition": "被拉入焦油池",
         "method": "在焦油池中失去意识",
-        "next": "random",
-        "success_chance": "稀有 / DC 20"
+        "next": "random"
       }
     ]
   }

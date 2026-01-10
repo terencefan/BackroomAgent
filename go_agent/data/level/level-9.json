@@ -155,50 +155,42 @@
       {
         "condition": "必须跟着标志",
         "method": "跟着街道上的箭头标志走100-200英里",
-        "next": "Level 11",
-        "success_chance": "100% (条件满足)"
+        "next": "Level 11"
       },
       {
         "condition": "无",
         "method": "走上通往草地的人行道",
-        "next": "Level 9.1 或 Level 10",
-        "success_chance": "100%"
+        "next": "Level 9.1 或 Level 10"
       },
       {
         "condition": "无",
         "method": "切出街道地面",
-        "next": "Level 60",
-        "success_chance": "100%"
+        "next": "Level 60"
       },
       {
         "condition": "无",
         "method": "进入一栋房子",
-        "next": "Level 53",
-        "success_chance": "中等 / 1d20 \u003e 12"
+        "next": "Level 53"
       },
       {
         "condition": "无",
         "method": "跟着电线走",
-        "next": "Level 113",
-        "success_chance": "中等 / 1d20 \u003e 12"
+        "next": "Level 113"
       },
       {
         "condition": "找到飞机场",
         "method": "进入飞机场",
-        "next": "Level 36",
-        "success_chance": "100% (条件满足)"
+        "next": "Level 36"
       },
       {
         "condition": "在飞机场内",
         "method": "在飞机场切出",
-        "next": "random (开始几个负数层级)",
-        "success_chance": "100%"
+        "next": "random (开始几个负数层级)"
       },
       {
         "condition": "找到运动场和管道",
         "method": "在运动场的白色发光内窗管道中爬行",
-        "next": "Level 283",
-        "success_chance": "100% (条件满足)"
+        "next": "Level 283"
       }
     ]
   }

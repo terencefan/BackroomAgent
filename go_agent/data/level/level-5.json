@@ -51,7 +51,7 @@
     {
       "effect": "门会随机解锁、打开或关闭",
       "mechanic": "门状态变化",
-      "trigger_probability": "1d20 \u003e 15"
+      "trigger_probability": "1d20 > 15"
     },
     {
       "effect": "感觉被拍肩膀、画像注视、墙纸人脸凝视",
@@ -93,7 +93,7 @@
     },
     {
       "event": "门随机解锁、打开或关闭",
-      "probability": "1d20 \u003e 15"
+      "probability": "1d20 > 15"
     },
     {
       "event": "大量死亡飞蛾从黑暗房间飞出占据大厅",
@@ -105,7 +105,7 @@
     },
     {
       "event": "贝弗莉室出现通向Level 84的巨大木门",
-      "probability": "极罕见 / d100 \u003e 98"
+      "probability": "极罕见 / d100 > 98"
     },
     {
       "event": "周围灯光同时闪烁，出现通向Level 427的木门",
@@ -238,68 +238,57 @@
       {
         "condition": "原路返回",
         "method": "转身回到带你进入Level 5的楼梯",
-        "next": "Level 4",
-        "success_chance": "100%"
+        "next": "Level 4"
       },
       {
         "condition": "使用进入时的电梯",
         "method": "回到电梯",
-        "next": "Level 3",
-        "success_chance": "100%"
+        "next": "Level 3"
       },
       {
         "condition": "忍受极端高温",
         "method": "深入锅炉房",
-        "next": "Level 6",
-        "success_chance": "极低 / d100 \u003e 98"
+        "next": "Level 6"
       },
       {
         "condition": "找到并打开",
         "method": "打开一扇深色木门",
-        "next": "Level 9",
-        "success_chance": "中等 / DC 15"
+        "next": "Level 9"
       },
       {
         "condition": "在墙壁、地板或天花板上找到",
         "method": "找到一扇开着的、显现出森林景象的门",
-        "next": "Level 63",
-        "success_chance": "稀有 / DC 20"
+        "next": "Level 63"
       },
       {
         "condition": "找到并进入",
         "method": "进入在主厅找到的金属门",
-        "next": "Level 98",
-        "success_chance": "中等 / DC 15"
+        "next": "Level 98"
       },
       {
         "condition": "灯光同时闪烁时出现",
         "method": "打开周围灯光闪烁时出现的木制门",
-        "next": "Level 427",
-        "success_chance": "稀有 / DC 20"
+        "next": "Level 427"
       },
       {
         "condition": "找到并操作",
         "method": "在锅炉房玩街机游戏机",
-        "next": "Level 40",
-        "success_chance": "中等 / DC 15"
+        "next": "Level 40"
       },
       {
         "condition": "找到并进入",
         "method": "进入锅炉房里一个类似于气闸门的大门",
-        "next": "Level 78",
-        "success_chance": "中等 / DC 15"
+        "next": "Level 78"
       },
       {
         "condition": "极低概率出现",
         "method": "进入贝弗莉室一个巨大的木制大门",
-        "next": "Level 84",
-        "success_chance": "极罕见 / d100 \u003e 98"
+        "next": "Level 84"
       },
       {
         "condition": "找到该区域",
         "method": "通过酒店里被M.E.G.看护的一侧的入口",
-        "next": "Level 171",
-        "success_chance": "中等 / DC 15"
+        "next": "Level 171"
       }
     ]
   }

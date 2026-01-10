@@ -37,12 +37,12 @@
     {
       "effect": "长时间停留会引发偏执、恐惧、焦虑、紧张感加剧及幻听。",
       "mechanic": "心理侵蚀",
-      "trigger_probability": "1d20 \u003e 5 (几分钟后开始)"
+      "trigger_probability": "1d20 > 5 (几分钟后开始)"
     },
     {
       "effect": "在不确定的地点转错弯，会永久阻断通往 Level 7 和返回 Level 5 的路径。",
       "mechanic": "路径阻断",
-      "trigger_probability": "1d20 \u003e 15 (转错弯时)"
+      "trigger_probability": "1d20 > 15 (转错弯时)"
     }
   ],
   "events": [
@@ -56,7 +56,7 @@
     },
     {
       "event": "发现“世界上最安静的房间”前哨",
-      "probability": "极罕见 / d100 \u003e 98"
+      "probability": "极罕见 / d100 > 98"
     }
   ],
   "factions": [
@@ -114,20 +114,17 @@
       {
         "condition": "探索足够深，并聆听微弱的海浪声",
         "method": "找到并进入通往 Level 7 的楼梯井",
-        "next": "Level 7",
-        "success_chance": "极低 (受路径阻断机制影响)"
+        "next": "Level 7"
       },
       {
         "condition": "发现该门",
         "method": "找到并打开一扇非常寒冷的大型金属门",
-        "next": "Level 129",
-        "success_chance": "稀有 / DC 20"
+        "next": "Level 129"
       },
       {
         "condition": "触发绊倒事件",
         "method": "不小心被电线绊倒",
-        "next": "Level 6.1",
-        "success_chance": "1d20 \u003e 18"
+        "next": "Level 6.1"
       }
     ]
   }

@@ -45,7 +45,7 @@
     {
       "effect": "层级似乎具有意识，会主动生成敌对实体、喷射橙色粘液以阻碍或杀死深入探索者。",
       "mechanic": "层级恶意",
-      "trigger_probability": "1d20 \u003e 15 (随探索深入概率增加)"
+      "trigger_probability": "1d20 > 15 (随探索深入概率增加)"
     },
     {
       "effect": "阅读M.E.G.探索记录后进入该层级，将“必然死亡”。",
@@ -101,7 +101,7 @@
       "name": "游戏门"
     },
     {
-      "access_probability": "极罕见 / d100 \u003e 98 (需成功穿越整个霓虹区并存活)",
+      "access_probability": "极罕见 / d100 > 98 (需成功穿越整个霓虹区并存活)",
       "description": "霓虹区尽头的外部地标，标志着建筑出口和玻瑞阿斯行星表面的起点。",
       "name": "蓝色岩石地标与黑色建筑"
     }
@@ -151,26 +151,22 @@
       {
         "condition": "找到并进入",
         "method": "通过等候厅中的员工专用门",
-        "next": "Level 2",
-        "success_chance": "100%"
+        "next": "Level 2"
       },
       {
         "condition": "切入窗户",
         "method": "切入等候厅中的窗户",
-        "next": "random (Level 24 或 Level 78)",
-        "success_chance": "100%"
+        "next": "random (Level 24 或 Level 78)"
       },
       {
         "condition": "找到并进入游戏门，附近总有出口标志",
         "method": "通过霓虹区游戏的门 (获胜或随机)",
-        "next": "random (Level 4, Level 21, Level 36)",
-        "success_chance": "极低 / d100 \u003e 95"
+        "next": "random (Level 4, Level 21, Level 36)"
       },
       {
         "condition": "在游戏中失败",
         "method": "在霓虹区输掉游戏",
-        "next": "null (传送至未指定的危险层级)",
-        "success_chance": "100%"
+        "next": "null (传送至未指定的危险层级)"
       }
     ]
   }

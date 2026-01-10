@@ -77,14 +77,12 @@
       {
         "condition": "在显眼的地方执行转身离开的动作",
         "method": "转身离开",
-        "next": "Level 19",
-        "success_chance": "100%"
+        "next": "Level 19"
       },
       {
         "condition": "遇到毛绒恐龙并跟随它一段时间",
         "method": "跟随毛绒恐龙",
-        "next": "random",
-        "success_chance": "100%"
+        "next": "random"
       }
     ]
   }

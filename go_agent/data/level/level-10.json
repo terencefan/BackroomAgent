@@ -45,7 +45,7 @@
     {
       "effect": "挖掘超过一米深的洞可能导致大量蠕虫涌出，造成滑倒、摔伤、衣物损坏甚至钻入皮肤的风险。",
       "mechanic": "深层挖掘风险",
-      "trigger_probability": "1d20 \u003e 15 (挖掘超过一米时触发)"
+      "trigger_probability": "1d20 > 15 (挖掘超过一米时触发)"
     }
   ],
   "events": [
@@ -55,7 +55,7 @@
     },
     {
       "event": "蠕虫从超过一米的深洞中涌出",
-      "probability": "1d20 \u003e 15 (仅在触发挖掘机制后)"
+      "probability": "1d20 > 15 (仅在触发挖掘机制后)"
     }
   ],
   "factions": [
@@ -74,7 +74,7 @@
   "level_id": "Level 10",
   "pois": [
     {
-      "access_probability": "中等 / 1d20 \u003e 12 (在探索中发现)",
+      "access_probability": "中等 / 1d20 > 12 (在探索中发现)",
       "description": "内部大多空空如也，但可能存放木材、钉子等有用资源。",
       "name": "各类建筑物（木棚、外屋、谷仓、马厩）"
     },
@@ -111,20 +111,17 @@
       {
         "condition": "持续沿小径行走",
         "method": "找到一条小径并长时间沿它行走",
-        "next": "Level 11",
-        "success_chance": "100% (条件满足时)"
+        "next": "Level 11"
       },
       {
         "condition": "发现并进入芥花籽",
         "method": "在小麦中找到一片芥花籽并进入其中",
-        "next": "Level 184",
-        "success_chance": "稀有 / DC 20 (发现芥花籽)"
+        "next": "Level 184"
       },
       {
         "condition": "在湖泊中游泳",
         "method": "在湖中游泳",
-        "next": "random (水域层级)",
-        "success_chance": "高频 / DC 10"
+        "next": "random (水域层级)"
       }
     ]
   }
