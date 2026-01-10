@@ -86,13 +86,13 @@ class TestEvent(unittest.TestCase):
         (min1, max1), res1 = restored_evt.outcomes[0]
         self.assertEqual(min1, 1)
         self.assertEqual(max1, 10)
-        self.assertEqual(res1, "Goblin")
+        self.assertEqual(res1, {"content": "Goblin"})
 
         # Check second outcome
         (min2, max2), res2 = restored_evt.outcomes[1]
         self.assertEqual(min2, 20)
         self.assertEqual(max2, 20)
-        self.assertEqual(res2, "Dragon")
+        self.assertEqual(res2, {"content": "Dragon"})
 
 
 if __name__ == "__main__":

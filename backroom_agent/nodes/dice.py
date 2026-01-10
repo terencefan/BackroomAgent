@@ -6,6 +6,7 @@ from backroom_agent.constants import GraphKeys, NodeConstants
 from backroom_agent.nodes.resolve_utils import apply_state_updates
 from backroom_agent.protocol import DiceRoll, LogicEvent
 from backroom_agent.state import State
+from backroom_agent.utils.common import dict_from_pydantic
 from backroom_agent.utils.dice import Dice
 from backroom_agent.utils.logger import logger
 from backroom_agent.utils.node_annotation import annotate_node
@@ -122,5 +123,5 @@ def dice_node(state: State) -> Dict[str, Any]:
         GraphKeys.LOGIC_EVENT: None,  # Clear event to prevent loops
         GraphKeys.CURRENT_GAME_STATE: new_game_state,  # Updated State
         GraphKeys.LOGIC_OUTCOME: matched_outcome,
-        GraphKeys.SETTLEMENT_DELTA: delta.model_dump() if delta else None,
+        GraphKeys.SETTLEMENT_DELTA: dict_from_pydantic(delta) if delta else None,
     }

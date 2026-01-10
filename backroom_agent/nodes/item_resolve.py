@@ -12,7 +12,7 @@ from backroom_agent.nodes.resolve_utils import (apply_state_updates,
                                                 serialize_messages)
 from backroom_agent.protocol import EventType, SettlementDelta
 from backroom_agent.state import State
-from backroom_agent.utils.common import get_llm
+from backroom_agent.utils.common import dict_from_pydantic, get_llm
 from backroom_agent.utils.logger import logger
 from backroom_agent.utils.node_annotation import annotate_node
 
@@ -46,17 +46,19 @@ def item_resolve_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
         if not found:
             logger.warning(f"Validation Failed: Item '{target_id}' not in inventory.")
 
-            # Apply Sanity Penalty
-            sanity_penalty = 5
+            # Apply Severe HP Penalty (Halve current HP)
+            current_hp = current_state.vitals.hp
+            # Reduce by half (rounding down the penalty, so remaining HP is ceiling of half if odd)
+            # e.g. 10 -> loss 5 -> 5. 5 -> loss 2 -> 3.
+            hp_loss = current_hp // 2
+            
             new_game_state = current_state.model_copy(deep=True)
-            new_game_state.vitals.sanity = max(
-                0, new_game_state.vitals.sanity - sanity_penalty
-            )
+            new_game_state.vitals.hp = max(0, current_hp - hp_loss)
 
-            delta = SettlementDelta(sanity_change=-sanity_penalty)
+            delta = SettlementDelta(hp_change=-hp_loss)
 
             # Message explaining the failure
-            fail_msg = f"You reach for '{target_id}' but find nothing. The realization shakes you. (-{sanity_penalty} Sanity)"
+            fail_msg = f"You reach for '{target_id}' but find nothing. A severe backlash from the void strikes you! (-{hp_loss} HP)"
 
             return {
                 GraphKeys.CURRENT_GAME_STATE: new_game_state,
@@ -67,7 +69,7 @@ def item_resolve_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
                     "error": "Item not found",
                 },
                 GraphKeys.MESSAGES: [SystemMessage(content=fail_msg)],
-                GraphKeys.SETTLEMENT_DELTA: delta.model_dump(),
+                GraphKeys.SETTLEMENT_DELTA: dict_from_pydantic(delta),
             }
 
     messages = state.get(GraphKeys.MESSAGES, [])
@@ -112,5 +114,5 @@ def item_resolve_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
     return {
         GraphKeys.CURRENT_GAME_STATE: new_game_state,
         GraphKeys.LOGIC_OUTCOME: logic_outcome,
-        GraphKeys.SETTLEMENT_DELTA: delta.model_dump() if delta else None,
+        GraphKeys.SETTLEMENT_DELTA: dict_from_pydantic(delta) if delta else None,
     }

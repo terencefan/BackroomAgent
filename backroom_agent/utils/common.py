@@ -1,6 +1,7 @@
 import json
 import os
 import re
+from typing import Any
 
 from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
@@ -31,6 +32,17 @@ def load_prompt(file_path: str) -> str:
     """Loads the content of a prompt file."""
     with open(file_path, "r", encoding="utf-8") as f:
         return f.read()
+
+
+def dict_from_pydantic(model: Any) -> dict:
+    """
+    Safely converts a Pydantic model to a dictionary.
+    Supports Pydantic V2 (`model_dump`) and V1 (`dict`).
+    """
+    try:
+        return model.model_dump()
+    except AttributeError:
+        return model.dict()
 
 
 def get_llm() -> BaseChatModel:

@@ -7,7 +7,8 @@ from langchain_core.runnables import RunnableConfig
 
 from backroom_agent.protocol import GameState, LogicEvent
 from backroom_agent.state import State
-from backroom_agent.utils.common import (extract_json_from_text, get_llm,
+from backroom_agent.utils.common import (dict_from_pydantic,
+                                         extract_json_from_text, get_llm,
                                          load_prompt)
 from backroom_agent.utils.logger import logger
 from backroom_agent.utils.node_annotation import annotate_node
@@ -103,10 +104,7 @@ def event_node(state: State, config: RunnableConfig) -> dict:
     state_dict = {}
     if current_state:
         # Robust Dump (Pydantic v2 preferred)
-        try:
-            state_dict = current_state.model_dump()
-        except AttributeError:
-            state_dict = current_state.dict()
+        state_dict = dict_from_pydantic(current_state)
 
     # 2. Extract Current User Message
     current_message = ""

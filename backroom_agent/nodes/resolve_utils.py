@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from langchain_core.messages import AIMessage, SystemMessage
 
-from backroom_agent.utils.common import load_prompt
+from backroom_agent.utils.common import dict_from_pydantic, load_prompt
 from backroom_agent.utils.logger import logger
 
 
@@ -35,11 +35,10 @@ def serialize_messages(messages: List[Any]) -> List[Dict[str, str]]:
 def serialize_game_state(current_state: Optional[Any]) -> Dict[str, Any]:
     if not current_state:
         return {}
-    if hasattr(current_state, "model_dump"):
-        return current_state.model_dump()
-    elif hasattr(current_state, "dict"):
-        return current_state.dict()
-    return current_state  # type: ignore
+    try:
+        return dict_from_pydantic(current_state)
+    except AttributeError:
+        return current_state  # type: ignore
 
 
 def parse_settle_response(content: str) -> Dict[str, Any]:
