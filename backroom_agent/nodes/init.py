@@ -8,7 +8,7 @@ from langchain_core.runnables import RunnableConfig
 from backroom_agent.state import State
 from backroom_agent.utils.cache import memory_cache
 from backroom_agent.utils.common import (extract_json_from_text, get_llm,
-                                         load_prompt)
+                                         load_prompt, truncate_text)
 from backroom_agent.utils.logger import logger
 from backroom_agent.utils.node_annotation import annotate_node
 
@@ -44,7 +44,7 @@ def _generate_llm_intro(level: str, level_context: str, prompt_template: str) ->
 
     # Fallback
     return {
-        "message": f"You have entered {level}. {content[:100]}...",
+        "message": f"You have entered {level}. {truncate_text(content, 100)}",
         "suggestions": ["Look around"],
     }
 
@@ -90,6 +90,6 @@ def init_node(state: State, config: RunnableConfig) -> dict:
     welcome_msg = result_data.get("message", f"Welcome to {level}.")
     suggestions = result_data.get("suggestions", [])
 
-    logger.info(f"Init Narrative: {welcome_msg[:50]}...")
+    logger.info(f"Init Narrative: {truncate_text(welcome_msg, 50)}")
 
     return {"messages": [AIMessage(content=welcome_msg)], "suggestions": suggestions}

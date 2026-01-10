@@ -129,3 +129,22 @@ def extract_json_from_text(text: str) -> dict:
 
     # If all fail, re-raise the original error (or a generic one)
     raise json.JSONDecodeError("Failed to extract valid JSON from text", text, 0)
+
+
+def truncate_text(text: str, length: int = 50, suffix: str = "...") -> str:
+    """
+    Truncates text to a specified length, adding a suffix only if truncated.
+    
+    Args:
+        text: The string to truncate.
+        length: The maximum length desired (including suffix if strictly enforced,
+                but usually interpreted as content length before truncation).
+                Here it means: keep first `length` characters.
+        suffix: String to append if text is truncated.
+    
+    Returns:
+        The truncated string with suffix if needed.
+    """
+    if len(text) <= length:
+        return text
+    return text[:length] + suffix
