@@ -19,10 +19,6 @@ def route_check_dice(state: State) -> str:
     If yes -> Go to Dice Node.
     If no -> Skip to Resolve Node.
     """
-    # Prevent infinite loops: If dice already rolled this turn, skip
-    if state.get(GraphKeys.DICE_ROLL):
-        return NodeConstants.RESOLVE_NODE
-
     if state.get(GraphKeys.LOGIC_EVENT):
         return NodeConstants.DICE_NODE
     return NodeConstants.RESOLVE_NODE

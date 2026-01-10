@@ -114,7 +114,7 @@ You must respond with **RAW JSON ONLY** (no markdown fences).
 - **Strict Validation**: Players can ONLY use items present in `inventory` list.
 - **Missing Item Penalty**: If the player attempts to use an item they do NOT have:
   - **Narrative**: Describe the hallucination of having the item, followed by the shocking realization it is gone or never existed.
-  - **Event**: Generate a deterministic failure event (e.g. d6, range 1-6) with `updates: { "sanity": -5 }` and NO item effect.
+  - **Event**: Generate a deterministic failure event (e.g. d6, range 1-6) with severe penalty. You MUST set `updates: { "sanity": -X }` where X is `floor(current_sanity / 2)`. (User loses half their current Sanity).
   - **Rejection**: The action must NOT succeed.
 
 ### 3. Action Resolution
@@ -149,7 +149,9 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
 4. **Ranges** must completely cover the die size (1-6, 1-20 or 1-100).
 5. **Sanity Corruption** (█) is mandatory for Sanity < 30.
 6. **State Updates**: You MUST calculate specific HP/Sanity/Inventory changes for each outcome NOW. Do not leave it vague.
-7. **Level Transitions**: If the user attempts to NoClip or enter an exit, and it is uncertain/risky, use a Dice Event. If successful, include `"new_level": "Level ID"` in the updates.
+7. **Level Transitions**: Check the `exits` list in Level Data:
+   - **Strong Mechanics Match** (e.g. User explicitly follows the `method`: "NoClip", "Door"): Generate a **Deterministic Event** (d6, 1-6) that succeeds with `"new_level": "Level ID"`.
+   - **Weak/Probabilistic Match** (e.g. "Random", "Rare"): Generate a **Risky Event** (d20/d100). Success = `"new_level"`, Failure = Stay + Penalty.
 
 ## Examples
 
@@ -181,10 +183,10 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
 **Input**:
 ```json
 {
-  "player": {
-    "input": "Walk forward",
-   state": { "vitals": {"sanity":15}, ... },
+  "state": { "vitals": {"sanity":15}, "input": "Walk forward" },
   "input": "Walk forward"
+}
+```
 **Output**:
 ```json
 {
@@ -222,10 +224,10 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
 **Input**:
 ```json
 {
-  "player": {
-    "input": "Drink Almond Water",
-   state": { "inventory": [{"name":"Almond Water", ...}], ... },
+  "state": { "inventory": [{"name":"Almond Water"}], "input": "Drink Almond Water" },
   "input": "Drink Almond Water"
+}
+```
 **Output**:
 ```json
 {
@@ -245,10 +247,10 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
 **Input**:
 ```json
 {
-  "player": {
-    "input": "Shoot the smiler with pistol",
-   state": { "inventory": [] },
+  "state": { "inventory": [], "vitals": {"sanity": 60} },
   "input": "Shoot the smiler with pistol"
+}
+```
 **Output**:
 ```json
 {
@@ -257,7 +259,7 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
     "name": "物品缺失惊慌",
     "die_type": "d6",
     "outcomes": [
-      { "range": [1, 6], "result": { "content": "你并没有手枪。这只是疯狂边缘的幻觉。", "updates": { "hp": 0, "sanity": -5 } } }
+      { "range": [1, 6], "result": { "content": "你并没有手枪。这只是疯狂边缘的幻觉。", "updates": { "hp": 0, "sanity": -30 } } }
     ]
   }
 }
