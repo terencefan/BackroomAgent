@@ -32,10 +32,10 @@ def item_resolve_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
     event = state.get("event")
 
     # 1.5 Validation Logic: Check if used item exists
-    if event and event.type == EventType.USE and event.item_id:
+    if current_state and event and event.type == EventType.USE and event.item_id:
         target_id = event.item_id
         # Inventory search
-        inventory = current_state.inventory if current_state else []
+        inventory = current_state.inventory
         # Check against ID or Name (case-insensitive) just to be safe, though ID is preferred
         found = False
         for item in inventory:
