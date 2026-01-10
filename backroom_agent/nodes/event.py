@@ -44,7 +44,7 @@ def parse_dm_response(
         content (str): The raw string content from the LLM response.
 
     Returns:
-        Tuple[str, Optional[GameState], Optional[LogicEvent], list[str]]: 
+        Tuple[str, Optional[GameState], Optional[LogicEvent], list[str]]:
         narrative text, updated GameState, LogicEvent, and list of suggestion strings.
     """
     narrative_text = content
@@ -104,6 +104,7 @@ def _prepare_player_input(state_dict: dict, current_message: str) -> str:
         "input": current_message,
     }
     return json.dumps(input_data, ensure_ascii=False, indent=2)
+
 
 def _prepare_loop_context(loops: int) -> str:
     return json.dumps({"dice_loops": loops}, indent=2)

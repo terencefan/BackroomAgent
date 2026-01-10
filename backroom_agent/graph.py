@@ -4,11 +4,9 @@ from langchain_core.messages import AIMessage, HumanMessage
 from langgraph.graph import END, START, StateGraph
 
 from backroom_agent.nodes import (  # Node Constants; Node Functions; Routing Functions
-    NODE_DICE_NODE, NODE_EVENT_NODE, NODE_INIT_NODE,
-    NODE_RESOLVE_NODE, NODE_ROUTER_NODE, NODE_SUMMARY_NODE,
-    dice_node, event_node, init_node,
-    resolve_node, route_check_dice, route_event, router_node,
-    summary_node)
+    NODE_DICE_NODE, NODE_EVENT_NODE, NODE_INIT_NODE, NODE_RESOLVE_NODE,
+    NODE_ROUTER_NODE, NODE_SUMMARY_NODE, dice_node, event_node, init_node,
+    resolve_node, route_check_dice, route_event, router_node, summary_node)
 from backroom_agent.state import State
 
 
@@ -20,7 +18,7 @@ def build_graph():
     workflow.add_node(NODE_ROUTER_NODE, router_node)
 
     # Add Task Nodes
-    workflow.add_node(NODE_INIT_NODE, init_node) # Restored
+    workflow.add_node(NODE_INIT_NODE, init_node)  # Restored
     # workflow.add_node(NODE_ITEM_RESOLVE_NODE, item_resolve_node) # DEPRECATED
     workflow.add_node(NODE_EVENT_NODE, event_node)
     workflow.add_node(NODE_DICE_NODE, dice_node)
@@ -37,7 +35,7 @@ def build_graph():
         NODE_ROUTER_NODE,
         route_event,
         {
-            NODE_INIT_NODE: NODE_INIT_NODE, # Restored
+            NODE_INIT_NODE: NODE_INIT_NODE,  # Restored
             # "item_node": NODE_ITEM_RESOLVE_NODE,  # Removed
             NODE_EVENT_NODE: NODE_EVENT_NODE,
             END: END,
@@ -45,7 +43,7 @@ def build_graph():
     )
 
     # Reroute standard task nodes
-    workflow.add_edge(NODE_INIT_NODE, NODE_SUMMARY_NODE) # Restored
+    workflow.add_edge(NODE_INIT_NODE, NODE_SUMMARY_NODE)  # Restored
     # workflow.add_edge(NODE_ITEM_RESOLVE_NODE, NODE_RESOLVE_NODE) # Removed
 
     # The Generation Loop:

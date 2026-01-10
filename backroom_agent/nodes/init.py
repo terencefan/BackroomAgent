@@ -1,3 +1,4 @@
+import hashlib
 import json
 import os
 
@@ -23,14 +24,13 @@ def _load_init_prompt() -> str:
         return "Describe the level {level} based on: {level_context}. Return JSON."
 
 
-def _generate_llm_intro(level: str, level_context: str) -> dict:
+def _generate_llm_intro(level: str, level_context: str, prompt_template: str) -> dict:
     """Generates the intro JSON using LLM. Used as cache miss callback."""
     logger.info(f"Cache Miss for Init Node: {level}. Generating with LLM.")
-    prompt_template = _load_init_prompt()
-    
+
     # Truncate context to avoid token limits
     prompt = prompt_template.format(level=level, level_context=level_context[:15000])
-    
+
     llm = get_llm()
     response = llm.invoke([SystemMessage(content=prompt)])
     content = str(response.content)
@@ -45,7 +45,7 @@ def _generate_llm_intro(level: str, level_context: str) -> dict:
     # Fallback
     return {
         "message": f"You have entered {level}. {content[:100]}...",
-        "suggestions": ["Look around"]
+        "suggestions": ["Look around"],
     }
 
 
@@ -58,24 +58,28 @@ def init_node(state: State, config: RunnableConfig) -> dict:
     logger.info(f"▶ NODE: Init Node (Level: {level})")
 
     # Use HTML from State (Pre-fetched by Router)
-    level_context = state.get("level_context", "")
+    level_context = state.get("level_context") or ""
 
-    # Cache Key: Level ID + Content Hash (simple first 1000 chars)
-    # Note: We cache the *dict result* now, not just string
-    cache_key_content = f"{level}:{level_context[:1000]}"
-    
+    # Load prompt and calculate hash to include in cache key
+    # This ensures cache invalidation when prompt file changes
+    prompt_template = _load_init_prompt()
+    prompt_hash = hashlib.md5(prompt_template.encode("utf-8")).hexdigest()
+
+    # Cache Key: Level ID + Context snippet + Prompt Hash
+    cache_key_content = f"{level}:{level_context[:1000]}:{prompt_hash}"
+
     result_data = memory_cache.get(
         "init_node_json_v1",
         cache_key_content,
-        on_miss=lambda: _generate_llm_intro(level, level_context),
+        on_miss=lambda: _generate_llm_intro(level, level_context, prompt_template),
     )
+
+    if not isinstance(result_data, dict):
+        result_data = {}
 
     welcome_msg = result_data.get("message", f"Welcome to {level}.")
     suggestions = result_data.get("suggestions", [])
 
     logger.info(f"Init Narrative: {welcome_msg[:50]}...")
 
-    return {
-        "messages": [AIMessage(content=welcome_msg)],
-        "suggestions": suggestions
-    }
+    return {"messages": [AIMessage(content=welcome_msg)], "suggestions": suggestions}

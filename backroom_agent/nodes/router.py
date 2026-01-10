@@ -25,7 +25,7 @@ def router_node(state: State) -> Dict[Literal["level_context"], str]:
 
     # Check if context is already loaded to avoid redundant reads
     updates = {"turn_loop_count": 0}
-    
+
     if not state.get("level_context"):
         logger.info(f"Router pre-fetching context for {level_id}")
         _, level_context = find_level_data(level_id)
@@ -44,7 +44,9 @@ def router_node(state: State) -> Dict[Literal["level_context"], str]:
             item_name = event.item_id or "Unknown Item"
             qty = event.quantity or 1
             logger.info(f"Router: Injecting trigger message for Drop Item: {item_name}")
-            updates["messages"] = [HumanMessage(content=f"我丢弃了物品: {item_name} (数量: {qty})")]
+            updates["messages"] = [
+                HumanMessage(content=f"我丢弃了物品: {item_name} (数量: {qty})")
+            ]
 
     return updates
 
