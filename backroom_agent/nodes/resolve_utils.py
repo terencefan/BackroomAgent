@@ -76,6 +76,13 @@ def apply_state_updates(current_state: Any, updates: Dict[str, Any]) -> Any:
             f"Settle/Resolve Applied Updates: HP{hp_change:+} Sanity{sanity_change:+}"
         )
 
+    # Handle Level Transition
+    new_level = updates.get("new_level")
+    if new_level and isinstance(new_level, str):
+        old_level = new_game_state.level
+        new_game_state.level = new_level
+        logger.info(f"Level Transition detected: {old_level} -> {new_level}")
+
     # Note: Inventory updates (items_added/removed) logic placeholder
     # Future implementation goes here.
 

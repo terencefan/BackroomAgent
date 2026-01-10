@@ -23,9 +23,10 @@
 
 你的任务 (Task):
 1. 读取 Input JSON 中的所有信息。
-2. 分析局势、当前交互消息列表 (Interaction Messages)。
-3. 确定游戏状态是否需要变更。
-4. 决定后续步骤。
+2. 分析局势、当前交互消息列表 (Interaction Messages) 以及逻辑判定结果 (Logic Outcome)。
+3. 确定游戏状态是否需要变更 (HP, Sanity, Inventory)。
+4. 判断用户动作是否导致了层级切换 (Level Transition)。
+5. 决定后续步骤。
 
 输出格式 (Output JSON):
 {{
@@ -33,7 +34,8 @@
         "hp_change": 0,       // 负数表示受到伤害，正数表示治疗 (例如 -5)
         "sanity_change": 0,   // 负数表示损失，正数表示恢复 (例如 -10)
         "items_added": [],    // 要添加的物品名称/ID字符串列表
-        "items_removed": []   // 要移除的物品名称/ID字符串列表
+        "items_removed": [],  // 要移除的物品名称/ID字符串列表
+        "new_level": null     // (可选) 如果判定用户成功切换层级，填写目标层级名称 (例如 "Level 1")，否则为 null
     }},
     "next_step": "summary" 或 "generate"
 }}
