@@ -23,7 +23,7 @@ NODE_SUGGESTION_NODE = NodeConstants.SUGGESTION_NODE
 # Node annotations (used by tooling/visualization)
 NODE_CALLABLES_BY_ID = {
     NODE_ROUTER_NODE: router_node,
-    # NODE_INIT_NODE: init_node,
+    NODE_INIT_NODE: init_node,
     # Map both ID versions if necessary, but graph uses NODE_ITEM_RESOLVE_NODE now probably
     # NODE_ITEM_RESOLVE_NODE: item_resolve_node,
     NODE_EVENT_NODE: event_node,
@@ -42,7 +42,7 @@ LLM_NODE_IDS = {k for k, v in NODE_ANNOTATIONS_BY_ID.items() if v.kind == "llm"}
 NORMAL_NODE_IDS = {k for k, v in NODE_ANNOTATIONS_BY_ID.items() if v.kind == "normal"}
 
 __all__ = [
-    # "init_node",
+    "init_node",
     # "item_resolve_node",
     "event_node",
     "dice_node",
