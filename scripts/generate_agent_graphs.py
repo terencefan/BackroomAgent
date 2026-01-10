@@ -36,7 +36,7 @@ def style_and_save_graph(graph_obj, output_path, llm_nodes, graph_mermaid_code=N
 
         style_defs = (
             "\n"
-            "classDef llm fill:#ffdfba,stroke:#333,stroke-width:2px,width:180px,min-width:180px;\n"
+            "classDef llm fill:#a0c4ff,stroke:#333,stroke-width:2px,width:180px,min-width:180px;\n"
             "classDef normal fill:#baffc9,stroke:#333,stroke-width:2px,width:180px,min-width:180px;\n"
         )
 
