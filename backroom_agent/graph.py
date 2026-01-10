@@ -4,9 +4,9 @@ from langchain_core.messages import AIMessage, HumanMessage
 from langgraph.graph import END, START, StateGraph
 
 from backroom_agent.nodes import (  # Node Constants; Node Functions; Routing Functions
-    NODE_DICE_NODE, NODE_EVENT_NODE,
+    NODE_DICE_NODE, NODE_EVENT_NODE, NODE_INIT_NODE,
     NODE_RESOLVE_NODE, NODE_ROUTER_NODE, NODE_SUMMARY_NODE,
-    dice_node, event_node,
+    dice_node, event_node, init_node,
     resolve_node, route_check_dice, route_event, router_node,
     summary_node)
 from backroom_agent.state import State
