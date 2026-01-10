@@ -3,13 +3,11 @@ from backroom_agent.utils.node_annotation import (NodeAnnotation, NodeKind,
                                                   get_node_annotation)
 
 from .dice import dice_node, route_check_dice
-from .dice_resolve import dice_resolve_node
 from .event import event_node
-from .event_resolve import event_resolve_node, route_settle
 from .init import init_node
 from .item_resolve import item_resolve_node
+from .resolve import resolve_node
 from .router import route_event, router_node
-from .settlement import settlement_node
 from .suggestion import suggestion_node
 from .summary import summary_node
 
@@ -20,9 +18,7 @@ NODE_ITEM_NODE = NodeConstants.ITEM_NODE
 NODE_ITEM_RESOLVE_NODE = NodeConstants.ITEM_RESOLVE_NODE
 NODE_EVENT_NODE = NodeConstants.EVENT_NODE
 NODE_DICE_NODE = NodeConstants.DICE_NODE
-NODE_DICE_RESOLVE_NODE = NodeConstants.DICE_RESOLVE_NODE
-NODE_EVENT_RESOLVE_NODE = NodeConstants.EVENT_RESOLVE_NODE
-NODE_SETTLEMENT_NODE = NodeConstants.SETTLEMENT_NODE
+NODE_RESOLVE_NODE = NodeConstants.RESOLVE_NODE
 NODE_SUMMARY_NODE = NodeConstants.SUMMARY_NODE
 NODE_SUGGESTION_NODE = NodeConstants.SUGGESTION_NODE
 
@@ -34,9 +30,7 @@ NODE_CALLABLES_BY_ID = {
     NODE_ITEM_RESOLVE_NODE: item_resolve_node,
     NODE_EVENT_NODE: event_node,
     NODE_DICE_NODE: dice_node,
-    NODE_DICE_RESOLVE_NODE: dice_resolve_node,
-    NODE_EVENT_RESOLVE_NODE: event_resolve_node,
-    NODE_SETTLEMENT_NODE: settlement_node,
+    NODE_RESOLVE_NODE: resolve_node,
     NODE_SUMMARY_NODE: summary_node,
     NODE_SUGGESTION_NODE: suggestion_node,
 }
@@ -55,11 +49,8 @@ __all__ = [
     "event_node",
     "dice_node",
     "route_check_dice",
-    "dice_resolve_node",
-    "event_resolve_node",
-    "route_settle",
+    "resolve_node",
     "router_node",
-    "settlement_node",
     "summary_node",
     "suggestion_node",
     "route_event",
@@ -68,9 +59,7 @@ __all__ = [
     "NODE_ITEM_RESOLVE_NODE",
     "NODE_EVENT_NODE",
     "NODE_DICE_NODE",
-    "NODE_DICE_RESOLVE_NODE",
-    "NODE_EVENT_RESOLVE_NODE",
-    "NODE_SETTLEMENT_NODE",
+    "NODE_RESOLVE_NODE",
     "NODE_SUMMARY_NODE",
     "NODE_SUGGESTION_NODE",
     "NodeAnnotation",

@@ -3,6 +3,7 @@ from typing import Any, Dict, cast
 from langchain_core.messages import HumanMessage
 
 from backroom_agent.constants import GraphKeys, NodeConstants
+from backroom_agent.nodes.resolve_utils import apply_state_updates
 from backroom_agent.protocol import DiceRoll, LogicEvent
 from backroom_agent.state import State
 from backroom_agent.utils.dice import Dice
@@ -15,11 +16,11 @@ def route_check_dice(state: State) -> str:
     Conditional Routing:
     Check if a logic_event was generated.
     If yes -> Go to Dice Node.
-    If no -> Skip to Event Resolve Node.
+    If no -> Skip to Resolve Node.
     """
     if state.get(GraphKeys.LOGIC_EVENT):
         return NodeConstants.DICE_NODE
-    return NodeConstants.EVENT_RESOLVE_NODE
+    return NodeConstants.RESOLVE_NODE
 
 
 @annotate_node("normal")
@@ -27,15 +28,14 @@ def dice_node(state: State) -> Dict[str, Any]:
     """
     Dice Node:
     1. Checks if a logic_event exists in the state.
-    2. If so, determines the die type (d20 or d100).
-    3. Rolls the die.
-    4. Matches the roll result to an outcome in the event.
-    5. Updates the game state based on the outcome result.
-    6. Returns the dice roll info AND creates a new HumanMessage to feed back to LLM.
+    2. Rolls the die and determines outcome.
+    3. IMMEDIATELY applies state updates mechanistically.
+    4. Returns dice roll, feedback message, and UPDATED STATE.
     """
     logger.info("▶ NODE: Dice Node")
 
     logic_event = state.get("logic_event")
+    current_state = state.get(GraphKeys.CURRENT_GAME_STATE)
 
     # If no event, return empty (Router should prevent this)
     if not logic_event:
@@ -77,6 +77,8 @@ def dice_node(state: State) -> Dict[str, Any]:
     # Outcome Matching
     matched_outcome = None
     outcome_msg = ""
+    updates = {}
+
     if logic_event.outcomes:
         for outcome in logic_event.outcomes:
             # outcome.range is [min, max]
@@ -86,29 +88,32 @@ def dice_node(state: State) -> Dict[str, Any]:
                     matched_outcome = outcome
                     break
 
-    # Construct feedback message for LLM
-    feedback_text = f"Dice Roll Result: [{die_type.upper()}] {roll_result}. Reason: {logic_event.name}."
     if matched_outcome and matched_outcome.result:
+        result = matched_outcome.result
         # Add the outcome content (e.g., "Success! You found a key.") so LLM knows what happened
-        content = matched_outcome.result.get("content", "")
-        feedback_text += f" Outcome: {content}"
+        content = result.get("content", "")
+        feedback_text = f"Dice Roll Result: [{die_type.upper()}] {roll_result}. Reason: {logic_event.name}. Outcome: {content}"
 
-        # NOTE: logic_outcome is NOT sent to frontend directly via updates here
-        # (unless we want to debug). The LLM will incorporate it into the next narrative.
+        # Extract updates
+        if "updates" in result:
+            updates = result["updates"]
+        elif "hp_change" in result or "sanity_change" in result:
+            updates = result
+    else:
+        feedback_text = f"Dice Roll Result: [{die_type.upper()}] {roll_result}. Reason: {logic_event.name}."
 
     logger.info(f"Dice Node Feedback: {feedback_text}")
 
+    # Apply State Updates
+    new_game_state = apply_state_updates(current_state, updates)
+
     # Create a HumanMessage (or SystemMessage) representing the resolved event to continue the flow
-    # Using HumanMessage to simulate "System Feedback" in the chat history for the context model
     feedback_msg = HumanMessage(content=feedback_text)
 
-    updates: Dict[str, Any] = {
+    return {
         GraphKeys.DICE_ROLL: dice_roll,  # For Frontend Animation
         GraphKeys.MESSAGES: [feedback_msg],  # For LLM Context
         GraphKeys.LOGIC_EVENT: None,  # Clear event to prevent loops
+        GraphKeys.CURRENT_GAME_STATE: new_game_state,  # Updated State
+        GraphKeys.LOGIC_OUTCOME: matched_outcome,  # Optional: Keep for debugging
     }
-
-    if matched_outcome:
-        updates["logic_outcome"] = matched_outcome
-
-    return updates
