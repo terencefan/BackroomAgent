@@ -8,17 +8,20 @@ This document defines the JSON structure for communication between the React Fro
 
 ## Request Structure
 
-The frontend sends the full game state along with the player's latest input. This allows the backend to be stateless (or semi-stateless) and just process the transition.
+The frontend sends the full game state along with the player's latest input.
 
 ```json
 {
   "event": {
-    "type": "init"                // "init", "action", or "message"
+    "type": "message",            // "init", "action", "message", "use", "drop"
+    "item_id": null,              // Optional: For 'use' or 'drop' events
+    "quantity": null              // Optional: For 'drop' events
   },
-  "player_input": "string",       // The text typed by the user (e.g., "Look around", "Use Key")
+  "player_input": "string",       // The text typed by the user
   "session_id": "string",         // Optional. UUID for session tracking
-  "current_state": {              // Optional for 'init', required for 'action'
-    "level": "string",            // Current Level ID (e.g., "Level 1")
+  "current_state": {              // Optional for 'init', required for others
+    "level": "string",
+    "time": 480,                  // Minutes from midnight
     "attributes": {
       "STR": "number",
       "DEX": "number",
@@ -47,71 +50,28 @@ The frontend sends the full game state along with the player's latest input. Thi
 }
 ```
 
-## Response Structure
-
-The backend calculates the consequences of the action and returns the *diff* or the *new state* along with the narrative response.
-
-```json
-{
-  "messages": [
-    {
-      "text": "string",
-      "sender": "dm"
-    }
-  ],
-  "new_state": {                  // The updated state
-    "vitals": {
-      "hp": 15,
-      ...
-    },
-    // ...
-  },
-  "dice_roll": {                  // Optional: Dice result
-    "type": "d20",                // "d6", "d20" or "d100"
-    "result": 18,
-    "target": 12,                 // Optional target/DC
-    "reason": "Dexterity Check"   // Optional context
-  }
-}
-```
-
-## Types
-
-### DiceRoll
-```typescript
-interface DiceRoll {
-  type: 'd6' | 'd20' | 'd100';
-  result: number;
-  reason?: string;
-}
-```
-
 ## Streaming Response Protocol (NDJSON)
 
-The backend now streams the response as a sequence of JSON objects, each separated by a newline (`\n`). This allows for progressive UI updates (e.g., showing a dice roll before the final narrative).
+The backend streams the response as a sequence of JSON objects, each separated by a newline (`\n`).
 
 ### Stream Chunks
 
 #### 1. Message Chunk
-Explains the context or provides narrative.
+Standard narrative text.
 ```json
 {
   "type": "message",
-  "text": "The door handles are rusted shut. You try to force them.",
-  "sender": "dm"
+  "text": "The door handles are rusted shut.",
+  "sender": "dm" // or "system"
 }
 ```
 
-#### 2. Dice Roll Chunk (Optional)
-Triggers the visual dice roll.
+#### 2. Init Chunk
+Initialization narrative (Level Entry).
 ```json
 {
-  "type": "dice_roll",
-  "dice": {
-    "type": "d20",
-    "result": 18,
-    "reason": "Strength Check"
-  }
+  "type": "init",
+  "text": "You noclip into Level 1..."
 }
 ```
 
@@ -124,7 +84,50 @@ Updates the client-side game state.
 }
 ```
 
-#### 4. Suggestions Chunk (Optional)
+#### 4. Logic Event Chunk (Pre-Dice)
+Indicates a probabilistic event is about to happen (triggers UI wait state).
+```json
+{
+  "type": "logic_event",
+  "event": {
+    "name": "Jump Scare",
+    "die_type": "d100",
+    "outcomes": [
+      { "range": [1, 50], "result": { ... } }
+    ]
+  }
+}
+```
+
+#### 5. Dice Roll Chunk
+Triggers the visual dice roll animation.
+```json
+{
+  "type": "dice_roll",
+  "dice": {
+    "type": "d20", // or "d6", "d100"
+    "result": 18,
+    "reason": "Strength Check"
+  }
+}
+```
+
+#### 6. Settlement Chunk (Post-Dice)
+Visual log of state changes (Delta).
+```json
+{
+  "type": "settlement",
+  "delta": {
+    "hp_change": -5,
+    "sanity_change": 0,
+    "items_added": ["Flashlight x1"],
+    "items_removed": [],
+    "level_transition": "Level 1" // Optional
+  }
+}
+```
+
+#### 7. Suggestions Chunk
 Provides clickable options for the user.
 ```json
 {
@@ -132,11 +135,27 @@ Provides clickable options for the user.
   "options": ["Enter the room", "Listen at the door"]
 }
 ```
+
+## Models
+
+### GameState
 ```typescript
 interface GameState {
   level: string;
+  time: number;
   attributes: Attributes;
   vitals: Vitals;
   inventory: (Item | null)[];
+}
+```
+
+### EventType
+```typescript
+enum EventType {
+  INIT = "init",
+  ACTION = "action",
+  MESSAGE = "message",
+  USE = "use",
+  DROP = "drop"
 }
 ```
