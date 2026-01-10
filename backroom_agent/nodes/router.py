@@ -43,7 +43,7 @@ def route_event(state: State) -> str:
     if event_type == EventType.INIT:
         return NodeConstants.INIT_NODE
     elif event_type == EventType.MESSAGE:
-        return NodeConstants.MESSAGE_NODE
+        return NodeConstants.EVENT_NODE
     elif event_type in [EventType.USE, EventType.DROP]:
         return NodeConstants.ITEM_NODE
     else:

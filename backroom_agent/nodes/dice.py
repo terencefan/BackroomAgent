@@ -15,11 +15,11 @@ def route_check_dice(state: State) -> str:
     Conditional Routing:
     Check if a logic_event was generated.
     If yes -> Go to Dice Node.
-    If no -> Skip to Settle Node.
+    If no -> Skip to Event Resolve Node.
     """
     if state.get(GraphKeys.LOGIC_EVENT):
         return NodeConstants.DICE_NODE
-    return NodeConstants.SETTLE_NODE
+    return NodeConstants.EVENT_RESOLVE_NODE
 
 
 @annotate_node("normal")

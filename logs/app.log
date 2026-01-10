@@ -441,3 +441,141 @@ DEBUG: Summary Node [Turn Complete]:
 2026-01-10 20:48:05.461 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
 2026-01-10 20:49:02.691 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
 2026-01-10 20:49:11.389 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:49:22.947 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:49:24.367 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:49:25.795 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:49:28.169 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:49:29.339 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:49:55.956 | INFO     | server.py:73 | backroom_agent | [session-1767974738845-0xxq7eagp] Event: EventType.INIT | Input: 
+2026-01-10 20:49:56.530 | INFO     | router.py:20 | backroom_agent | ▶ NODE: Router Node
+2026-01-10 20:49:56.530 | INFO     | router.py:27 | backroom_agent | Router pre-fetching context for Level 0
+2026-01-10 20:49:56.530 | INFO     | level.py:27 | backroom_agent | Searching for level data for ID: 'Level 0' in /Users/bytedance/workspace/BackroomAgent/data/level
+2026-01-10 20:49:56.533 | INFO     | init.py:44 | backroom_agent | ▶ NODE: Init Node (Level: Level 0)
+2026-01-10 20:49:56.535 | INFO     | summary.py:13 | backroom_agent | ▶ NODE: Summary Node
+2026-01-10 20:49:56.535 | DEBUG    | summary.py:31 | backroom_agent | Summary Node [Turn Complete]:
+- Time: 481
+- Model Output: 你置身于一片由泛黄墙纸和潮湿地毯构成的房间中，头顶的荧光灯发出刺耳且持续的低频嗡鸣，光线以不规则的频率闪烁。...
+2026-01-10 20:49:56.536 | INFO     | suggestion.py:16 | backroom_agent | ▶ NODE: Suggestion Node
+2026-01-10 20:49:56.537 | INFO     | nodes.py:18 | backroom_agent | Suggestion Agent: Thinking...
+2026-01-10 20:49:59.280 | INFO     | server.py:73 | backroom_agent | [session-1767974738845-0xxq7eagp] Event: EventType.MESSAGE | Input: 检查墙纸下的痕迹
+2026-01-10 20:49:59.785 | INFO     | router.py:20 | backroom_agent | ▶ NODE: Router Node
+2026-01-10 20:49:59.785 | INFO     | router.py:27 | backroom_agent | Router pre-fetching context for Level 0
+2026-01-10 20:49:59.785 | INFO     | level.py:27 | backroom_agent | Searching for level data for ID: 'Level 0' in /Users/bytedance/workspace/BackroomAgent/data/level
+2026-01-10 20:49:59.787 | INFO     | message.py:87 | backroom_agent | ▶ NODE: Message Node (LLM Generation)
+2026-01-10 20:49:59.787 | DEBUG    | message.py:98 | backroom_agent | State Messages Dump (1 items):
+0. [human]: 检查墙纸下的痕迹
+2026-01-10 20:49:59.788 | DEBUG    | message.py:128 | backroom_agent | LLM Input Payload (JSON):
+{
+  "level": "Level 0",
+  "time": 481,
+  "attributes": {
+    "STR": 10,
+    "DEX": 10,
+    "CON": 10,
+    "INT": 10,
+    "WIS": 10,
+    "CHA": 10
+  },
+  "vitals": {
+    "hp": 10,
+    "maxHp": 10,
+    "sanity": 100
+  },
+  "inventory": [],
+  "message": "\u68c0\u67e5\u5899\u7eb8\u4e0b\u7684\u75d5\u8ff9"
+}
+2026-01-10 20:50:13.901 | DEBUG    | message.py:145 | backroom_agent | LLM Output Payload (JSON):
+{
+  "message": "\u4f60\u9760\u8fd1\u90a3\u9762\u5899\uff0c\u624b\u6307\u8f7b\u8f7b\u62c2\u8fc7\u5899\u7eb8\u7684\u8fb9\u7f18\u3002\u5899\u7eb8\u7684\u63a5\u7f1d\u5904\u6709\u4e9b\u7fd8\u8d77\uff0c\u4f60\u5c0f\u5fc3\u5730\u5c06\u5176\u5265\u5f00\u4e00\u5c0f\u5757\u3002\u6f6e\u6e7f\u7684\u9709\u5473\u66f4\u52a0\u6d53\u70c8\u4e86\u3002\u5899\u7eb8\u4e0b\u9762\uff0c\u539f\u672c\u5e94\u8be5\u662f\u6df7\u51dd\u571f\u7684\u5899\u9762\uff0c\u5374\u9732\u51fa\u4e86\u4e00\u4e9b\u6df1\u8272\u7684\u3001\u4e0d\u89c4\u5219\u7684\u75d5\u8ff9\u3002\u5b83\u4eec\u770b\u8d77\u6765\u50cf\u662f...\u67d0\u79cd\u6db2\u4f53\u5e72\u6db8\u540e\u7559\u4e0b\u7684\u6c61\u6e0d\uff0c\u53c8\u6216\u8005\u662f\u7528\u6307\u7532\u53cd\u590d\u522e\u64e6\u5f62\u6210\u7684\u5370\u8bb0\u3002\u5149\u7ebf\u660f\u6697\uff0c\u4f60\u770b\u4e0d\u6e05\u66f4\u591a\u7ec6\u8282\u3002",
+  "event": {
+    "name": "\u68c0\u67e5\u75d5\u8ff9",
+    "die_type": "d20",
+    "outcomes": [
+      {
+        "range": [
+          1,
+          10
+        ],
+        "result": {
+          "content": "\u4f60\u51d1\u5f97\u66f4\u8fd1\uff0c\u8bd5\u56fe\u8fa8\u8ba4\u75d5\u8ff9\u7684\u5f62\u72b6\u3002\u4e00\u80a1\u7a81\u5982\u5176\u6765\u7684\u5bd2\u610f\u987a\u7740\u810a\u690e\u722c\u5347\uff0c\u4f60\u4eff\u4f5b\u542c\u5230\u4e86\u5899\u58c1\u91cc\u4f20\u6765\u4e00\u58f0\u6781\u5176\u5fae\u5f31\u7684\u53f9\u606f\u3002\u4f60\u731b\u5730\u540e\u9000\uff0c\u5fc3\u810f\u72c2\u8df3\uff0c\u4e00\u79cd\u88ab\u7aa5\u89c6\u7684\u611f\u89c9\u6325\u4e4b\u4e0d\u53bb\u3002"
+        }
+      },
+      {
+        "range": [
+          11,
+          19
+        ],
+        "result": {
+          "content": "\u4f60\u4ed4\u7ec6\u7aef\u8be6\u3002\u8fd9\u4e9b\u75d5\u8ff9\u4f3c\u4e4e\u662f\u67d0\u79cd\u6697\u7ea2\u8272\u7684\u6d82\u6599\uff0c\u6216\u8005\u662f...\u94c1\u9508\uff1f\u5b83\u4eec\u6392\u5217\u5f97\u6709\u4e9b\u89c4\u5f8b\uff0c\u50cf\u662f\u6f66\u8349\u7684\u6587\u5b57\uff0c\u53c8\u50cf\u662f\u67d0\u79cd\u626d\u66f2\u7684\u7b26\u53f7\u3002\u4f60\u65e0\u6cd5\u89e3\u8bfb\uff0c\u4f46\u672c\u80fd\u5730\u611f\u5230\u4e0d\u5b89\u3002\u5899\u7eb8\u5728\u4f60\u624b\u4e2d\u4f3c\u4e4e\u53d8\u5f97\u66f4\u6f6e\u6e7f\u3001\u66f4\u8106\u5f31\u4e86\u3002"
+        }
+      },
+      {
+        "range": [
+          20,
+          20
+        ],
+        "result": {
+          "content": "\u4f60\u7684\u89c2\u5bdf\u529b\u6355\u6349\u5230\u4e86\u5173\u952e\u7ec6\u8282\u3002\u5728\u51e0\u9053\u75d5\u8ff9\u7684\u4ea4\u6c47\u5904\uff0c\u4f60\u53d1\u73b0\u4e86\u4e00\u4e2a\u6781\u5176\u5fae\u5c0f\u3001\u51e0\u4e4e\u88ab\u5ffd\u7565\u7684\u51f9\u9677\uff0c\u91cc\u9762\u4f3c\u4e4e\u5d4c\u7740\u4ec0\u4e48\u4e1c\u897f\u3002\u90a3\u662f\u4e00\u5c0f\u5757\u575a\u786c\u7684\u3001\u975e\u91d1\u5c5e\u7684\u788e\u7247\uff0c\u8fb9\u7f18\u4e0d\u89c4\u5219\uff0c\u989c\u8272\u4e0e\u5899\u58c1\u51e0\u4e4e\u878d\u4e3a\u4e00\u4f53\u3002\u8fd9\u53ef\u80fd\u662f\u4e4b\u524d\u63a2\u7d22\u8005\u7559\u4e0b\u7684\u7ebf\u7d22\uff0c\u6216\u8005...\u662f\u522b\u7684\u4ec0\u4e48\u4e1c\u897f\u7684\u4e00\u90e8\u5206\u3002"
+        }
+      }
+    ]
+  }
+}
+2026-01-10 20:50:13.903 | INFO     | message.py:156 | backroom_agent | LLM Response Narrative: 你靠近那面墙，手指轻轻拂过墙纸的边缘。墙纸的接缝处有些翘起，你小心地将其剥开一小块。潮湿的霉味更加浓...
+2026-01-10 20:50:13.903 | INFO     | message.py:165 | backroom_agent | Logic Event Generated: 检查痕迹
+2026-01-10 20:50:18.911 | INFO     | dice.py:36 | backroom_agent | ▶ NODE: Dice Node
+2026-01-10 20:50:18.912 | INFO     | dice.py:47 | backroom_agent | Dice Node: Processing event '检查痕迹' with d20
+2026-01-10 20:50:18.913 | INFO     | dice.py:99 | backroom_agent | Dice Node Feedback: Dice Roll Result: [D20] 15. Reason: 检查痕迹. Outcome: 你仔细端详。这些痕迹似乎是某种暗红色的涂料，或者是...铁锈？它们排列得有些规律，像是潦草的文字，又像是某种扭曲的符号。你无法解读，但本能地感到不安。墙纸在你手中似乎变得更潮湿、更脆弱了。
+2026-01-10 20:50:21.920 | INFO     | message.py:87 | backroom_agent | ▶ NODE: Message Node (LLM Generation)
+2026-01-10 20:50:21.920 | DEBUG    | message.py:98 | backroom_agent | State Messages Dump (3 items):
+0. [human]: 检查墙纸下的痕迹
+1. [ai]: 你靠近那面墙，手指轻轻拂过墙纸的边缘。墙纸的接缝处有些翘起，你小心地将其剥开一小块。潮湿的霉味更加浓烈了。墙纸下面，原本应该是混凝土的墙面，却露出了一些深色的、不规则的痕迹。它们看起来像是...某种液体干涸后留下的污渍，又或者是用指甲反复刮擦形成的印记。光线昏暗，你看不清更多细节。
+2. [human]: Dice Roll Result: [D20] 15. Reason: 检查痕迹. Outcome: 你仔细端详。这些痕迹似乎是某种暗红色的涂料，或者是...铁锈？它们排列得有些规律，像是潦草的文字，又像是某种扭曲的符号。你无法解读，但本能地感到不安。墙纸在你手中似乎变得更潮湿、更脆弱了。
+2026-01-10 20:50:21.921 | DEBUG    | message.py:128 | backroom_agent | LLM Input Payload (JSON):
+{
+  "level": "Level 0",
+  "time": 481,
+  "attributes": {
+    "STR": 10,
+    "DEX": 10,
+    "CON": 10,
+    "INT": 10,
+    "WIS": 10,
+    "CHA": 10
+  },
+  "vitals": {
+    "hp": 10,
+    "maxHp": 10,
+    "sanity": 100
+  },
+  "inventory": [],
+  "message": "Dice Roll Result: [D20] 15. Reason: \u68c0\u67e5\u75d5\u8ff9. Outcome: \u4f60\u4ed4\u7ec6\u7aef\u8be6\u3002\u8fd9\u4e9b\u75d5\u8ff9\u4f3c\u4e4e\u662f\u67d0\u79cd\u6697\u7ea2\u8272\u7684\u6d82\u6599\uff0c\u6216\u8005\u662f...\u94c1\u9508\uff1f\u5b83\u4eec\u6392\u5217\u5f97\u6709\u4e9b\u89c4\u5f8b\uff0c\u50cf\u662f\u6f66\u8349\u7684\u6587\u5b57\uff0c\u53c8\u50cf\u662f\u67d0\u79cd\u626d\u66f2\u7684\u7b26\u53f7\u3002\u4f60\u65e0\u6cd5\u89e3\u8bfb\uff0c\u4f46\u672c\u80fd\u5730\u611f\u5230\u4e0d\u5b89\u3002\u5899\u7eb8\u5728\u4f60\u624b\u4e2d\u4f3c\u4e4e\u53d8\u5f97\u66f4\u6f6e\u6e7f\u3001\u66f4\u8106\u5f31\u4e86\u3002"
+}
+2026-01-10 20:50:25.196 | DEBUG    | message.py:145 | backroom_agent | LLM Output Payload (JSON):
+{
+  "message": "\u4f60\u7ad9\u5728Level 0\u65e0\u5c3d\u7684\u9ec4\u8272\u8d70\u5eca\u4e2d\uff0c\u6f6e\u6e7f\u7684\u5730\u6bef\u6c14\u5473\u548c\u65e5\u5149\u706f\u5355\u8c03\u7684\u55e1\u9e23\u6301\u7eed\u4e0d\u65ad\u3002\u5899\u4e0a\u7684\u75d5\u8ff9\u4f9d\u7136\u5b58\u5728\uff0c\u90a3\u4e9b\u6697\u7ea2\u8272\u7684\u7b26\u53f7\u8ba9\u4f60\u5fc3\u795e\u4e0d\u5b81\u3002\u56db\u5468\u5bc2\u9759\u5f97\u53ef\u6015\uff0c\u53ea\u6709\u4f60\u81ea\u5df1\u7684\u547c\u5438\u58f0\u3002\u63a5\u4e0b\u6765\u4f60\u8981\u505a\u4ec0\u4e48\uff1f"
+}
+2026-01-10 20:50:25.197 | INFO     | message.py:156 | backroom_agent | LLM Response Narrative: 你站在Level 0无尽的黄色走廊中，潮湿的地毯气味和日光灯单调的嗡鸣持续不断。墙上的痕迹依然存在，...
+2026-01-10 20:50:25.202 | INFO     | settle.py:96 | backroom_agent | ▶ NODE: Settle Node
+2026-01-10 20:50:28.136 | INFO     | settle.py:80 | backroom_agent | Settle Node Applied Updates: HP+0 Sanity-5
+2026-01-10 20:50:28.138 | DEBUG    | settle.py:147 | backroom_agent | Route Settle -> SUMMARY
+2026-01-10 20:50:28.141 | INFO     | summary.py:13 | backroom_agent | ▶ NODE: Summary Node
+2026-01-10 20:50:28.142 | DEBUG    | summary.py:31 | backroom_agent | Summary Node [Turn Complete]:
+- Time: 482
+- Model Output: 你站在Level 0无尽的黄色走廊中，潮湿的地毯气味和日光灯单调的嗡鸣持续不断。墙上的痕迹依然存在，那些暗红色的符号让你心神不宁。四周寂静得可怕，只有你自己的呼吸声。接下来你要做什么？...
+2026-01-10 20:50:28.143 | INFO     | suggestion.py:16 | backroom_agent | ▶ NODE: Suggestion Node
+2026-01-10 20:50:28.145 | INFO     | nodes.py:18 | backroom_agent | Suggestion Agent: Thinking...
+2026-01-10 20:51:28.358 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:53:29.818 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:53:34.635 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:53:49.895 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:54:03.281 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:54:11.687 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:54:20.206 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:54:53.519 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:55:01.654 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:55:26.384 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:55:58.543 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:56:53.825 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:57:06.465 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379
+2026-01-10 20:58:28.615 | INFO     | cache.py:27 | backroom_agent | Connected to Redis at localhost:6379

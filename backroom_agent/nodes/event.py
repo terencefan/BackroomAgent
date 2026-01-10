@@ -80,11 +80,11 @@ def parse_dm_response(
 
 
 @annotate_node("llm")
-def message_node(state: State, config: RunnableConfig) -> dict:
+def event_node(state: State, config: RunnableConfig) -> dict:
     """
     Handles 'message' events: General dialogue between player and DM.
     """
-    logger.info("▶ NODE: Message Node (LLM Generation)")
+    logger.info("▶ NODE: Event Node (LLM Generation)")
 
     messages = state["messages"]
     current_state = state.get("current_game_state")

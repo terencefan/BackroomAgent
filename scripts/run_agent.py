@@ -9,7 +9,7 @@ from textwrap import dedent
 from backroom_agent.graph import run_once
 
 
-async def run_demo(user_input: str = None):
+async def run_demo(user_input: str | None = None):
     print("--- Starting Agent Test ---")
     query = user_input or "Hello, Backrooms Entity! What is your name?"
     print(f"User: {query}")
