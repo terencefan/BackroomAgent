@@ -24,6 +24,7 @@ def clear_cache():
         # Pattern to match - Specific to Init Node Intro
         patterns = [
             "backroom:init_node_intro:*",
+            "backroom:init_node_json_v1:*",
             # Add other patterns here if needed in future
         ]
 

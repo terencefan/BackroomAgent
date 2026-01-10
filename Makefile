@@ -47,6 +47,7 @@ frontend-build:
 clean:
 	find . -type d -name "__pycache__" -exec rm -r {} +
 	find . -type d -name "*.egg-info" -exec rm -r {} +
+	$(MAKE) clean-redis
 
 # data management
 BACKEND ?= pickle
