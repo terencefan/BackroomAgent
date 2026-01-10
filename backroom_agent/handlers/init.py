@@ -26,6 +26,8 @@ async def handle_init(
 
     async for chunk in graph.astream(input_state, stream_mode="updates"):
         for _, updates in chunk.items():
+            if not updates:
+                continue
 
             # 1. Messages -> INIT Type
             if "messages" in updates:

@@ -34,9 +34,19 @@ def router_node(state: State) -> Dict[Literal["level_context"], str]:
 
     # If explicit INIT event, inject a prompt for the Event Node so it has "User Input"
     event = state.get("event")
-    if event and event.type == EventType.INIT:
-        logger.info("Router: Injecting trigger message for Init -> Event")
-        updates["messages"] = [HumanMessage(content="进入新层级，请帮我生成事件")]
+    if event:
+        if event.type == EventType.INIT:
+            logger.info("Router: Injecting trigger message for Init -> Event")
+            updates["messages"] = [HumanMessage(content="进入新层级，请帮我生成事件")]
+        elif event.type == EventType.USE:
+            item_name = event.item_id or "Unknown Item"
+            logger.info(f"Router: Injecting trigger message for Use Item: {item_name}")
+            updates["messages"] = [HumanMessage(content=f"我使用了物品: {item_name}")]
+        elif event.type == EventType.DROP:
+            item_name = event.item_id or "Unknown Item"
+            qty = event.quantity or 1
+            logger.info(f"Router: Injecting trigger message for Drop Item: {item_name}")
+            updates["messages"] = [HumanMessage(content=f"我丢弃了物品: {item_name} (数量: {qty})")]
 
     return updates
 
@@ -54,7 +64,7 @@ def route_event(state: State) -> str:
     elif event_type == EventType.MESSAGE:
         return NodeConstants.EVENT_NODE
     elif event_type in [EventType.USE, EventType.DROP]:
-        return NodeConstants.ITEM_NODE
+        return NodeConstants.EVENT_NODE
     else:
         # Check explicit mappings or fallthrough to END
         return END

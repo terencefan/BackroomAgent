@@ -6,8 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
-from backroom_agent.handlers import (handle_drop_item, handle_init,
-                                     handle_message, handle_use_item)
+from backroom_agent.handlers import handle_init, handle_message
 from backroom_agent.protocol import (Attributes, ChatRequest, EventType,
                                      GameState, Vitals)
 from backroom_agent.utils.logger import logger

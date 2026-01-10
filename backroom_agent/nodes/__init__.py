@@ -4,8 +4,6 @@ from backroom_agent.utils.node_annotation import (NodeAnnotation, NodeKind,
 
 from .dice import dice_node, route_check_dice
 from .event import event_node
-from .init import init_node
-from .item_resolve import item_resolve_node
 from .resolve import resolve_node
 from .router import route_event, router_node
 from .suggestion import suggestion_node
@@ -25,9 +23,9 @@ NODE_SUGGESTION_NODE = NodeConstants.SUGGESTION_NODE
 # Node annotations (used by tooling/visualization)
 NODE_CALLABLES_BY_ID = {
     NODE_ROUTER_NODE: router_node,
-    NODE_INIT_NODE: init_node,
+    # NODE_INIT_NODE: init_node,
     # Map both ID versions if necessary, but graph uses NODE_ITEM_RESOLVE_NODE now probably
-    NODE_ITEM_RESOLVE_NODE: item_resolve_node,
+    # NODE_ITEM_RESOLVE_NODE: item_resolve_node,
     NODE_EVENT_NODE: event_node,
     NODE_DICE_NODE: dice_node,
     NODE_RESOLVE_NODE: resolve_node,
@@ -44,8 +42,8 @@ LLM_NODE_IDS = {k for k, v in NODE_ANNOTATIONS_BY_ID.items() if v.kind == "llm"}
 NORMAL_NODE_IDS = {k for k, v in NODE_ANNOTATIONS_BY_ID.items() if v.kind == "normal"}
 
 __all__ = [
-    "init_node",
-    "item_resolve_node",
+    # "init_node",
+    # "item_resolve_node",
     "event_node",
     "dice_node",
     "route_check_dice",
