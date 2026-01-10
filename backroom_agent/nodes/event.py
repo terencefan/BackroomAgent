@@ -142,7 +142,7 @@ def event_node(state: State, config: RunnableConfig) -> dict:
 
     # 3. Construct Context Messages
     level_id = state_dict.get("level", "Level 0")
-    
+
     # Message 1: Static Environment Data
     level_context_str = _prepare_level_context(level_id)
 

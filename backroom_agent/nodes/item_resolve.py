@@ -51,7 +51,7 @@ def item_resolve_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
             # Reduce by half (rounding down the penalty, so remaining HP is ceiling of half if odd)
             # e.g. 10 -> loss 5 -> 5. 5 -> loss 2 -> 3.
             hp_loss = current_hp // 2
-            
+
             new_game_state = current_state.model_copy(deep=True)
             new_game_state.vitals.hp = max(0, current_hp - hp_loss)
 
