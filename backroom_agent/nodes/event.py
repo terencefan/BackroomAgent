@@ -195,11 +195,15 @@ def event_node(state: State, config: RunnableConfig) -> dict:
         new_game_state = current_state
 
     if logic_event:
-        logger.info(f"Logic Event: {logic_event.name}")
+        logger.info(f"Generated Logic Event: {logic_event.name}")
         # Clear suggestions if an event is generated to avoid confusing UI,
         # unless we support simultaneous display (which frontend does, but conceptually suggestions are for next turn)
         # But wait, if event is generated, the user MUST roll dice, so they can't take suggestion actions yet.
         suggestions = []
+    elif suggestions:
+        logger.info(f"Generated Suggestions: {suggestions}")
+    else:
+        logger.info("Generated Narrative Only (No Event or Suggestions)")
 
     final_response_message = AIMessage(content=narrative_text)
 
