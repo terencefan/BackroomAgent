@@ -9,6 +9,7 @@ from fastapi.responses import StreamingResponse
 from backroom_agent.handlers import handle_init, handle_message
 from backroom_agent.protocol import (Attributes, ChatRequest, EventType,
                                      GameState, Vitals)
+from backroom_agent.utils.common import truncate_text
 from backroom_agent.utils.logger import logger
 
 app = FastAPI(title="Backroom Agent API")
@@ -45,13 +46,15 @@ async def mock_agent_generator(request: ChatRequest) -> AsyncGenerator[str, None
     # 1. Simulate processing delay
     await asyncio.sleep(0.5)
 
-    if request.event.type == EventType.INIT:
-        async for chunk in handle_init(request, current_state):
-            yield chunk
-    else:
-        # Universal Graph Handler for Message, Action, Use, Drop
-        async for chunk in handle_message(request, current_state):
-            yield chunk
+    stream_generator = (
+        handle_init(request, current_state)
+        if request.event.type == EventType.INIT
+        else handle_message(request, current_state)
+    )
+
+    async for chunk in stream_generator:
+        logger.info(f"Frontend Out: {truncate_text(chunk.strip(), 150)}")
+        yield chunk
 
 
 # --- Routes ---
