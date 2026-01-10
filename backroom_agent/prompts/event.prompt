@@ -78,7 +78,10 @@ You must respond with **RAW JSON ONLY** (no markdown fences).
 
 ### 2. Inventory Logic
 - **Strict Validation**: Players can ONLY use items present in `inventory` list.
-- **No Improvisation**: If item is missing but player tries to use it, the action automatically fails (or doesn't start).
+- **Missing Item Penalty**: If the player attempts to use an item they do NOT have:
+  - **Narrative**: Describe the hallucination of having the item, followed by the shocking realization it is gone or never existed.
+  - **Event**: Generate a deterministic failure event (e.g. d6, range 1-6) with `updates: { "sanity": -5 }` and NO item effect.
+  - **Rejection**: The action must NOT succeed.
 
 ### 3. Action Resolution
 **Selective Event Generation: Decide based on probability, context, and state.**
@@ -205,6 +208,30 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
     "outcomes": [
       { "range": [1, 3], "result": { "content": "味道不对！这瓶水变质了，你感到一阵恶心。", "updates": { "hp": -2, "sanity": -5, "remove_items": ["almond_water"] } } },
       { "range": [4, 20], "result": { "content": "清凉的液体流过喉咙。伤口的疼痛减轻了，思维也变得清晰。", "updates": { "hp": +5, "sanity": +10, "remove_items": ["almond_water"] } } }
+    ]
+  }
+}
+```
+
+### 5. Missing Item Usage
+**Input**:
+```json
+{
+  "player": {
+    "input": "Shoot the smiler with pistol",
+    "inventory": []
+  }
+}
+```
+**Output**:
+```json
+{
+  "message": "你下意识地摸向腰间，手指却抓了个空。冰冷的恐慌瞬间攥住了你的心脏...",
+  "event": {
+    "name": "物品缺失惊慌",
+    "die_type": "d6",
+    "outcomes": [
+      { "range": [1, 6], "result": { "content": "你并没有手枪。这只是疯狂边缘的幻觉。", "updates": { "hp": 0, "sanity": -5 } } }
     ]
   }
 }
