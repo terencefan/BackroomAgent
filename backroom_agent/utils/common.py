@@ -108,6 +108,9 @@ def extract_json_from_text(text: str) -> dict:
         end_idx = cleaned.rfind("}")
         if start_idx != -1 and end_idx != -1 and start_idx < end_idx:
             json_str = cleaned[start_idx : end_idx + 1]
+            # Extra Step: Fix invalid "+5" number formats common in LLM outputs
+            # Matches : +5, [ +5, , +5
+            json_str = re.sub(r'([:\[,])(\s*)\+(\d+)', r'\1\2\3', json_str)
             return json.loads(json_str)
     except json.JSONDecodeError:
         pass

@@ -139,7 +139,7 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
     "outcomes": [
       { "range": [1, 5], "result": { "content": "你挥空了！猎犬趁机反咬一口，利齿刺入你的手臂。", "updates": { "hp": -3, "sanity": -5 } } },
       { "range": [6, 15], "result": { "content": "铁管击中了它的侧腹。它发出痛苦的嚎叫，踉跄后退。", "updates": { "hp": 0, "sanity": 0 } } },
-      { "range": [16, 20], "result": { "content": "暴击！你砸碎了它的头骨。它抽搐几下后不动了。", "updates": { "hp": 0, "sanity": +5, "add_items": [{"id": "hound_tooth", "name": "Sharp Tooth", "quantity": 1}] } } }
+      { "range": [16, 20], "result": { "content": "暴击！你砸碎了它的头骨。它抽搐几下后不动了。", "updates": { "hp": 0, "sanity": 5, "add_items": [{"id": "hound_tooth", "name": "Sharp Tooth", "quantity": 1}] } } }
     ]
   }
 }
@@ -164,7 +164,7 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
     "die_type": "d20",
     "outcomes": [
       { "range": [1, 10], "result": { "content": "你撞到了██东西。一股恶█扑面而█，黑暗██了你。", "updates": { "hp": -1, "sanity": -5 } } },
-      { "range": [11, 20], "result": { "content": "你勉强分辨出方向，继续前进。那些声音也许只是幻觉。", "updates": { "hp": 0, "sanity": +1 } } }
+      { "range": [11, 20], "result": { "content": "你勉强分辨出方向，继续前进。那些声音也许只是幻觉。", "updates": { "hp": 0, "sanity": 1 } } }
     ]
   }
 }
@@ -182,7 +182,7 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
     "outcomes": [
       { "range": [1, 50], "result": { "content": "你的手骨剧痛，感觉手指都要断了。墙壁纹丝不动。", "updates": { "hp": -1, "sanity": 0 } } },
       { "range": [51, 99], "result": { "content": "毫无作用。你在浪费体力。", "updates": { "hp": 0, "sanity": 0 } } },
-      { "range": [100, 100], "result": { "content": "不可思议！墙壁突然像纸一样崩塌了，露出后面的空间。", "updates": { "hp": 0, "sanity": +20 } } }
+      { "range": [100, 100], "result": { "content": "不可思议！墙壁突然像纸一样崩塌了，露出后面的空间。", "updates": { "hp": 0, "sanity": 20 } } }
     ]
   }
 }
@@ -207,7 +207,7 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
     "die_type": "d20",
     "outcomes": [
       { "range": [1, 3], "result": { "content": "味道不对！这瓶水变质了，你感到一阵恶心。", "updates": { "hp": -2, "sanity": -5, "remove_items": ["almond_water"] } } },
-      { "range": [4, 20], "result": { "content": "清凉的液体流过喉咙。伤口的疼痛减轻了，思维也变得清晰。", "updates": { "hp": +5, "sanity": +10, "remove_items": ["almond_water"] } } }
+      { "range": [4, 20], "result": { "content": "清凉的液体流过喉咙。伤口的疼痛减轻了，思维也变得清晰。", "updates": { "hp": 5, "sanity": 10, "remove_items": ["almond_water"] } } }
     ]
   }
 }
