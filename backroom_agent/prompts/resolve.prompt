@@ -17,16 +17,24 @@
         { "role": "ai", "content": "You try to attack the hound." },
         { "role": "human", "content": "Dice Roll Result: [D20] 2. Reason: Fight." }
     ],
-    "logic_outcome": "Outcome data from game logic..."
+    "logic_outcome": "Outcome data from game logic...",
+    "level_exits": [
+      {
+        "method": "切出（noclipping）本层",
+        "condition": "保持认知并快速适应环境",
+        "next": "Level 1"
+      }
+    ]
 }
 ```
 
 你的任务 (Task):
 1. 读取 Input JSON 中的所有信息。
 2. 分析局势、当前交互消息列表 (Interaction Messages) 以及逻辑判定结果 (Logic Outcome)。
-3. 确定游戏状态是否需要变更 (HP, Sanity, Inventory)。
-4. 判断用户动作是否导致了层级切换 (Level Transition)。
-5. 决定后续步骤。
+3. 参考 level_exits 中的信息，判断用户的行为是否不仅成功，而且达成了某个出口的条件。
+4. 确定游戏状态是否需要变更 (HP, Sanity, Inventory)。
+5. 判断用户动作是否导致了层级切换 (Level Transition)。
+6. 决定后续步骤。
 
 输出格式 (Output JSON):
 {{

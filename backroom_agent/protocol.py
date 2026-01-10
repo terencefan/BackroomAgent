@@ -174,7 +174,6 @@ class Entrance(BaseModel):
 class Exit(BaseModel):
     method: str
     condition: str
-    success_chance: str
     next: Optional[str]
 
 

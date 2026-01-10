@@ -12,6 +12,7 @@ from backroom_agent.nodes.resolve_utils import (apply_state_updates,
                                                 serialize_messages)
 from backroom_agent.state import State
 from backroom_agent.utils.common import get_llm
+from backroom_agent.utils.level import find_level_data
 from backroom_agent.utils.logger import logger
 from backroom_agent.utils.node_annotation import annotate_node
 
@@ -39,10 +40,30 @@ def event_resolve_node(state: State, config: RunnableConfig) -> Dict[str, Any]:
     elif hasattr(logic_outcome, "dict"):
         logic_outcome = logic_outcome.dict()  # type: ignore
 
+    # Fetch Level Exits for Context
+    level_exits = []
+    level_id = None
+    if current_state:
+        if hasattr(current_state, "level"):
+            level_id = current_state.level
+        elif isinstance(current_state, dict):
+            level_id = current_state.get("level")
+
+    if level_id:
+        level_data, _ = find_level_data(level_id)
+        if level_data and "transitions" in level_data:
+            raw_exits = level_data["transitions"].get("exits", [])
+            # Filter out 'success_chance' if present
+            for exit_item in raw_exits:
+                if isinstance(exit_item, dict):
+                    exit_item.pop("success_chance", None)
+            level_exits = raw_exits
+
     input_data = {
         "current_game_state": gs_data,
         "interaction_messages": serialized_msgs,
         "logic_outcome": logic_outcome,
+        "level_exits": level_exits,
     }
     user_content = json.dumps(input_data, ensure_ascii=False, indent=2)
 
