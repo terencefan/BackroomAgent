@@ -27,6 +27,7 @@ def _load_system_prompt() -> str:
         prompt_path = os.path.join(base_dir, "prompts", "event.prompt")
         return load_prompt(prompt_path)
     except FileNotFoundError:
+        logger.error("System prompt not found. Using default.")
         return "You are a helpful AI Dungeon Master for a Backrooms game."
 
 
@@ -74,6 +75,10 @@ def parse_dm_response(
                     logic_event = LogicEvent(**event_dict)
                 except Exception as e:
                     logger.error(f"Failed to parse event into LogicEvent: {e}")
+        else:
+            logger.warning(
+                f"Parsed LLM output is not a dictionary (got {type(parsed_output)}). Treating as narrative."
+            )
 
     except json.JSONDecodeError:
         logger.warning(
@@ -87,6 +92,7 @@ def _prepare_level_context(level_id: str) -> str:
     """Retrieves and dumps level data JSON."""
     level_data_json, _ = find_level_data(level_id)
     if not level_data_json:
+        logger.warning(f"Level data for {level_id} not found.")
         level_data_json = {"level_id": level_id, "error": "Level data not found"}
     return json.dumps(level_data_json, ensure_ascii=False, indent=2)
 
