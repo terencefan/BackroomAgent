@@ -68,11 +68,21 @@ def init_node(state: State, config: RunnableConfig) -> dict:
     # Cache Key: Level ID + Context snippet + Prompt Hash
     cache_key_content = f"{level}:{level_context[:1000]}:{prompt_hash}"
 
+    was_cache_hit = True
+
+    def _on_cache_miss():
+        nonlocal was_cache_hit
+        was_cache_hit = False
+        return _generate_llm_intro(level, level_context, prompt_template)
+
     result_data = memory_cache.get(
         "init_node_json_v1",
         cache_key_content,
-        on_miss=lambda: _generate_llm_intro(level, level_context, prompt_template),
+        on_miss=_on_cache_miss,
     )
+
+    if was_cache_hit:
+        logger.info(f"Cache Hit for Init Node: {level}")
 
     if not isinstance(result_data, dict):
         result_data = {}
