@@ -16,7 +16,8 @@ def _load_init_prompt() -> str:
     try:
         # backroom_agent/nodes/init.py -> backroom_agent/
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        prompt_path = os.path.join(base_dir, "prompts", "init_summary.prompt")
+        # renamed from init_summary.prompt to init.prompt
+        prompt_path = os.path.join(base_dir, "prompts", "init.prompt")
         return load_prompt(prompt_path)
     except Exception as e:
         logger.error(f"Failed to load init prompt: {e}")

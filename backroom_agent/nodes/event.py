@@ -20,9 +20,9 @@ def _load_system_prompt() -> str:
     """Load the system prompt from the prompts directory."""
     try:
         # Construct path relative to the current file (in nodes package)
-        # ../prompts/dm_agent.prompt
+        # ../prompts/event.prompt
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        prompt_path = os.path.join(base_dir, "prompts", "dm_agent.prompt")
+        prompt_path = os.path.join(base_dir, "prompts", "event.prompt")
         return load_prompt(prompt_path)
     except FileNotFoundError:
         return "You are a helpful AI Dungeon Master for a Backrooms game."
