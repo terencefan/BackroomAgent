@@ -59,7 +59,7 @@ const SettlementDisplay = ({ delta }: { delta: SettlementDelta }) => {
             {/* Row 2: Level Transition */}
             {delta.level_transition && (
                 <div style={{ textAlign: 'center', color: COLOR_TEXT }}>
-                    Level Transfer: <span style={{ color: COLOR_ITEM }}>{delta.level_transition}</span>
+                    进入新层级: <span style={{ color: COLOR_ITEM }}>{delta.level_transition}</span>
                 </div>
             )}
 
