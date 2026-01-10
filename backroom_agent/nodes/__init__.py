@@ -5,7 +5,7 @@ from backroom_agent.utils.node_annotation import (NodeAnnotation, NodeKind,
 from .dice import dice_node, route_check_dice
 from .event import event_node
 from .init import init_node
-from .resolve import resolve_node
+from .resolve import resolve_node, route_resolve
 from .router import route_event, router_node
 from .suggestion import suggestion_node
 from .summary import summary_node
@@ -49,6 +49,7 @@ __all__ = [
     "dice_node",
     "route_check_dice",
     "resolve_node",
+    "route_resolve",
     "router_node",
     "summary_node",
     "suggestion_node",

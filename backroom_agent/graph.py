@@ -6,7 +6,8 @@ from langgraph.graph import END, START, StateGraph
 from backroom_agent.nodes import (  # Node Constants; Node Functions; Routing Functions
     NODE_DICE_NODE, NODE_EVENT_NODE, NODE_INIT_NODE, NODE_RESOLVE_NODE,
     NODE_ROUTER_NODE, NODE_SUMMARY_NODE, dice_node, event_node, init_node,
-    resolve_node, route_check_dice, route_event, router_node, summary_node)
+    resolve_node, route_check_dice, route_event, route_resolve, router_node,
+    summary_node)
 from backroom_agent.state import State
 
 
@@ -61,11 +62,21 @@ def build_graph():
         },
     )
 
-    # Dice Result -> Event Loop (to narrate outcome)
-    workflow.add_edge(NODE_DICE_NODE, NODE_EVENT_NODE)
+    # Dice Result -> Resolve Node (to determine next step / issue suggestions)
+    workflow.add_edge(NODE_DICE_NODE, NODE_RESOLVE_NODE)
 
-    # Resolve -> Summary -> END
-    workflow.add_edge(NODE_RESOLVE_NODE, NODE_SUMMARY_NODE)
+    # Resolve outcomes
+    # If suggestions exist -> Summary -> End.
+    # If not -> Loop back to Event to generate narrative/suggestions.
+    workflow.add_conditional_edges(
+        NODE_RESOLVE_NODE,
+        route_resolve,
+        {
+            NODE_SUMMARY_NODE: NODE_SUMMARY_NODE,
+            NODE_EVENT_NODE: NODE_EVENT_NODE,
+        },
+    )
+
     workflow.add_edge(NODE_SUMMARY_NODE, END)
     # workflow.add_edge(NODE_SUGGESTION_NODE, END) # REMOVED
 
