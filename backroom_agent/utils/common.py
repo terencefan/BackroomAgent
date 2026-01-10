@@ -75,14 +75,15 @@ def extract_json_from_text(text: str) -> dict:
         pass
 
     # Strategy 2: Markdown Code Blocks
-    # Matches ```json {content} ``` or ``` {content} ```
-    pattern = r"```(?:json)?\s*([\s\S]*?)\s*```"
-    match = re.search(pattern, text)
-    if match:
+    # Matches ```json {content} ``` or ``` {content} ``` or ```xml...
+    # Improved regex to capture any language identifier
+    pattern = r"```(?:\w+)?\s*([\s\S]*?)\s*```"
+    matches = re.finditer(pattern, text)
+    for match in matches:
         try:
             return json.loads(match.group(1))
         except json.JSONDecodeError:
-            pass
+            continue
 
     # Strategy 3: Outermost Braces
     # Finds the first '{' and last '}'
@@ -92,6 +93,21 @@ def extract_json_from_text(text: str) -> dict:
 
         if start_idx != -1 and end_idx != -1 and start_idx < end_idx:
             json_str = text[start_idx : end_idx + 1]
+            return json.loads(json_str)
+    except json.JSONDecodeError:
+        pass
+
+    # Strategy 4: Aggressive Cleaning (Fallback)
+    # Sometimes 'json' is written without backticks but with a label
+    # or obscure markdown characters.
+    try:
+        # Remove common markdown fence markers manually
+        cleaned = text.replace("```json", "").replace("```", "").strip()
+        # Find braces again in cleaned text
+        start_idx = cleaned.find("{")
+        end_idx = cleaned.rfind("}")
+        if start_idx != -1 and end_idx != -1 and start_idx < end_idx:
+            json_str = cleaned[start_idx : end_idx + 1]
             return json.loads(json_str)
     except json.JSONDecodeError:
         pass
