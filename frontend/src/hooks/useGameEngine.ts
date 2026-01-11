@@ -109,7 +109,7 @@ export function useGameEngine() {
    * Applies a single chunk to the state.
    */
   const handleChunkLive = (chunk: StreamChunk) => {
-    console.log("Processing Live Chunk:", chunk);
+    // console.log("Processing Live Chunk:", chunk);
     
     switch (chunk.type) {
       case StreamChunkType.MESSAGE:
@@ -225,21 +225,30 @@ export function useGameEngine() {
    * Respects locks (Animation, Logic Events).
    */
   const tryProcessQueue = () => {
+      // console.log('tryProcessQueue', isAnimating.current, pendingQueueRef.current.length);
       if (isAnimating.current) return;
       
       const queue = pendingQueueRef.current;
       if (queue.length === 0) return;
       
-      const nextChunk = queue[0]; 
+      let nextChunkIndex = 0;
 
       // Logic Event Lock: Block everything except DICE_ROLL
       if (lastLogicMsgIdRef.current !== null) {
-          if (nextChunk.type !== StreamChunkType.DICE_ROLL) {
-               return; 
+          // Scan for a DICE_ROLL chunk in the queue to let it jump ahead
+          const diceIndex = queue.findIndex(c => c.type === StreamChunkType.DICE_ROLL);
+          if (diceIndex !== -1) {
+              nextChunkIndex = diceIndex;
+          } else {
+              // No dice roll found? Then we are truly blocked.
+              return; 
           }
       }
 
-      queue.shift(); 
+      const nextChunk = queue[nextChunkIndex];
+      // Remove from the found position
+      queue.splice(nextChunkIndex, 1);
+      
       handleChunkLive(nextChunk);
   };
 
@@ -256,7 +265,7 @@ export function useGameEngine() {
             for (let i = queue.length - 1; i >= 0; i--) {
                 const target = queue[i];
                 if (target.type === StreamChunkType.MESSAGE) {
-                    if (chunk.type === StreamChunkType.LOGIC_EVENT) {
+                   if (chunk.type === StreamChunkType.LOGIC_EVENT) {
                         target.logicEvent = chunk.event;
                     } else {
                         target.options = chunk.options;
