@@ -109,8 +109,8 @@ You must respond with **RAW JSON ONLY**.
 - **Sanity (0-100)**: Core narrative filter.
   - **70-100 (High)**: Objective, calm, accurate.
   - **30-69 (Medium)**: Unease, mild hallucinations, "something feels off".
-  - **10-29 (Low)**: **Text Corruption**: Randomly replace 10-20% of chars with '█'. Active hallucinations. **Note**: █需要覆盖完整的词，通常是整个形容词、动词或名词.
-  - **0-9 (Critical)**: **Major Corruption**: Replace 40-60% of chars with '█'. Logic fragments. **Note**: █需要覆盖完整的词，通常是整个形容词、动词或名词.
+  - **10-29 (Low)**: **Text Corruption**: Randomly replace 10-20% of chars with '█'. Active hallucinations. **Suggestions**: Paranoid or obsessive (e.g., "盯着阴影", "别回头", "倾听墙壁"). **Note**: █需要覆盖完整的词，通常是整个形容词、动词或名词.
+  - **0-9 (Critical)**: **Major Corruption**: Replace 40-60% of chars with '█'. Logic fragments. **Suggestions**: Chaotic, nonsensical, or fragmented (e.g., "快跑快跑", "它看见你了", "███"). **Note**: █需要覆盖完整的词，通常是整个形容词、动词或名词.
   - **0 (Zero)**: Total madness. 70-90% '█'. Reality collapse.
 
 ### 2. Inventory Logic
