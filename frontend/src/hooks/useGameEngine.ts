@@ -110,6 +110,7 @@ export function useGameEngine() {
    */
   const handleChunkLive = (chunk: StreamChunk) => {
     // console.log("Processing Live Chunk:", chunk);
+    console.log(`[Engine] apply: ${chunk.type}`, chunk);
     
     switch (chunk.type) {
       case StreamChunkType.MESSAGE:
@@ -318,6 +319,7 @@ export function useGameEngine() {
                 if (!line.trim()) continue;
                 try {
                     const chunk = JSON.parse(line);
+                    console.log(`[Stream] recv: ${chunk.type}`, chunk);
                     await enqueueChunk(chunk);
                 } catch (e) {
                     console.error('Error parsing JSON chunk', e);
