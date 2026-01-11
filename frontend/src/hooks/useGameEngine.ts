@@ -21,6 +21,16 @@ export function useGameEngine() {
   const pendingDiceRef = useRef<DiceRoll | null>(null);
   const lastLogicMsgIdRef = useRef<number | null>(null);
   const logicConfirmStatusRef = useRef(false);
+  const lastMsgIdRef = useRef<number>(0);
+
+  const generateMsgId = () => {
+      let newId = Date.now();
+      if (newId <= lastMsgIdRef.current) {
+          newId = lastMsgIdRef.current + 1;
+      }
+      lastMsgIdRef.current = newId;
+      return newId;
+  };
   
   // ==========================================
   // 2. Session Management
@@ -115,7 +125,7 @@ export function useGameEngine() {
     switch (chunk.type) {
       case StreamChunkType.MESSAGE:
         setMessages(prev => [...prev, {
-          id: Date.now(),
+          id: generateMsgId(),
           sender: chunk.sender || 'dm',
           text: chunk.text || '',
           logicEvent: chunk.logicEvent,
@@ -141,7 +151,7 @@ export function useGameEngine() {
       
       case StreamChunkType.INIT:
         setMessages(prev => [...prev, {
-          id: Date.now(),
+          id: generateMsgId(),
           sender: 'init',
           text: chunk.text || '',
         }]);
@@ -155,7 +165,7 @@ export function useGameEngine() {
 
       case StreamChunkType.SETTLEMENT:
         setMessages(prev => [...prev, {
-            id: Date.now(),
+            id: generateMsgId(),
             sender: 'system',
             text: '', 
             settlement: chunk.delta
@@ -340,7 +350,7 @@ export function useGameEngine() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sendGameEvent = (text: string, eventType: EventType, eventData?: any, hidden: boolean = false) => {
       if (!hidden) {
-          setMessages(prev => [...prev, { id: Date.now(), sender: 'player', text }]);
+          setMessages(prev => [...prev, { id: generateMsgId(), sender: 'player', text }]);
       }
       
       if (!gameState) return;
@@ -351,7 +361,7 @@ export function useGameEngine() {
           session_id: sessionId,
           current_state: gameState
       }, undefined, () => {
-         setMessages(prev => [...prev, { id: Date.now() + 1, sender: 'system', text: "错误：与后端的连接已丢失。" }]);
+         setMessages(prev => [...prev, { id: generateMsgId(), sender: 'system', text: "错误：与后端的连接已丢失。" }]);
       });
   };
 
