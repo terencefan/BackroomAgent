@@ -3,24 +3,28 @@ import type { DiceRoll, GameState, Item, Message, StreamChunk } from '../types';
 import { EventType, StreamChunkType } from '../types';
 
 export function useGameEngine() {
-  // State
+  // ==========================================
+  // 1. State & Refs
+  // ==========================================
   const [messages, setMessages] = useState<Message[]>([]);
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLevelTransition, setIsLevelTransition] = useState(false);
   const [diceAnimation, setDiceAnimation] = useState<DiceRoll | null>(null);
-  const isInitialized = useRef(false);
 
-  // Queue system for serial processing
-  const pendingQueueRef = useRef<StreamChunk[]>([]);
+  const isInitialized = useRef(false);
   const isAnimating = useRef(false);
 
-  // Queue to hold dice result if it arrives before user confirmation
+  // Queue system
+  const pendingQueueRef = useRef<StreamChunk[]>([]);
+  // Logic/Dice Lock system
   const pendingDiceRef = useRef<DiceRoll | null>(null);
-  // Track the ID of the message that initiated the current logic wait
   const lastLogicMsgIdRef = useRef<number | null>(null);
   const logicConfirmStatusRef = useRef(false);
   
+  // ==========================================
+  // 2. Session Management
+  // ==========================================
   const sessionId = useMemo(() => {
     let id = localStorage.getItem('session_id');
     if (!id) {
@@ -30,61 +34,39 @@ export function useGameEngine() {
     return id;
   }, []);
 
+  // ==========================================
+  // 3. Animation Control & Logic Locks
+  // ==========================================
+
   const triggerDiceAnimation = (dice: DiceRoll) => {
       isAnimating.current = true;
       setDiceAnimation(dice);
       pendingDiceRef.current = null;
   };
 
+  /**
+   * Checks if valid conditions exist to trigger a pending dice roll.
+   * (e.g., User has clicked confirm on the logic event).
+   */
   const checkAndTriggerDice = () => {
-    // This helper tries to trigger animation if conditions are met
-    // We need access to current messages state to see if it matches lastLogicMsgIdRef and is confirmed
     setMessages(prev => {
         const waitingId = lastLogicMsgIdRef.current;
         if (!waitingId) {
-             // No waiting logic event? Just play if we have dice
+             // No logic event blocking? Play immediately.
              if (pendingDiceRef.current) triggerDiceAnimation(pendingDiceRef.current);
              return prev;
         }
         
         const msg = prev.find(m => m.id === waitingId);
         if (msg && msg.logicEventConfirmed) {
-            // It IS confirmed, and we have dice pending
+            // Confirmed + Dice Pending = Play
             if (pendingDiceRef.current) {
-                 // We can't call triggerDiceAnimation here strictly because it calls setMessages (loop)
-                 // But we can defer it
-                 const dice = pendingDiceRef.current; // Capture ref value
+                 const dice = pendingDiceRef.current;
                  setTimeout(() => triggerDiceAnimation(dice!), 0);
             }
         }
         return prev;
     });
-  };
-
-  const tryProcessQueue = () => {
-      if (isAnimating.current) return;
-      
-      const queue = pendingQueueRef.current;
-      if (queue.length === 0) return;
-      
-      const nextChunk = queue[0]; // Peek
-
-      // Check if we are in a logic event sequence (Dice Roll pending/active)
-      if (lastLogicMsgIdRef.current !== null) {
-          // While waiting for Logic/Dice resolution, we BLOCK everything EXCEPT the Dice Roll itself.
-          // This ensures:
-          // 1. Narrative result (MESSAGE) doesn't show before animation
-          // 2. State updates don't happen before animation
-          // 3. Dice Roll data (background) CAN pass through to ready the animation
-          // 4. Update: Allowing SETTLEMENT to pass logic block to prevent deadlock if it arrives before confirm
-          // 5. Update: REMOVED SETTLEMENT bypass to prevent spoilers
-          if (nextChunk.type !== StreamChunkType.DICE_ROLL) {
-               return; 
-          }
-      }
-
-      queue.shift(); // Remove from queue
-      handleChunkLive(nextChunk);
   };
 
   const handleAnimationComplete = () => {
@@ -106,7 +88,26 @@ export function useGameEngine() {
         handleAnimationComplete();
    }
 
+  const handleLogicEventConfirm = (msgId: number) => {
+      logicConfirmStatusRef.current = true;
+      setMessages(prev => prev.map(m => {
+          if (m.id === msgId) return { ...m, logicEventConfirmed: true };
+          return m;
+      }));
 
+      // If we have a pending dice roll waiting for this, fire it
+      if (pendingDiceRef.current && lastLogicMsgIdRef.current === msgId) {
+          triggerDiceAnimation(pendingDiceRef.current);
+      }
+  };
+
+  // ==========================================
+  // 4. Queue Processing Engine
+  // ==========================================
+
+  /**
+   * Applies a single chunk to the state.
+   */
   const handleChunkLive = (chunk: StreamChunk) => {
     console.log("Processing Live Chunk:", chunk);
     
@@ -116,32 +117,23 @@ export function useGameEngine() {
           id: Date.now(),
           sender: chunk.sender || 'dm',
           text: chunk.text || '',
-          // Apply any patched properties if they exist on the chunk object
           logicEvent: chunk.logicEvent,
           options: chunk.options
         }]);
         
-        // If this message has a logicEvent, we need to track its ID for future dice rolls
-        // We can't access legitimate ID cleanly here because setState is async/functional.
-        // We defer tracking to the effect or rely on functional update side-effect (safe enough for refs).
         if (chunk.logicEvent) {
              setMessages(prev => {
-                const last = prev[prev.length - 1]; // This is the new one
+                const last = prev[prev.length - 1]; 
                 lastLogicMsgIdRef.current = last.id; 
                 logicConfirmStatusRef.current = false;
-                // We also need to reset confirmation state just in case
                 last.logicEventConfirmed = false;
                 return prev;
              });
         }
 
-        // Only block for animation if the UI is actually visible (gameState exists)
-        // This prevents deadlock on initial load where MESSAGE/INIT arrives before STATE
         if (gameState) {
-             isAnimating.current = true; // Will be cleared by ChatBox callback
+             isAnimating.current = true; 
         } else {
-             // UI not ready/visible, assume "fast forward" or simple loading
-             // Don't block queue
              setTimeout(tryProcessQueue, 0);
         }
         break;
@@ -164,15 +156,13 @@ export function useGameEngine() {
         setMessages(prev => [...prev, {
             id: Date.now(),
             sender: 'system',
-            text: '', // Empty text for visual log
+            text: '', 
             settlement: chunk.delta
         }]);
-        // Don't block queue for settlement logs, they should appear instantly
         tryProcessQueue();
         break;
 
       case StreamChunkType.DICE_ROLL:
-        // Logic for Dice Roll handling
         pendingDiceRef.current = chunk.dice;
         if (!lastLogicMsgIdRef.current) {
              triggerDiceAnimation(chunk.dice);
@@ -183,13 +173,10 @@ export function useGameEngine() {
         break;
 
       case StreamChunkType.STATE:
-        // Update Game State
         if (chunk.state) {
             if (gameState && chunk.state.level !== gameState.level) {
+                // Level Transition
                 setIsLevelTransition(true);
-                // Animations are handled via CSS transitions, but we can't block queue easily on CSS
-                // unless we set isAnimating. 
-                // For level transition (~1s), let's block.
                 isAnimating.current = true; 
                 
                 setTimeout(() => {
@@ -198,11 +185,10 @@ export function useGameEngine() {
                         setIsLevelTransition(false);
                         isAnimating.current = false;
                         tryProcessQueue();
-                    }, 500); // Wait for fade in
-                }, 500); // Wait for fade out
+                    }, 500); 
+                }, 500); 
             } else {
                 setGameState(chunk.state);
-                // Don't block queue for simple state updates
                 tryProcessQueue();
             }
         } else {
@@ -211,7 +197,6 @@ export function useGameEngine() {
         break;
 
       case StreamChunkType.SUGGESTIONS:
-        // If suggestions arrive late and target displayed message
         setMessages(prev => {
             if (prev.length === 0) return prev;
             const lastMsg = { ...prev[prev.length - 1] };
@@ -222,7 +207,6 @@ export function useGameEngine() {
         break;
 
       case StreamChunkType.LOGIC_EVENT:
-        // If logic event arrives late and targets displayed message
         setMessages(prev => {
             if (prev.length === 0) return prev;
             const lastMsg = { ...prev[prev.length - 1] };
@@ -236,54 +220,73 @@ export function useGameEngine() {
     }
   };
 
-  const processStreamChunk = async (chunk: StreamChunk) => {
-    // Items that modify existing messages (LogicEvent, Suggestions) need special handling
-    // If they modify a message that is currently in the queue, we patch it there.
+  /**
+   * Attempts to process the next item in the queue.
+   * Respects locks (Animation, Logic Events).
+   */
+  const tryProcessQueue = () => {
+      if (isAnimating.current) return;
+      
+      const queue = pendingQueueRef.current;
+      if (queue.length === 0) return;
+      
+      const nextChunk = queue[0]; 
+
+      // Logic Event Lock: Block everything except DICE_ROLL
+      if (lastLogicMsgIdRef.current !== null) {
+          if (nextChunk.type !== StreamChunkType.DICE_ROLL) {
+               return; 
+          }
+      }
+
+      queue.shift(); 
+      handleChunkLive(nextChunk);
+  };
+
+  /**
+   * Adds a chunk to the processing queue.
+   * Handles "patching" logic for updates (Suggestions, late LogicEvents) to avoid visual popping.
+   */
+  const enqueueChunk = async (chunk: StreamChunk) => {
+    // Patching logic for late updates targetting the previous message
     if (chunk.type === StreamChunkType.LOGIC_EVENT || chunk.type === StreamChunkType.SUGGESTIONS) {
         const queue = pendingQueueRef.current;
         if (queue.length > 0) {
-            // Check if the last item in queue is a valid target (MESSAGE)
-            // Note: We scan from end.
+            // Check last message in queue
             for (let i = queue.length - 1; i >= 0; i--) {
                 const target = queue[i];
                 if (target.type === StreamChunkType.MESSAGE) {
                     if (chunk.type === StreamChunkType.LOGIC_EVENT) {
-                        // Patch logic event onto the message chunk
                         target.logicEvent = chunk.event;
                     } else {
-                        // Patch options
                         target.options = chunk.options;
                     }
-                    return; // Handled in queue
+                    return; // Handled in place
                 }
             }
         }
     }
 
-    // Add to queue
     pendingQueueRef.current.push(chunk);
     tryProcessQueue();
   };
 
-  // Fetch initial state on mount
-  useEffect(() => {
-    if (isInitialized.current) return;
-    isInitialized.current = true;
 
-    const fetchInitialState = async () => {
+  // ==========================================
+  // 5. Network Layer
+  // ==========================================
+
+  const streamRequest = async (
+      payload: any, 
+      onSuccess?: () => void, 
+      onError?: (err: any) => void
+  ) => {
       try {
         setIsLoading(true);
         const response = await fetch('/api/chat', { 
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                event: { type: EventType.INIT },
-                player_input: '',
-                session_id: sessionId,
-                current_state: null
-            })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
         });
         
         if (!response.ok) throw new Error('Network response was not ok');
@@ -306,124 +309,75 @@ export function useGameEngine() {
                 if (!line.trim()) continue;
                 try {
                     const chunk = JSON.parse(line);
-                    await processStreamChunk(chunk);
+                    await enqueueChunk(chunk);
                 } catch (e) {
                     console.error('Error parsing JSON chunk', e);
                 }
             }
         }
+        
         setIsLoading(false);
+        if (onSuccess) onSuccess();
 
       } catch (error) {
-        console.error("Failed to fetch initial state:", error);
+        console.error("Stream request failed:", error);
         setIsLoading(false);
+        if (onError) onError(error);
       }
-    };
+  };
 
-    fetchInitialState();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  const sendGameEvent = (text: string, eventType: EventType, eventData?: any, hidden: boolean = false) => {
+      if (!hidden) {
+          setMessages(prev => [...prev, { id: Date.now(), sender: 'player', text }]);
+      }
+      
+      if (!gameState) return;
 
-  const processGameEvent = async (text: string, eventType: EventType, eventData?: { item_id?: string, quantity?: number }, hidden: boolean = false) => {
-    // Add player message immediately ONLY if not hidden
-    if (!hidden) {
-        const playerMsg = { id: Date.now(), sender: 'player' as const, text };
-        setMessages(prev => [...prev, playerMsg]);
-    }
-    
-    // Guard clause if state isn't loaded yet (though UI should prevent this)
-    if (!gameState) return;
-
-    try {
-      setIsLoading(true);
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      streamRequest({
           event: { type: eventType, ...eventData },
           player_input: text,
           session_id: sessionId,
           current_state: gameState
-        }),
+      }, undefined, () => {
+         setMessages(prev => [...prev, { id: Date.now() + 1, sender: 'system', text: "错误：与后端的连接已丢失。" }]);
       });
-
-      if (!response.ok) throw new Error('Network response was not ok');
-
-      const reader = response.body?.getReader();
-      if (!reader) throw new Error('Response body is not readable');
-
-      const decoder = new TextDecoder();
-      let buffer = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        
-        // Keep the last partial line in the buffer
-        buffer = lines.pop() || '';
-
-        for (const line of lines) {
-          if (!line.trim()) continue;
-          try {
-            const chunk = JSON.parse(line);
-            await processStreamChunk(chunk);
-          } catch (e) {
-            console.error('Error parsing JSON chunk', e);
-          }
-        }
-      }
-      setIsLoading(false);
-
-    } catch (error) {
-      console.error("Error communicating with backend:", error);
-      setMessages(prev => [...prev, {
-        id: Date.now() + 1,
-        sender: 'system',
-        text: "错误：与后端的连接已丢失。"
-      }]);
-      setIsLoading(false);
-    } 
   };
 
-  const handleLogicEventConfirm = (msgId: number) => {
-      // 1. Mark message as confirmed
-      logicConfirmStatusRef.current = true;
-      setMessages(prev => prev.map(m => {
-          if (m.id === msgId) return { ...m, logicEventConfirmed: true };
-          return m;
-      }));
+  // Fetch initial state on mount
+  useEffect(() => {
+    if (isInitialized.current) return;
+    isInitialized.current = true;
 
-      // 2. Check if we have a pending dice roll waiting for this confirmation
-      // If pendingDiceRef is set, fire it!
-      if (pendingDiceRef.current && lastLogicMsgIdRef.current === msgId) {
-          triggerDiceAnimation(pendingDiceRef.current);
-      }
-  };
+    streamRequest({
+        event: { type: EventType.INIT },
+        player_input: '',
+        session_id: sessionId,
+        current_state: null
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+
+
+  // ==========================================
+  // 6. UI Handlers
+  // ==========================================
 
   const handleSendMessage = (text: string, hidden: boolean = false) => {
-    processGameEvent(text, EventType.MESSAGE, undefined, hidden);
+    sendGameEvent(text, EventType.MESSAGE, undefined, hidden);
   };
 
   const handleUseItem = (item: Item) => {
-    processGameEvent(`使用 ${item.name}`, EventType.USE, { item_id: item.id, quantity: 1 });
+    sendGameEvent(`使用 ${item.name}`, EventType.USE, { item_id: item.id, quantity: 1 });
   };
 
   const handleDropItem = (item: Item, mode: 'one' | 'half' | 'all') => {
     let quantity = 1;
     const currentQty = item.quantity || 1;
     
-    if (mode === 'half') {
-      quantity = Math.ceil(currentQty / 2);
-    } else if (mode === 'all') {
-      quantity = currentQty;
-    }
+    if (mode === 'half') quantity = Math.ceil(currentQty / 2);
+    else if (mode === 'all') quantity = currentQty;
     
-    processGameEvent(`丢弃 ${quantity} 个 ${item.name}`, EventType.DROP, { item_id: item.id, quantity });
+    sendGameEvent(`丢弃 ${quantity} 个 ${item.name}`, EventType.DROP, { item_id: item.id, quantity });
   };
 
   const handleOptionSelect = (msgId: number, option: string) => {
