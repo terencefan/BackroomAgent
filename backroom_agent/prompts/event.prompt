@@ -153,7 +153,9 @@ Do NOT generate an event for every user input. Only trigger `event` when the out
 5. **Sanity Corruption** (█) is mandatory for Sanity < 30.
 6. **State Updates**: You MUST calculate specific HP/Sanity/Inventory changes for each outcome NOW. Do not leave it vague.
 7. **Level Transitions**: Check the `exits` list in Level Data:
-   - **Strong Mechanics Match** (e.g. User explicitly follows the `method`: "NoClip", "Door"): Generate a **Deterministic Event** (d6, 1-6) that succeeds with `"new_level": "Level ID"`.
+   - **Matched Exit Method**: If the User Input matches a specific `method` in `exits` (e.g., "NoClip", "Find door"):
+     - **High Probability**: Set a very forgiving success range (e.g., d20 success on 3-20, or even d6 1-6). The player has solved the puzzle; do not punish them arbitrarily.
+     - **Outcome**: Succeeded range must include `"new_level": "Target Level ID"`.
    - **Weak/Probabilistic Match** (e.g. "Random", "Rare"): Generate a **Risky Event** (d20/d100). Success = `"new_level"`, Failure = Stay + Penalty.
 
 ## Examples
