@@ -12,6 +12,7 @@ from backroom_agent.protocol import (ChatRequest, DiceRoll, GameState,
                                      StreamChunkState, StreamChunkSuggestions,
                                      StreamChunkType)
 from backroom_agent.state import State
+from backroom_agent.utils.logger import logger
 
 
 async def handle_message(
@@ -39,30 +40,59 @@ async def handle_message(
 
     # Stream updates from the agent graph
     async for chunk in graph.astream(input_state, stream_mode="updates"):
-        for _, updates in chunk.items():
+        for node_name, updates in chunk.items():
             if not updates:
                 continue
+
+            logger.info(f"Graph Update from {node_name}: {list(updates.keys())}")
 
             # 1. Dice Roll (Processed first to ensure animation triggers before result text)
             if GraphKeys.DICE_ROLL in updates:
                 dice = updates[GraphKeys.DICE_ROLL]
-                if isinstance(dice, DiceRoll):
-                    # Trigger animation on client
-                    yield StreamChunkDice(
-                        type=StreamChunkType.DICE_ROLL, dice=dice
-                    ).model_dump_json() + "\n"
-                    # Wait for animation (client needs 3s)
-                    await asyncio.sleep(3.0)
+                if dice:
+                    try:
+                        if isinstance(dice, dict):
+                            logger.info(f"Converting DiceRoll from dict: {dice}")
+                            dice = DiceRoll(**dice)
+
+                        if isinstance(dice, DiceRoll):
+                            logger.info(f"Yielding DiceRoll to frontend: {dice}")
+                            # Trigger animation on client
+                            yield StreamChunkDice(
+                                type=StreamChunkType.DICE_ROLL, dice=dice
+                            ).model_dump_json() + "\n"
+                            # Wait for animation (client needs time to show it)
+                            await asyncio.sleep(2.0)
+                    except Exception as e:
+                        logger.error(f"Error yielding DiceRoll: {e}")
 
             # Settlement Delta (Visual Log)
             if GraphKeys.SETTLEMENT_DELTA in updates:
-                delta_dict = updates[GraphKeys.SETTLEMENT_DELTA]
-                if delta_dict:
-                    delta_obj = SettlementDelta(**delta_dict)
-                    yield StreamChunkSettlement(
-                        type=StreamChunkType.SETTLEMENT,
-                        delta=delta_obj,
-                    ).model_dump_json() + "\n"
+                delta_data = updates[GraphKeys.SETTLEMENT_DELTA]
+                if delta_data:
+                    try:
+                        logger.info(
+                            f"Yielding SettlementDelta to frontend: {delta_data}"
+                        )
+                        # Ensure it is a valid object
+                        if isinstance(delta_data, dict):
+                            delta_obj = SettlementDelta(**delta_data)
+                        elif isinstance(delta_data, SettlementDelta):
+                            delta_obj = delta_data
+                        else:
+                            # Fallback or error
+                            logger.warning(
+                                f"Unexpected type for SettlementDelta: {type(delta_data)}"
+                            )
+                            delta_obj = None
+
+                        if delta_obj:
+                            yield StreamChunkSettlement(
+                                type=StreamChunkType.SETTLEMENT,
+                                delta=delta_obj,
+                            ).model_dump_json() + "\n"
+                    except Exception as e:
+                        logger.error(f"Error yielding SettlementDelta: {e}")
 
             # 2. Messages (from LLM or other nodes)
             if GraphKeys.MESSAGES in updates:
