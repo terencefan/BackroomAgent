@@ -5,7 +5,7 @@ import os
 from langchain_core.messages import AIMessage, SystemMessage
 from langchain_core.runnables import RunnableConfig
 
-from backroom_agent.state import State
+from backroom_agent.agent.state import State
 from backroom_agent.utils.cache import memory_cache
 from backroom_agent.utils.common import (extract_json_from_text, get_llm,
                                          load_prompt, truncate_text)

@@ -9,10 +9,10 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from langchain_core.messages import HumanMessage
 
 from backroom_agent.constants import GraphKeys
-from backroom_agent.graph import graph
+from backroom_agent.agent.graph import graph
 from backroom_agent.protocol import (Attributes, EventType, GameEvent,
                                      GameState, Vitals)
-from backroom_agent.state import State
+from backroom_agent.agent.state import State
 
 
 async def main():

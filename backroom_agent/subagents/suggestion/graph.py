@@ -1,6 +1,6 @@
 from langgraph.graph import END, START, StateGraph
 
-from backroom_agent.state import State
+from backroom_agent.agent.state import State
 
 from .nodes import generate_suggestions_node
 

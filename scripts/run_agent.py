@@ -6,7 +6,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from textwrap import dedent
 
-from backroom_agent.graph import run_once
+from backroom_agent.agent.graph import run_once
 
 
 async def run_demo(user_input: str | None = None):

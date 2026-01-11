@@ -6,7 +6,7 @@ from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_core.runnables import RunnableConfig
 
 from backroom_agent.protocol import GameState, LogicEvent
-from backroom_agent.state import State
+from backroom_agent.agent.state import State
 from backroom_agent.utils.common import (dict_from_pydantic,
                                          extract_json_from_text, get_llm,
                                          load_prompt)

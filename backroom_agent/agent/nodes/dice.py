@@ -3,9 +3,9 @@ from typing import Any, Dict, cast
 from langchain_core.messages import BaseMessage, HumanMessage, SystemMessage
 
 from backroom_agent.constants import GraphKeys, NodeConstants
-from backroom_agent.nodes.resolve_utils import apply_state_updates
+from backroom_agent.agent.nodes.resolve_utils import apply_state_updates
 from backroom_agent.protocol import DiceRoll, LogicEvent
-from backroom_agent.state import State
+from backroom_agent.agent.state import State
 from backroom_agent.utils.common import dict_from_pydantic
 from backroom_agent.utils.dice import Dice
 from backroom_agent.utils.logger import logger

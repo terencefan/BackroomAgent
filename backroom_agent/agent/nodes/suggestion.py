@@ -2,7 +2,7 @@ from typing import Any, List, cast
 
 from langchain_core.runnables import RunnableConfig
 
-from backroom_agent.state import State
+from backroom_agent.agent.state import State
 from backroom_agent.subagents.suggestion import suggestion_agent
 from backroom_agent.utils.logger import logger
 from backroom_agent.utils.node_annotation import annotate_node

@@ -7,8 +7,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from langchain_core.runnables.graph_mermaid import draw_mermaid_png
 
-from backroom_agent.graph import graph as main_graph
-from backroom_agent.nodes import LLM_NODE_IDS
+from backroom_agent.agent.graph import graph as main_graph
+from backroom_agent.agent.nodes import LLM_NODE_IDS
 from backroom_agent.subagents.event import EVENT_LLM_NODES, event_agent
 from backroom_agent.subagents.level import LEVEL_LLM_NODES, level_agent
 from backroom_agent.subagents.suggestion import (SUGGESTION_LLM_NODES,

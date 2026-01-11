@@ -3,7 +3,7 @@ from typing import Any, Dict
 from langchain_core.runnables import RunnableConfig
 
 from backroom_agent.constants import NodeConstants
-from backroom_agent.state import State
+from backroom_agent.agent.state import State
 from backroom_agent.utils.logger import logger
 from backroom_agent.utils.node_annotation import annotate_node
 

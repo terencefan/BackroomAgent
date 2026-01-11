@@ -5,7 +5,7 @@ import os
 
 from dotenv import load_dotenv
 
-from backroom_agent.graph import run_once
+from backroom_agent.agent.graph import run_once
 
 
 def main() -> None:

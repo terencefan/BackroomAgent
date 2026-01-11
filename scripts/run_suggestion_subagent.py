@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from typing import cast
 
-from backroom_agent.state import State
+from backroom_agent.agent.state import State
 from backroom_agent.subagents.suggestion import suggestion_agent
 from backroom_agent.utils.item import Item
 

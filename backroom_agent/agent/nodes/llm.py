@@ -3,7 +3,7 @@ import os
 from langchain_core.messages import SystemMessage
 from langchain_core.runnables import RunnableConfig
 
-from backroom_agent.state import State
+from backroom_agent.agent.state import State
 from backroom_agent.utils.common import get_llm, load_prompt
 from backroom_agent.utils.node_annotation import annotate_node
 
