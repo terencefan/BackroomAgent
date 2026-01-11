@@ -2,13 +2,29 @@
   "name": "backroom-agent-root",
   "private": true,
   "scripts": {
-    "dev": "npm run dev --prefix frontend",
+    "start": "npm run server",
+    "server": "cross-env PYTHONPATH=. python -m backroom_agent.server",
+    "client": "npm run dev --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "setup": "npm install && npm run install:backend && npm run install:frontend",
+    "install:backend": "pip install -e . && pip install -r requirements.txt",
     "install:frontend": "npm install --prefix frontend",
-    "start": "npm run dev"
+    "graph": "concurrently \"cross-env PYTHONPATH=. python scripts/generate_level_graph.py\" \"cross-env PYTHONPATH=. python scripts/generate_item_graph.py\" \"cross-env PYTHONPATH=. python scripts/generate_entity_graph.py\" \"cross-env PYTHONPATH=. python scripts/generate_agent_graphs.py\"",
+    "scripts-fetch": "cross-env PYTHONPATH=. python scripts/batch_fetch_levels.py",
+    "test": "cross-env PYTHONPATH=. python -m pytest tests/ --cov=backroom_agent --cov-report=term-missing",
+    "format": "npm run format:python && npm run format:frontend",
+    "format:python": "python -m black . && python -m isort . && python -m pyright",
+    "format:frontend": "npm run lint --prefix frontend -- --fix",
+    "clean": "rimraf **/__pycache__ **/*.egg-info"
   },
   "dependencies": {
     "react-markdown": "^10.1.0",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "rimraf": "^5.0.5"
   }
 }

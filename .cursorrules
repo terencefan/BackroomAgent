@@ -1,0 +1,43 @@
+# Cursor Agent 规则配置
+
+## 代码格式化规则
+
+**⚠️ 重要：每次完成代码修改后，必须自动格式化代码！**
+
+### 强制要求
+在完成任何代码修改后，agent **必须**执行以下操作：
+
+1. **Python 文件修改后**（`*.py`）：
+   - 运行 `python -m black <修改的文件路径>` 格式化代码
+   - 运行 `python -m isort <修改的文件路径>` 整理导入
+   - 确保代码符合项目风格
+
+2. **前端文件修改后**（`frontend/src/**/*.{ts,tsx,js,jsx}`）：
+   - 运行 `cd frontend && npm run lint -- --fix` 自动修复代码
+   - 确保代码符合 ESLint 规则
+
+3. **批量修改后**：
+   - 可以使用 `npm run format` 格式化所有代码
+   - 或使用 `make format`（如果使用 Makefile）
+
+### 格式化工具
+- **Python**: `black` (行长度 88) + `isort` (black 兼容模式) + `pyright` (类型检查)
+- **Frontend**: ESLint (自动修复模式)
+
+### 执行时机
+**每次 agent 完成代码编辑操作后，立即执行格式化命令，不要等待用户手动格式化。**
+
+### 示例
+```bash
+# 修改了 Python 文件后
+python -m black backroom_agent/agent/graph.py
+python -m isort backroom_agent/agent/graph.py
+
+# 修改了前端文件后  
+cd frontend && npm run lint -- --fix
+
+# 或使用统一命令
+npm run format
+```
+
+**记住：代码修改 + 格式化 = 完整的任务完成！**

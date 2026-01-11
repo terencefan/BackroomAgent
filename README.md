@@ -12,13 +12,37 @@ Backroom Agent 是一个基于 LangGraph 的后室（The Backrooms）文字冒�
 
 ## 快速开始
 
+### WSL 用户（推荐）
+
+如果你使用 Windows Subsystem for Linux (WSL)，请参考 [WSL 配置指南](docs/wsl-setup.md) 进行设置。
+
+**快速步骤**：
+1. 在 PowerShell（管理员）中运行：`.\scripts\fix-wsl.ps1` 修复 WSL
+2. 在 WSL 中运行：`bash scripts/setup-wsl.sh` 设置环境
+3. 在 WSL 中运行：`bash scripts/start-wsl.sh` 启动项目
+
 ### 1. 环境准备
 
 确保已安装：
 - Python 3.12+
 - Node.js (v18+)
+- Docker Desktop（用于运行 Redis）
 
-### 2. 后端设置
+### 2. 启动 Redis
+
+```bash
+# 使用 Docker Compose 启动 Redis 服务
+docker-compose up -d
+
+# 验证 Redis 是否正常运行
+docker-compose ps
+# 或者使用 redis-cli 测试连接（如果已安装 redis-cli）
+# redis-cli ping  # 应该返回 PONG
+```
+
+Redis 将在 `localhost:6379` 运行，无需密码。
+
+### 3. 后端设置
 
 ```bash
 # 创建并激活虚拟环境
@@ -34,14 +58,14 @@ cp .env.example .env
 # 编辑 .env 填入你的 API Key (如 OPENAI_API_KEY, ANTHROPIC_API_KEY 等)
 ```
 
-### 3. 运行后端
+### 4. 运行后端
 
 ```bash
 # 启动 API 服务 (默认端口 8000)
 python backend/main.py
 ```
 
-### 4. 前端设置与运行
+### 5. 前端设置与运行
 
 新建一个终端窗口：
 
