@@ -77,7 +77,8 @@ export function useGameEngine() {
           // 2. State updates don't happen before animation
           // 3. Dice Roll data (background) CAN pass through to ready the animation
           // 4. Update: Allowing SETTLEMENT to pass logic block to prevent deadlock if it arrives before confirm
-          if (nextChunk.type !== StreamChunkType.DICE_ROLL && nextChunk.type !== StreamChunkType.SETTLEMENT) {
+          // 5. Update: REMOVED SETTLEMENT bypass to prevent spoilers
+          if (nextChunk.type !== StreamChunkType.DICE_ROLL) {
                return; 
           }
       }
@@ -178,6 +179,7 @@ export function useGameEngine() {
         } else {
              checkAndTriggerDice();
         }
+        tryProcessQueue();
         break;
 
       case StreamChunkType.STATE:
