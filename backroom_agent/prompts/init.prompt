@@ -31,9 +31,9 @@ You must respond with **RAW JSON ONLY**.
    - **Tone**: Clinical, eerie, detached. No "Welcome to". No "You feel scared". Just raw sensory input.
 
 2. **Suggestions (`suggestions`)**:
-   - Provide 3 distinct initial actions relevant to this specific level's environment.
+   - Provide 3 distinct follow-up actions relevant to this specific level's environment.
    - Examples: "检查地毯积水", "寻找光源", "沿墙壁前行".
-   - **Format**: Simplified Chinese, very short.
+   - **Format**: Simplified Chinese, very short (2-5 words).
 
 ## Constraints
 - **NO** markdown code blocks in output. Raw JSON only.
