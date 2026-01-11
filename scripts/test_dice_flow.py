@@ -1,6 +1,7 @@
 import asyncio
 import os
 import sys
+from typing import cast
 
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -11,6 +12,7 @@ from backroom_agent.constants import GraphKeys
 from backroom_agent.graph import graph
 from backroom_agent.protocol import (Attributes, EventType, GameEvent,
                                      GameState, Vitals)
+from backroom_agent.state import State
 
 
 async def main():
@@ -48,7 +50,9 @@ async def main():
 
     # Run the graph
     try:
-        async for chunk in graph.astream(input_state, stream_mode="updates"):
+        async for chunk in graph.astream(
+            cast(State, input_state), stream_mode="updates"
+        ):
             for node, updates in chunk.items():
                 print(f"\n--- Node Executed: {node} ---")
                 if updates is None:

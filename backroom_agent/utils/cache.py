@@ -1,6 +1,6 @@
 import hashlib
 import json
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, cast
 
 import redis
 
@@ -73,6 +73,8 @@ class RedisCache:
             try:
                 value = self._client.get(key)
                 if value is not None:
+                    # Pyright thinks value might be ResponseT/Awaitable, but decode_responses=True ensures str
+                    value = cast(str, value)
                     return self._deserialize(value)
             except redis.RedisError as e:
                 logger.warning(f"Redis get error: {e}")

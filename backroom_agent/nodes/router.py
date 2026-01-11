@@ -1,4 +1,4 @@
-from typing import Dict, Literal
+from typing import Any, Dict, Literal
 
 from langchain_core.messages import HumanMessage
 from langgraph.graph import END
@@ -12,7 +12,7 @@ from backroom_agent.utils.node_annotation import annotate_node
 
 
 @annotate_node("normal")
-def router_node(state: State) -> Dict[Literal["level_context"], str]:
+def router_node(state: State) -> Dict[str, Any]:
     """
     Router Node:
     1. Pre-fetch level context (HTML) and inject into State.
@@ -24,7 +24,7 @@ def router_node(state: State) -> Dict[Literal["level_context"], str]:
     level_id = current_game_state.level if current_game_state else "Level 0"
 
     # Check if context is already loaded to avoid redundant reads
-    updates = {"turn_loop_count": 0}
+    updates: Dict[str, Any] = {"turn_loop_count": 0}
 
     if not state.get("level_context"):
         logger.info(f"Router pre-fetching context for {level_id}")

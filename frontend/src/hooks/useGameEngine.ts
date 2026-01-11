@@ -287,9 +287,9 @@ export function useGameEngine() {
   // ==========================================
 
   const streamRequest = async (
-      payload: any, 
+      payload: Record<string, unknown>, 
       onSuccess?: () => void, 
-      onError?: (err: any) => void
+      onError?: (err: unknown) => void
   ) => {
       try {
         setIsLoading(true);
@@ -337,6 +337,7 @@ export function useGameEngine() {
       }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sendGameEvent = (text: string, eventType: EventType, eventData?: any, hidden: boolean = false) => {
       if (!hidden) {
           setMessages(prev => [...prev, { id: Date.now(), sender: 'player', text }]);

@@ -8,23 +8,23 @@ const mockFetch = vi.fn();
 global.fetch = mockFetch;
 
 // Helper to create a ReadableStream from an array of chunks
-function createStreamResponse(chunks: StreamChunk[]) {
-  const encoder = new TextEncoder();
-  const stream = new ReadableStream({
-    start(controller) {
-      chunks.forEach(chunk => {
-        const json = JSON.stringify(chunk);
-        controller.enqueue(encoder.encode(json + '\n'));
-      });
-      controller.close();
-    },
-  });
+// function createStreamResponse(chunks: StreamChunk[]) {
+//   const encoder = new TextEncoder();
+//   const stream = new ReadableStream({
+//     start(controller) {
+//       chunks.forEach(chunk => {
+//         const json = JSON.stringify(chunk);
+//         controller.enqueue(encoder.encode(json + '\n'));
+//       });
+//       controller.close();
+//     },
+//   });
 
-  return {
-    ok: true,
-    body: stream,
-  } as Response;
-}
+//   return {
+//     ok: true,
+//     body: stream,
+//   } as Response;
+// }
 
 // Delayed stream simulation for more control
 function createDelayedStreamResponse(chunkSequence: (StreamChunk | 'DELAY')[]) {

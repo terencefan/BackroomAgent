@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import { afterEach } from 'vitest';
+import { TextDecoder, TextEncoder } from 'util';
 
 // Cleanup after each test case (e.g. clearing jsdom)
 afterEach(() => {
@@ -9,7 +10,7 @@ afterEach(() => {
 
 // Mock TextDecoder/TextEncoder if missing in jsdom
 if (typeof global.TextEncoder === 'undefined') {
-  const { TextEncoder, TextDecoder } = require('util');
   global.TextEncoder = TextEncoder;
-  global.TextDecoder = TextDecoder;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  global.TextDecoder = TextDecoder as any;
 }

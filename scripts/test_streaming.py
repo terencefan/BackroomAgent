@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from backroom_agent.handlers.message import handle_message
 from backroom_agent.protocol import (Attributes, ChatRequest, EventType,
-                                     GameState, Vitals)
+                                     GameEvent, GameState, Vitals)
 from backroom_agent.utils.logger import logger
 
 
@@ -25,7 +25,7 @@ async def test_streaming_dice():
     )
 
     request = ChatRequest(
-        event={"type": "message"},
+        event=GameEvent(type=EventType.MESSAGE),
         player_input="Search the room carefully for hidden items.",  # High probability of dice roll
         session_id="test_session",
         current_state=state,
