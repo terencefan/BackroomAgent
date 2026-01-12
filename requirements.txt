@@ -1,4 +1,4 @@
-langgraph>=0.2.0
+udanggraph>=0.2.0
 langchain-core>=0.3.0
 langchain-openai>=0.3.0
 langsmith>=0.1.0
@@ -18,3 +18,5 @@ redis>=5.0.0
 pyvis>=0.3.2
 mypy>=1.0.0
 pyright>=1.1.300
+fastapi>=0.104.0
+uvicorn>=0.24.0

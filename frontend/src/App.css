@@ -5,6 +5,8 @@
   padding: 0;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   color: #c0c0c0;
   background-color: #121212;
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
@@ -24,6 +26,11 @@ body {
   padding: 10px;
   gap: 15px;
   height: 100%;
+  width: 100%;
+  /* 限制最大宽高比为 16:9 */
+  max-width: min(100vw, calc(100vh * 16 / 9));
+  max-height: min(100vh, calc(100vw * 9 / 16));
+  margin: 0 auto;
 }
 
 /* Header */
@@ -149,6 +156,7 @@ body {
   gap: 10px;
   overflow-y: hidden;
   height: 100%;
+  min-width: 0; /* 允许 flex 收缩 */
 }
 
 .panel {
@@ -157,21 +165,33 @@ body {
   border-radius: 4px;
   padding: 10px;
   flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 最下面的面板自适应高度 */
+.sidebar-section > .panel:last-child {
+  flex-shrink: 1;
+  flex-grow: 0;
+  min-height: 0;
 }
 
 .attributes-panel {
-  flex-shrink: 1;
+  flex-shrink: 0;
+  flex-grow: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
 .inventory-panel {
-  flex: 1;
+  flex-shrink: 0;
+  flex-grow: 0;
   display: flex;
   flex-direction: column;
   min-height: 0;
-  /* overflow: hidden; Removed to allow tooltip overflow */
+  width: 100%;
+  overflow: visible; /* 允许 tooltip 溢出 */
 }
 
 .panel-header {
@@ -244,11 +264,18 @@ body {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(6, 1fr);
-  gap: 3px;
-  flex: 1;
+  row-gap: 3px;
+  column-gap: 3px;
+  flex-grow: 0;
+  flex-shrink: 0;
   min-height: 0;
-  aspect-ratio: 1/1;
-  margin: 0 auto;
+  min-width: 0; /* 允许网格收缩 */
+  /* 以父容器宽度为准，保持 1:1 宽高比（6x6 网格） */
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
+  overflow: hidden; /* 防止内容溢出 */
 }
 
 .inventory-slot {
@@ -262,6 +289,10 @@ body {
   color: #555;
   transition: all 0.2s;
   position: relative; /* For absolute positioning of quantity and tooltip */
+  aspect-ratio: 1 / 1;
+  min-width: 0; /* 允许槽位收缩 */
+  max-width: 100%; /* 确保不超出 */
+  box-sizing: border-box;
 }
 
 .inventory-slot:hover {

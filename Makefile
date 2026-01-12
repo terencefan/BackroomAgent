@@ -8,7 +8,7 @@ server:
 	PYTHONPATH=. $(PYTHON) -m backroom_agent.server
 
 client:
-	cd frontend && npm run dev
+	export NVM_DIR="$$HOME/.nvm" && [ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && cd frontend && npm run dev
 
 install:
 	$(PIP) install -e .
@@ -31,17 +31,17 @@ format:
 	$(PYTHON) -m black .
 	$(PYTHON) -m isort .
 	.venv/bin/pyright
-	cd frontend && npm run lint -- --fix
+	export NVM_DIR="$$HOME/.nvm" && [ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && cd frontend && npm run lint -- --fix
 
 # frontend
 frontend-install:
-	cd frontend && npm install
+	export NVM_DIR="$$HOME/.nvm" && [ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && cd frontend && npm install
 
 frontend-dev:
-	cd frontend && npm run dev
+	export NVM_DIR="$$HOME/.nvm" && [ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && cd frontend && npm run dev
 
 frontend-build:
-	cd frontend && npm run build
+	export NVM_DIR="$$HOME/.nvm" && [ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && cd frontend && npm run build
 
 # cleanup
 clean:
