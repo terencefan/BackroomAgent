@@ -3,15 +3,15 @@ from typing import Any, AsyncGenerator, List, cast
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 
-from backroom_agent.constants import GraphKeys
 from backroom_agent.agent.graph import graph
+from backroom_agent.agent.state import State
+from backroom_agent.constants import GraphKeys
 from backroom_agent.protocol import (ChatRequest, DiceRoll, GameState,
                                      LogicEvent, SettlementDelta,
                                      StreamChunkDice, StreamChunkLogicEvent,
                                      StreamChunkMessage, StreamChunkSettlement,
                                      StreamChunkState, StreamChunkSuggestions,
                                      StreamChunkType)
-from backroom_agent.agent.state import State
 from backroom_agent.utils.logger import logger
 
 

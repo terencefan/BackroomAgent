@@ -1,4 +1,4 @@
-.PHONY: install server client graph frontend-install frontend-dev frontend-build clean format
+.PHONY: install server client graph frontend-install frontend-dev frontend-build clean format install-hooks
 
 PYTHON = .venv/bin/python
 PIP = .venv/bin/pip
@@ -32,6 +32,23 @@ format:
 	$(PYTHON) -m isort .
 	.venv/bin/pyright
 	export NVM_DIR="$$HOME/.nvm" && [ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh" && cd frontend && npm run lint -- --fix
+
+# git hooks
+install-hooks:
+	@echo "📦 安装 Git hooks..."
+	@if [ -d .githooks ]; then \
+		for hook in .githooks/*; do \
+			if [ -f $$hook ] && [ "$${hook##*.}" != "py" ]; then \
+				hook_name=$$(basename $$hook); \
+				cp $$hook .git/hooks/$$hook_name; \
+				chmod +x .git/hooks/$$hook_name; \
+				echo "✅ 已安装: $$hook_name"; \
+			fi; \
+		done; \
+		echo "🎉 Git hooks 安装完成！"; \
+	else \
+		echo "❌ .githooks 目录不存在"; \
+	fi
 
 # frontend
 frontend-install:

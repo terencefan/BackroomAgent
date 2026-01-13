@@ -56,7 +56,16 @@ pip install -r requirements.txt
 # 配置环境变量
 cp .env.example .env
 # 编辑 .env 填入你的 API Key (如 OPENAI_API_KEY, ANTHROPIC_API_KEY 等)
+
+# 安装 Git hooks（可选但推荐）
+make install-hooks
 ```
+
+**Git Hooks**：
+- **pre-commit**: 在每次提交前自动运行代码格式化（`make format`）
+- **prepare-commit-msg**: 使用 LLM 自动生成 commit message（需要配置 `OPENAI_API_KEY`）
+
+运行 `make install-hooks` 来安装所有 hooks。如果使用 prepare-commit-msg hook，请确保在 `.env` 文件中配置了 `OPENAI_API_KEY`。
 
 ### 4. 运行后端
 

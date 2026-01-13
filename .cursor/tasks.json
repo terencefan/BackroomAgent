@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "postCompletion": {
+      "format": ["make format"]
+    }
+  }
+}

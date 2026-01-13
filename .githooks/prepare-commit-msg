@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Prepare-commit-msg hook: 使用 LLM 自动生成 commit message
+# 在用户输入 commit message 之前，分析代码变更并生成建议的 commit message
+
+COMMIT_MSG_FILE="$1"
+COMMIT_TYPE="$2"
+COMMIT_SHA="$3"
+
+# 如果已经有 commit message（非注释），跳过
+if [ -n "$COMMIT_MSG_FILE" ] && [ -f "$COMMIT_MSG_FILE" ]; then
+    # 检查是否已有非注释的 commit message
+    if grep -v "^#" "$COMMIT_MSG_FILE" | grep -q "."; then
+        # 已有 commit message，跳过自动生成
+        exit 0
+    fi
+fi
+
+# 调用 Python 脚本生成 commit message
+# 从项目根目录找到 .githooks 目录
+GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"
+if [ -n "$GIT_DIR" ]; then
+    PROJECT_ROOT="$(cd "$GIT_DIR/.." && pwd)"
+    PYTHON_SCRIPT="$PROJECT_ROOT/.githooks/generate_commit_message.py"
+else
+    # 如果不在 git 仓库中，尝试从当前目录查找
+    SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+    PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+    PYTHON_SCRIPT="$PROJECT_ROOT/.githooks/generate_commit_message.py"
+fi
+
+if [ -f "$PYTHON_SCRIPT" ]; then
+    # 确保使用项目的 Python 环境
+    if [ -f "$PROJECT_ROOT/.venv/bin/python" ]; then
+        "$PROJECT_ROOT/.venv/bin/python" "$PYTHON_SCRIPT" "$COMMIT_MSG_FILE" "$COMMIT_TYPE" "$COMMIT_SHA"
+    elif command -v python3 &> /dev/null; then
+        python3 "$PYTHON_SCRIPT" "$COMMIT_MSG_FILE" "$COMMIT_TYPE" "$COMMIT_SHA"
+    else
+        echo "⚠️  未找到 Python，跳过自动生成 commit message" >&2
+    fi
+fi
+
+exit 0

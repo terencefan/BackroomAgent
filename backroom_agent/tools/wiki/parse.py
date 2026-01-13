@@ -1,7 +1,8 @@
 import re
 from typing import Dict, List, Tuple, cast
 
-from bs4 import BeautifulSoup, NavigableString, Tag
+from bs4 import BeautifulSoup, Tag
+from bs4.element import NavigableString
 
 from backroom_agent.tools.wiki.constants import (GARBAGE_CLASSES,
                                                  MAIN_CONTENT_CLASSES,
@@ -66,7 +67,7 @@ def clean_html_content(raw_html: str) -> Tuple[str, List[Dict[str, str]]]:
     # Find all 'a' tags with href BEFORE we start unwrapping or decomposing empty ones
     # We restrict to 'target' area to avoid sidebar links
     for a_tag in target.find_all("a", href=True):
-        href = a_tag["href"].strip()
+        href = _get_attr_str(a_tag, "href").strip()
         text = a_tag.get_text(strip=True)
         if href and not href.startswith("#") and not href.startswith("javascript:"):
             # Filter internal anchor links and JS

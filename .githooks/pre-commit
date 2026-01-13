@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Pre-commit hook: 自动格式化代码
+# 在提交前执行 make format，确保代码格式一致
+
+echo "🔧 运行代码格式化 (make format)..."
+
+# 执行格式化
+make format
+
+# 检查格式化是否成功
+if [ $? -ne 0 ]; then
+    echo "❌ 代码格式化失败，提交已取消"
+    exit 1
+fi
+
+# 检查是否有文件被修改（格式化可能修改了文件）
+if ! git diff --quiet; then
+    echo "📝 检测到格式化后的文件变更，正在重新添加到暂存区..."
+    git add -u
+    echo "✅ 已重新添加格式化后的文件"
+fi
+
+echo "✅ 代码格式化完成，继续提交..."
+exit 0
