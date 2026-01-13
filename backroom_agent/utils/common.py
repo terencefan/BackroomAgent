@@ -6,7 +6,10 @@ from typing import Any
 from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
 
-from backroom_agent.constants import API_KEY, BASE_URL, MODEL_NAME
+from backroom_agent.constants import (DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL,
+                                      DEEPSEEK_MODEL, DOUBAO_API_KEY,
+                                      DOUBAO_BASE_URL, DOUBAO_MODEL,
+                                      OPENAI_API_KEY)
 from backroom_agent.utils.logger import logger
 
 
@@ -45,12 +48,53 @@ def dict_from_pydantic(model: Any) -> dict:
         return model.dict()
 
 
-def get_llm() -> BaseChatModel:
-    """Return a chat model based on configuration."""
-    if not API_KEY:
-        raise ValueError("API_KEY is missing. Please check your .env file.")
+def get_llm(provider: str = "deepseek") -> BaseChatModel:
+    """
+    Return a chat model based on the specified provider.
 
-    return ChatOpenAI(api_key=API_KEY, base_url=BASE_URL, model=MODEL_NAME)  # type: ignore
+    Args:
+        provider: Provider name ("deepseek" or "doubao"). Default: "deepseek".
+
+    Returns:
+        BaseChatModel: Configured chat model instance.
+
+    Raises:
+        ValueError: If API key is missing for the specified provider or provider is invalid.
+
+    Examples:
+        >>> # Use deepseek (default)
+        >>> llm = get_llm("deepseek")
+        >>> # or simply
+        >>> llm = get_llm()
+
+        >>> # Use doubao
+        >>> llm = get_llm("doubao")
+    """
+    selected_provider = provider.lower()
+
+    if selected_provider == "deepseek":
+        api_key = DEEPSEEK_API_KEY or OPENAI_API_KEY
+        base_url = DEEPSEEK_BASE_URL
+        model_name = DEEPSEEK_MODEL
+        provider_display = "DeepSeek"
+    elif selected_provider == "doubao":
+        api_key = DOUBAO_API_KEY or OPENAI_API_KEY
+        base_url = DOUBAO_BASE_URL
+        model_name = DOUBAO_MODEL
+        provider_display = "Doubao"
+    else:
+        raise ValueError(
+            f"Invalid provider '{provider}'. Supported providers: 'deepseek', 'doubao'"
+        )
+
+    if not api_key:
+        raise ValueError(
+            f"{provider_display} API key is missing. "
+            f"Please set {selected_provider.upper()}_API_KEY in your .env file, "
+            "or set OPENAI_API_KEY as fallback."
+        )
+
+    return ChatOpenAI(api_key=api_key, base_url=base_url, model=model_name)  # type: ignore
 
 
 def save_to_file(content: str, directory: str, filename: str):

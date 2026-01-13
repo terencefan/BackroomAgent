@@ -20,9 +20,20 @@ from langchain_openai import ChatOpenAI
 # 加载环境变量
 load_dotenv()
 
-API_KEY = os.getenv("OPENAI_API_KEY", "")
-BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
-MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+# 支持选择 provider（deepseek 或 doubao），默认 deepseek
+COMMIT_MSG_PROVIDER = os.getenv("COMMIT_MSG_PROVIDER", "deepseek").lower()
+
+# 根据 provider 选择配置
+if COMMIT_MSG_PROVIDER == "doubao":
+    API_KEY = os.getenv("DOUBAO_API_KEY", "") or os.getenv("OPENAI_API_KEY", "")
+    BASE_URL = os.getenv("DOUBAO_BASE_URL", "https://ark.cn-beijing.volces.com/api/v3")
+    MODEL_NAME = os.getenv("DOUBAO_MODEL", "ep-20241230123456-abcde")
+    PROVIDER_NAME = "Doubao"
+else:  # deepseek (default)
+    API_KEY = os.getenv("DEEPSEEK_API_KEY", "") or os.getenv("OPENAI_API_KEY", "")
+    BASE_URL = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com")
+    MODEL_NAME = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
+    PROVIDER_NAME = "DeepSeek"
 
 
 def get_staged_diff() -> str:
@@ -87,7 +98,7 @@ Git Diff:
 """
 
     try:
-        print(f"🔗 正在连接 LLM ({MODEL_NAME})...", file=sys.stderr)
+        print(f"🔗 正在连接 LLM ({PROVIDER_NAME} - {MODEL_NAME})...", file=sys.stderr)
         llm = ChatOpenAI(
             api_key=API_KEY, base_url=BASE_URL, model=MODEL_NAME, temperature=0.3
         )
@@ -124,9 +135,16 @@ def main():
 
     # 检查 API Key
     if not API_KEY:
-        print("⚠️  OPENAI_API_KEY 未设置，跳过自动生成 commit message", file=sys.stderr)
         print(
-            "💡 提示：在 .env 文件中设置 OPENAI_API_KEY 以启用自动生成功能",
+            f"⚠️  {PROVIDER_NAME} API key 未设置，跳过自动生成 commit message",
+            file=sys.stderr,
+        )
+        print(
+            f"💡 提示：在 .env 文件中设置 {COMMIT_MSG_PROVIDER.upper()}_API_KEY 以启用自动生成功能",
+            file=sys.stderr,
+        )
+        print(
+            f"💡 或设置 COMMIT_MSG_PROVIDER=deepseek/doubao 来选择不同的提供商",
             file=sys.stderr,
         )
         return

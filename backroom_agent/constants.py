@@ -5,9 +5,22 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Constants for LLM Configuration
-API_KEY = os.getenv("OPENAI_API_KEY", "")
-BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
-MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+# Each provider has its own API key
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
+DOUBAO_API_KEY = os.getenv("DOUBAO_API_KEY", "")
+
+# Provider-specific base URLs and model names
+DEEPSEEK_BASE_URL = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com")
+DEEPSEEK_MODEL = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
+
+DOUBAO_BASE_URL = os.getenv(
+    "DOUBAO_BASE_URL", "https://ark.cn-beijing.volces.com/api/v3"
+)
+DOUBAO_MODEL = os.getenv("DOUBAO_MODEL", "ep-20241230123456-abcde")
+
+# Legacy support: OPENAI_API_KEY for backward compatibility
+# If set, it will be used as fallback when provider-specific key is missing
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 # Redis Configuration
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
