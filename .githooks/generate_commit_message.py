@@ -55,10 +55,6 @@ def get_staged_files() -> list[str]:
 
 def generate_commit_message(diff: str, files: list[str]) -> str:
     """使用 LLM 生成 commit message"""
-    if not API_KEY:
-        print("⚠️  OPENAI_API_KEY 未设置，跳过自动生成 commit message", file=sys.stderr)
-        return ""
-
     if not diff:
         return ""
 
@@ -91,6 +87,7 @@ Git Diff:
 """
 
     try:
+        print(f"🔗 正在连接 LLM ({MODEL_NAME})...", file=sys.stderr)
         llm = ChatOpenAI(
             api_key=API_KEY, base_url=BASE_URL, model=MODEL_NAME, temperature=0.3
         )
@@ -98,6 +95,7 @@ Git Diff:
             SystemMessage(content=system_prompt),
             HumanMessage(content=user_prompt),
         ]
+        print("💭 正在生成 commit message...", file=sys.stderr)
         response = llm.invoke(messages)
         return response.content.strip()
     except Exception as e:
@@ -124,18 +122,35 @@ def main():
     if existing_msg and not existing_msg.startswith("#"):
         return
 
+    # 检查 API Key
+    if not API_KEY:
+        print("⚠️  OPENAI_API_KEY 未设置，跳过自动生成 commit message", file=sys.stderr)
+        print(
+            "💡 提示：在 .env 文件中设置 OPENAI_API_KEY 以启用自动生成功能",
+            file=sys.stderr,
+        )
+        return
+
+    print("🚀 开始自动生成 commit message...", file=sys.stderr)
+
     # 获取 diff 和文件列表
+    print("📝 正在分析代码变更...", file=sys.stderr)
     diff = get_staged_diff()
     files = get_staged_files()
 
     if not diff or not files:
+        print("ℹ️  暂存区没有变更，跳过生成 commit message", file=sys.stderr)
         return
+
+    print(f"📊 检测到 {len(files)} 个文件的变更", file=sys.stderr)
+    print("🤖 正在使用 LLM 生成 commit message，请稍候...", file=sys.stderr)
 
     # 生成 commit message
     generated_msg = generate_commit_message(diff, files)
 
     if generated_msg and commit_msg_file:
         # 写入 commit message 文件
+        print("💾 正在保存 commit message...", file=sys.stderr)
         with open(commit_msg_file, "w", encoding="utf-8") as f:
             f.write(generated_msg)
             if not generated_msg.endswith("\n"):

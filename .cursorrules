@@ -29,7 +29,24 @@
 
 ### 自动格式化配置
 
-#### 1. Cursor Post-Completion 任务
+#### 1. Cursor/VS Code 保存时自动格式化
+项目已配置 `.vscode/settings.json`，在保存文件时会自动格式化代码。
+
+**配置内容**：
+- Python 文件：使用 `black-formatter` 和 `isort` 扩展自动格式化
+- TypeScript/JavaScript 文件：使用 `ESLint` 扩展自动修复
+
+**推荐扩展**（`.vscode/extensions.json`）：
+- `ms-python.python` - Python 语言支持
+- `ms-python.black-formatter` - Black 格式化器
+- `ms-python.isort` - isort 导入排序
+- `dbaeumer.vscode-eslint` - ESLint 支持
+
+**使用方式**：
+1. 安装推荐的扩展（Cursor 会自动提示）
+2. 保存文件时会自动格式化（`Ctrl+S` / `Cmd+S`）
+
+#### 2. Cursor Post-Completion 任务
 项目已配置 Cursor 内置的 post-completion 任务（`.cursor/tasks.json`），在每次 agent 执行完成后会自动运行 `make format`。
 
 配置文件内容：
