@@ -11,8 +11,19 @@ from backroom_agent.protocol import (ChatRequest, GameState, StreamChunkInit,
 
 
 async def handle_init(
-    request: ChatRequest, current_state: GameState
+    request: ChatRequest,
+    current_state: GameState,
+    history_messages: list | None = None,
 ) -> AsyncGenerator[str, None]:
+    """
+    Handle init event with optional message history.
+
+    Args:
+        request: Chat request
+        current_state: Current game state
+        history_messages: Optional message history (usually empty for init, but kept for consistency)
+    """
+    # Init always starts with empty messages (session is reset)
     input_state = cast(
         State,
         {
@@ -20,7 +31,7 @@ async def handle_init(
             "user_input": request.player_input,
             "session_id": request.session_id,
             "current_game_state": current_state,
-            "messages": [],
+            "messages": history_messages or [],
         },
     )
 

@@ -50,11 +50,30 @@ class GameEvent(BaseModel):
     quantity: Optional[int] = None
 
 
+# Legacy ChatRequest (deprecated, will be removed)
 class ChatRequest(BaseModel):
     event: GameEvent
     player_input: str
     session_id: Optional[str] = None
     current_state: Optional[GameState] = None
+
+
+# New SSE Stream Request Models
+class StreamInitRequest(BaseModel):
+    """init 事件请求：建立 SSE 连接，重建会话"""
+
+    event: GameEvent  # type must be "init"
+    session_id: Optional[str] = None
+    game_state: Optional[GameState] = None  # 初始游戏状态
+
+
+class StreamMessageRequest(BaseModel):
+    """message 事件请求：后续交互，只发送增量"""
+
+    event: GameEvent  # type must be "message"
+    player_input: str
+    session_id: Optional[str] = None
+    game_state: Optional[GameState] = None  # 当前游戏状态（增量）
 
 
 class BackendMessage(BaseModel):
@@ -77,6 +96,7 @@ class StreamChunkType(str, Enum):
     LOGIC_EVENT = "logic_event"
     INIT = "init"
     SETTLEMENT = "settlement"
+    INIT_CONTEXT = "init_context"
 
 
 class EventOutcome(BaseModel):
@@ -132,6 +152,14 @@ class StreamChunkSuggestions(BaseModel):
 class StreamChunkLogicEvent(BaseModel):
     type: Literal[StreamChunkType.LOGIC_EVENT]
     event: LogicEvent
+
+
+class StreamChunkInitContext(BaseModel):
+    """初始化上下文：建连时通过 SSE 发送完整上下文"""
+
+    type: Literal[StreamChunkType.INIT_CONTEXT]
+    messages: List[Dict[str, Any]]  # 历史消息（序列化后的字典）
+    game_state: Optional[GameState] = None  # 当前游戏状态
 
 
 class ChatResponse(BaseModel):

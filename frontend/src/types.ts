@@ -46,11 +46,26 @@ export interface GameEvent {
   quantity?: number;
 }
 
+// Legacy ChatRequest (deprecated)
 export interface ChatRequest {
   event: GameEvent;
   player_input: string;
   session_id?: string;
   current_state: GameState | null;
+}
+
+// New SSE Stream Request Models
+export interface StreamInitRequest {
+  event: GameEvent; // type must be "init"
+  session_id?: string;
+  game_state?: GameState | null; // 初始游戏状态
+}
+
+export interface StreamMessageRequest {
+  event: GameEvent; // type must be "message"
+  player_input: string;
+  session_id?: string;
+  game_state?: GameState | null; // 当前游戏状态（增量）
 }
 
 export interface BackendMessage {
@@ -81,6 +96,7 @@ export const StreamChunkType = {
   LOGIC_EVENT: 'logic_event',
   INIT: 'init',
   SETTLEMENT: 'settlement',
+  INIT_CONTEXT: 'init_context',
 } as const;
 
 export type StreamChunkType = typeof StreamChunkType[keyof typeof StreamChunkType];
@@ -96,6 +112,12 @@ export interface SettlementDelta {
 export interface StreamChunkSettlement {
     type: typeof StreamChunkType.SETTLEMENT;
     delta: SettlementDelta;
+}
+
+export interface StreamChunkInitContext {
+    type: typeof StreamChunkType.INIT_CONTEXT;
+    messages: Array<{ type: string; content: string }>; // 历史消息
+    game_state?: GameState | null; // 当前游戏状态
 }
 
 
@@ -154,7 +176,8 @@ export type StreamChunk =
   | StreamChunkSuggestions
   | StreamChunkLogicEvent
   | StreamChunkInit
-  | StreamChunkSettlement;
+  | StreamChunkSettlement
+  | StreamChunkInitContext;
 
 export interface ChatResponse {
   messages: BackendMessage[];
