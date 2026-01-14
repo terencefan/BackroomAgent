@@ -1,7 +1,8 @@
 import asyncio
 from typing import Any, AsyncGenerator, List, cast
 
-from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langchain_core.messages import (AIMessage, BaseMessage, HumanMessage,
+                                     SystemMessage)
 
 from backroom_agent.agent.graph import graph
 from backroom_agent.agent.state import State
@@ -16,9 +17,21 @@ from backroom_agent.utils.logger import logger
 
 
 async def handle_message(
-    request: ChatRequest, current_state: GameState
+    request: ChatRequest,
+    current_state: GameState,
+    history_messages: list[BaseMessage] | None = None,
 ) -> AsyncGenerator[str, None]:
+    """
+    Handle message event with optional message history.
+
+    Args:
+        request: Chat request
+        current_state: Current game state
+        history_messages: Optional message history from session (for SSE mode)
+    """
     # Construct the initial state for the graph execution
+    # Use history messages if provided, otherwise start fresh
+    initial_messages = history_messages or []
     # For a message event, we include the user's input as a HumanMessage
     input_state: State = cast(
         State,
@@ -27,7 +40,8 @@ async def handle_message(
             GraphKeys.USER_INPUT: request.player_input,
             GraphKeys.SESSION_ID: request.session_id,
             GraphKeys.CURRENT_GAME_STATE: current_state,
-            GraphKeys.MESSAGES: [HumanMessage(content=request.player_input)],
+            GraphKeys.MESSAGES: initial_messages
+            + [HumanMessage(content=request.player_input)],
             GraphKeys.LOGIC_EVENT: None,
             GraphKeys.DICE_ROLL: None,
             GraphKeys.RAW_LLM_OUTPUT: None,

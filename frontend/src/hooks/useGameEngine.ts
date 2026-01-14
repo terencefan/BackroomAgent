@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { DiceRoll, GameState, Item, Message, StreamChunk } from '../types';
+import type { DiceRoll, GameState, Item, Message, StreamChunk, StreamInitRequest, StreamMessageRequest } from '../types';
 import { EventType, StreamChunkType } from '../types';
 
 export function useGameEngine() {
@@ -296,19 +296,21 @@ export function useGameEngine() {
   // 5. Network Layer
   // ==========================================
 
-  const streamRequest = async (
-      payload: Record<string, unknown>, 
-      onSuccess?: () => void, 
+  const streamRequestSSE = async (
+      payload: StreamInitRequest | StreamMessageRequest,
+      onSuccess?: () => void,
       onError?: (err: unknown) => void
   ) => {
       try {
         setIsLoading(true);
-        const response = await fetch('/api/chat', { 
+        
+        // 发送 POST 请求，接收 SSE 流
+        const response = await fetch('/api/chat/stream', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
-        
+
         if (!response.ok) throw new Error('Network response was not ok');
 
         const reader = response.body?.getReader();
@@ -322,17 +324,35 @@ export function useGameEngine() {
             if (done) break;
 
             buffer += decoder.decode(value, { stream: true });
+            
+            // 解析 SSE 格式: "data: {...}\n\n"
             const lines = buffer.split('\n');
             buffer = lines.pop() || '';
 
             for (const line of lines) {
                 if (!line.trim()) continue;
-                try {
-                    const chunk = JSON.parse(line);
-                    console.log(`[Stream] recv: ${chunk.type}`, chunk);
-                    await enqueueChunk(chunk);
-                } catch (e) {
-                    console.error('Error parsing JSON chunk', e);
+                
+                // SSE 格式: "data: {...}"
+                if (line.startsWith('data: ')) {
+                    try {
+                        const jsonStr = line.substring(6); // 移除 "data: " 前缀
+                        const chunk = JSON.parse(jsonStr);
+                        console.log(`[DungeonMaster] recv: ${chunk.type}`, chunk);
+                        
+                        // 处理 init_context
+                        if (chunk.type === StreamChunkType.INIT_CONTEXT) {
+                            // 接收完整上下文（历史消息和游戏状态）
+                            // 这里可以用于恢复会话状态，但通常 init 时消息历史为空
+                            if (chunk.game_state) {
+                                setGameState(chunk.game_state);
+                            }
+                            continue; // 不加入消息队列
+                        }
+                        
+                        await enqueueChunk(chunk);
+                    } catch (e) {
+                        console.error('Error parsing SSE chunk', e, line);
+                    }
                 }
             }
         }
@@ -341,7 +361,7 @@ export function useGameEngine() {
         if (onSuccess) onSuccess();
 
       } catch (error) {
-        console.error("Stream request failed:", error);
+        console.error("DungeonMaster stream request failed:", error);
         setIsLoading(false);
         if (onError) onError(error);
       }
@@ -353,16 +373,32 @@ export function useGameEngine() {
           setMessages(prev => [...prev, { id: generateMsgId(), sender: 'player', text }]);
       }
       
-      if (!gameState) return;
-
-      streamRequest({
-          event: { type: eventType, ...eventData },
-          player_input: text,
-          session_id: sessionId,
-          current_state: gameState
-      }, undefined, () => {
-         setMessages(prev => [...prev, { id: generateMsgId(), sender: 'system', text: "错误：与后端的连接已丢失。" }]);
-      });
+      if (eventType === EventType.INIT) {
+          // init 事件：建立连接，重建会话
+          const request: StreamInitRequest = {
+              event: { type: EventType.INIT, ...eventData },
+              session_id: sessionId,
+              game_state: gameState || null,
+          };
+          
+          streamRequestSSE(request, undefined, () => {
+              setMessages(prev => [...prev, { id: generateMsgId(), sender: 'system', text: "错误：初始化连接失败。" }]);
+          });
+      } else {
+          // message 事件：只发送增量
+          if (!gameState) return;
+          
+          const request: StreamMessageRequest = {
+              event: { type: eventType, ...eventData },
+              player_input: text,
+              session_id: sessionId,
+              game_state: gameState, // 只发送当前游戏状态（增量）
+          };
+          
+          streamRequestSSE(request, undefined, () => {
+              setMessages(prev => [...prev, { id: generateMsgId(), sender: 'system', text: "错误：与后端的连接已丢失。" }]);
+          });
+      }
   };
 
   // Fetch initial state on mount
@@ -370,12 +406,14 @@ export function useGameEngine() {
     if (isInitialized.current) return;
     isInitialized.current = true;
 
-    streamRequest({
+    // 使用新的 SSE 协议发送 init 事件
+    const request: StreamInitRequest = {
         event: { type: EventType.INIT },
-        player_input: '',
         session_id: sessionId,
-        current_state: null
-    });
+        game_state: null, // init 时可以不提供 game_state，使用默认值
+    };
+    
+    streamRequestSSE(request);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
